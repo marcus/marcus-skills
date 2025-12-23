@@ -119,12 +119,13 @@ def decode_attributed_body(data):
 
 ## Cleaning Message Artifacts
 
-Decoded messages often contain artifacts:
+Decoded messages often contain artifacts from the typedstream encoding:
 
 ```python
 import re
 
 def clean_message(text):
+    """Clean decoding artifacts from message text."""
     if not text:
         return text
 
@@ -141,13 +142,63 @@ def clean_message(text):
     text = re.sub(r'\s*NSDictionary\s*$', '', text)
     text = re.sub(r'\s*NSMutable[A-Za-z]+\s*$', '', text)
 
+    # Remove trailing iMessage metadata (e.g., &__kIMBaseWritingDirection...)
+    text = re.sub(r'\s*&?__kIM[^\s]*.*$', '', text)
+
     # Remove trailing iMessage metadata
     text = re.sub(r'[ij]I[^\s]*$', '', text)
 
     # Remove leading digit artifact
     text = re.sub(r'^[0-9](?=[a-zA-Z])', '', text)
 
+    # Remove leading single-letter artifacts from iMessage encoding
+    # Patterns: "dOMG" -> "OMG", "Ohttps://" -> "https://", "Ci believe" -> "i believe"
+    # BUT NOT: "OMG" -> "MG" (uppercase + uppercase = real word)
+    if len(text) > 2 and text[0].isalpha():
+        second_char = text[1]
+        rest = text[1:]
+        # Case 1: lowercase followed by uppercase (e.g., "dOMG")
+        if text[0].islower() and second_char.isupper():
+            text = rest
+        # Case 2: any letter followed by "http" (e.g., "Ohttps://")
+        elif rest[:4].lower() == 'http':
+            text = rest
+        # Case 3: any letter followed by "i " or "i'" (e.g., "Ci believe")
+        elif second_char == 'i' and len(text) > 2 and text[2] in " '":
+            text = rest
+
     return text.strip()
+```
+
+## Detecting Reactions and Quotes
+
+iMessage reactions (tapbacks) and quoted messages require special handling:
+
+```python
+# Quote characters (ASCII and Unicode curly quotes)
+QUOTE_CHARS = '"\'""\u201c\u201d\u2018\u2019'
+
+def is_reaction_message(text):
+    """Check if message is a reaction (Loved, Laughed at, etc.)."""
+    if not text:
+        return False
+    return bool(re.match(r'^(Reacted|Loved|Laughed|Emphasized|Disliked|Questioned|Liked)\s', text))
+
+def is_quoted_message(text):
+    """Check if message ends with a quote (usually quoting someone)."""
+    if not text:
+        return False
+    stripped = text.rstrip()
+    return stripped[-1] in QUOTE_CHARS if stripped else False
+```
+
+Use these to filter analysis:
+```python
+# Skip reactions and quotes when analyzing conversation flow
+meaningful_messages = [
+    m for m in messages
+    if not is_reaction_message(m['text']) and not is_quoted_message(m['text'])
+]
 ```
 
 ## Creating a Clean Database

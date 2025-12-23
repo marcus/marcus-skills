@@ -106,15 +106,54 @@ def clean_message(text):
     # Remove trailing NS* artifacts
     text = re.sub(r'\s*NSDictionary\s*$', '', text)
     text = re.sub(r'\s*NSMutable[A-Za-z]+\s*$', '', text)
+
+    # Remove trailing iMessage metadata (e.g., &__kIMBaseWritingDirection...)
+    text = re.sub(r'\s*&?__kIM[^\s]*.*$', '', text)
+
     text = re.sub(r'[ij]I[^\s]*$', '', text)
 
     # Remove leading digit artifact
     text = re.sub(r'^[0-9](?=[a-zA-Z])', '', text)
 
+    # Remove leading single-letter artifacts from iMessage encoding
+    # Patterns: "dOMG" -> "OMG", "Ohttps://" -> "https://", "Ci believe" -> "i believe"
+    # BUT NOT: "OMG" -> "MG" (uppercase + uppercase = real word)
+    if len(text) > 2 and text[0].isalpha():
+        second_char = text[1]
+        rest = text[1:]
+        # Case 1: lowercase followed by uppercase (e.g., "dOMG")
+        if text[0].islower() and second_char.isupper():
+            text = rest
+        # Case 2: any letter followed by "http" (e.g., "Ohttps://")
+        elif rest[:4].lower() == 'http':
+            text = rest
+        # Case 3: any letter followed by "i " or "i'" (e.g., "Ci believe")
+        elif second_char == 'i' and len(text) > 2 and text[2] in " '":
+            text = rest
+
     # Collapse multiple spaces
     text = re.sub(r'  +', ' ', text)
 
     return text.strip()
+
+
+# Quote characters (ASCII and Unicode curly quotes)
+QUOTE_CHARS = '"\'""\u201c\u201d\u2018\u2019'
+
+
+def is_reaction_message(text):
+    """Check if message is a reaction (Loved, Laughed at, etc.)."""
+    if not text:
+        return False
+    return bool(re.match(r'^(Reacted|Loved|Laughed|Emphasized|Disliked|Questioned|Liked)\s', text))
+
+
+def is_quoted_message(text):
+    """Check if message ends with a quote (usually quoting someone)."""
+    if not text:
+        return False
+    stripped = text.rstrip()
+    return stripped[-1] in QUOTE_CHARS if stripped else False
 
 
 def get_all_chat_ids(cursor):
@@ -161,7 +200,9 @@ def create_clean_database(source_db, target_db, chat_ids):
             has_attachments INTEGER,
             service TEXT,
             handle_id INTEGER,
-            associated_message_type INTEGER
+            associated_message_type INTEGER,
+            is_reaction INTEGER,
+            is_quote INTEGER
         );
 
         CREATE TABLE chats (
@@ -263,6 +304,10 @@ def create_clean_database(source_db, target_db, chat_ids):
 
         cleaned = clean_message(decoded) if decoded else ''
 
+        # Detect reaction and quote messages
+        reaction = 1 if is_reaction_message(cleaned) else 0
+        quote = 1 if is_quoted_message(cleaned) else 0
+
         messages.append((
             row[0],                          # id
             row[1],                          # guid
@@ -274,11 +319,13 @@ def create_clean_database(source_db, target_db, chat_ids):
             row[9],                          # has_attachments
             row[10],                         # service
             row[11],                         # handle_id
-            row[12]                          # associated_message_type
+            row[12],                         # associated_message_type
+            reaction,                        # is_reaction
+            quote                            # is_quote
         ))
 
     target_cursor.executemany(
-        "INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO messages VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         messages
     )
     print(f"Processed {len(messages):,} messages")
@@ -305,9 +352,24 @@ def create_clean_database(source_db, target_db, chat_ids):
             m.id, m.guid, m.date,
             CASE WHEN m.is_from_me = 1 THEN 'You' ELSE h.contact_id END as sender,
             m.decoded_text as message,
+            m.has_attachments, m.service,
+            m.is_reaction, m.is_quote
+        FROM messages m
+        LEFT JOIN handles h ON m.handle_id = h.id
+        ORDER BY m.date_unix
+    """)
+
+    # Create view excluding reactions and quotes (for analysis)
+    target_cursor.execute("""
+        CREATE VIEW IF NOT EXISTS messages_clean AS
+        SELECT
+            m.id, m.guid, m.date,
+            CASE WHEN m.is_from_me = 1 THEN 'You' ELSE h.contact_id END as sender,
+            m.decoded_text as message,
             m.has_attachments, m.service
         FROM messages m
         LEFT JOIN handles h ON m.handle_id = h.id
+        WHERE m.is_reaction = 0 AND m.is_quote = 0
         ORDER BY m.date_unix
     """)
 
@@ -320,8 +382,12 @@ def create_clean_database(source_db, target_db, chat_ids):
     print(f"Messages: {len(messages):,}")
     print()
     print("Query examples:")
+    print(f"  # All messages")
     print(f"  sqlite3 {target_db} \"SELECT * FROM messages_readable LIMIT 10;\"")
-    print(f"  sqlite3 {target_db} \"SELECT * FROM messages_readable WHERE message LIKE '%keyword%';\"")
+    print(f"  # Exclude reactions and quotes (cleaner for analysis)")
+    print(f"  sqlite3 {target_db} \"SELECT * FROM messages_clean LIMIT 10;\"")
+    print(f"  # Search")
+    print(f"  sqlite3 {target_db} \"SELECT * FROM messages_clean WHERE message LIKE '%keyword%';\"")
 
 
 def main():
