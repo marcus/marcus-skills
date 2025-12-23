@@ -36,3 +36,15 @@ Creates symlinks in `~/.claude/skills/` and `~/.codex/skills/`.
 1. Create `skills/{skill-name}/SKILL.md`
 2. Add entry to `manifest.json`
 3. Run `./install.sh`
+
+## Status Line
+
+Custom Claude Code status line showing repo, branch, model, duration, lines changed, context usage, and current Spotify track.
+
+```
+marcus-skills | main* | Opus 4.5 | 2m34s | +142-28 | ● ████░░░░░░ 62% ♫ Song - Artist
+```
+
+**Install**: Copy contents of `config/statusline-settings.json` into your `~/.claude/settings.json`
+
+See `config/statusline.sh` for the readable/annotated version.
