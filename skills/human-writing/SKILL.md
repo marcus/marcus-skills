@@ -39,6 +39,9 @@ Certain words appear disproportionately in AI text. See [references/vocabulary.m
 - **Mirror conclusions**: Restating the introduction in the conclusion
 - **Topic sentence + elaboration** formula in every paragraph
 - **"Challenges and future prospects"** closing pattern
+- **"Despite...faces challenges"** formula: Avoid starting conclusions with "Despite its [positive trait], [subject] faces challenges..."
+- **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale (e.g., "from small beginnings to global impact" when no timeline or progression exists)
+- **Synonym repetition**: Using different words for the same concept repeatedly (e.g., constraints, limitations, challenges all meaning the same thing)
 
 ### Formatting Red Flags
 
@@ -47,6 +50,12 @@ Certain words appear disproportionately in AI text. See [references/vocabulary.m
 - Overuse of boldface for emphasis
 - Lists with inline headers and colons
 - Curly/smart quotes when straight quotes expected
+
+### Tone & Behavioral Red Flags
+
+- **Importance-signaling phrases**: Avoid "it's important to note," "it's crucial to remember," "worth noting," "it's critical to consider." Show importance through specificity instead.
+- **Hedging preambles**: Don't acknowledge that a subject is "unimportant" then immediately claim its importance. Commit to the claim or don't make it.
+- **Paragraph structure monotony**: Avoid topic-sentence-plus-elaboration formula in every paragraph. Vary structure—start with evidence, question, or narrative instead.
 
 ## Review Mode Instructions
 
@@ -76,6 +85,11 @@ Before finalizing any generated text:
 - [ ] Specific examples instead of abstract claims
 - [ ] At least one short, punchy sentence per paragraph
 - [ ] No formulaic opening or closing phrases
+- [ ] No "it's important/crucial to note" phrases—let specificity speak for itself
+- [ ] Paragraphs don't all follow topic-sentence + elaboration pattern
+- [ ] No "Despite X, Y faces challenges" formulas in conclusions
+- [ ] No false ranges ("from X to Y") where no meaningful scale exists
+- [ ] No synonym repetition for same concept (use the actual term consistently)
 
 ## References
 
