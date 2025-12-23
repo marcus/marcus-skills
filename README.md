@@ -28,6 +28,7 @@ Creates symlinks in `~/.claude/skills/` and `~/.codex/skills/`.
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python |
 | professional-readme | Developer-focused README.md creation |
 | project-metrics-dashboard | Professional metrics dashboard design |
+| site-design-director | Website/UI design direction + production code |
 | td-task-management | AI agent task management across sessions |
 
 ## Adding a New Skill
