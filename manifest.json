@@ -29,8 +29,8 @@
       "description": "Task management for AI agents across context windows with structured handoffs"
     },
     {
-      "name": "side-design-director",
-      "description": "Use when the user asks for help designing (or redesigning) a website/landing page/SaaS UI/portfolio: UX, typography, layout, tokens, components, interaction, and implementation guidance that avoids generic AI design."
+      "name": "site-design-director",
+      "description": "Design websites/landing pages/SaaS UIs/portfolios with strategic direction AND production code—avoiding generic AI design"
     }
   ]
 }
