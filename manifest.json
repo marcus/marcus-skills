@@ -5,6 +5,14 @@
       "description": "Guidance for Bun 1.3: installation, project setup with HRM, database config with Bun.SQL"
     },
     {
+      "name": "human-writing",
+      "description": "Write naturally and avoid AI-detectable patterns. Use for generating content, reviewing text, or improving robotic writing."
+    },
+    {
+      "name": "imessage-extraction",
+      "description": "Extract, decode, and query iMessage conversations from macOS chat.db"
+    },
+    {
       "name": "cursor-agent-orchestrator",
       "description": "Build Python orchestrators that spawn cursor-agent processes in parallel with timeout handling"
     },

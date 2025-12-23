@@ -23,6 +23,8 @@ Creates symlinks in `~/.claude/skills/` and `~/.codex/skills/`.
 | Skill | Description |
 |-------|-------------|
 | bun-getting-started | Bun 1.3 setup with HRM and Bun.SQL |
+| human-writing | Natural writing guidelines and AI pattern detection |
+| imessage-extraction | Extract and query iMessage conversations from macOS chat.db |
 | cursor-agent-orchestrator | Parallel cursor-agent process orchestration |
 | ollama-python-streaming | Ollama + LiteLLM streaming in Python |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python |
