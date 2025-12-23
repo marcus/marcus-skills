@@ -1,5 +1,7 @@
 # Marcus Skills
 
+<img src="skill.png" alt="Skills" width="300" />
+
 Custom Claude Code skills for development workflows.
 
 ## Install
