@@ -15,6 +15,12 @@ Extract and process iMessage conversations from the macOS Messages database.
 
 **Full Disk Access required**: Grant Full Disk Access to Terminal in System Preferences > Security & Privacy > Privacy > Full Disk Access.
 
+**Setup steps:**
+1. Go to **System Preferences > Security & Privacy > Privacy > Full Disk Access**
+2. Click the `+` button and add `/Applications/Utilities/Terminal.app` (or your terminal app)
+3. Restart Terminal for changes to take effect
+4. Test by running: `sqlite3 ~/Library/Messages/chat.db "SELECT COUNT(*) FROM chat;"`
+
 ## Quick Start
 
 ### 1. List All Conversations
