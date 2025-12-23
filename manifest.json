@@ -1,0 +1,32 @@
+{
+  "skills": [
+    {
+      "name": "bun-getting-started",
+      "description": "Guidance for Bun 1.3: installation, project setup with HRM, database config with Bun.SQL"
+    },
+    {
+      "name": "cursor-agent-orchestrator",
+      "description": "Build Python orchestrators that spawn cursor-agent processes in parallel with timeout handling"
+    },
+    {
+      "name": "ollama-python-streaming",
+      "description": "Connect to local Ollama LLM and stream responses using LiteLLM in Python"
+    },
+    {
+      "name": "openrouter-python-streaming",
+      "description": "Connect to OpenRouter API and stream responses using LiteLLM in Python"
+    },
+    {
+      "name": "professional-readme",
+      "description": "Create concise, developer-focused README.md files for software projects"
+    },
+    {
+      "name": "project-metrics-dashboard",
+      "description": "Design professional dashboards for software project metrics and status"
+    },
+    {
+      "name": "td-task-management",
+      "description": "Task management for AI agents across context windows with structured handoffs"
+    }
+  ]
+}
