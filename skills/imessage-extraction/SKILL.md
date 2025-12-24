@@ -172,14 +172,24 @@ def clean_message(text):
 
 ## Detecting Reactions and Quotes
 
-iMessage reactions (tapbacks) and quoted messages require special handling:
+iMessage reactions (tapbacks) and quoted messages require special handling.
+
+**Reaction format**: `ReactionWord + space + curly_quote + original_message + curly_quote`
+- Example: `Loved "When I first heard this song..."`
+- Uses Unicode curly quotes: `"` (U+201C) and `"` (U+201D), not straight quotes
+
+**Important**: Use regex matching, not `startswith()`. The curly quotes vary and cause issues with string prefix matching.
 
 ```python
 # Quote characters (ASCII and Unicode curly quotes)
 QUOTE_CHARS = '"\'""\u201c\u201d\u2018\u2019'
 
 def is_reaction_message(text):
-    """Check if message is a reaction (Loved, Laughed at, etc.)."""
+    """Check if message is a reaction (Loved, Laughed at, etc.).
+
+    Uses regex instead of startswith() because reaction messages use
+    Unicode curly quotes (U+201C, U+201D) which vary and cause matching issues.
+    """
     if not text:
         return False
     return bool(re.match(r'^(Reacted|Loved|Laughed|Emphasized|Disliked|Questioned|Liked)\s', text))

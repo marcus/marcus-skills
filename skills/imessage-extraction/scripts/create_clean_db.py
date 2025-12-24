@@ -142,7 +142,12 @@ QUOTE_CHARS = '"\'""\u201c\u201d\u2018\u2019'
 
 
 def is_reaction_message(text):
-    """Check if message is a reaction (Loved, Laughed at, etc.)."""
+    """Check if message is a reaction (Loved, Laughed at, etc.).
+
+    Uses regex instead of startswith() because reaction messages use
+    Unicode curly quotes (U+201C, U+201D) which vary and cause matching issues.
+    Format: ReactionWord + space + curly_quote + original_message + curly_quote
+    """
     if not text:
         return False
     return bool(re.match(r'^(Reacted|Loved|Laughed|Emphasized|Disliked|Questioned|Liked)\s', text))
