@@ -39,6 +39,10 @@
     {
       "name": "site-design-director",
       "description": "Design websites/landing pages/SaaS UIs/portfolios with strategic direction AND production code—avoiding generic AI design"
+    },
+    {
+      "name": "sqlite-single-writer",
+      "description": "Implement single-writer queue pattern for SQLite in multi-process environments with cross-platform file locking and WAL"
     }
   ]
 }

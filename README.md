@@ -31,6 +31,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | professional-readme | Developer-focused README.md creation |
 | project-metrics-dashboard | Professional metrics dashboard design |
 | site-design-director | Website/UI design direction + production code |
+| sqlite-single-writer | SQLite single-writer queue pattern for multi-process apps |
 | td-task-management | AI agent task management across sessions |
 
 ## Adding a New Skill
