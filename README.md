@@ -2,7 +2,7 @@
 
 <img src="skill.png" alt="Skills" width="300" />
 
-Custom skills for [Claude Code](https://claude.ai/code) and [OpenAI Codex](https://openai.com/codex).
+Custom skills for [OpenCode](https://opencode.ai), [Claude Code](https://claude.ai/code), and [OpenAI Codex](https://openai.com/codex).
 
 ## Install
 
@@ -10,7 +10,7 @@ Custom skills for [Claude Code](https://claude.ai/code) and [OpenAI Codex](https
 ./install.sh
 ```
 
-Creates symlinks in `~/.claude/skills/` and `~/.codex/skills/`.
+Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/skills/`.
 
 ## Uninstall
 

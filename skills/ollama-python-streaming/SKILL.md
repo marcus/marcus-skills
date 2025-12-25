@@ -1,4 +1,5 @@
 ---
+name: ollama-python-streaming
 description: Connect to local Ollama LLM and stream responses using LiteLLM in Python. Includes async streaming, retry logic, and thinking model support.
 tags: [ollama, llm, streaming, python, litellm, async]
 ---

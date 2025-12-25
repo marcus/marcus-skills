@@ -1,4 +1,5 @@
 ---
+name: bun-getting-started
 description: Provides comprehensive guidance for getting started with Bun 1.3, including installation, project setup with HRM (Hot Module Replacement), database configuration with Bun.SQL (MySQL, PostgreSQL, SQLite), and best practices for building full-stack JavaScript applications.
 tags: [bun, javascript, full-stack, databases, development]
 ---

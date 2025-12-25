@@ -1,4 +1,5 @@
 ---
+name: openrouter-python-streaming
 description: Connect to OpenRouter API and stream responses using LiteLLM in Python. Includes async streaming, retry logic, and multi-provider access to 400+ models.
 tags: [openrouter, llm, streaming, python, litellm, async, openai-compatible]
 ---

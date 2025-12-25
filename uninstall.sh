@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$SCRIPT_DIR/skills"
 CLAUDE_DIR="$HOME/.claude/skills"
 CODEX_DIR="$HOME/.codex/skills"
+OPENCODE_DIR="$HOME/.opencode/skill"
 
 uninstall_skills() {
   local target_dir="$1"
@@ -27,5 +28,6 @@ uninstall_skills() {
 
 uninstall_skills "$CLAUDE_DIR" "Claude"
 uninstall_skills "$CODEX_DIR" "Codex"
+uninstall_skills "$OPENCODE_DIR" "OpenCode"
 
 echo "Done."

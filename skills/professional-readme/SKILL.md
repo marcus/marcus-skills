@@ -1,3 +1,4 @@
+---
 name: professional-readme
 description: Create a concise, complete, developer-focused README.md for software projects that experienced developers can use immediately.
 metadata:

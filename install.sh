@@ -5,8 +5,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$SCRIPT_DIR/skills"
 CLAUDE_DIR="$HOME/.claude/skills"
 CODEX_DIR="$HOME/.codex/skills"
+OPENCODE_DIR="$HOME/.opencode/skill"
 
-mkdir -p "$CLAUDE_DIR" "$CODEX_DIR"
+mkdir -p "$CLAUDE_DIR" "$CODEX_DIR" "$OPENCODE_DIR"
 
 install_skills() {
   local target_dir="$1"
@@ -32,5 +33,6 @@ install_skills() {
 
 install_skills "$CLAUDE_DIR" "Claude"
 install_skills "$CODEX_DIR" "Codex"
+install_skills "$OPENCODE_DIR" "OpenCode"
 
 echo "Done."
