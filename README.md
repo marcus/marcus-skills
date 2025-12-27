@@ -20,20 +20,20 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 
 ## Skills
 
-| Skill | Description |
-|-------|-------------|
-| bun-getting-started | Bun 1.3 setup with HRM and Bun.SQL |
-| claude-code-metadata | Add path and start line metadata to code blocks |
-| human-writing | Natural writing guidelines and AI pattern detection |
-| imessage-extraction | Extract and query iMessage conversations from macOS chat.db |
-| cursor-agent-orchestrator | Parallel cursor-agent process orchestration |
-| ollama-python-streaming | Ollama + LiteLLM streaming in Python |
-| openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python |
-| professional-readme | Developer-focused README.md creation |
-| project-metrics-dashboard | Professional metrics dashboard design |
-| site-design-director | Website/UI design direction + production code |
-| sqlite-single-writer | SQLite single-writer queue pattern for multi-process apps |
-| td-task-management | AI agent task management across sessions |
+| Skill                       | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| bun-getting-started         | Bun 1.3 setup with HRM and Bun.SQL                           |
+| claude-code-metadata        | Everything you need to know about how Claude stores metadata |
+| human-writing               | Natural writing guidelines and AI pattern detection          |
+| imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
+| cursor-agent-orchestrator   | Parallel cursor-agent process orchestration                  |
+| ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
+| openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
+| professional-readme         | Developer-focused README.md creation                         |
+| project-metrics-dashboard   | Professional metrics dashboard design                        |
+| site-design-director        | Website/UI design direction + production code                |
+| sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
+| td-task-management          | AI agent task management across sessions                     |
 
 ## Adding a New Skill
 
