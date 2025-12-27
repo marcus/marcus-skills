@@ -23,6 +23,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | Skill | Description |
 |-------|-------------|
 | bun-getting-started | Bun 1.3 setup with HRM and Bun.SQL |
+| claude-code-metadata | Add path and start line metadata to code blocks |
 | human-writing | Natural writing guidelines and AI pattern detection |
 | imessage-extraction | Extract and query iMessage conversations from macOS chat.db |
 | cursor-agent-orchestrator | Parallel cursor-agent process orchestration |

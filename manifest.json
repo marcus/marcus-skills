@@ -43,6 +43,10 @@
     {
       "name": "sqlite-single-writer",
       "description": "Implement single-writer queue pattern for SQLite in multi-process environments with cross-platform file locking and WAL"
+    },
+    {
+      "name": "claude-code-metadata",
+      "description": "Add path and start line metadata to code blocks for better context in Claude responses"
     }
   ]
 }
