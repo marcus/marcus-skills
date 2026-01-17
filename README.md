@@ -24,9 +24,10 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | --------------------------- | ------------------------------------------------------------ |
 | bun-getting-started         | Bun 1.3 setup with HRM and Bun.SQL                           |
 | claude-code-metadata        | Everything you need to know about how Claude stores metadata |
+| cursor-agent-orchestrator   | Parallel cursor-agent process orchestration                  |
+| dev-docs                    | Developer documentation for open source projects             |
 | human-writing               | Natural writing guidelines and AI pattern detection          |
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
-| cursor-agent-orchestrator   | Parallel cursor-agent process orchestration                  |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
 | professional-readme         | Developer-focused README.md creation                         |
