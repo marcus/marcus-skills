@@ -47,6 +47,10 @@
     {
       "name": "claude-code-metadata",
       "description": "Add path and start line metadata to code blocks for better context in Claude responses"
+    },
+    {
+      "name": "dev-docs",
+      "description": "Create exceptional developer documentation for open source projects—README files, API docs, getting-started guides, and tutorials"
     }
   ]
 }
