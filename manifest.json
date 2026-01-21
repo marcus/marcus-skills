@@ -1,6 +1,10 @@
 {
   "skills": [
     {
+      "name": "betamax-docs",
+      "description": "Create reproducible TUI screenshots and GIF demos for documentation with Betamax"
+    },
+    {
       "name": "bun-getting-started",
       "description": "Guidance for Bun 1.3: installation, project setup with HRM, database config with Bun.SQL"
     },
