@@ -45,12 +45,11 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 
 ## Status Line
 
-Custom Claude Code status line showing repo, branch, model, duration, lines changed, context usage, and current Spotify track.
+Custom Claude Code status line showing repo, branch, model, duration, lines changed, context usage, and current Spotify track (on Linux `playerctl` should be installed to show Spotify track).
 
 ```
 marcus-skills | main* | Opus 4.5 | 2m34s | +142-28 | ● ████░░░░░░ 62% ♫ Song - Artist
 ```
 
-**Install**: Copy contents of `config/statusline-settings.json` into your `~/.claude/settings.json`
-
-See `config/statusline.sh` for the readable/annotated version.
+**Install**: Copy contents of `config/statusline-settings.json` into your `~/.claude/settings.json` and
+copy script `config/statusline.sh` to `~/.claude`.
