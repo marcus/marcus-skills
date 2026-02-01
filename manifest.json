@@ -55,6 +55,10 @@
     {
       "name": "dev-docs",
       "description": "Create exceptional developer documentation for open source projects—README files, API docs, getting-started guides, and tutorials"
+    },
+    {
+      "name": "orchestrate",
+      "description": "Orchestrate development work through sub-agents using td for state and plan-implement-review loops"
     }
   ]
 }
