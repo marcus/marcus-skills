@@ -3,7 +3,7 @@ name: cursor-agent-orchestrator
 description: Build Python orchestrators that spawn multiple cursor-agent processes in parallel, capture their output, handle timeouts, log results, and verify task completion. Use this skill when automating bulk tasks via cursor-agent from the terminal.
 metadata:
   author: marcus-vorwaller
-  version: "1.0"
+  version: "1.1"
 ---
 
 # Cursor Agent Orchestrator
@@ -133,14 +133,33 @@ while not shutdown_requested:
 
 ```bash
 cursor-agent agent \
-    --print \                    # Print output to stdout (required)
+    --print \                    # Print output to stdout (required for headless)
     --output-format stream-json \ # Structured JSON output (recommended)
-    --model <model-name> \       # Model to use (e.g., claude-sonnet-4-20250514)
+    --model <model-name> \       # Model to use (see model names below)
     --workspace <path> \         # Working directory for the agent
     --force \                    # Skip confirmation prompts
     --approve-mcps \             # Auto-approve MCP servers
     "<prompt>"                   # The prompt (as final positional arg)
 ```
+
+### Model names
+
+The cursor CLI uses its own short model names, **not** the full Anthropic/OpenAI identifiers:
+
+| Cursor CLI name | Full model |
+|-----------------|------------|
+| `opus-4.6` | Claude 4.6 Opus |
+| `opus-4.6-thinking` | Claude 4.6 Opus (Thinking) |
+| `opus-4.5` | Claude 4.5 Opus |
+| `opus-4.5-thinking` | Claude 4.5 Opus (Thinking) |
+| `sonnet-4.5` | Claude 4.5 Sonnet |
+| `sonnet-4.5-thinking` | Claude 4.5 Sonnet (Thinking) |
+| `gpt-5.2` | GPT-5.2 |
+| `gemini-3-pro` | Gemini 3 Pro |
+
+Run `cursor-agent models` to see the full list of available models.
+
+If you pass an invalid model name (e.g., `claude-opus-4-6` instead of `opus-4.6`), cursor-agent will print an error to stdout and exit — **it does not return a non-zero exit code**, so you must check for error messages in the output.
 
 ### Output format: stream-json
 
@@ -148,11 +167,30 @@ When using `--output-format stream-json`, stdout contains newline-delimited JSON
 
 | Event type | Subtype | Description |
 |------------|---------|-------------|
+| `system` | `init` | Session initialization (model, cwd, session_id) |
+| `user` | - | Echo of the user prompt |
 | `thinking` | `delta` | Streaming thinking text |
 | `tool_call` | `started` | Tool invocation started |
 | `tool_call` | `completed` | Tool invocation finished |
 | `assistant` | - | Assistant message content |
-| `result` | - | Final result (may include `is_error: true`) |
+| `result` | `success` or absent | Final result (may include `is_error: true`) |
+
+**Important**: The `assistant` event nests text inside `message.content[]`:
+
+```json
+{
+  "type": "assistant",
+  "message": {
+    "role": "assistant",
+    "content": [
+      { "type": "text", "text": "Here is my analysis..." }
+    ]
+  },
+  "session_id": "..."
+}
+```
+
+Do **not** look for top-level `text` or `content` fields on `assistant` events — the text is always at `event.message.content[N].text`.
 
 ### Parsing tool calls
 
@@ -225,7 +263,43 @@ class Config:
 
 ### 2. Async subprocess spawning
 
+**CRITICAL**: When spawning `cursor-agent` from within the Cursor IDE (integrated
+terminal, extension host, or any subprocess of Cursor), you **must** isolate the
+child process. Without isolation, cursor-agent detects the parent IDE process and
+hangs indefinitely with zero output.
+
+Three things are required:
+
+1. **`start_new_session=True`** — Detaches from Cursor's process group. Without
+   this, cursor-agent hangs trying to communicate with the parent IDE.
+2. **`stdin=DEVNULL`** — Prevents cursor-agent from waiting on stdin.
+3. **Clean environment** — Strip `CURSOR_*` and `VSCODE_*` env vars that signal
+   to cursor-agent that it's running inside the IDE.
+4. **`limit=4*1024*1024`** — Increase the StreamReader buffer from the default
+   64KB to 4MB. Tool call results (file reads, grep output) can easily exceed
+   64KB and cause `readline()` to raise "Separator is not found, and chunk
+   exceed the limit".
+
 ```python
+import os
+
+# Environment variables set by Cursor IDE that cause cursor-agent to hang
+# when spawned as a subprocess inside the IDE. Strip all of these.
+CURSOR_ENV_STRIP = {
+    "CURSOR_AGENT",
+    "CURSOR_EXTENSION_HOST_ROLE",
+    "CURSOR_TRACE_ID",
+    "VSCODE_PID",
+    "VSCODE_IPC_HOOK",
+    "VSCODE_CWD",
+    "VSCODE_PROCESS_TITLE",
+    "VSCODE_HANDLES_UNCAUGHT_ERRORS",
+    "VSCODE_CRASH_REPORTER_PROCESS_TYPE",
+    "VSCODE_ESM_ENTRYPOINT",
+    "VSCODE_CODE_CACHE_PATH",
+    "VSCODE_NLS_CONFIG",
+}
+
 async def spawn_agent(prompt: str, config: Config) -> asyncio.subprocess.Process:
     """Spawn cursor-agent with the given prompt."""
     cmd = [
@@ -240,10 +314,17 @@ async def spawn_agent(prompt: str, config: Config) -> asyncio.subprocess.Process
         prompt
     ]
     
+    # Build clean env without Cursor IDE variables
+    clean_env = {k: v for k, v in os.environ.items() if k not in CURSOR_ENV_STRIP}
+    
     return await asyncio.create_subprocess_exec(
         *cmd,
+        stdin=asyncio.subprocess.DEVNULL,
         stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
+        stderr=asyncio.subprocess.PIPE,
+        env=clean_env,
+        start_new_session=True,   # Detach from Cursor IDE process group
+        limit=4 * 1024 * 1024,    # 4MB line buffer for large tool results
     )
 ```
 
@@ -661,6 +742,11 @@ def main():
 
 ### Do
 
+- **Always use `start_new_session=True`** - Required to detach from Cursor IDE process group
+- **Always set `stdin=DEVNULL`** - Prevents cursor-agent from waiting on terminal input
+- **Always strip Cursor/VSCode env vars** - Prevents cursor-agent from connecting to parent IDE
+- **Always set `limit=4*1024*1024`** - Tool results can exceed the default 64KB readline buffer
+- **Use cursor CLI model names** - `opus-4.6` not `claude-opus-4-6` (run `cursor-agent models`)
 - **Use `asyncio.create_subprocess_exec`** - Not `subprocess.run` for async
 - **Use `communicate()` for output capture** - Prevents pipe buffer deadlocks
 - **Always set timeouts** - Agents can hang indefinitely
@@ -671,9 +757,14 @@ def main():
 - **Handle SIGINT/SIGTERM** - Allow graceful shutdown
 - **Use UTC timestamps everywhere** - Avoid timezone confusion
 - **Anchor relative paths to project root** - Makes running from anywhere predictable
+- **Check for non-JSON error lines** - cursor-agent may print errors as plain text with exit code 0
 
 ### Don't
 
+- **Don't spawn cursor-agent without process isolation** - It WILL hang inside Cursor IDE
+- **Don't use full Anthropic model names** - Use cursor CLI short names (`opus-4.6`, `sonnet-4.5`)
+- **Don't assume non-zero exit code on error** - cursor-agent may return 0 even on model errors
+- **Don't use the default 64KB buffer** - Large tool results will crash readline()
 - **Don't read stdout/stderr streams directly** - Use `communicate()` to avoid deadlocks
 - **Don't skip verification** - Always check that the agent actually completed the task
 - **Don't hardcode concurrency** - Make it configurable via CLI
@@ -684,6 +775,52 @@ def main():
 ---
 
 ## Common issues and solutions
+
+### Issue: cursor-agent hangs with zero output when spawned from Cursor IDE
+
+**Symptom**: `cursor-agent agent --print ...` hangs indefinitely, produces no
+stdout, eventually hits timeout. Works perfectly from an external terminal.
+
+**Cause**: Cursor IDE sets environment variables (`CURSOR_AGENT=1`,
+`CURSOR_EXTENSION_HOST_ROLE=agent-exec`, `VSCODE_IPC_HOOK`, etc.) that cause
+cursor-agent to detect it's inside the IDE and try to communicate with the parent
+process instead of running standalone. The process group relationship also
+contributes.
+
+**Solution**: Apply all three isolation measures when spawning:
+1. `start_new_session=True` — Detach from process group
+2. `stdin=asyncio.subprocess.DEVNULL` — Don't wait for stdin
+3. Strip `CURSOR_*` and `VSCODE_*` env vars (see spawn_agent pattern above)
+
+**This is the #1 pitfall** when building orchestrators that run inside Cursor.
+
+### Issue: "Separator is not found, and chunk exceed the limit"
+
+**Symptom**: `asyncio.StreamReader.readline()` raises an error about separator
+not found and chunk exceeding the limit.
+
+**Cause**: cursor-agent tool_call results (especially `readFileToolCall` and
+`grepToolCall`) can emit single JSON lines larger than the default 64KB
+StreamReader buffer.
+
+**Solution**: Set `limit=4*1024*1024` (4MB) when creating the subprocess:
+```python
+await asyncio.create_subprocess_exec(*cmd, ..., limit=4 * 1024 * 1024)
+```
+
+### Issue: Invalid model name silently fails
+
+**Symptom**: cursor-agent exits quickly with zero tool calls. Output contains
+an error line like `Cannot use this model: claude-opus-4-6. Available models: ...`
+but exit code is 0.
+
+**Cause**: The cursor CLI uses short model names (`opus-4.6`) not full
+identifiers (`claude-opus-4-6`). Invalid model names produce a non-JSON error
+to stdout with a zero exit code.
+
+**Solution**: Map config model names to cursor CLI names. Check for non-JSON
+lines in stdout that start with `Cannot use this model` and treat them as errors.
+Run `cursor-agent models` to see valid names.
 
 ### Issue: Pipe buffer deadlock
 
