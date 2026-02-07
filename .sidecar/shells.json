@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "shells": [
+    {
+      "tmuxName": "sidecar-sh-marcus-skills-1",
+      "displayName": "reviewer",
+      "createdAt": "2026-02-07T10:26:50.058843-08:00",
+      "agentType": "claude",
+      "skipPerms": true
+    }
+  ]
+}

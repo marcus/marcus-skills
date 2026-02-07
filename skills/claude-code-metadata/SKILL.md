@@ -483,13 +483,35 @@ Project paths become directory names by replacing `/` with `-`:
 
 ## Token Usage Calculation
 
-From assistant messages, extract:
-- `usage.input_tokens`: Direct input tokens
-- `usage.cache_creation_input_tokens`: New cache entries
-- `usage.cache_read_input_tokens`: Cache hits
-- `usage.output_tokens`: Response tokens
+**IMPORTANT**: Usage data is nested at `message.usage`, NOT at the top level of a JSONL line.
+
+From assistant messages (`type: "assistant"`), extract from `message.usage`:
+- `message.usage.input_tokens`: Direct input tokens
+- `message.usage.output_tokens`: Response tokens
+- `message.usage.cache_creation_input_tokens`: New cache entries
+- `message.usage.cache_read_input_tokens`: Cache hits
+
+Field names use **snake_case** (`input_tokens`, not `inputTokens`).
 
 Cache efficiency = `cache_read_input_tokens / (cache_read_input_tokens + input_tokens)`
+
+### What dailyModelTokens tracks
+
+The `dailyModelTokens` field in stats-cache.json tracks a **proprietary aggregate** computed by Claude Code. It does NOT equal the sum of per-message `usage.input_tokens + usage.output_tokens` from JSONL files. Empirically, `dailyModelTokens` values are ~0.04x–0.39x of the JSONL-derived `input_tokens + output_tokens` sum for the same day. The exact formula is internal to Claude Code.
+
+**Key implication**: If your tool is calibrated against `dailyModelTokens` (e.g., by correlating it with scraped usage percentages), you MUST continue using `dailyModelTokens` for consistency. Switching to JSONL-summed tokens will produce values ~3-25x larger, breaking any calibration.
+
+### stats-cache.json Volatility Warning
+
+**stats-cache.json values can change retroactively.** Claude Code rebuilds this file by scanning JSONL session files. Key issues:
+
+1. **Retroactive rewriting**: When sessions are deleted (30-day retention cleanup), the cache is rebuilt and historical daily totals can drop.
+2. **Timezone uncertainty**: The date bucketing in the cache may use a different timezone than expected.
+3. **Race conditions**: If Claude Code is running when you read the cache, values may include in-progress data.
+
+### Direct JSONL Scanning
+
+For per-message ground truth, scan JSONL session files directly. Filter `.jsonl` files by `os.FileInfo.ModTime()` for performance (skip files not modified in your date range), then parse `message.usage` from `type: "assistant"` lines. Note that the per-message totals will NOT match `dailyModelTokens` from stats-cache.
 
 ## Session Retention
 
@@ -507,6 +529,7 @@ All UUIDs follow RFC 4122 format:
 ## Model Identifiers
 
 Common model IDs:
+- `claude-opus-4-6` (latest)
 - `claude-opus-4-5-20251101`
 - `claude-sonnet-4-5-20250929`
 - `claude-haiku-4-5-20251001`
@@ -523,7 +546,7 @@ Per-million tokens (approximate):
 ## Useful Queries
 
 ### Count total tokens per session
-Parse JSONL, sum `usage.input_tokens + usage.output_tokens` for `type: assistant`.
+Parse JSONL, sum `message.usage.input_tokens + message.usage.output_tokens` for `type: "assistant"` lines.
 
 ### Find all sessions for a project
 List files in `projects/-path-to-project/`.

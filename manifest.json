@@ -59,6 +59,10 @@
     {
       "name": "orchestrate",
       "description": "Orchestrate development work through sub-agents using td for state and plan-implement-review loops"
+    },
+    {
+      "name": "td-review-session",
+      "description": "Start a td review session to triage pending reviews—fix obvious bugs, create tasks for bigger issues, ensure test coverage, and use parallel subagents"
     }
   ]
 }

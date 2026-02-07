@@ -31,10 +31,13 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
+| orchestrate                 | Sub-agent orchestration using td for plan-implement-review   |
 | professional-readme         | Developer-focused README.md creation                         |
 | project-metrics-dashboard   | Professional metrics dashboard design                        |
+| rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
 | site-design-director        | Website/UI design direction + production code                |
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
+| td-review-session           | Review session orchestrator with parallel triage and auto-fix |
 | td-task-management          | AI agent task management across sessions                     |
 
 ## Adding a New Skill
