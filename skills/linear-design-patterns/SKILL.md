@@ -25,6 +25,9 @@ Apply Linear's design philosophy to web applications. Covers color, typography, 
 | Navigation shortcuts? | `g` then letter (vim-style) |
 | Information density? | High density, low clutter |
 | Chrome/decoration? | Minimal — content over chrome |
+| Content surface shape? | Sharp edges — no border-radius on data panels |
+| Panel separation? | 1px border lines, not gaps or shadows |
+| When to elevate? | Only floating overlays (modals, dropdowns, popovers) |
 
 ## Core Principles
 
@@ -43,9 +46,10 @@ Key sections:
 - **A. Color & Theming** — LCH color space, 3-variable themes, dark-first
 - **B. Typography** — Inter family, hierarchy through weight/size only
 - **C. Layout & Navigation** — inverted-L, list/detail split, collapsible sidebar
-- **D. Information Density** — in-place editing, contextual menus
-- **E. Interaction & Speed** — optimistic updates, command palette, keyboard shortcuts
-- **F. Motion & Animation** — 200ms, purposeful micro-interactions only
-- **G. Feedback** — inline over toasts, undo over confirmation
-- **H. Visual Polish** — tight alignment, subtle gradients, "be gentle"
-- **I. Progressive Disclosure** — works out of the box, natural language filters, universal URLs
+- **D. Surface Architecture** — flush tiled grids, sharp edges on data, border hierarchy, elevation only for overlays
+- **E. Information Density** — in-place editing, contextual menus
+- **F. Interaction & Speed** — optimistic updates, command palette, keyboard shortcuts
+- **G. Motion & Animation** — 200ms, purposeful micro-interactions only
+- **H. Feedback** — inline over toasts, undo over confirmation
+- **I. Visual Polish** — tight alignment, subtle gradients, "be gentle"
+- **J. Progressive Disclosure** — works out of the box, natural language filters, universal URLs

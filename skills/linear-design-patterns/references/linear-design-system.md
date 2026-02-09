@@ -51,7 +51,29 @@ Sidebar shows saved/custom views and pinned items. Collapsible to maximize conte
 ### Minimal Chrome
 Reduced visual noise in sidebars, tabs, headers, panels. UI elements recede, content comes forward.
 
-## D. Information Density
+## D. Surface Architecture
+
+### Flush Tiled Grids
+Content panels sit edge-to-edge with zero gaps and zero border-radius. Grid cells tile like a spreadsheet — separated by 1px border lines, not whitespace. No `gap` between cells, no padding around the grid container. Every pixel is content space.
+
+### Sharp Edges on Data Surfaces
+Data grids, tables, metric panels, and content areas use `border-radius: 0`. Rounded corners are reserved exclusively for floating/elevated surfaces (modals, dropdowns, command palette, popovers). The result looks more like a Bloomberg terminal or IDE than a card-based SaaS app.
+
+### Border Hierarchy as Structure
+Three tiers of border opacity define visual hierarchy without introducing gaps or shadows:
+- **Strong** — section and component boundaries (sidebar edges, header, metric grid outer borders, filter bars)
+- **Default** — internal component borders (inputs, buttons, table headers)
+- **Subtle** — lightest separators (table rows, activity items, detail panel internals)
+
+Structure comes from border lines, not from spacing or elevation.
+
+### Flat by Default, Elevated Only When Floating
+Shadows and border-radius are reserved for elements that literally float above the page — modals, popovers, dropdowns, command palettes. Everything else is flat. This creates a clear two-tier system: the tiled data surface (sharp, flat, dense) and the occasional overlay (rounded, shadowed, elevated).
+
+### Why Not Cards?
+Rounded corners and gaps between cards waste space and fragment the visual field. Flush tiling with thin border lines packs more information into the same viewport while maintaining clear visual boundaries. It's an engineered look — precision over friendliness.
+
+## E. Information Density
 
 ### High Density, Low Clutter
 Lots of information on screen achieved through alignment and restraint, not cramming. Every pixel earns its place.
@@ -62,7 +84,7 @@ Filters modify in-place with small indicators. No separate dialog boxes for comm
 ### Contextual Menus on Everything
 Right-click any entity for a full action menu. Reduces navigation steps.
 
-## E. Interaction & Speed
+## F. Interaction & Speed
 
 ### 100ms Target
 All interactions feel instantaneous. Based on Gmail creator Paul Buchheit's standard — UI responds before the server confirms.
@@ -85,7 +107,7 @@ After hovering an element for a few seconds, a banner appears showing the keyboa
 ### Real-Time Sync
 Changes from other users appear instantly without refresh. Collaborative without feeling noisy.
 
-## F. Motion & Animation
+## G. Motion & Animation
 
 ### "Flows Like Water" Transitions
 Animations are soft, timely, and fluid. Nothing snaps or jumps.
@@ -96,7 +118,7 @@ Small animations on state changes (starring, completing, dragging) give tactile 
 ### No Decorative Animation
 Motion communicates state changes, never draws attention to itself. The tool feels responsive, not animated.
 
-## G. Feedback & Communication
+## H. Feedback & Communication
 
 ### Inline Feedback Over Toasts
 "Saving..." appears next to the field being edited, not in a corner toast. Zero eye travel.
@@ -107,7 +129,7 @@ Failed optimistic updates roll back with a minimal, non-alarming notification.
 ### Undo Over Confirmation
 Prefer letting users undo destructive actions rather than blocking with "Are you sure?" dialogs. Confirmation only for truly irreversible operations.
 
-## H. Visual Polish
+## I. Visual Polish
 
 ### Subtle Gradients and Blur
 Faux depth via gradients and glassmorphism on select surfaces. Adds dimension without clutter. Complex gradients add perceived detail without actual visual noise.
@@ -118,7 +140,7 @@ Obsessive vertical and horizontal alignment of labels, icons, and buttons across
 ### "Be Gentle" Philosophy
 Everything feels comfortable, natural, expected. No surprises, no friction. The UI respects the user's time and attention. As Linear describes it: "A user needs to see and understand what is presented...everything feels comfortable, natural, and expected."
 
-## I. Progressive Disclosure & Onboarding
+## J. Progressive Disclosure & Onboarding
 
 ### Works Out of the Box
 Minimal onboarding required. Sensible defaults, customization available but not required.
