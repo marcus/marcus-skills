@@ -29,6 +29,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | dev-docs                    | Developer documentation for open source projects             |
 | human-writing               | Natural writing guidelines and AI pattern detection          |
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
+| linear-design-patterns      | Linear-inspired design patterns for keyboard-first apps      |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
 | orchestrate                 | Sub-agent orchestration using td for plan-implement-review   |

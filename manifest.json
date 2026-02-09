@@ -63,6 +63,10 @@
     {
       "name": "td-review-session",
       "description": "Start a td review session to triage pending reviews—fix obvious bugs, create tasks for bigger issues, ensure test coverage, and use parallel subagents"
+    },
+    {
+      "name": "linear-design-patterns",
+      "description": "Linear-inspired design system patterns for keyboard-first, high-density, dark-first web applications"
     }
   ]
 }
