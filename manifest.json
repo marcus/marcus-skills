@@ -67,6 +67,10 @@
     {
       "name": "linear-design-patterns",
       "description": "Linear-inspired design system patterns for keyboard-first, high-density, dark-first web applications"
+    },
+    {
+      "name": "sveltekit-latest",
+      "description": "Quick-reference for SvelteKit + Svelte 5 development (Feb 2026)"
     }
   ]
 }

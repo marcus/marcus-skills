@@ -38,6 +38,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
 | site-design-director        | Website/UI design direction + production code                |
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
+| sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
 | td-review-session           | Review session orchestrator with parallel triage and auto-fix |
 | td-task-management          | AI agent task management across sessions                     |
 
