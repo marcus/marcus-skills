@@ -151,6 +151,40 @@ Create filters with conversational input (e.g., "Completed in October"). Lower b
 ### Universal URLs
 Every entity, view, and state has a shareable URL. Deep-linkable everything.
 
+## K. Anti-Patterns — What NOT to Build
+
+These are the most common ways agents and developers break this design system. Each one undermines the core aesthetic.
+
+### Container Nesting
+The flat grid pattern breaks the moment you introduce wrapper divs for visual grouping. If you find yourself writing `.card > .card-body`, `.panel > .panel-content`, or any similar nesting — stop. Use background color layers and border lines to create visual hierarchy instead.
+
+### Decorative Shadows
+`box-shadow` on tables, cards, panels, or any data surface is wrong. Shadows signal floating/overlaid elements (modals, dropdowns, command palette). The data layer is flat. If you need to distinguish a section, use a background color step (bg-primary → bg-secondary → bg-tertiary) or a 1px border.
+
+### Rounded Data Surfaces
+`border-radius` on table containers, grid cells, list items, content sections — all wrong. Data surfaces are sharp-edged. Round corners only appear on:
+- Buttons, inputs, selects (interactive affordance)
+- Badges, pills, chips (small status indicators)
+- Floating overlays (modals, dropdowns, popovers)
+
+### max-width Content Containers
+`max-width: 800px; margin: 0 auto;` on page content fights the grid. Content fills its column. The sidebar + content grid handles width. Don't add inner constraints.
+
+### Tables for Non-Tabular Data
+Blog posts, comments, activity feeds, chat messages — these are content, not spreadsheet data. Render them as styled row lists with typography hierarchy. Reserve `<table>` for genuinely columnar data (analytics, metrics, settings).
+
+### Color Absence
+"Color restraint" is often misread as "no color." The palette is restrained but the status system is colorful:
+- Green (success) for approved, healthy, active states
+- Amber (warning) for pending, degraded, draft states  
+- Red (error) for errors, danger actions
+- Accent color for active nav items, links, primary actions, focus rings
+
+Use badge dots, subtle background tints (`rgba(color, 0.05-0.1)`), and accent borders (3px left border for active items) to bring pages to life without decoration.
+
+### Bland Empty States
+"No items found." is not an empty state. Empty states are an opportunity for warmth — a centered icon, a friendly message, maybe a subtle call to action. This is where "be gentle" really matters.
+
 ## Sources
 
 - [How we redesigned the Linear UI (part II)](https://linear.app/now/how-we-redesigned-the-linear-ui)

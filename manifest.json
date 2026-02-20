@@ -71,6 +71,10 @@
     {
       "name": "sveltekit-latest",
       "description": "Quick-reference for SvelteKit + Svelte 5 development (Feb 2026)"
+    },
+    {
+      "name": "agent-teams",
+      "description": "Coordinate Claude Code agent teams with roles, file ownership, friction protocol, and quality gates"
     }
   ]
 }

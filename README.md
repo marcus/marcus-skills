@@ -22,6 +22,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 
 | Skill                       | Description                                                  |
 | --------------------------- | ------------------------------------------------------------ |
+| agent-teams                 | Agent team coordination with roles, file ownership, and quality gates |
 | betamax-docs                | Reproducible TUI screenshots and GIF demos with Betamax       |
 | bun-getting-started         | Bun 1.3 setup with HRM and Bun.SQL                           |
 | claude-code-metadata        | Everything you need to know about how Claude stores metadata |
