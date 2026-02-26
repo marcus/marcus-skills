@@ -75,6 +75,10 @@
     {
       "name": "agent-teams",
       "description": "Coordinate Claude Code agent teams with roles, file ownership, friction protocol, and quality gates"
+    },
+    {
+      "name": "roc-icons",
+      "description": "Use Roc icon library (@marcus/roc) in projects—React, Svelte, and HTML sprite usage across 4 styles with 416 icons"
     }
   ]
 }

@@ -37,6 +37,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | professional-readme         | Developer-focused README.md creation                         |
 | project-metrics-dashboard   | Professional metrics dashboard design                        |
 | rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
+| roc-icons                   | Roc icon library (@marcus/roc) for React, Svelte, and sprites |
 | site-design-director        | Website/UI design direction + production code                |
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
