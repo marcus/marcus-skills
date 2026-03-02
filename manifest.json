@@ -5,6 +5,10 @@
       "description": "Create reproducible TUI screenshots and GIF demos for documentation with Betamax"
     },
     {
+      "name": "browser-proof",
+      "description": "Capture browser screenshots of Perch UI for visual verification using Playwright"
+    },
+    {
       "name": "bun-getting-started",
       "description": "Guidance for Bun 1.3: installation, project setup with HRM, database config with Bun.SQL"
     },
