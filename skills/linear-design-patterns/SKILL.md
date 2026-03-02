@@ -79,6 +79,28 @@ Content should span the full width of its area. No `max-width: 800px; margin: 0 
 ### Mistake #5: Using traditional table markup for non-tabular data
 Comments, blog posts, activity feeds — these are conversational/content, not spreadsheet data. Render them as styled row lists, not `<table>` elements. Use tables only when the data is genuinely columnar.
 
+### Mistake #7: Tinted header regions styled as cards
+Header regions with background tints must be flush (edge-to-edge, no `border-radius`, no outer margin). They are NOT cards — they're just colored zones within a panel. Use a `border-bottom: 1px solid` in the tint color for separation. Never add `border-top`, `border-radius`, or outer `margin` to a tinted header region.
+
+```css
+/* ✅ Correct */
+.panel-header {
+  background: rgba(163, 113, 247, 0.05);
+  border-bottom: 1px solid rgba(163, 113, 247, 0.2);
+  border-radius: 0;
+  margin: 0;
+  padding: var(--space-3); /* inner padding is fine */
+}
+
+/* ❌ Wrong — looks like a floating card */
+.panel-header {
+  background: rgba(163, 113, 247, 0.05);
+  border-top: 2px solid #a371f7;
+  border-radius: var(--radius-md);
+  margin: 0 0 var(--space-3) 0;
+}
+```
+
 ### Mistake #6: Bland pages with no color differentiation
 Color restraint doesn't mean no color. Use the status color system actively:
 - **Badges with colored dots** for status (green=success, amber=warning, red=error)
@@ -143,6 +165,52 @@ Color restraint doesn't mean no color. Use the status color system actively:
 .btn-ghost { color: var(--color-text-secondary); }
 .btn-ghost:hover { background: var(--color-bg-tertiary); color: var(--color-text-primary); }
 ```
+
+### Filter Controls
+Filter toggles are low-contrast, border-only controls designed for high-density filtering layouts. They differ from primary buttons by using no background fill and promoting the border as the primary visual indicator.
+
+**Container:**
+```css
+.filter-bar {
+  display: flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+```
+
+**Individual toggle:**
+```css
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  background: none;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm); /* Square, NOT rounded */
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+.filter-toggle:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.filter-toggle.active {
+  border-color: var(--color-accent-default);
+  color: var(--color-accent-default);
+}
+```
+
+**Key points:**
+- Default state: subtle border, no background, secondary text color
+- Hover state: stronger border, promoted text color, still no background
+- Active state: accent color on border and text only — no background fill
+- Use square borders (`var(--radius-sm)`) NOT rounded (`var(--radius-full)`)
+- Prefer icons (from @marcus/roc) over emoji for filter labels
+- Reference implementation: Perch's `frontend/src/lib/styles/filters.css`
 
 ### Slide-in Detail Panel
 ```css
