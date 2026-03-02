@@ -44,6 +44,8 @@ Between steps, read td state (`td show <id>`) — do not carry state in memory.
 - All feedback via `td log`, `td approve`, `td reject` — externalize state.
 - If blocked, skip to next unblocked task and `td log --blocker` on the blocked one.
 - If a sub-agent's context compacts, re-spawn it with the td task ID and these orchestration instructions.
+- All commits should reference a td task id
+- Important: if more than one task is needed to complete the work, create an epic in td and link sub-tasks to the epic.
 
 ## On Compaction / Handoff
 
