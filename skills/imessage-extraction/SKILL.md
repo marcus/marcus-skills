@@ -1,6 +1,6 @@
 ---
 name: imessage-extraction
-description: Extract, decode, and query iMessage conversations from macOS chat.db. Use when user needs to access iMessage history, export conversations, search messages, decode attributedBody fields, convert Apple timestamps, or create clean SQLite databases from iMessage data. Handles NSKeyedArchiver decoding, artifact cleanup, and schema navigation.
+description: Extract, decode, and query iMessage conversations from macOS chat.db. Use when user needs to access iMessage history, export conversations, search messages, decode attributedBody fields, convert Apple timestamps, transcribe voice messages, or create clean SQLite databases from iMessage data. Handles NSKeyedArchiver decoding, artifact cleanup, schema navigation, contact name resolution via AddressBook databases, and voice message transcription via yap.
 ---
 
 # iMessage Extraction
@@ -20,6 +20,81 @@ Extract and process iMessage conversations from the macOS Messages database.
 2. Click the `+` button and add `/Applications/Utilities/Terminal.app` (or your terminal app)
 3. Restart Terminal for changes to take effect
 4. Test by running: `sqlite3 ~/Library/Messages/chat.db "SELECT COUNT(*) FROM chat;"`
+
+## Contact Resolution
+
+macOS stores contacts in AddressBook SQLite databases. The main database at `~/Library/Application Support/AddressBook/AddressBook-v22.abcddb` is often sparse — the real data lives in per-source databases under the `Sources/` directory (iCloud, Google, Exchange, etc.).
+
+**Database locations:**
+```
+~/Library/Application Support/AddressBook/AddressBook-v22.abcddb          # aggregate (often sparse)
+~/Library/Application Support/AddressBook/Sources/*/AddressBook-v22.abcddb  # per-source (actual data)
+```
+
+**When the user references a contact by name** (e.g., "messages to Bonnie"), resolve the name to a phone number or email first, then use that identifier to find the chat in `chat.db`.
+
+### Step 1: Find a contact's phone number or email
+
+```sql
+-- Run this against EACH database in Sources/*/AddressBook-v22.abcddb
+SELECT r.ZFIRSTNAME, r.ZLASTNAME, p.ZFULLNUMBER, p.ZLABEL
+FROM ZABCDRECORD r
+JOIN ZABCDPHONENUMBER p ON p.ZOWNER = r.Z_PK
+WHERE LOWER(r.ZFIRSTNAME) LIKE '%bonnie%';
+
+-- For email addresses:
+SELECT r.ZFIRSTNAME, r.ZLASTNAME, e.ZADDRESS
+FROM ZABCDRECORD r
+JOIN ZABCDEMAILADDRESS e ON e.ZOWNER = r.Z_PK
+WHERE LOWER(r.ZFIRSTNAME) LIKE '%bonnie%';
+```
+
+**Shell one-liner to search all sources:**
+```bash
+for db in ~/Library/Application\ Support/AddressBook/Sources/*/AddressBook-v22.abcddb; do
+    sqlite3 "$db" "
+    SELECT r.ZFIRSTNAME, r.ZLASTNAME, p.ZFULLNUMBER
+    FROM ZABCDRECORD r
+    JOIN ZABCDPHONENUMBER p ON p.ZOWNER = r.Z_PK
+    WHERE LOWER(r.ZFIRSTNAME) LIKE '%SEARCH_NAME%';
+    " 2>/dev/null
+done
+```
+
+### Step 2: Match the phone/email to a chat
+
+Strip formatting and match the last 10 digits of the phone number against `chat.chat_identifier`:
+
+```sql
+-- Phone number (use last 10 digits to handle +1 prefix variations)
+SELECT ROWID, chat_identifier, display_name
+FROM chat
+WHERE chat_identifier LIKE '%2087617226%';
+
+-- Email
+SELECT ROWID, chat_identifier, display_name
+FROM chat
+WHERE chat_identifier LIKE '%someone@email.com%';
+```
+
+### Step 3: Query that chat's messages
+
+```sql
+SELECT m.ROWID, datetime(m.date/1000000000 + 978307200, 'unixepoch', 'localtime') as date,
+       m.is_from_me, m.text
+FROM message m
+JOIN chat_message_join cmj ON m.ROWID = cmj.message_id
+WHERE cmj.chat_id = ?
+ORDER BY m.date DESC;
+```
+
+### Key AddressBook tables
+
+| Table | Purpose |
+|---|---|
+| `ZABCDRECORD` | Contact records (`ZFIRSTNAME`, `ZLASTNAME`, `ZORGANIZATION`) |
+| `ZABCDPHONENUMBER` | Phone numbers (`ZFULLNUMBER`, `ZLABEL`, `ZOWNER` → record `Z_PK`) |
+| `ZABCDEMAILADDRESS` | Emails (`ZADDRESS`, `ZOWNER` → record `Z_PK`) |
 
 ## Quick Start
 
@@ -211,6 +286,77 @@ meaningful_messages = [
 ]
 ```
 
+## Voice Message Transcription
+
+Voice messages are stored as `.caf` files in `~/Library/Messages/Attachments/`. macOS does **not** store transcriptions in the database — you must transcribe the audio at query time.
+
+### Finding voice messages
+
+```sql
+SELECT m.ROWID, datetime(m.date/1000000000 + 978307200, 'unixepoch', 'localtime') as date,
+       m.is_from_me, a.filename, a.total_bytes, h.id as handle
+FROM message m
+JOIN message_attachment_join maj ON m.ROWID = maj.message_id
+JOIN attachment a ON maj.attachment_id = a.ROWID
+LEFT JOIN handle h ON m.handle_id = h.ROWID
+WHERE m.is_audio_message = 1
+ORDER BY m.date DESC;
+```
+
+To filter by chat (e.g., a specific contact):
+```sql
+-- Add these joins:
+JOIN chat_message_join cmj ON m.ROWID = cmj.message_id
+JOIN chat c ON cmj.chat_id = c.ROWID
+WHERE m.is_audio_message = 1 AND c.chat_identifier LIKE '%PHONE_NUMBER%'
+```
+
+### Transcribing with yap
+
+Use `yap` (installed via Homebrew) which wraps Apple's `SFSpeechRecognizer` for on-device transcription:
+
+```bash
+# Basic transcription to stdout
+yap transcribe ~/Library/Messages/Attachments/.../Audio\ Message.caf --txt
+
+# With JSON output (includes timestamps)
+yap transcribe "path/to/Audio Message.caf" --json
+
+# Save to file
+yap transcribe "path/to/Audio Message.caf" --txt -o transcript.txt
+```
+
+**Note**: The `filename` column from the attachment table uses `~` for the home directory. Expand it before passing to `yap`:
+```bash
+# In shell: replace ~ with $HOME
+filepath="${filename/#\~/$HOME}"
+yap transcribe "$filepath" --txt
+```
+
+### Searching voice message content
+
+Since transcriptions aren't stored, searching voice messages requires a two-step process:
+
+1. **Query for voice messages** in the target chat (by date range, contact, etc.)
+2. **Transcribe each** with `yap` and search the output
+
+For bulk searching, transcribe to files and grep:
+```bash
+# Transcribe all voice messages from a chat, named by message ID
+sqlite3 ~/Library/Messages/chat.db "
+SELECT m.ROWID, REPLACE(a.filename, '~', '$HOME')
+FROM message m
+JOIN message_attachment_join maj ON m.ROWID = maj.message_id
+JOIN attachment a ON maj.attachment_id = a.ROWID
+WHERE m.is_audio_message = 1;
+" | while IFS='|' read -r id filepath; do
+    yap transcribe "$filepath" --txt -o "/tmp/voice_msg_${id}.txt" 2>/dev/null
+done
+
+# Then search
+grep -rl "keyword" /tmp/voice_msg_*.txt
+```
+
 ## Creating a Clean Database
 
 For easier querying, create a new database with decoded messages. Run `scripts/create_clean_db.py` or use this schema:
@@ -274,12 +420,14 @@ JOIN attachment a ON maj.attachment_id = a.ROWID;
 
 ## Workflow Summary
 
-1. **Find chat ID**: Query `chat` table to find conversation
-2. **Extract messages**: Join `message` + `chat_message_join` + `handle`
-3. **Decode text**: Check `text` first, then decode `attributedBody`
-4. **Clean artifacts**: Apply cleaning patterns
-5. **Convert timestamps**: Apply Apple epoch conversion
-6. **Export**: Save to CSV, new SQLite, or other format
+1. **Resolve contact** (if searching by name): Search AddressBook `Sources/*/AddressBook-v22.abcddb` for phone/email, then match to `chat.chat_identifier`
+2. **Find chat ID**: Query `chat` table to find conversation
+3. **Extract messages**: Join `message` + `chat_message_join` + `handle`
+4. **Decode text**: Check `text` first, then decode `attributedBody`
+5. **Transcribe voice messages** (if relevant): Use `yap transcribe` on `.caf` attachments where `is_audio_message = 1`
+6. **Clean artifacts**: Apply cleaning patterns
+7. **Convert timestamps**: Apply Apple epoch conversion
+8. **Export**: Save to CSV, new SQLite, or other format
 
 ## Reference Files
 
