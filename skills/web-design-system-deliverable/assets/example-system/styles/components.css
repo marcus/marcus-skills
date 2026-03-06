@@ -5,7 +5,7 @@
   gap: 0.55rem;
   min-height: 2.9rem;
   padding: 0.8rem 1.15rem;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-2);
   font-weight: 600;
   letter-spacing: 0.01em;
   transition:
@@ -23,6 +23,7 @@
 .button--primary {
   background: var(--button-primary-bg);
   color: var(--button-primary-fg);
+  border-radius: var(--radius-pill);
   box-shadow: 0 1px 2px rgba(159, 90, 68, 0.12), 0 8px 24px rgba(159, 90, 68, 0.16);
 }
 
@@ -70,7 +71,7 @@
 .spec-card {
   background: var(--color-bg-surface);
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-2);
   box-shadow: var(--shadow-soft);
 }
 
@@ -181,7 +182,7 @@
 
 .token-card__swatch {
   height: 6rem;
-  border-radius: calc(var(--radius-3) - 0.35rem);
+  border-radius: calc(var(--radius-2) - 0.25rem);
   border: var(--border-thin) solid rgba(255, 255, 255, 0.36);
   margin-bottom: var(--space-4);
 }
@@ -241,7 +242,7 @@
 .textarea {
   width: 100%;
   padding: 0.8rem 1rem;
-  border-radius: var(--radius-2);
+  border-radius: var(--radius-1);
   border: var(--border-thin) solid var(--field-border);
   background: var(--field-bg);
   color: var(--color-fg-default);
@@ -276,7 +277,7 @@
   display: grid;
   gap: var(--space-2);
   padding: var(--space-5);
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-2);
   border: var(--border-thin) solid var(--color-border-subtle);
 }
 
@@ -350,7 +351,7 @@
   padding: var(--space-6);
   border-left: 4px solid var(--color-accent);
   background: color-mix(in srgb, var(--color-bg-surface) 86%, var(--color-accent-soft));
-  border-radius: 0 var(--radius-3) var(--radius-3) 0;
+  border-radius: 0 var(--radius-2) var(--radius-2) 0;
 }
 
 .quote p {
@@ -568,12 +569,14 @@
   min-height: 2.2rem;
   padding: 0.5rem 0.85rem;
   font-size: var(--text-0);
+  border-radius: var(--radius-1);
 }
 
 .button--lg {
   min-height: 3.4rem;
   padding: 1rem 1.5rem;
   font-size: var(--text-2);
+  border-radius: var(--radius-pill);
 }
 
 /* ──────────────────────────────────────────────
@@ -705,7 +708,7 @@
   padding: var(--space-7) var(--space-5);
   background: var(--color-bg-surface);
   border: var(--border-thin) dashed var(--color-border-subtle);
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-2);
   gap: var(--space-3);
 }
 
@@ -743,7 +746,7 @@
   padding: var(--space-5);
   background: var(--color-bg-surface);
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-2);
   box-shadow: var(--shadow-soft);
 }
 
@@ -919,5 +922,147 @@
   .skeleton-card .skeleton-line {
     animation: none;
     background: var(--color-bg-soft);
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Numbered list (typographic index layout)
+   ────────────────────────────────────────────── */
+
+.numbered-list {
+  display: grid;
+  gap: var(--space-4);
+  counter-reset: deliverable;
+}
+
+.numbered-list__item {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding-bottom: var(--space-4);
+  border-bottom: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.numbered-list__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.numbered-list__item::before {
+  counter-increment: deliverable;
+  content: counter(deliverable, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: var(--text-4);
+  line-height: 1;
+  color: var(--color-fg-subtle);
+}
+
+.numbered-list__item h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-3);
+  line-height: var(--leading-snug);
+  color: var(--color-fg-strong);
+}
+
+.numbered-list__item .copy {
+  margin: 0;
+}
+
+/* ──────────────────────────────────────────────
+   Principle list (editorial stacked rows)
+   ────────────────────────────────────────────── */
+
+.principle-list {
+  display: grid;
+  gap: 0;
+}
+
+.principle-list__item {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) 0;
+  border-bottom: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.principle-list__item:first-child {
+  padding-top: 0;
+}
+
+.principle-list__item:last-child {
+  border-bottom: none;
+}
+
+.principle-list__number {
+  font-family: var(--font-display);
+  font-size: var(--text-5);
+  line-height: 1;
+  color: var(--color-fg-subtle);
+}
+
+.principle-list__text h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-3);
+  color: var(--color-fg-strong);
+}
+
+.principle-list__text p {
+  margin: 0;
+  color: var(--color-fg-muted);
+}
+
+/* ──────────────────────────────────────────────
+   Stat grid connector (shared container feel)
+   ────────────────────────────────────────────── */
+
+.stat-grid {
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-3);
+  overflow: hidden;
+}
+
+.stat-grid .stat-card {
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-right: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.stat-grid .stat-card:last-child {
+  border-right: none;
+}
+
+/* ──────────────────────────────────────────────
+   Responsive rules for new layouts
+   ────────────────────────────────────────────── */
+
+@media (max-width: 760px) {
+  .numbered-list__item {
+    grid-template-columns: 1fr;
+  }
+
+  .numbered-list__item::before {
+    font-size: var(--text-3);
+  }
+
+  .principle-list__item {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .principle-list__number {
+    font-size: var(--text-4);
+  }
+
+  .stat-grid .stat-card {
+    border-right: none;
+    border-bottom: var(--border-thin) solid var(--color-border-subtle);
+  }
+
+  .stat-grid .stat-card:last-child {
+    border-bottom: none;
   }
 }

@@ -249,7 +249,7 @@ main {
 .surface {
   background: var(--color-bg-surface);
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-3);
+  border-radius: var(--radius-2);
   box-shadow: var(--shadow-soft);
 }
 

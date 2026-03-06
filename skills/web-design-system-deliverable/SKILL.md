@@ -15,8 +15,9 @@ Build a design system package that can survive handoff from strategy to design t
 4. Build the foundation: tokens, typography, motion, responsive strategy, visual assets direction.
 5. Specify components with full state coverage, accessibility, and content rules.
 6. Prove the system in a real application context — not just documenting itself.
-7. Package the deliverable: overview, components, guidelines, application proof, token source, implementation-ready assets.
-8. Prepare for handoff: token integration pipeline, Figma setup, governance framework.
+7. Audit for differentiation: shape hierarchy, button strategy, layout structure, density tiers, brand traceability.
+8. Package the deliverable: overview, components, guidelines, application proof, token source, implementation-ready assets.
+9. Prepare for handoff: token integration pipeline, Figma setup, governance framework.
 
 ## Working Standard
 
@@ -121,7 +122,11 @@ Build application proof pages that show the system working in a real product or 
 
 This step validates that the system can actually build something real.
 
-### 7. Package the Deliverable
+### 7. Audit for Differentiation
+
+Before packaging, audit the system against `references/design-differentiation.md`. Run the shape audit (verify multiple distinct radii mapped to element types), the button audit (confirm action-level shape hierarchy), the card audit (flag layouts where card grids exceed 60% of content area), and the density check (confirm the system supports more than one whitespace tier). Verify that every major visual choice — radius, button shape, layout pattern, spacing — traces back to the brand thesis, not to tool defaults.
+
+### 8. Package the Deliverable
 
 Deliver a system that is legible to designers, engineers, and stakeholders.
 
@@ -140,7 +145,7 @@ Full package:
 
 Read `references/deliverable-standard.md` before finalizing output.
 
-### 8. Prepare for Handoff
+### 9. Prepare for Handoff
 
 Bridge the gap between the design system and production implementation.
 
@@ -153,7 +158,7 @@ References:
 - `references/token-integration.md` — Style Dictionary, Figma variables, build pipeline, multi-platform.
 - `references/governance.md` — extension rules, versioning, deprecation, contribution.
 
-### 9. Reuse the Bundled Example
+### 10. Reuse the Bundled Example
 
 Use `assets/example-system/` as the reference implementation when the user wants a concrete starting point.
 

@@ -190,6 +190,14 @@ Do not ship:
 - [ ] Proof page demonstrates real content, not lorem ipsum
 - [ ] Layout, density, and interaction states are exercised
 
+### Differentiation
+
+- [ ] Shape language has intentional hierarchy (not uniform radius across all element types)
+- [ ] Button shapes differentiate by action level (primary vs. secondary vs. utility)
+- [ ] Page layouts include structural elements beyond card grids (panels, split views, inline sections)
+- [ ] Whitespace varies by context (marketing density vs. product density)
+- [ ] Visual choices trace back to brand strategy, not tool defaults
+
 ### Deliverable Package
 
 - [ ] The demo page showcases both brand expression and UI utility
