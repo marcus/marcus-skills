@@ -40,18 +40,18 @@
   --text-00: 0.75rem;
   --text-0: 0.875rem;
   --text-1: 1rem;
-  --text-2: 1.125rem;
-  --text-3: 1.375rem;
+  --text-2: 1.175rem;
+  --text-3: 1.425rem;
   --text-4: 1.75rem;
   --text-5: 2.5rem;
   --text-6: clamp(3.25rem, 8vw, 5.5rem);
 
-  --leading-tight: 1.08;
-  --leading-snug: 1.25;
+  --leading-tight: 1.12;
+  --leading-snug: 1.28;
   --leading-body: 1.62;
-  --tracking-tight: -0.03em;
-  --tracking-soft: 0.02em;
-  --tracking-label: 0.12em;
+  --tracking-tight: -0.025em;
+  --tracking-soft: 0.015em;
+  --tracking-label: 0.08em;
 
   /* Space */
   --space-1: 0.25rem;
@@ -59,10 +59,11 @@
   --space-3: 0.75rem;
   --space-4: 1rem;
   --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-8: 4rem;
-  --space-9: 6rem;
+  --space-6: 2.25rem;
+  --space-7: 3.5rem;
+  --space-8: 5rem;
+  --space-9: 7rem;
+  --space-10: 9rem;
 
   /* Radius */
   --radius-1: 0.5rem;
@@ -73,8 +74,8 @@
   /* Border and shadow */
   --border-thin: 1px;
   --border-strong: 1.5px;
-  --shadow-soft: 0 12px 40px rgba(20, 25, 33, 0.08);
-  --shadow-elevated: 0 22px 60px rgba(20, 25, 33, 0.14);
+  --shadow-soft: 0 2px 4px rgba(20, 25, 33, 0.03), 0 12px 40px rgba(20, 25, 33, 0.06);
+  --shadow-elevated: 0 4px 8px rgba(20, 25, 33, 0.04), 0 22px 60px rgba(20, 25, 33, 0.10);
 
   /* Motion */
   --motion-duration-micro: 60ms;
@@ -140,18 +141,18 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-bg-canvas: #111418;
-  --color-bg-surface: rgba(22, 26, 31, 0.84);
-  --color-bg-elevated: #1a2027;
-  --color-bg-soft: #181c22;
+  --color-bg-canvas: #0f1215;
+  --color-bg-surface: rgba(24, 29, 35, 0.88);
+  --color-bg-elevated: #1c2229;
+  --color-bg-soft: #161a20;
   --color-bg-contrast: #f6efe7;
   --color-fg-strong: #f6efe7;
   --color-fg-default: #edf1f5;
-  --color-fg-muted: #c1cad2;
-  --color-fg-subtle: #8c99a6;
-  --color-fg-contrast: #111418;
-  --color-border-subtle: rgba(235, 241, 245, 0.1);
-  --color-border-strong: rgba(235, 241, 245, 0.22);
+  --color-fg-muted: #c8d0d8;
+  --color-fg-subtle: #929fac;
+  --color-fg-contrast: #0f1215;
+  --color-border-subtle: rgba(235, 241, 245, 0.13);
+  --color-border-strong: rgba(235, 241, 245, 0.24);
   --color-border-contrast: rgba(17, 20, 24, 0.24);
   --color-accent: #d89984;
   --color-accent-hover: #e7ad99;
