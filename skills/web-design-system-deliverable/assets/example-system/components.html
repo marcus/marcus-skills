@@ -23,6 +23,7 @@
           <a href="index.html" data-page-link="overview">Overview</a>
           <a href="components.html" data-page-link="components">Components</a>
           <a href="guidelines.html" data-page-link="guidelines">Guidelines</a>
+          <a href="application.html" data-page-link="application">Application</a>
         </nav>
         <div class="topbar__actions">
           <button class="button button--ghost" type="button" data-theme-toggle>Dark mode</button>
@@ -30,7 +31,7 @@
       </div>
     </header>
 
-    <main class="shell">
+    <main class="shell page-enter">
       <section class="hero">
         <div class="hero__headline">
           <span class="kicker">Reference implementation</span>
@@ -96,6 +97,35 @@
             </div>
             <p class="copy">Navigation uses soft surfaces and role-based color, not loud chrome.</p>
           </article>
+          <article class="component-card stack">
+            <span class="label">States</span>
+            <h3>Disabled and loading</h3>
+            <div class="cluster">
+              <button class="button button--primary" type="button" disabled aria-disabled="true">Primary disabled</button>
+              <button class="button button--secondary" type="button" disabled aria-disabled="true">Secondary disabled</button>
+              <button class="button button--primary button--loading" type="button" aria-busy="true">Processing...</button>
+            </div>
+            <p class="copy">Disabled buttons reduce opacity and remove pointer events. Loading buttons show a spinner and block interaction.</p>
+          </article>
+          <article class="component-card stack">
+            <span class="label">Scale</span>
+            <h3>Size variants</h3>
+            <div class="cluster">
+              <button class="button button--primary button--sm" type="button">Small action</button>
+              <button class="button button--primary" type="button">Default action</button>
+              <button class="button button--primary button--lg" type="button">Large action</button>
+            </div>
+            <p class="copy">Use small buttons in dense UI like table rows. Large buttons anchor hero sections and confirmation dialogs.</p>
+          </article>
+          <article class="component-card stack">
+            <span class="label">Destructive</span>
+            <h3>Danger variant</h3>
+            <div class="cluster">
+              <button class="button button--danger" type="button">Delete project</button>
+              <button class="button button--danger button--sm" type="button">Remove</button>
+            </div>
+            <p class="copy">Reserve the danger variant for irreversible actions. Always pair with a confirmation step.</p>
+          </article>
         </div>
       </section>
 
@@ -158,6 +188,44 @@
             </label>
           </div>
         </article>
+        <div class="grid grid--2">
+          <article class="panel stack">
+            <span class="label">Validation</span>
+            <h3>Error state</h3>
+            <label class="fieldset">
+              <span class="label">Email address</span>
+              <input class="field field--error" type="email" value="avery@" aria-invalid="true" aria-describedby="email-error">
+              <span class="field-error-msg" id="email-error" role="alert">Enter a valid email address including the domain.</span>
+            </label>
+          </article>
+          <article class="panel stack">
+            <span class="label">Validation</span>
+            <h3>Success state</h3>
+            <label class="fieldset">
+              <span class="label">Project slug</span>
+              <input class="field field--success" type="text" value="northstar-rebrand" aria-describedby="slug-success" readonly>
+              <span class="field-success-msg" id="slug-success">Slug is available and valid.</span>
+            </label>
+          </article>
+          <article class="panel stack">
+            <span class="label">Interaction</span>
+            <h3>Disabled field</h3>
+            <label class="fieldset">
+              <span class="label">Organization</span>
+              <input class="field" type="text" value="Asteron Corp" disabled aria-disabled="true">
+              <span class="helper">This field is managed by your organization admin.</span>
+            </label>
+          </article>
+          <article class="panel stack">
+            <span class="label">Constraint</span>
+            <h3>Character count</h3>
+            <label class="fieldset">
+              <span class="label">Asset description</span>
+              <textarea class="textarea" rows="3" maxlength="120" placeholder="Brief description for the asset library." aria-describedby="desc-count">Brand identity guidelines for the Northstar system rollout.</textarea>
+              <span class="char-count" id="desc-count">58 / 120</span>
+            </label>
+          </article>
+        </div>
       </section>
 
       <section class="section" id="feedback">
@@ -180,6 +248,24 @@
             <span class="label">Critical</span>
             <strong>Duplicate accent roles detected</strong>
             <span class="copy">Collapse overlapping tokens before expanding component coverage.</span>
+          </article>
+          <article class="alert alert--info">
+            <span class="label">Info</span>
+            <strong>Token sync scheduled for tomorrow</strong>
+            <span class="copy">The design token pipeline will refresh at 09:00 UTC. No action required.</span>
+          </article>
+        </div>
+        <div class="grid grid--2">
+          <article class="empty-state" aria-label="No assets found">
+            <div class="empty-state__icon" aria-hidden="true">/</div>
+            <h3>No assets uploaded yet</h3>
+            <p>Start building your brand library by uploading logos, icons, and type specimens. Assets are versioned automatically.</p>
+            <button class="button button--primary" type="button">Upload first asset</button>
+          </article>
+          <article class="skeleton-card" aria-label="Content loading" aria-busy="true">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
           </article>
         </div>
       </section>

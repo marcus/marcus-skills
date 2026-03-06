@@ -77,11 +77,18 @@
   --shadow-elevated: 0 22px 60px rgba(20, 25, 33, 0.14);
 
   /* Motion */
+  --motion-duration-micro: 60ms;
   --motion-duration-fast: 120ms;
   --motion-duration-base: 180ms;
-  --motion-duration-slow: 280ms;
+  --motion-duration-moderate: 280ms;
+  --motion-duration-slow: 400ms;
+  --motion-duration-dramatic: 600ms;
   --motion-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
   --motion-ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --motion-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-stagger-delay: 60ms;
 
   /* Layout */
   --content-narrow: 46rem;
@@ -112,6 +119,8 @@
   --color-warning-soft: var(--amber-100);
   --color-danger: var(--ruby-700);
   --color-danger-soft: var(--ruby-100);
+  --color-info: var(--ink-700);
+  --color-info-soft: var(--ink-100);
   --color-focus: rgba(184, 106, 79, 0.4);
   --color-focus-line: rgba(184, 106, 79, 0.72);
 
@@ -154,6 +163,8 @@
   --color-warning-soft: rgba(187, 131, 32, 0.22);
   --color-danger: #f1a7b1;
   --color-danger-soft: rgba(184, 72, 87, 0.18);
+  --color-info: #a8b4c0;
+  --color-info-soft: rgba(168, 180, 192, 0.16);
   --color-focus: rgba(231, 173, 153, 0.34);
   --color-focus-line: rgba(231, 173, 153, 0.72);
   --field-bg: rgba(255, 255, 255, 0.04);
@@ -162,8 +173,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   :root {
+    --motion-duration-micro: 0ms;
     --motion-duration-fast: 0ms;
     --motion-duration-base: 0ms;
+    --motion-duration-moderate: 0ms;
     --motion-duration-slow: 0ms;
+    --motion-duration-dramatic: 0ms;
   }
 }

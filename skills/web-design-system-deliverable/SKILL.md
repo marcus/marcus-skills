@@ -1,109 +1,170 @@
 ---
 name: web-design-system-deliverable
-description: Create or refine client-ready web design systems for rebrands, product redesigns, or new web properties. Use when the user asks for a professional design system deliverable with design tokens, semantic color roles, typography, spacing, component specs, usage guidance, accessibility rules, a demo page, or an example component library for web implementation.
+description: Create agency-grade web design systems from brand strategy through production handoff. Use when the user asks for a professional design system deliverable covering brand positioning, voice and tone, design tokens, typography, motion, visual assets, responsive strategy, component specs, accessibility, application proof pages, governance, or token integration for web implementation.
 ---
 
 # Web Design System Deliverable
 
-Build a design system package that can survive handoff from strategy to design to engineering.
+Build a design system package that can survive handoff from strategy to design to engineering — starting with brand positioning and ending with production-ready tokens, governance, and multi-platform integration.
 
 ## Quick Start
 
-1. Capture the brand posture: audience, market position, rebrand goal, brand adjectives, constraints, and whether the system is marketing-heavy, product-heavy, or shared.
-2. Commit to one visual thesis. Choose one spine and one signature motif. Do not mix unrelated aesthetics.
-3. Define the foundation first: tokens, theme roles, typography, spacing, radii, shadows, motion, grid, and interaction states.
-4. Document components only after the semantic token layer is stable.
-5. Package the output as a client deliverable: overview/demo page, components page, usage guidance, token source, and implementation-ready CSS variables or JSON.
+1. Run brand strategy first: audit, positioning, personality, visual directions, design principles.
+2. Define voice and tone: attributes, messaging hierarchy, CTA conventions, content rules.
+3. Commit to one visual direction. Choose one spine and one signature motif.
+4. Build the foundation: tokens, typography, motion, responsive strategy, visual assets direction.
+5. Specify components with full state coverage, accessibility, and content rules.
+6. Prove the system in a real application context — not just documenting itself.
+7. Package the deliverable: overview, components, guidelines, application proof, token source, implementation-ready assets.
+8. Prepare for handoff: token integration pipeline, Figma setup, governance framework.
 
 ## Working Standard
 
 Treat the output like a rebrand deliverable from a top-tier agency.
 
+- Start with strategy. Brand positioning, personality, and design principles must exist before any visual work begins.
+- Define voice and tone as a system-level concern. Every component has content rules.
 - Make deliberate aesthetic choices. Typography, proportion, and spacing must carry the brand before color does.
 - Prefer semantic roles over hard-coded values inside components.
 - Ship both rationale and artifacts. The system should explain how to use the pieces, not only show them.
-- Design states completely: default, hover, focus-visible, active, disabled, loading, success, warning, and danger where relevant.
-- Keep accessibility non-negotiable: visible focus, keyboard reachability, color contrast, reduced-motion behavior, and clear form errors.
+- Design states completely: default, hover, focus-visible, active, disabled, loading, success, warning, danger, error, empty, and skeleton where relevant.
+- Specify motion as a design material: choreography, interaction signatures, loading patterns, and reduced-motion alternatives.
+- Direct visual assets: photography, illustration, iconography, and graphic devices with the same rigor as color and type.
+- Keep accessibility non-negotiable: contrast documentation, ARIA patterns, keyboard navigation, screen reader expectations, color independence, and reduced-motion audit.
+- Prove the system works in a real application context — a product dashboard, a marketing landing page, or both.
 - Avoid generic UI filler. Every surface should have a reason to exist.
 
 ## Workflow
 
-### 1. Frame the System
+### 1. Discover & Position
 
-Start with a short design thesis containing:
+Run strategy before touching tokens or components. Produce the positioning, personality, and design principles that everything else builds on.
 
-- the audience and what they need to trust
-- the business posture the brand should project
-- the visual spine: typography-first minimal, editorial craft, product precision, or bold-but-controlled
-- the signature motif that appears across pages and components
+- Brand audit: current state, competitor landscape, whitespace opportunities, tensions to resolve.
+- Positioning model: current position, target position, positioning statement.
+- Personality spectrum: formal/casual, premium/accessible, bold/restrained, warm/cool, playful/serious, classic/modern.
+- Design principles: 3-5 principles specific enough to settle a design argument.
 
-If the user gives little direction, assume a restrained, premium, typography-led system and say so.
+Read `references/brand-strategy.md` for frameworks, templates, and phase gate criteria.
 
-### 2. Build the Foundation
+### 2. Explore Directions
 
-Always define these token groups:
+Develop 2-3 distinct visual directions before committing. Each direction includes a thesis, type direction, color direction, spatial character, and signature element.
 
-- color primitives and semantic roles
-- typography families, scale, line-heights, tracking, and numeric styles
-- spacing scale and layout widths
-- corner radius, borders, elevation, and blur if used
-- motion durations, easing curves, and reduced-motion rules
-- focus ring, interactive states, and status colors
+- Present a comparison table with strengths and risks per direction.
+- Recommend one direction with rationale tied to positioning and audience.
 
-Read `references/token-architecture.md` when naming or structuring tokens.
+Read `references/brand-strategy.md` (section 4-5) for direction templates and stakeholder alignment artifacts.
 
-### 3. Specify Components
+### 3. Define Voice & Tone
 
-Document components with intent before styling details.
+Voice is constant. Tone shifts by context.
 
-Minimum inventory:
+- 3-4 voice attributes with boundaries and anti-patterns.
+- Messaging hierarchy: tagline through microcopy through legal.
+- CTA conventions: verb-first patterns, do/don't examples.
+- Error and empty state copy templates.
+- Naming principles and brand vocabulary.
+- Content rules per component type: casing, length, punctuation, patterns.
 
-- buttons
-- links
-- badges and status pills
-- navigation
-- cards and content modules
-- form fields and validation states
-- tables or list rows
-- alerts and empty states
-- modals, drawers, or popovers when the product needs overlays
+Read `references/voice-tone.md` for the full framework.
+
+### 4. Build the Foundation
+
+Define the token system and supporting design infrastructure.
+
+- Color primitives and semantic roles (light and dark themes).
+- Typography: families, fluid scale, line-heights, tracking, OpenType features, pairing rationale.
+- Spacing scale and layout widths.
+- Corner radius, borders, elevation, and blur.
+- Motion: duration scale, easing library, choreography patterns, interaction signatures, loading patterns, reduced-motion strategy.
+- Responsive strategy: breakpoints, grid system, density tiers, touch targets, container queries.
+- Visual assets direction: photography, illustration, iconography, graphic devices.
+
+References:
+- `references/token-architecture.md` — token naming and structure.
+- `references/typography-specimens.md` — pairing, fluid type, OpenType, specimens.
+- `references/motion-system.md` — choreography, interaction signatures, loading, reduced motion.
+- `references/responsive-strategy.md` — breakpoints, grid, density, container queries.
+- `references/visual-assets.md` — photography, illustration, iconography, graphic devices.
+
+### 5. Specify Components
+
+Document components with intent before styling details. Full state coverage is non-negotiable.
+
+Minimum inventory: buttons, links, badges, navigation, cards, form fields, tables, alerts, empty states, modals/drawers/popovers, skeleton loading.
 
 For each component, capture:
 
-- purpose and misuse boundaries
-- anatomy
-- variants and sizes
-- interactive states
-- spacing and layout rules
-- content rules
-- accessibility requirements
-- implementation notes
+- Purpose and misuse boundaries
+- Anatomy and variants
+- All interactive states (default, hover, focus, active, disabled, loading, error, success, empty, skeleton)
+- Spacing and layout rules
+- Content rules (from voice & tone)
+- Accessibility: ARIA pattern, keyboard behavior, screen reader expectations
+- Motion behavior
+- Responsive adaptation
+- Implementation notes
 
-Read `references/component-spec-template.md` when producing component docs.
+References:
+- `references/component-spec-template.md` — component documentation format.
+- `references/accessibility-audit.md` — ARIA patterns, keyboard nav, screen reader expectations.
 
-### 4. Package the Deliverable
+### 6. Prove the System
+
+Build application proof pages that show the system working in a real product or marketing context — not just documenting itself.
+
+- Product dashboard, admin panel, or SaaS application page.
+- Marketing landing page, pricing page, or content page.
+- The proof page must use only system tokens and components.
+- It must demonstrate layout, density, data display, interaction states, and responsive behavior.
+
+This step validates that the system can actually build something real.
+
+### 7. Package the Deliverable
 
 Deliver a system that is legible to designers, engineers, and stakeholders.
 
-Minimum package:
+Full package:
 
-- overview/demo page
-- components gallery
-- usage guide
-- token source of truth
-- implementation-ready CSS custom properties or JSON tokens
+- Overview page (brand thesis, personality, design principles, visual direction)
+- Components gallery (full state coverage, interactive examples)
+- Usage guide (principles, composition rules, do/don't)
+- Application proof page(s)
+- Brand strategy summary
+- Voice & tone guide
+- Motion specification
+- Visual assets direction
+- Accessibility documentation
+- Token source of truth (CSS custom properties and/or JSON)
 
 Read `references/deliverable-standard.md` before finalizing output.
 
-### 5. Reuse the Bundled Example
+### 8. Prepare for Handoff
+
+Bridge the gap between the design system and production implementation.
+
+- Token integration: Style Dictionary config, platform outputs (CSS, SCSS, Swift, Android XML).
+- Figma setup: variable collections, naming conventions, mode structure.
+- Governance framework: extension rules, component maturity lifecycle, versioning strategy, deprecation protocol, contribution guidelines.
+- Handoff checklist: token delivery, component specs, interaction specs, redline notes, responsive behavior, content specs.
+
+References:
+- `references/token-integration.md` — Style Dictionary, Figma variables, build pipeline, multi-platform.
+- `references/governance.md` — extension rules, versioning, deprecation, contribution.
+
+### 9. Reuse the Bundled Example
 
 Use `assets/example-system/` as the reference implementation when the user wants a concrete starting point.
 
-- `index.html` shows the system overview and foundational surfaces.
-- `components.html` shows example UI patterns and states.
-- `guidelines.html` explains principles, usage, and composition rules.
-- `styles/tokens.css` contains the token architecture.
-- `tokens.json` mirrors the design token structure in machine-readable form.
+- `index.html` — system overview and foundational surfaces.
+- `components.html` — UI patterns with full state coverage (disabled, loading, error, success, empty, skeleton).
+- `guidelines.html` — principles, usage, and composition rules.
+- `application.html` — product dashboard proof page showing the system in a real application context.
+- `styles/tokens.css` — token architecture with expanded motion and info color tokens.
+- `tokens.json` — design token structure in machine-readable form.
+
+All HTML files share a 4-item navigation: Overview, Components, Guidelines, Application.
 
 Use `scripts/scaffold_example.py <output-dir>` to copy the example deliverable into a working directory. Pass optional flags to rename the system and client placeholders.
 
@@ -111,10 +172,13 @@ Use `scripts/scaffold_example.py <output-dir>` to copy the example deliverable i
 
 When the user asks for a fresh system, default to this response structure:
 
-1. Design thesis
-2. Token system summary
-3. Component inventory
-4. Usage rules
-5. Demo or implementation files
+1. Brand strategy (positioning, personality, principles, chosen direction)
+2. Voice & tone summary
+3. Token system (color, type, spacing, motion, responsive)
+4. Visual assets direction
+5. Component inventory with states and accessibility
+6. Application proof
+7. Usage rules and governance notes
+8. Deliverable files
 
 Keep the prose concise. Put the detail into the deliverable artifacts.

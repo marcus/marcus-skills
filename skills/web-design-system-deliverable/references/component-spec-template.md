@@ -50,15 +50,19 @@ Document:
 - disabled
 - loading
 - invalid or success if relevant
+- empty (when the component can have no content)
+- skeleton (placeholder while content loads)
 
 ## Content Rules
 
 Explain:
 
-- tone and casing
+- tone and casing (reference voice & tone guide for voice attributes and messaging hierarchy)
 - character limits
 - icon usage
 - truncation behavior
+- error and empty state copy patterns
+- CTA label conventions
 
 ## Layout Rules
 
@@ -86,4 +90,4 @@ Capture anything engineering needs to know:
 - DOM structure
 - token dependencies
 - interaction caveats
-- motion behavior
+- motion behavior (entrance, exit, hover, loading animations; duration and easing tokens; reduced-motion alternatives)
