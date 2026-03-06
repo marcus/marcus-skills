@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <title>Northstar Design System Components</title>
+    <link rel="stylesheet" href="styles/tokens.css">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/components.css">
+  </head>
+  <body data-page="components">
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand-lockup" href="index.html" aria-label="Northstar Design System home">
+          <span class="brand-mark">NDS</span>
+          <span class="brand-lockup__meta">
+            <strong>Northstar Design System</strong>
+            <span class="eyebrow">Component library</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="index.html" data-page-link="overview">Overview</a>
+          <a href="components.html" data-page-link="components">Components</a>
+          <a href="guidelines.html" data-page-link="guidelines">Guidelines</a>
+        </nav>
+        <div class="topbar__actions">
+          <button class="button button--ghost" type="button" data-theme-toggle>Dark mode</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div class="hero__headline">
+          <span class="kicker">Reference implementation</span>
+          <h1 class="page-title">Example components with states, hierarchy, and tone built in.</h1>
+          <p class="lead">The gallery demonstrates how the foundation behaves in real UI patterns rather than isolated style chips.</p>
+        </div>
+        <aside class="hero-card">
+          <span class="badge badge--accent">Coverage</span>
+          <ul class="nav-list">
+            <li><span>Actions</span><strong>Buttons, links, badges</strong></li>
+            <li><span>Content</span><strong>Cards, tables, quotes</strong></li>
+            <li><span>Input</span><strong>Fields, validation, helper text</strong></li>
+            <li><span>Feedback</span><strong>Alerts and status markers</strong></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section section--tight">
+        <div class="mini-nav" aria-label="Component sections">
+          <a href="#actions">Actions</a>
+          <a href="#content">Content</a>
+          <a href="#forms">Forms</a>
+          <a href="#feedback">Feedback</a>
+        </div>
+      </section>
+
+      <section class="section" id="actions">
+        <div class="section__header">
+          <span class="kicker">Actions</span>
+          <h2 class="section__title">Buttons communicate priority without shouting.</h2>
+        </div>
+        <div class="component-grid">
+          <article class="component-card stack">
+            <span class="label">Buttons</span>
+            <h3>Priority ladder</h3>
+            <div class="cluster">
+              <button class="button button--primary" type="button">Request prototype</button>
+              <button class="button button--secondary" type="button">Share system</button>
+              <button class="button button--ghost" type="button">Preview</button>
+              <button class="button button--quiet" type="button">Quiet action</button>
+            </div>
+            <p class="copy">Use one clearly dominant action per surface. Secondary and ghost actions should never compete with the primary.</p>
+          </article>
+          <article class="component-card stack">
+            <span class="label">Status</span>
+            <h3>Badges</h3>
+            <div class="cluster">
+              <span class="badge badge--accent">Brand approved</span>
+              <span class="badge badge--success">Accessible</span>
+              <span class="badge badge--warning">Needs review</span>
+              <span class="badge badge--danger">Deprecated</span>
+            </div>
+            <p class="copy">Badges are compact status carriers, not miniature buttons.</p>
+          </article>
+          <article class="component-card stack">
+            <span class="label">Navigation</span>
+            <h3>Context switcher</h3>
+            <div class="mini-nav">
+              <a href="#">Brand</a>
+              <a href="#">Product</a>
+              <a href="#">Content</a>
+              <a href="#">Engineering</a>
+            </div>
+            <p class="copy">Navigation uses soft surfaces and role-based color, not loud chrome.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="content">
+        <div class="section__header">
+          <span class="kicker">Content</span>
+          <h2 class="section__title">Surfaces should reveal hierarchy through rhythm and composition.</h2>
+        </div>
+        <div class="grid grid--2">
+          <article class="card stack">
+            <div class="card__meta">
+              <span class="badge badge--accent">Case study</span>
+              <span class="label">Featured surface</span>
+            </div>
+            <h3>Brand transition dashboard</h3>
+            <p class="copy">A premium system still needs utilitarian surfaces. The card uses typographic hierarchy, a restrained accent, and soft elevation instead of decorative effects.</p>
+            <table class="table">
+              <thead>
+                <tr><th>Asset</th><th>Status</th><th>Owner</th></tr>
+              </thead>
+              <tbody>
+                <tr><td data-label="Asset">Homepage</td><td data-label="Status">Approved</td><td data-label="Owner">Brand</td></tr>
+                <tr><td data-label="Asset">Product shell</td><td data-label="Status">In build</td><td data-label="Owner">Engineering</td></tr>
+                <tr><td data-label="Asset">Sales deck</td><td data-label="Status">Needs review</td><td data-label="Owner">Marketing</td></tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="quote">
+            <p>“A strong system lets a landing page and an admin dashboard feel related without making them look identical.”</p>
+            <footer>Example principle for multi-surface brands</footer>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="forms">
+        <div class="section__header">
+          <span class="kicker">Forms</span>
+          <h2 class="section__title">Input patterns need tone, spacing, and validation rules.</h2>
+        </div>
+        <article class="panel stack">
+          <div class="form-grid">
+            <label class="fieldset">
+              <span class="label">Project lead</span>
+              <input class="field" type="text" placeholder="Avery Morgan">
+              <span class="helper">Use sentence case labels and plain-language placeholders.</span>
+            </label>
+            <label class="fieldset">
+              <span class="label">Delivery phase</span>
+              <select class="select">
+                <option>Foundation</option>
+                <option>Components</option>
+                <option>Launch</option>
+              </select>
+              <span class="helper">Prefer explicit, high-signal option labels.</span>
+            </label>
+            <label class="fieldset" style="grid-column: 1 / -1;">
+              <span class="label">Implementation notes</span>
+              <textarea class="textarea" rows="5" placeholder="Describe edge cases, migration work, and launch dependencies."></textarea>
+              <span class="helper">Long-form input should align to the same spacing rhythm as card content.</span>
+            </label>
+          </div>
+        </article>
+      </section>
+
+      <section class="section" id="feedback">
+        <div class="section__header">
+          <span class="kicker">Feedback</span>
+          <h2 class="section__title">Status surfaces should inform without overpowering the rest of the page.</h2>
+        </div>
+        <div class="grid grid--3">
+          <article class="alert alert--success">
+            <span class="label">Success</span>
+            <strong>Token inventory approved</strong>
+            <span class="copy">The semantic layer is stable enough to begin component implementation.</span>
+          </article>
+          <article class="alert alert--warning">
+            <span class="label">Warning</span>
+            <strong>Dark theme pending review</strong>
+            <span class="copy">Contrast is acceptable, but motion rules still need accessibility review.</span>
+          </article>
+          <article class="alert alert--danger">
+            <span class="label">Critical</span>
+            <strong>Duplicate accent roles detected</strong>
+            <span class="copy">Collapse overlapping tokens before expanding component coverage.</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <div class="footer__row">
+        <span>Northstar Design System component gallery</span>
+        <span>Prepared for Asteron</span>
+      </div>
+    </footer>
+
+    <script src="scripts/demo.js"></script>
+  </body>
+</html>

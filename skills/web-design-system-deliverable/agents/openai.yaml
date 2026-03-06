@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Design System Deliverable"
+  short_description: "Build client-ready web design systems"
+  default_prompt: "Use $web-design-system-deliverable to create a client-ready web design system with tokens, components, guidance, and a demo page."
