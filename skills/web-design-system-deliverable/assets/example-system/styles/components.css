@@ -137,6 +137,7 @@
   font-size: var(--text-4);
   line-height: 1;
   letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
   color: var(--color-fg-strong);
 }
 
@@ -214,6 +215,7 @@
   border-top: var(--border-thin) solid var(--color-border-subtle);
 }
 
+.hero-card h3,
 .card h3,
 .component-card h3,
 .token-card h3,
