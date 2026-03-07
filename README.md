@@ -31,6 +31,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | dev-docs                    | Developer documentation for open source projects             |
 | human-writing               | Natural writing guidelines and AI pattern detection          |
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
+| lightroom-catalog           | Index and search Lightroom CC catalogs with SQLite+FTS5      |
 | linear-design-patterns      | Linear-inspired design patterns for keyboard-first apps      |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
@@ -41,6 +42,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | roc-icons                   | Roc icon library (@marcus/roc) for React, Svelte, and sprites |
 | site-design-director        | Website/UI design direction + production code                |
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
+| stereo-design-system        | Skeuomorphic hi-fi receiver design system — brushed brass, warm amber |
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
 | td-review-session           | Review session orchestrator with parallel triage and auto-fix |
 | td-task-management          | AI agent task management across sessions                     |

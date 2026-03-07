@@ -21,6 +21,10 @@
       "description": "Extract, decode, and query iMessage conversations from macOS chat.db"
     },
     {
+      "name": "lightroom-catalog",
+      "description": "Index and search Adobe Lightroom CC catalogs on macOS with SQLite+FTS5"
+    },
+    {
       "name": "cursor-agent-orchestrator",
       "description": "Build Python orchestrators that spawn cursor-agent processes in parallel with timeout handling"
     },
@@ -83,6 +87,10 @@
     {
       "name": "roc-icons",
       "description": "Use Roc icon library (@marcus/roc) in projects—React, Svelte, and HTML sprite usage across 4 styles with 416 icons"
+    },
+    {
+      "name": "stereo-design-system",
+      "description": "Skeuomorphic design system inspired by high-end stereo receivers. Brushed brass controls, warm amber displays, dark chassis panels. Use for retro-hardware UI, audio/music interfaces, control panels with physical-world metaphors, or any dark warm interface with brass/gold accents."
     }
   ]
 }
