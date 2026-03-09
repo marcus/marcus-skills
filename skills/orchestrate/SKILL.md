@@ -38,6 +38,26 @@ When spawning each agent via Task tool, prefix its prompt with the role and incl
 
 Between steps, read td state (`td show <id>`) — do not carry state in memory.
 
+## Proof Requirements
+
+If the user asks to prove or verify work, the orchestrator must assign proof capture to sub-agents as part of completion, not as an optional follow-up.
+
+- For epic / phased work: have a sub-agent update the epic or phase task with completion state and create a new proof task under that epic or phase.
+- For a complex standalone task with subtasks: have a sub-agent update the parent task and create a new proof task under that parent task.
+- The proof task must include a `proof` label.
+- The proof task description must contain the actual proof artifact or a direct reference to it:
+  - UI work: screenshot path and short note about what it proves
+  - CLI / backend / infra work: command output, test results, logs, API response sample, or other appropriate proof
+- The proof task should be created before final user handoff so proof is preserved in td, not only in chat output.
+
+Recommended pattern:
+
+1. Update the implementation task / epic / phase with the result.
+2. Create `Proof: <thing proved>` as a child task.
+3. Add label `proof`.
+4. Put the screenshot path or other proof directly in the task description.
+5. Mark the proof task with the appropriate status after the artifact is captured.
+
 ## Rules
 
 - One task at a time. Finish plan->implement->review before the next.
@@ -46,6 +66,7 @@ Between steps, read td state (`td show <id>`) — do not carry state in memory.
 - If a sub-agent's context compacts, re-spawn it with the td task ID and these orchestration instructions.
 - All commits should reference a td task id
 - Important: if more than one task is needed to complete the work, create an epic in td and link sub-tasks to the epic.
+- Important: if proof is requested, completion is not done until the proof task exists in td with the `proof` label and the proof artifact recorded in its description.
 
 ## On Compaction / Handoff
 
