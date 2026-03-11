@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-density="standard">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parklet — Application Proof</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* =======================================================================
+       RESET & BASE
+       ======================================================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-normal);
+      letter-spacing: var(--tracking-normal);
+      color: var(--text-primary);
+      background: var(--surface-primary);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    input {
+      font-family: inherit;
+      border: none;
+      outline: none;
+      background: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    /* =======================================================================
+       DESIGN SYSTEM NAV (top-level — linking to other system pages)
+       ======================================================================= */
+    .ds-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: var(--z-nav);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-8);
+      height: 56px;
+      background: var(--surface-elevated);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ds-nav__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .ds-nav__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+    }
+
+    .ds-nav__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+      padding: 2px 8px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+    }
+
+    .ds-nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .ds-nav__link {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md);
+      transition: color var(--duration-fast) var(--ease-out),
+                  background var(--duration-fast) var(--ease-out);
+    }
+
+    .ds-nav__link:hover {
+      color: var(--text-primary);
+      background: var(--surface-secondary);
+    }
+
+    .ds-nav__link--active {
+      color: var(--text-accent);
+      font-weight: var(--weight-medium);
+    }
+
+    .ds-nav__link--active:hover {
+      background: var(--surface-accent);
+    }
+
+    .ds-nav__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out),
+                  background var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      background: var(--surface-secondary);
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .theme-toggle__icon--dark {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-toggle__icon--light {
+      display: none;
+    }
+
+    [data-theme="dark"] .theme-toggle__icon--dark {
+      display: block;
+    }
+
+    /* =======================================================================
+       APP SHELL
+       ======================================================================= */
+    .app-shell {
+      display: flex;
+      margin-top: 56px;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* =======================================================================
+       SIDEBAR
+       ======================================================================= */
+    .sidebar {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      bottom: 0;
+      width: 240px;
+      background: var(--surface-secondary);
+      border-right: 1px solid var(--border-default);
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-6) 0;
+      overflow-y: auto;
+      z-index: var(--z-raised);
+      border-radius: 0; /* structural — sharp edges */
+    }
+
+    [data-theme="dark"] .sidebar {
+      background: #141210;
+    }
+
+    .sidebar__brand {
+      padding: 0 var(--space-6) var(--space-6);
+      border-bottom: 1px solid var(--border-default);
+      margin-bottom: var(--space-4);
+    }
+
+    .sidebar__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+    }
+
+    .sidebar__nav {
+      flex: 1;
+      padding: 0 var(--space-3);
+    }
+
+    .sidebar__nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out),
+                  background var(--duration-fast) var(--ease-out);
+      margin-bottom: 2px;
+    }
+
+    .sidebar__nav-item:hover {
+      color: var(--text-primary);
+      background: var(--surface-tertiary);
+    }
+
+    .sidebar__nav-item--active {
+      color: var(--text-accent);
+      font-weight: var(--weight-medium);
+    }
+
+    .sidebar__nav-item--active:hover {
+      background: var(--surface-accent);
+    }
+
+    .sidebar__nav-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .sidebar__divider {
+      height: 1px;
+      background: var(--border-default);
+      margin: var(--space-4) var(--space-6);
+    }
+
+    .sidebar__neighborhoods {
+      padding: 0 var(--space-6);
+      margin-top: var(--space-2);
+    }
+
+    .sidebar__section-label {
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-tertiary);
+      padding: 0 var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+
+    .sidebar__hood-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 6px var(--space-3);
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .sidebar__hood-item:hover {
+      color: var(--text-primary);
+    }
+
+    .sidebar__hood-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-pill);
+      background: var(--border-strong);
+      flex-shrink: 0;
+    }
+
+    .sidebar__hood-dot--home {
+      background: var(--color-accent-500);
+    }
+
+    .sidebar__add-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 6px var(--space-3);
+      font-size: var(--text-xs);
+      color: var(--text-accent);
+      transition: opacity var(--duration-fast) var(--ease-out);
+    }
+
+    .sidebar__add-link:hover {
+      opacity: 0.7;
+    }
+
+    .sidebar__user {
+      padding: var(--space-4) var(--space-6);
+      border-top: 1px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: auto;
+    }
+
+    .sidebar__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background: var(--color-accent-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--color-accent-700);
+      flex-shrink: 0;
+    }
+
+    .sidebar__user-info {
+      min-width: 0;
+    }
+
+    .sidebar__user-name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      line-height: var(--leading-tight);
+    }
+
+    .sidebar__user-hood {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      line-height: var(--leading-tight);
+    }
+
+    .sidebar__footer {
+      padding: var(--space-3) var(--space-6) 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* =======================================================================
+       MAIN CONTENT AREA
+       ======================================================================= */
+    .main {
+      flex: 1;
+      margin-left: 240px;
+      padding: var(--space-8);
+      min-height: calc(100vh - 56px);
+      background: var(--surface-primary);
+    }
+
+    [data-theme="dark"] .main {
+      background: #1C1A17;
+    }
+
+    .main__inner {
+      max-width: 960px;
+    }
+
+    /* =======================================================================
+       NOTIFICATION BANNER
+       ======================================================================= */
+    .notification {
+      font-size: var(--text-sm);
+      color: var(--color-success);
+      margin-bottom: var(--space-8);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .notification__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-pill);
+      background: var(--color-success);
+      flex-shrink: 0;
+    }
+
+    /* =======================================================================
+       TOP BAR — Greeting + Search
+       ======================================================================= */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+      margin-bottom: var(--space-10);
+    }
+
+    .topbar__greeting {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .topbar__search {
+      position: relative;
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .topbar__search-icon {
+      position: absolute;
+      left: var(--space-4);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+
+    .topbar__search-input {
+      width: 100%;
+      padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius-pill);
+      transition: border-color var(--duration-fast) var(--ease-out),
+                  background var(--duration-fast) var(--ease-out);
+    }
+
+    .topbar__search-input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .topbar__search-input:focus {
+      border-color: var(--border-strong);
+      background: var(--surface-elevated);
+    }
+
+    /* =======================================================================
+       STATS STRIP
+       ======================================================================= */
+    .stats-strip {
+      display: flex;
+      align-items: center;
+      margin-bottom: var(--space-16);
+      padding: var(--space-4) 0;
+    }
+
+    .stats-strip__item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 var(--space-8);
+      transition: transform var(--duration-fast) var(--ease-spring);
+    }
+
+    .stats-strip__item:hover {
+      transform: scale(var(--hover-scale));
+    }
+
+    .stats-strip__item:first-child {
+      padding-left: 0;
+    }
+
+    .stats-strip__divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border-default);
+      flex-shrink: 0;
+    }
+
+    .stats-strip__number {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+    }
+
+    .stats-strip__label {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* =======================================================================
+       SECTION HEADERS
+       ======================================================================= */
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    /* =======================================================================
+       PLACE CARDS — Horizontal scroll row
+       ======================================================================= */
+    .places-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .places-row {
+      display: flex;
+      gap: var(--space-5);
+      overflow-x: auto;
+      padding-bottom: var(--space-4);
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .places-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .place-card {
+      min-width: 220px;
+      max-width: 220px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      transition: transform var(--duration-normal) var(--ease-spring),
+                  box-shadow var(--duration-normal) var(--ease-out);
+      cursor: pointer;
+    }
+
+    .place-card:hover {
+      transform: scale(var(--hover-scale));
+    }
+
+    .place-card:hover .place-card__image {
+      box-shadow: var(--shadow-md);
+    }
+
+    .place-card__image {
+      width: 100%;
+      height: 140px;
+      border-radius: var(--radius-lg);
+      background: var(--color-accent-100);
+      margin-bottom: var(--space-3);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow var(--duration-normal) var(--ease-out);
+    }
+
+    [data-theme="dark"] .place-card__image {
+      background: var(--color-accent-900);
+    }
+
+    .place-card__image--coffee {
+      background: linear-gradient(135deg, var(--color-accent-200) 0%, var(--color-accent-100) 100%);
+    }
+
+    [data-theme="dark"] .place-card__image--coffee {
+      background: linear-gradient(135deg, var(--color-accent-800) 0%, var(--color-accent-900) 100%);
+    }
+
+    .place-card__image--books {
+      background: linear-gradient(135deg, #E8DDD0 0%, var(--color-accent-100) 100%);
+    }
+
+    [data-theme="dark"] .place-card__image--books {
+      background: linear-gradient(135deg, #2A2520 0%, var(--color-accent-900) 100%);
+    }
+
+    .place-card__image--park {
+      background: linear-gradient(135deg, #D4E3D0 0%, #E8EDE2 100%);
+    }
+
+    [data-theme="dark"] .place-card__image--park {
+      background: linear-gradient(135deg, #1D2A1C 0%, #22281F 100%);
+    }
+
+    .place-card__tag {
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      color: var(--text-accent);
+    }
+
+    .place-card__tag--outlined {
+      color: var(--text-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 2px 8px;
+      display: inline-block;
+    }
+
+    .place-card__name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: 2px;
+      line-height: var(--leading-snug);
+    }
+
+    .place-card__meta {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-2);
+    }
+
+    .place-card__status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+    }
+
+    .place-card__status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-pill);
+      background: var(--color-success);
+      flex-shrink: 0;
+    }
+
+    /* =======================================================================
+       COLLECTIONS — 60/40 split
+       ======================================================================= */
+    .collections-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .collections-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .collection-featured {
+      background: var(--surface-elevated);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--duration-normal) var(--ease-out),
+                  transform var(--duration-normal) var(--ease-spring);
+    }
+
+    .collection-featured:hover {
+      box-shadow: var(--shadow-md);
+      transform: scale(1.005);
+    }
+
+    [data-theme="dark"] .collection-featured {
+      background: #252220;
+    }
+
+    .collection-featured__label {
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-accent);
+      margin-bottom: var(--space-3);
+    }
+
+    .collection-featured__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .collection-featured__meta {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+      font-family: var(--font-mono);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .collection-featured__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+      max-width: 380px;
+    }
+
+    .collection-featured__thumbs {
+      display: flex;
+      align-items: center;
+    }
+
+    .collection-featured__thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-pill);
+      border: 2px solid var(--surface-elevated);
+      margin-left: -10px;
+      flex-shrink: 0;
+    }
+
+    .collection-featured__thumb:first-child {
+      margin-left: 0;
+    }
+
+    .collection-featured__thumb--1 {
+      background: var(--color-accent-200);
+    }
+
+    .collection-featured__thumb--2 {
+      background: var(--color-accent-300);
+    }
+
+    .collection-featured__thumb--3 {
+      background: var(--color-accent-100);
+    }
+
+    [data-theme="dark"] .collection-featured__thumb {
+      border-color: #252220;
+    }
+
+    [data-theme="dark"] .collection-featured__thumb--1 {
+      background: var(--color-accent-800);
+    }
+
+    [data-theme="dark"] .collection-featured__thumb--2 {
+      background: var(--color-accent-700);
+    }
+
+    [data-theme="dark"] .collection-featured__thumb--3 {
+      background: var(--color-accent-900);
+    }
+
+    .collections-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .collections-list__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      transition: padding-left var(--duration-fast) var(--ease-out);
+    }
+
+    .collections-list__item:hover {
+      padding-left: var(--space-2);
+    }
+
+    .collections-list__item:last-of-type {
+      border-bottom: none;
+    }
+
+    .collections-list__name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+    }
+
+    .collections-list__count {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .collections-list__create {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      margin-top: var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--text-accent);
+      font-weight: var(--weight-regular);
+      padding: var(--space-2) 0;
+      transition: opacity var(--duration-fast) var(--ease-out);
+    }
+
+    .collections-list__create:hover {
+      opacity: 0.7;
+    }
+
+    /* =======================================================================
+       ACTIVITY TABLE
+       ======================================================================= */
+    .activity-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .activity-table {
+      width: 100%;
+    }
+
+    .activity-table thead th {
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-tertiary);
+      text-align: left;
+      padding: 0 var(--space-4) var(--space-3) 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .activity-table thead th:first-child {
+      padding-left: var(--space-3);
+    }
+
+    .activity-table tbody tr {
+      transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .activity-table tbody tr:hover {
+      background: var(--surface-secondary);
+    }
+
+    [data-theme="dark"] .activity-table tbody tr:hover {
+      background: #1F1D1A;
+    }
+
+    .activity-table tbody td {
+      padding: 14px var(--space-4) 14px 0;
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+
+    .activity-table tbody td:first-child {
+      padding-left: var(--space-3);
+      font-weight: var(--weight-medium);
+    }
+
+    .activity-table .table-hood {
+      color: var(--text-secondary);
+    }
+
+    .activity-table .table-who {
+      color: var(--text-secondary);
+    }
+
+    .activity-table .table-when {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .activity-table .table-type {
+      font-size: 11px;
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wide);
+      color: var(--text-accent);
+    }
+
+    /* =======================================================================
+       FRIENDS ACTIVITY
+       ======================================================================= */
+    .friends-section {
+      margin-bottom: var(--space-16);
+    }
+
+    .friends-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .friend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .friend-item:last-child {
+      border-bottom: none;
+    }
+
+    .friend-item__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      flex-shrink: 0;
+    }
+
+    .friend-item__avatar--maya {
+      background: #D4E3D0;
+      color: #3D5A34;
+    }
+
+    [data-theme="dark"] .friend-item__avatar--maya {
+      background: #1D2A1C;
+      color: #7DAA72;
+    }
+
+    .friend-item__avatar--sam {
+      background: #D0DAE3;
+      color: #34475A;
+    }
+
+    [data-theme="dark"] .friend-item__avatar--sam {
+      background: #1C2128;
+      color: #72899F;
+    }
+
+    .friend-item__avatar--jordan {
+      background: var(--color-accent-100);
+      color: var(--color-accent-700);
+    }
+
+    [data-theme="dark"] .friend-item__avatar--jordan {
+      background: var(--color-accent-900);
+      color: var(--color-accent-300);
+    }
+
+    .friend-item__text {
+      flex: 1;
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      line-height: var(--leading-snug);
+    }
+
+    .friend-item__text strong {
+      font-weight: var(--weight-semibold);
+    }
+
+    .friend-item__text em {
+      font-style: normal;
+      font-weight: var(--weight-medium);
+    }
+
+    .friend-item__time {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      white-space: nowrap;
+    }
+
+    /* =======================================================================
+       UTILITY
+       ======================================================================= */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* =======================================================================
+       RESPONSIVE — Collapse sidebar on narrow viewports
+       ======================================================================= */
+    @media (max-width: 900px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+      }
+      .collections-grid {
+        grid-template-columns: 1fr;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+      }
+      .topbar__search {
+        max-width: 100%;
+      }
+      .stats-strip {
+        flex-wrap: wrap;
+        gap: var(--space-4);
+      }
+      .stats-strip__divider {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================================
+       DESIGN SYSTEM NAV
+       ===================================================================== -->
+  <nav class="ds-nav" role="navigation" aria-label="Design system navigation">
+    <div class="ds-nav__brand">
+      <span class="ds-nav__logo">Parklet</span>
+      <span class="ds-nav__badge">v2.4</span>
+    </div>
+
+    <div class="ds-nav__links">
+      <a href="overview.html" class="ds-nav__link">Overview</a>
+      <a href="components.html" class="ds-nav__link">Components</a>
+      <a href="guidelines.html" class="ds-nav__link">Guidelines</a>
+      <a href="application.html" class="ds-nav__link ds-nav__link--active" aria-current="page">Application</a>
+    </div>
+
+    <div class="ds-nav__actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg class="theme-toggle__icon--light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-toggle__icon--dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- =====================================================================
+       APP SHELL
+       ===================================================================== -->
+  <div class="app-shell">
+
+    <!-- =================================================================
+         SIDEBAR
+         ================================================================= -->
+    <aside class="sidebar" role="complementary" aria-label="Application sidebar">
+
+      <div class="sidebar__brand">
+        <div class="sidebar__logo">Parklet</div>
+      </div>
+
+      <nav class="sidebar__nav" aria-label="Main navigation">
+        <a href="#" class="sidebar__nav-item sidebar__nav-item--active" aria-current="page">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Discover
+        </a>
+        <a href="#" class="sidebar__nav-item">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          My Neighborhoods
+        </a>
+        <a href="#" class="sidebar__nav-item">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+          </svg>
+          Saved Places
+        </a>
+        <a href="#" class="sidebar__nav-item">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          Collections
+        </a>
+        <a href="#" class="sidebar__nav-item">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Friends' Picks
+        </a>
+        <a href="#" class="sidebar__nav-item">
+          <svg class="sidebar__nav-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar__divider"></div>
+
+      <div class="sidebar__neighborhoods">
+        <div class="sidebar__section-label">Neighborhoods</div>
+        <a href="#" class="sidebar__hood-item">
+          <span class="sidebar__hood-dot sidebar__hood-dot--home"></span>
+          Capitol Hill
+        </a>
+        <a href="#" class="sidebar__hood-item">
+          <span class="sidebar__hood-dot"></span>
+          Fremont
+        </a>
+        <a href="#" class="sidebar__hood-item">
+          <span class="sidebar__hood-dot"></span>
+          Wallingford
+        </a>
+        <a href="#" class="sidebar__hood-item">
+          <span class="sidebar__hood-dot"></span>
+          Pioneer Square
+        </a>
+        <a href="#" class="sidebar__hood-item">
+          <span class="sidebar__hood-dot"></span>
+          Ballard
+        </a>
+        <a href="#" class="sidebar__add-link">+ Add neighborhood</a>
+      </div>
+
+      <div class="sidebar__user">
+        <div class="sidebar__avatar" aria-hidden="true">J</div>
+        <div class="sidebar__user-info">
+          <div class="sidebar__user-name">Jordan Reeves</div>
+          <div class="sidebar__user-hood">Capitol Hill</div>
+        </div>
+      </div>
+
+      <div class="sidebar__footer">Parklet v2.4 &middot; Seattle</div>
+    </aside>
+
+    <!-- =================================================================
+         MAIN CONTENT
+         ================================================================= -->
+    <main class="main" role="main">
+      <div class="main__inner">
+
+        <!-- Notification -->
+        <div class="notification" role="status" aria-live="polite">
+          <span class="notification__dot" aria-hidden="true"></span>
+          New spot added: Oddfellows Caf&eacute; is now in your Capitol Hill guide.
+        </div>
+
+        <!-- Top Bar -->
+        <div class="topbar">
+          <h1 class="topbar__greeting">Good morning, Jordan</h1>
+          <div class="topbar__search">
+            <svg class="topbar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              type="search"
+              class="topbar__search-input"
+              placeholder="Search places, neighborhoods, collections..."
+              aria-label="Search places, neighborhoods, and collections"
+            />
+          </div>
+        </div>
+
+        <!-- Stats Strip -->
+        <div class="stats-strip" role="group" aria-label="Your activity statistics">
+          <div class="stats-strip__item">
+            <span class="stats-strip__number">142</span>
+            <span class="stats-strip__label">Places Discovered</span>
+          </div>
+          <div class="stats-strip__divider" aria-hidden="true"></div>
+          <div class="stats-strip__item">
+            <span class="stats-strip__number">8</span>
+            <span class="stats-strip__label">Neighborhoods</span>
+          </div>
+          <div class="stats-strip__divider" aria-hidden="true"></div>
+          <div class="stats-strip__item">
+            <span class="stats-strip__number">12</span>
+            <span class="stats-strip__label">Collections</span>
+          </div>
+          <div class="stats-strip__divider" aria-hidden="true"></div>
+          <div class="stats-strip__item">
+            <span class="stats-strip__number">34</span>
+            <span class="stats-strip__label">Friends Following</span>
+          </div>
+        </div>
+
+        <!-- What's New Near You -->
+        <section class="places-section" aria-label="New places near you">
+          <h2 class="section-heading">What's New Near You</h2>
+
+          <div class="places-row" role="list">
+
+            <!-- Provisions Coffee -->
+            <article class="place-card" role="listitem">
+              <div class="place-card__image place-card__image--coffee" aria-hidden="true"></div>
+              <span class="place-card__tag">Staff Pick</span>
+              <h3 class="place-card__name">Provisions Coffee</h3>
+              <p class="place-card__meta">Coffee &middot; Capitol Hill &middot; 0.3 mi</p>
+            </article>
+
+            <!-- Twice Sold Tales -->
+            <article class="place-card" role="listitem">
+              <div class="place-card__image place-card__image--books" aria-hidden="true"></div>
+              <h3 class="place-card__name">Twice Sold Tales</h3>
+              <p class="place-card__meta">Bookstore &middot; Capitol Hill &middot; 0.5 mi</p>
+              <div class="place-card__status">
+                <span class="place-card__status-dot" aria-hidden="true"></span>
+                Open until 9pm
+              </div>
+            </article>
+
+            <!-- Volunteer Park Conservatory -->
+            <article class="place-card" role="listitem">
+              <div class="place-card__image place-card__image--park" aria-hidden="true"></div>
+              <span class="place-card__tag place-card__tag--outlined">Free Entry</span>
+              <h3 class="place-card__name">Volunteer Park Conservatory</h3>
+              <p class="place-card__meta">Park &middot; Capitol Hill &middot; 0.8 mi</p>
+            </article>
+
+            <!-- Stumptown Coffee -->
+            <article class="place-card" role="listitem">
+              <div class="place-card__image place-card__image--coffee" aria-hidden="true"></div>
+              <span class="place-card__tag">New</span>
+              <h3 class="place-card__name">Stumptown Coffee</h3>
+              <p class="place-card__meta">Coffee &middot; Downtown &middot; 1.2 mi</p>
+            </article>
+
+            <!-- Elliott Bay Book Company -->
+            <article class="place-card" role="listitem">
+              <div class="place-card__image place-card__image--books" aria-hidden="true"></div>
+              <h3 class="place-card__name">Elliott Bay Book Company</h3>
+              <p class="place-card__meta">Bookstore &middot; Pioneer Square &middot; 1.5 mi</p>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- Your Collections -->
+        <section class="collections-section" aria-label="Your collections">
+          <h2 class="section-heading">Your Collections</h2>
+
+          <div class="collections-grid">
+            <!-- Featured Collection -->
+            <div class="collection-featured">
+              <div class="collection-featured__label">Featured Collection</div>
+              <h3 class="collection-featured__title">Best Rainy Day Caf&eacute;s</h3>
+              <div class="collection-featured__meta">8 places &middot; Updated 2 days ago</div>
+              <p class="collection-featured__desc">Warm corners, good light, and the kind of coffee that makes you want to stay.</p>
+              <div class="collection-featured__thumbs" aria-label="Place photos">
+                <div class="collection-featured__thumb collection-featured__thumb--1" aria-hidden="true"></div>
+                <div class="collection-featured__thumb collection-featured__thumb--2" aria-hidden="true"></div>
+                <div class="collection-featured__thumb collection-featured__thumb--3" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <!-- Collections List -->
+            <div class="collections-list">
+              <a href="#" class="collections-list__item">
+                <span class="collections-list__name">Sunday Morning Walks</span>
+                <span class="collections-list__count">5 places</span>
+              </a>
+              <a href="#" class="collections-list__item">
+                <span class="collections-list__name">Date Night Spots</span>
+                <span class="collections-list__count">12 places</span>
+              </a>
+              <a href="#" class="collections-list__item">
+                <span class="collections-list__name">Working Remotely</span>
+                <span class="collections-list__count">6 places</span>
+              </a>
+              <a href="#" class="collections-list__item">
+                <span class="collections-list__name">Hidden Bookshops</span>
+                <span class="collections-list__count">4 places</span>
+              </a>
+              <a href="#" class="collections-list__create">Create new collection &rarr;</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Neighborhood Activity -->
+        <section class="activity-section" aria-label="Neighborhood activity">
+          <h2 class="section-heading">Neighborhood Activity</h2>
+
+          <table class="activity-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">Place</th>
+                <th scope="col">Neighborhood</th>
+                <th scope="col">Added by</th>
+                <th scope="col">When</th>
+                <th scope="col">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Oddfellows Caf&eacute;</td>
+                <td class="table-hood">Capitol Hill</td>
+                <td class="table-who">You</td>
+                <td class="table-when">Today</td>
+                <td class="table-type">Coffee</td>
+              </tr>
+              <tr>
+                <td>Ada's Technical Books</td>
+                <td class="table-hood">Capitol Hill</td>
+                <td class="table-who">Maya K.</td>
+                <td class="table-when">Yesterday</td>
+                <td class="table-type">Bookstore</td>
+              </tr>
+              <tr>
+                <td>Cal Anderson Park</td>
+                <td class="table-hood">Capitol Hill</td>
+                <td class="table-who">Jordan T.</td>
+                <td class="table-when">2 days ago</td>
+                <td class="table-type">Park</td>
+              </tr>
+              <tr>
+                <td>Bauhaus Brew Labs</td>
+                <td class="table-hood">Fremont</td>
+                <td class="table-who">You</td>
+                <td class="table-when">3 days ago</td>
+                <td class="table-type">Coffee</td>
+              </tr>
+              <tr>
+                <td>Archie McPhee</td>
+                <td class="table-hood">Wallingford</td>
+                <td class="table-who">Sam R.</td>
+                <td class="table-when">Last week</td>
+                <td class="table-type">Shop</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Friends' Recent Finds -->
+        <section class="friends-section" aria-label="Friends' recent finds">
+          <h2 class="section-heading">Friends' Recent Finds</h2>
+
+          <div class="friends-list" role="list">
+            <div class="friend-item" role="listitem">
+              <div class="friend-item__avatar friend-item__avatar--maya" aria-hidden="true">MK</div>
+              <div class="friend-item__text">
+                <strong>Maya</strong> saved <em>Lighthouse Roasters</em>
+              </div>
+              <span class="friend-item__time">2h ago</span>
+            </div>
+
+            <div class="friend-item" role="listitem">
+              <div class="friend-item__avatar friend-item__avatar--sam" aria-hidden="true">SR</div>
+              <div class="friend-item__text">
+                <strong>Sam</strong> created <em>&lsquo;Fremont Art Walk&rsquo;</em> collection
+              </div>
+              <span class="friend-item__time">5h ago</span>
+            </div>
+
+            <div class="friend-item" role="listitem">
+              <div class="friend-item__avatar friend-item__avatar--jordan" aria-hidden="true">JT</div>
+              <div class="friend-item__text">
+                <strong>Jordan</strong> rated Volunteer Park &#9733;&#9733;&#9733;&#9733;
+              </div>
+              <span class="friend-item__time">Yesterday</span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- =====================================================================
+       THEME TOGGLE SCRIPT
+       ===================================================================== -->
+  <script>
+    (function () {
+      const toggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+
+      // Check stored preference or system preference
+      const stored = localStorage.getItem('parklet-theme');
+      if (stored) {
+        root.setAttribute('data-theme', stored);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        root.setAttribute('data-theme', 'dark');
+      }
+
+      toggle.addEventListener('click', function () {
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('parklet-theme', next);
+      });
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        if (!localStorage.getItem('parklet-theme')) {
+          root.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

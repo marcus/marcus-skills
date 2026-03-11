@@ -1,0 +1,2772 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <title>Parklet Design System — Components</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400..700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/tokens.css">
+    <style>
+      /* =======================================================================
+         PARKLET COMPONENTS PAGE — Inline Styles
+         Neighborhood discovery. Playful, warm, whimsical but discerning.
+         Fraunces display + DM Sans body + DM Mono mono.
+         Terracotta accent. Cream paper surfaces. Buoyant spring motion.
+         ======================================================================= */
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--weight-regular);
+        line-height: var(--leading-normal);
+        letter-spacing: var(--tracking-normal);
+        color: var(--text-primary);
+        background: var(--surface-primary);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- Top Bar --------------------------------------------------------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-nav);
+        border-bottom: 1px solid var(--border-default);
+        backdrop-filter: blur(12px);
+        background: rgba(250, 247, 242, 0.88);
+      }
+      [data-theme="dark"] .topbar {
+        background: rgba(20, 18, 16, 0.88);
+      }
+      .topbar__inner {
+        max-width: var(--max-width-full);
+        margin: 0 auto;
+        padding: var(--space-3) var(--space-6);
+        display: flex;
+        align-items: center;
+        gap: var(--space-8);
+      }
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1, 'SOFT' 50;
+        letter-spacing: var(--tracking-tight);
+      }
+      .topnav {
+        display: flex;
+        gap: var(--space-1);
+        flex: 1;
+      }
+      .topnav a {
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        transition: color var(--duration-fast) var(--ease-out);
+        position: relative;
+      }
+      .topnav a:hover { color: var(--text-primary); }
+      .topnav a[aria-current="page"] {
+        color: var(--text-primary);
+      }
+      .topnav a[aria-current="page"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: var(--space-3);
+        right: var(--space-3);
+        height: 2px;
+        background: var(--color-accent-500);
+        border-radius: var(--radius-pill);
+      }
+      .topbar__actions { margin-left: auto; }
+
+      /* --- Theme Toggle ---------------------------------------------------- */
+      .theme-toggle {
+        appearance: none;
+        border: 1px solid var(--border-default);
+        background: var(--surface-secondary);
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .theme-toggle:hover {
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+
+      /* --- Page Shell ------------------------------------------------------ */
+      .shell {
+        max-width: var(--max-width-wide);
+        margin: 0 auto;
+        padding: var(--space-16) var(--space-6) var(--space-32);
+      }
+
+      /* --- Page Header ----------------------------------------------------- */
+      .page-header {
+        margin-bottom: var(--space-24);
+      }
+      .page-header__title {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1, 'SOFT' 50;
+        line-height: var(--leading-display);
+        letter-spacing: var(--tracking-tight);
+        color: var(--text-primary);
+        margin-bottom: var(--space-4);
+      }
+      .page-header__desc {
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        max-width: 560px;
+        line-height: var(--leading-relaxed);
+      }
+
+      /* --- Section --------------------------------------------------------- */
+      .section {
+        margin-bottom: var(--space-24);
+      }
+      .section + .section {
+        padding-top: var(--space-12);
+        border-top: 1px solid var(--border-subtle);
+      }
+      .section__header {
+        margin-bottom: var(--space-10);
+      }
+      .section__number {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+        letter-spacing: var(--tracking-wider);
+        display: block;
+        margin-bottom: var(--space-2);
+      }
+      .section__title {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1, 'SOFT' 50;
+        line-height: var(--leading-tight);
+        letter-spacing: var(--tracking-snug);
+        color: var(--text-primary);
+        margin-bottom: var(--space-3);
+      }
+      .section__desc {
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        max-width: 540px;
+        line-height: var(--leading-normal);
+      }
+
+      /* --- Subsection ------------------------------------------------------ */
+      .subsection {
+        margin-bottom: var(--space-12);
+      }
+      .subsection__label {
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-5);
+      }
+      .subsection__note {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-top: var(--space-4);
+        font-style: italic;
+        max-width: 480px;
+      }
+
+      /* --- Example Row / Grid ---------------------------------------------- */
+      .example-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+      }
+      .example-row--start {
+        align-items: flex-start;
+      }
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--space-6);
+        margin-bottom: var(--space-6);
+      }
+      .example-grid--2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .example-grid--3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .example-stack {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+      }
+      .example-box {
+        padding: var(--space-8);
+        background: var(--surface-secondary);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-6);
+      }
+      .example-box--elevated {
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow-sm);
+      }
+
+      /* =======================================================================
+         01 BUTTONS
+         ======================================================================= */
+
+      /* Primary — terracotta fill, max one per page context */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        line-height: 1;
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-on-accent);
+        background: var(--color-accent-500);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-6);
+        cursor: pointer;
+        transition:
+          transform var(--duration-fast) var(--ease-spring),
+          background var(--duration-fast) var(--ease-out),
+          box-shadow var(--duration-fast) var(--ease-out);
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-primary:hover {
+        background: var(--color-accent-600);
+        transform: scale(var(--hover-scale));
+        box-shadow: var(--shadow-sm);
+      }
+      .btn-primary:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .btn-primary:active {
+        transform: scale(var(--press-scale));
+      }
+      .btn-primary:disabled,
+      .btn-primary[aria-disabled="true"] {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      .btn-primary--loading {
+        color: transparent;
+        pointer-events: none;
+      }
+      .btn-primary--loading::after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: var(--text-on-accent);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+      }
+
+      /* Secondary — transparent bg, border */
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        line-height: 1;
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-primary);
+        background: transparent;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-6);
+        cursor: pointer;
+        transition:
+          transform var(--duration-fast) var(--ease-spring),
+          background var(--duration-fast) var(--ease-out),
+          border-color var(--duration-fast) var(--ease-out);
+      }
+      .btn-secondary:hover {
+        background: var(--surface-secondary);
+        border-color: var(--border-strong);
+        transform: scale(var(--hover-scale));
+      }
+      .btn-secondary:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .btn-secondary:active {
+        transform: scale(var(--press-scale));
+      }
+      .btn-secondary:disabled,
+      .btn-secondary[aria-disabled="true"] {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Ghost — most common. Text + arrow. */
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        line-height: 1;
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-accent);
+        background: none;
+        border: none;
+        padding: var(--space-1) 0;
+        cursor: pointer;
+        transition: gap var(--duration-fast) var(--ease-spring);
+      }
+      .btn-ghost .arrow {
+        display: inline-block;
+        transition: transform var(--duration-fast) var(--ease-spring);
+      }
+      .btn-ghost:hover {
+        gap: var(--space-3);
+      }
+      .btn-ghost:hover .arrow {
+        transform: translateX(2px);
+      }
+      .btn-ghost:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+      .btn-ghost:disabled,
+      .btn-ghost[aria-disabled="true"] {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .btn-ghost:disabled:hover,
+      .btn-ghost[aria-disabled="true"]:hover {
+        gap: var(--space-2);
+      }
+
+      /* Editorial — Fraunces italic, underline from center */
+      .btn-editorial {
+        display: inline-block;
+        font-family: var(--font-display);
+        font-size: var(--text-base);
+        font-weight: var(--weight-regular);
+        font-style: italic;
+        font-variation-settings: 'WONK' 1;
+        color: var(--text-accent);
+        background: none;
+        border: none;
+        padding: var(--space-1) 0;
+        cursor: pointer;
+        position: relative;
+        text-decoration: none;
+      }
+      .btn-editorial::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        height: 1px;
+        background: var(--color-accent-400);
+        transition: left var(--duration-normal) var(--ease-spring), right var(--duration-normal) var(--ease-spring);
+      }
+      .btn-editorial:hover::after {
+        left: 0;
+        right: 0;
+      }
+      .btn-editorial:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+      /* Danger */
+      .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-semibold);
+        line-height: 1;
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-on-accent);
+        background: var(--color-danger);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-6);
+        cursor: pointer;
+        transition:
+          transform var(--duration-fast) var(--ease-spring),
+          background var(--duration-fast) var(--ease-out);
+      }
+      .btn-danger:hover {
+        background: #b03a30;
+        transform: scale(var(--hover-scale));
+      }
+      .btn-danger:focus-visible {
+        outline: 2px solid var(--color-danger);
+        outline-offset: 2px;
+      }
+      .btn-danger:active {
+        transform: scale(var(--press-scale));
+      }
+      .btn-danger:disabled,
+      .btn-danger[aria-disabled="true"] {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Icon button */
+      .btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--border-default);
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition:
+          transform var(--duration-fast) var(--ease-spring),
+          background var(--duration-fast) var(--ease-out),
+          color var(--duration-fast) var(--ease-out),
+          border-color var(--duration-fast) var(--ease-out);
+        font-size: var(--text-lg);
+        line-height: 1;
+      }
+      .btn-icon:hover {
+        background: var(--surface-secondary);
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+        transform: scale(var(--hover-scale));
+      }
+      .btn-icon:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .btn-icon:active {
+        transform: scale(var(--press-scale));
+      }
+
+      /* Button sizes */
+      .btn--small {
+        font-size: var(--text-xs);
+        padding: var(--space-2) var(--space-4);
+      }
+      .btn--large {
+        font-size: var(--text-base);
+        padding: var(--space-4) var(--space-8);
+      }
+      .btn-icon--small {
+        width: 36px;
+        height: 36px;
+        font-size: var(--text-sm);
+      }
+      .btn-icon--large {
+        width: 52px;
+        height: 52px;
+        font-size: var(--text-xl);
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* =======================================================================
+         02 BADGES & TAGS
+         ======================================================================= */
+
+      /* Typography-only (default) — no container */
+      .badge-type {
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      /* Dot indicator */
+      .badge-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .badge-dot__circle {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .badge-dot--open .badge-dot__circle { background: var(--color-success); }
+      .badge-dot--closed .badge-dot__circle { background: var(--color-danger); }
+      .badge-dot--soon .badge-dot__circle { background: var(--color-warning); }
+
+      /* Outlined */
+      .badge-outlined {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-sm);
+        padding: var(--space-1) var(--space-3);
+      }
+
+      /* Accent pill — only for featured/promoted */
+      .badge-accent {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-accent);
+        background: var(--surface-accent);
+        border-radius: var(--radius-sm);
+        padding: var(--space-1) var(--space-3);
+      }
+
+      /* =======================================================================
+         03 NAVIGATION PATTERNS
+         ======================================================================= */
+
+      /* Sidebar nav */
+      .sidebar-nav {
+        width: 240px;
+        padding: var(--space-4) 0;
+      }
+      .sidebar-nav__item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .sidebar-nav__item:hover {
+        background: var(--surface-secondary);
+        color: var(--text-primary);
+      }
+      .sidebar-nav__item--active {
+        background: var(--surface-accent);
+        color: var(--text-accent);
+        font-weight: var(--weight-medium);
+      }
+      .sidebar-nav__icon {
+        width: 20px;
+        text-align: center;
+        flex-shrink: 0;
+        font-size: var(--text-base);
+      }
+
+      /* Breadcrumbs */
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+      }
+      .breadcrumbs a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .breadcrumbs a:hover {
+        color: var(--text-primary);
+      }
+      .breadcrumbs__current {
+        color: var(--text-accent);
+      }
+      .breadcrumbs__sep {
+        color: var(--text-tertiary);
+        user-select: none;
+      }
+
+      /* Tabs */
+      .tabs {
+        display: flex;
+        gap: var(--space-6);
+        border-bottom: 1px solid var(--border-default);
+        padding-bottom: 0;
+      }
+      .tabs__item {
+        font-family: var(--font-display);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-3) 0;
+        position: relative;
+        cursor: pointer;
+        background: none;
+        border: none;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .tabs__item:hover {
+        color: var(--text-primary);
+      }
+      .tabs__item--active {
+        color: var(--text-primary);
+      }
+      .tabs__item--active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--color-accent-500);
+        border-radius: var(--radius-pill);
+      }
+      .tabs__item:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+      /* =======================================================================
+         04 CARDS
+         ======================================================================= */
+
+      /* Place card */
+      .card-place {
+        background: var(--surface-elevated);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        cursor: pointer;
+        transition:
+          transform var(--duration-normal) var(--ease-spring),
+          box-shadow var(--duration-normal) var(--ease-out);
+      }
+      .card-place:hover {
+        transform: scale(var(--hover-scale));
+        box-shadow: var(--shadow-md);
+      }
+      .card-place__img {
+        width: 100%;
+        height: 180px;
+        background: var(--surface-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: var(--text-sm);
+        font-style: italic;
+        overflow: hidden;
+        position: relative;
+      }
+      .card-place__img::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 60%, rgba(28,24,20,0.06));
+      }
+      .card-place__body {
+        padding: var(--space-5) var(--space-5) var(--space-6);
+      }
+      .card-place__title {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        line-height: var(--leading-snug);
+        color: var(--text-primary);
+        margin-bottom: var(--space-2);
+      }
+      .card-place__meta {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+      }
+      .card-place__meta-sep {
+        color: var(--text-tertiary);
+      }
+      .card-place__rating {
+        display: flex;
+        gap: 3px;
+        align-items: center;
+      }
+      .rating-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-accent-400);
+      }
+      .rating-dot--empty {
+        background: var(--border-default);
+      }
+
+      /* Collection card — horizontal */
+      .card-collection {
+        display: flex;
+        gap: var(--space-5);
+        align-items: center;
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        cursor: pointer;
+        transition:
+          transform var(--duration-normal) var(--ease-spring),
+          background var(--duration-fast) var(--ease-out);
+      }
+      .card-collection:hover {
+        background: var(--surface-secondary);
+        transform: scale(var(--hover-scale));
+      }
+      .card-collection__img {
+        width: 72px;
+        height: 72px;
+        border-radius: var(--radius-md);
+        background: var(--surface-tertiary);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: var(--text-xl);
+      }
+      .card-collection__body {
+        flex: 1;
+        min-width: 0;
+      }
+      .card-collection__title {
+        font-family: var(--font-display);
+        font-size: var(--text-base);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+      }
+      .card-collection__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+      }
+
+      /* Stat card — border only, no shadow */
+      .card-stat {
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+      }
+      .card-stat__number {
+        font-family: var(--font-display);
+        font-size: var(--text-3xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        line-height: var(--leading-display);
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+      }
+      .card-stat__label {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+      }
+
+      /* Feature card — accent tint, large radius */
+      .card-feature {
+        background: var(--surface-accent);
+        border-radius: var(--radius-xl);
+        padding: var(--space-10) var(--space-8);
+      }
+      .card-feature__tag {
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-accent);
+        margin-bottom: var(--space-3);
+      }
+      .card-feature__title {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        line-height: var(--leading-tight);
+        color: var(--text-primary);
+        margin-bottom: var(--space-3);
+      }
+      .card-feature__desc {
+        font-size: var(--text-base);
+        color: var(--text-secondary);
+        line-height: var(--leading-normal);
+        margin-bottom: var(--space-6);
+        max-width: 420px;
+      }
+
+      /* =======================================================================
+         05 FORM INPUTS
+         ======================================================================= */
+
+      .form-group {
+        margin-bottom: var(--space-6);
+        max-width: 380px;
+      }
+      .form-label {
+        display: block;
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: var(--space-2);
+      }
+
+      /* Default input — invisible border at rest */
+      .input {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        color: var(--text-primary);
+        background: var(--surface-secondary);
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-4);
+        transition:
+          border-color var(--duration-fast) var(--ease-out),
+          background var(--duration-fast) var(--ease-out),
+          box-shadow var(--duration-fast) var(--ease-out);
+        outline: none;
+      }
+      .input::placeholder {
+        color: var(--text-tertiary);
+      }
+      .input:hover {
+        border-color: var(--border-default);
+      }
+      .input:focus {
+        border-color: var(--color-accent-400);
+        background: var(--surface-elevated);
+        box-shadow: 0 0 0 3px rgba(200, 90, 53, 0.1);
+      }
+      .input:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .input--error {
+        border-color: var(--color-danger);
+      }
+      .input--error:focus {
+        border-color: var(--color-danger);
+        box-shadow: 0 0 0 3px rgba(196, 69, 58, 0.1);
+      }
+
+      .form-error {
+        font-size: var(--text-sm);
+        color: var(--color-danger);
+        margin-top: var(--space-2);
+      }
+
+      /* Underline input */
+      .input-underline {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        color: var(--text-primary);
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--border-default);
+        padding: var(--space-3) 0;
+        outline: none;
+        position: relative;
+        transition: border-color var(--duration-fast) var(--ease-out);
+      }
+      .input-underline::placeholder {
+        color: var(--text-tertiary);
+      }
+      .input-underline-wrap {
+        position: relative;
+      }
+      .input-underline-wrap::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--color-accent-500);
+        transition: left var(--duration-normal) var(--ease-spring), right var(--duration-normal) var(--ease-spring);
+      }
+      .input-underline-wrap:focus-within::after {
+        left: 0;
+        right: 0;
+      }
+
+      /* Textarea */
+      .textarea {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        color: var(--text-primary);
+        background: var(--surface-secondary);
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-4);
+        min-height: 120px;
+        resize: vertical;
+        outline: none;
+        transition:
+          border-color var(--duration-fast) var(--ease-out),
+          background var(--duration-fast) var(--ease-out),
+          box-shadow var(--duration-fast) var(--ease-out);
+      }
+      .textarea::placeholder { color: var(--text-tertiary); }
+      .textarea:hover { border-color: var(--border-default); }
+      .textarea:focus {
+        border-color: var(--color-accent-400);
+        background: var(--surface-elevated);
+        box-shadow: 0 0 0 3px rgba(200, 90, 53, 0.1);
+      }
+
+      /* Select */
+      .select-wrap {
+        position: relative;
+      }
+      .select {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        color: var(--text-primary);
+        background: var(--surface-secondary);
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-8) var(--space-3) var(--space-4);
+        appearance: none;
+        cursor: pointer;
+        outline: none;
+        transition:
+          border-color var(--duration-fast) var(--ease-out),
+          background var(--duration-fast) var(--ease-out);
+      }
+      .select:hover { border-color: var(--border-default); }
+      .select:focus {
+        border-color: var(--color-accent-400);
+        background: var(--surface-elevated);
+      }
+      .select-wrap::after {
+        content: '\25BE';
+        position: absolute;
+        right: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-tertiary);
+        pointer-events: none;
+        font-size: var(--text-sm);
+      }
+
+      /* Checkbox */
+      .checkbox-wrap {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .checkbox {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1.5px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        background: var(--surface-elevated);
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition:
+          background var(--duration-fast) var(--ease-out),
+          border-color var(--duration-fast) var(--ease-out);
+      }
+      .checkbox:checked {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+      }
+      .checkbox:checked::after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid var(--text-on-accent);
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      .checkbox:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* Radio */
+      .radio-wrap {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .radio {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 1.5px solid var(--border-strong);
+        border-radius: 50%;
+        background: var(--surface-elevated);
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition:
+          border-color var(--duration-fast) var(--ease-out);
+      }
+      .radio:checked {
+        border-color: var(--color-accent-500);
+      }
+      .radio:checked::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--color-accent-500);
+      }
+      .radio:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* Toggle switch */
+      .toggle-wrap {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .toggle {
+        appearance: none;
+        width: 44px;
+        height: 24px;
+        border-radius: var(--radius-pill);
+        background: var(--surface-tertiary);
+        cursor: pointer;
+        position: relative;
+        border: none;
+        flex-shrink: 0;
+        transition: background var(--duration-fast) var(--ease-spring);
+      }
+      .toggle::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow-xs);
+        transition: transform var(--duration-fast) var(--ease-spring);
+      }
+      .toggle:checked {
+        background: var(--color-accent-500);
+      }
+      .toggle:checked::after {
+        transform: translateX(20px);
+      }
+      .toggle:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* Search input */
+      .search-wrap {
+        position: relative;
+        max-width: 380px;
+      }
+      .search-input {
+        width: 100%;
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+        background: var(--surface-secondary);
+        border: 1px solid transparent;
+        border-radius: var(--radius-pill);
+        padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
+        outline: none;
+        transition:
+          border-color var(--duration-fast) var(--ease-out),
+          background var(--duration-fast) var(--ease-out),
+          box-shadow var(--duration-fast) var(--ease-out);
+      }
+      .search-input::placeholder { color: var(--text-tertiary); }
+      .search-input:hover { border-color: var(--border-default); }
+      .search-input:focus {
+        border-color: var(--color-accent-400);
+        background: var(--surface-elevated);
+        box-shadow: 0 0 0 3px rgba(200, 90, 53, 0.1);
+      }
+      .search-wrap__icon {
+        position: absolute;
+        left: var(--space-4);
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-tertiary);
+        pointer-events: none;
+        font-size: var(--text-sm);
+      }
+
+      /* =======================================================================
+         06 TABLES
+         ======================================================================= */
+
+      .table-wrap {
+        overflow-x: auto;
+        margin-bottom: var(--space-6);
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+      }
+      .table th {
+        text-align: left;
+        font-weight: var(--weight-semibold);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        opacity: 0.6;
+        padding: var(--space-3) var(--space-4);
+        white-space: nowrap;
+      }
+      .table th.num {
+        text-align: right;
+      }
+      .table td {
+        padding: var(--space-4);
+        color: var(--text-primary);
+        vertical-align: middle;
+      }
+      .table td.num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+      }
+      .table tbody tr {
+        transition: background var(--duration-fast) var(--ease-out);
+        border-radius: var(--radius-sm);
+      }
+      .table tbody tr:hover {
+        background: var(--surface-secondary);
+      }
+      .table__name {
+        font-weight: var(--weight-medium);
+      }
+      .table__type {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+
+      /* =======================================================================
+         07 ALERTS & NOTIFICATIONS
+         ======================================================================= */
+
+      /* Bare text */
+      .alert-bare {
+        font-size: var(--text-sm);
+        padding: var(--space-2) 0;
+      }
+      .alert-bare--success { color: var(--color-success); }
+      .alert-bare--warning { color: var(--color-warning); }
+      .alert-bare--error { color: var(--color-danger); }
+      .alert-bare--info { color: var(--color-info); }
+
+      /* Left border */
+      .alert-border {
+        padding: var(--space-4) var(--space-5);
+        border-left: 2px solid;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+        line-height: var(--leading-normal);
+      }
+      .alert-border--success { border-color: var(--color-success); }
+      .alert-border--warning { border-color: var(--color-warning); }
+      .alert-border--error { border-color: var(--color-danger); }
+      .alert-border--info { border-color: var(--color-info); }
+
+      /* Top border */
+      .alert-top {
+        background: var(--surface-elevated);
+        border-top: 3px solid;
+        border-radius: 0 0 var(--radius-md) var(--radius-md);
+        padding: var(--space-5) var(--space-6);
+        box-shadow: var(--shadow-xs);
+      }
+      .alert-top--success { border-color: var(--color-success); }
+      .alert-top--warning { border-color: var(--color-warning); }
+      .alert-top--error { border-color: var(--color-danger); }
+      .alert-top--info { border-color: var(--color-info); }
+      .alert-top__title {
+        font-weight: var(--weight-semibold);
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-1);
+        color: var(--text-primary);
+      }
+      .alert-top__body {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-normal);
+      }
+
+      /* =======================================================================
+         08 MODALS & DRAWERS
+         ======================================================================= */
+
+      .modal-demo {
+        position: relative;
+        background: rgba(28, 24, 20, 0.5);
+        border-radius: var(--radius-lg);
+        padding: var(--space-16) var(--space-8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        margin-bottom: var(--space-6);
+      }
+      [data-theme="dark"] .modal-demo {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .modal-panel {
+        background: var(--surface-elevated);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-xl);
+        width: 100%;
+        max-width: 440px;
+        padding: var(--space-8);
+        position: relative;
+      }
+      .modal-panel__close {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        background: none;
+        border: none;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        font-size: var(--text-lg);
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .modal-panel__close:hover {
+        background: var(--surface-secondary);
+        color: var(--text-primary);
+      }
+      .modal-panel__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        color: var(--text-primary);
+        margin-bottom: var(--space-2);
+      }
+      .modal-panel__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+        line-height: var(--leading-normal);
+      }
+      .modal-panel__actions {
+        display: flex;
+        gap: var(--space-3);
+        justify-content: flex-end;
+        margin-top: var(--space-6);
+      }
+
+      /* Drawer */
+      .drawer-demo {
+        position: relative;
+        background: rgba(28, 24, 20, 0.5);
+        border-radius: var(--radius-lg);
+        min-height: 360px;
+        overflow: hidden;
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: var(--space-6);
+      }
+      [data-theme="dark"] .drawer-demo {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .drawer-panel {
+        width: 400px;
+        max-width: 100%;
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow-xl);
+        padding: var(--space-8);
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer-panel__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--space-6);
+      }
+      .drawer-panel__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        color: var(--text-primary);
+      }
+
+      /* =======================================================================
+         09 EMPTY STATES
+         ======================================================================= */
+
+      .empty-state {
+        text-align: center;
+        padding: var(--space-16) var(--space-8);
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .empty-state__motif {
+        font-size: 48px;
+        margin-bottom: var(--space-6);
+        opacity: 0.5;
+        color: var(--text-tertiary);
+      }
+      .empty-state__pin {
+        display: inline-block;
+        width: 56px;
+        height: 56px;
+        position: relative;
+        margin-bottom: var(--space-6);
+      }
+      .empty-state__pin::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 24px;
+        height: 24px;
+        border-radius: 50% 50% 50% 0;
+        transform: translateX(-50%) rotate(-45deg);
+        background: var(--color-accent-300);
+        opacity: 0.4;
+      }
+      .empty-state__pin::after {
+        content: '';
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--border-default);
+      }
+      .empty-state__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        font-variation-settings: 'WONK' 1;
+        line-height: var(--leading-tight);
+        color: var(--text-primary);
+        margin-bottom: var(--space-3);
+      }
+      .empty-state__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-normal);
+        margin-bottom: var(--space-8);
+      }
+
+      /* =======================================================================
+         10 SKELETON LOADING
+         ======================================================================= */
+
+      @keyframes skeleton-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+      .skeleton {
+        background: var(--surface-secondary);
+        border-radius: var(--radius-sm);
+        animation: skeleton-pulse 1.8s ease-in-out infinite;
+      }
+      .skeleton--text {
+        height: 14px;
+        margin-bottom: var(--space-2);
+      }
+      .skeleton--text-sm {
+        height: 10px;
+        width: 60%;
+        margin-bottom: var(--space-2);
+      }
+      .skeleton--heading {
+        height: 22px;
+        width: 45%;
+        margin-bottom: var(--space-3);
+        border-radius: var(--radius-sm);
+      }
+      .skeleton--img {
+        height: 180px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      }
+      .skeleton--card {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+      .skeleton--card-body {
+        padding: var(--space-5);
+      }
+      .skeleton--row {
+        display: flex;
+        gap: var(--space-4);
+        align-items: center;
+        padding: var(--space-4);
+      }
+      .skeleton--circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .skeleton--bar {
+        height: 12px;
+        flex: 1;
+        border-radius: var(--radius-sm);
+      }
+      .skeleton--bar-short {
+        height: 12px;
+        width: 80px;
+        border-radius: var(--radius-sm);
+      }
+
+      /* =======================================================================
+         11 TOOLTIPS & POPOVERS
+         ======================================================================= */
+
+      .tooltip-demo {
+        position: relative;
+        display: inline-block;
+      }
+      .tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface-elevated);
+        color: var(--text-primary);
+        font-size: var(--text-xs);
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-md);
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: var(--z-toast);
+      }
+      .tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: var(--surface-elevated);
+      }
+      .popover {
+        background: var(--surface-elevated);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-md);
+        padding: var(--space-4) var(--space-5);
+        max-width: 260px;
+        font-size: var(--text-sm);
+        position: relative;
+      }
+      .popover::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: var(--space-6);
+        border: 6px solid transparent;
+        border-bottom-color: var(--surface-elevated);
+      }
+      .popover__title {
+        font-weight: var(--weight-semibold);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+      }
+      .popover__body {
+        color: var(--text-secondary);
+        line-height: var(--leading-normal);
+      }
+
+      /* =======================================================================
+         12 PROGRESS & INDICATORS
+         ======================================================================= */
+
+      .progress-bar {
+        width: 100%;
+        height: 4px;
+        background: var(--surface-tertiary);
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+      }
+      .progress-bar__fill {
+        height: 100%;
+        background: var(--color-accent-500);
+        border-radius: var(--radius-pill);
+        transition: width var(--duration-slow) var(--ease-spring);
+      }
+
+      .steps {
+        display: flex;
+        align-items: center;
+        gap: 0;
+      }
+      .step {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+      .step__circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-semibold);
+        border: 1.5px solid var(--border-strong);
+        color: var(--text-secondary);
+        background: var(--surface-elevated);
+        flex-shrink: 0;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .step--active .step__circle {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+        color: var(--text-on-accent);
+      }
+      .step--complete .step__circle {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+        color: var(--text-on-accent);
+      }
+      .step__label {
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        white-space: nowrap;
+      }
+      .step--active .step__label {
+        color: var(--text-primary);
+        font-weight: var(--weight-medium);
+      }
+      .step__line {
+        width: 40px;
+        height: 1.5px;
+        background: var(--border-strong);
+        margin: 0 var(--space-2);
+        flex-shrink: 0;
+      }
+      .step--complete + .step__line,
+      .step__line--active {
+        background: var(--color-accent-400);
+      }
+
+      /* =======================================================================
+         DARK THEME OVERRIDES (beyond token swaps)
+         ======================================================================= */
+
+      [data-theme="dark"] .input {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .input:focus {
+        background: var(--surface-elevated);
+      }
+      [data-theme="dark"] .textarea {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .textarea:focus {
+        background: var(--surface-elevated);
+      }
+      [data-theme="dark"] .select {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .select:focus {
+        background: var(--surface-elevated);
+      }
+      [data-theme="dark"] .search-input {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .search-input:focus {
+        background: var(--surface-elevated);
+      }
+      [data-theme="dark"] .checkbox {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .toggle {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .card-place__img {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .skeleton {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .card-place {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .modal-panel,
+      [data-theme="dark"] .drawer-panel {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .alert-top {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .tooltip {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .popover {
+        background: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .tooltip::after {
+        border-top-color: var(--surface-tertiary);
+      }
+      [data-theme="dark"] .popover::before {
+        border-bottom-color: var(--surface-tertiary);
+      }
+
+      /* =======================================================================
+         RESPONSIVE
+         ======================================================================= */
+
+      @media (max-width: 768px) {
+        .shell {
+          padding: var(--space-8) var(--space-4) var(--space-16);
+        }
+        .page-header__title {
+          font-size: var(--text-3xl);
+        }
+        .example-grid--3 {
+          grid-template-columns: 1fr;
+        }
+        .example-grid--2 {
+          grid-template-columns: 1fr;
+        }
+        .drawer-panel {
+          width: 100%;
+        }
+        .topbar__inner {
+          gap: var(--space-4);
+        }
+        .topnav {
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ===================================================================
+         TOP BAR
+         =================================================================== -->
+    <header class="topbar" role="banner">
+      <div class="topbar__inner">
+        <a href="index.html" class="brand-lockup" aria-label="Parklet home">
+          <span class="brand-mark">Parklet</span>
+        </a>
+        <nav class="topnav" role="navigation" aria-label="Main navigation">
+          <a href="index.html">Overview</a>
+          <a href="components.html" aria-current="page">Components</a>
+          <a href="guidelines.html">Guidelines</a>
+          <a href="application.html">Application</a>
+        </nav>
+        <div class="topbar__actions">
+          <button class="theme-toggle" type="button" aria-label="Toggle dark theme">Dark</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         PAGE SHELL
+         =================================================================== -->
+    <main class="shell" role="main">
+
+      <div class="page-header">
+        <h1 class="page-header__title">Components</h1>
+        <p class="page-header__desc">Every piece in the Parklet interface, from buttons that feel good to click to cards that make you want to explore the neighborhood.</p>
+      </div>
+
+
+      <!-- =================================================================
+           01 BUTTONS
+           ================================================================= -->
+      <section class="section" id="buttons" aria-labelledby="section-buttons">
+        <div class="section__header">
+          <span class="section__number">01</span>
+          <h2 class="section__title" id="section-buttons">Buttons</h2>
+          <p class="section__desc">Buttons invite action. Primary buttons use terracotta sparingly. Ghost buttons with a trailing arrow are the most common pattern.</p>
+        </div>
+
+        <!-- Primary -->
+        <div class="subsection">
+          <p class="subsection__label">Primary</p>
+          <div class="example-row">
+            <button class="btn-primary" type="button">Save this place</button>
+            <button class="btn-primary" type="button" disabled>Save this place</button>
+            <button class="btn-primary btn-primary--loading" type="button" aria-label="Loading">Saving...</button>
+          </div>
+          <p class="subsection__note">Limit to one primary button per visible context. If more than one action competes for attention, something has gone wrong.</p>
+        </div>
+
+        <!-- Secondary -->
+        <div class="subsection">
+          <p class="subsection__label">Secondary</p>
+          <div class="example-row">
+            <button class="btn-secondary" type="button">Edit collection</button>
+            <button class="btn-secondary" type="button" disabled>Edit collection</button>
+          </div>
+        </div>
+
+        <!-- Ghost (most common) -->
+        <div class="subsection">
+          <p class="subsection__label">Ghost (most common)</p>
+          <div class="example-row">
+            <button class="btn-ghost" type="button">Find your next favorite spot <span class="arrow">&rarr;</span></button>
+            <button class="btn-ghost" type="button">View all in Capitol Hill <span class="arrow">&rarr;</span></button>
+            <button class="btn-ghost" type="button" disabled>Browse more places <span class="arrow">&rarr;</span></button>
+          </div>
+          <p class="subsection__note">Ghost buttons should be your default reach. They get out of the content's way while still inviting action.</p>
+        </div>
+
+        <!-- Editorial -->
+        <div class="subsection">
+          <p class="subsection__label">Editorial</p>
+          <div class="example-row">
+            <button class="btn-editorial" type="button">Read the full neighborhood guide</button>
+            <button class="btn-editorial" type="button">See what locals are saying</button>
+          </div>
+        </div>
+
+        <!-- Danger -->
+        <div class="subsection">
+          <p class="subsection__label">Danger</p>
+          <div class="example-row">
+            <button class="btn-danger" type="button">Remove from collection</button>
+            <button class="btn-danger" type="button" disabled>Remove from collection</button>
+          </div>
+        </div>
+
+        <!-- Icon buttons -->
+        <div class="subsection">
+          <p class="subsection__label">Icon buttons</p>
+          <div class="example-row">
+            <button class="btn-icon" type="button" aria-label="Bookmark this place">&hearts;</button>
+            <button class="btn-icon" type="button" aria-label="Share this place">&uarr;</button>
+            <button class="btn-icon" type="button" aria-label="More options">&hellip;</button>
+            <button class="btn-icon" type="button" aria-label="Close">&times;</button>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="subsection">
+          <p class="subsection__label">Sizes</p>
+          <div class="example-row">
+            <button class="btn-primary btn--small" type="button">Small</button>
+            <button class="btn-primary" type="button">Default</button>
+            <button class="btn-primary btn--large" type="button">Large</button>
+          </div>
+          <div class="example-row" style="margin-top: var(--space-4);">
+            <button class="btn-secondary btn--small" type="button">Small</button>
+            <button class="btn-secondary" type="button">Default</button>
+            <button class="btn-secondary btn--large" type="button">Large</button>
+          </div>
+          <div class="example-row" style="margin-top: var(--space-4);">
+            <button class="btn-icon btn-icon--small" type="button" aria-label="Small icon">&hearts;</button>
+            <button class="btn-icon" type="button" aria-label="Default icon">&hearts;</button>
+            <button class="btn-icon btn-icon--large" type="button" aria-label="Large icon">&hearts;</button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           02 BADGES & TAGS
+           ================================================================= -->
+      <section class="section" id="badges" aria-labelledby="section-badges">
+        <div class="section__header">
+          <span class="section__number">02</span>
+          <h2 class="section__title" id="section-badges">Badges &amp; Tags</h2>
+          <p class="section__desc">Labels and status indicators. The default is typography only, no container. Colored backgrounds are reserved for the accent pill and used sparingly.</p>
+        </div>
+
+        <!-- Typography-only (default) -->
+        <div class="subsection">
+          <p class="subsection__label">Typography-only (default)</p>
+          <div class="example-row">
+            <span class="badge-type">Coffee</span>
+            <span class="badge-type">Bookstore</span>
+            <span class="badge-type">Park</span>
+            <span class="badge-type">Gallery</span>
+            <span class="badge-type">Restaurant</span>
+          </div>
+          <p class="subsection__note">Hierarchy comes from size, weight, and case, not from wrapping text in a colored pill. This is the default for category labels.</p>
+        </div>
+
+        <!-- Dot indicator -->
+        <div class="subsection">
+          <p class="subsection__label">Dot indicator (status)</p>
+          <div class="example-row">
+            <span class="badge-dot badge-dot--open"><span class="badge-dot__circle"></span> Open Now</span>
+            <span class="badge-dot badge-dot--closed"><span class="badge-dot__circle"></span> Closed</span>
+            <span class="badge-dot badge-dot--soon"><span class="badge-dot__circle"></span> Coming Soon</span>
+          </div>
+        </div>
+
+        <!-- Outlined -->
+        <div class="subsection">
+          <p class="subsection__label">Outlined</p>
+          <div class="example-row">
+            <span class="badge-outlined">Closes at 6pm</span>
+            <span class="badge-outlined">2.4 mi away</span>
+            <span class="badge-outlined">Dog friendly</span>
+            <span class="badge-outlined">Free wifi</span>
+          </div>
+        </div>
+
+        <!-- Accent pill -->
+        <div class="subsection">
+          <p class="subsection__label">Accent pill (featured only)</p>
+          <div class="example-row">
+            <span class="badge-accent">New</span>
+            <span class="badge-accent">Staff Pick</span>
+            <span class="badge-accent">Neighborhood Favorite</span>
+          </div>
+          <p class="subsection__note">The only badge style that uses a colored background. Reserve for editorial picks and curated highlights.</p>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           03 NAVIGATION PATTERNS
+           ================================================================= -->
+      <section class="section" id="navigation" aria-labelledby="section-navigation">
+        <div class="section__header">
+          <span class="section__number">03</span>
+          <h2 class="section__title" id="section-navigation">Navigation</h2>
+          <p class="section__desc">Wayfinding patterns for different contexts. The top nav lives on every page, sidebar nav serves dashboards, tabs organize related content.</p>
+        </div>
+
+        <!-- Top nav (already shown) -->
+        <div class="subsection">
+          <p class="subsection__label">Top navigation</p>
+          <p class="subsection__note">See the sticky nav at the top of this page. Logo in Fraunces, links in DM Sans, theme toggle on the right.</p>
+        </div>
+
+        <!-- Sidebar nav -->
+        <div class="subsection">
+          <p class="subsection__label">Sidebar navigation</p>
+          <div class="example-box">
+            <nav class="sidebar-nav" role="navigation" aria-label="Dashboard navigation">
+              <a href="#" class="sidebar-nav__item sidebar-nav__item--active">
+                <span class="sidebar-nav__icon">&#9673;</span>
+                <span>My Neighborhood</span>
+              </a>
+              <a href="#" class="sidebar-nav__item">
+                <span class="sidebar-nav__icon">&#9734;</span>
+                <span>Saved Places</span>
+              </a>
+              <a href="#" class="sidebar-nav__item">
+                <span class="sidebar-nav__icon">&#9776;</span>
+                <span>Collections</span>
+              </a>
+              <a href="#" class="sidebar-nav__item">
+                <span class="sidebar-nav__icon">&#9998;</span>
+                <span>My Reviews</span>
+              </a>
+              <a href="#" class="sidebar-nav__item">
+                <span class="sidebar-nav__icon">&#9881;</span>
+                <span>Settings</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <div class="subsection">
+          <p class="subsection__label">Breadcrumbs</p>
+          <div class="example-box">
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+              <a href="#">Home</a>
+              <span class="breadcrumbs__sep">/</span>
+              <a href="#">Capitol Hill</a>
+              <span class="breadcrumbs__sep">/</span>
+              <span class="breadcrumbs__current">Provisions Coffee</span>
+            </nav>
+          </div>
+          <div class="example-box" style="margin-top: var(--space-3);">
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+              <a href="#">Explore</a>
+              <span class="breadcrumbs__sep">/</span>
+              <a href="#">Collections</a>
+              <span class="breadcrumbs__sep">/</span>
+              <span class="breadcrumbs__current">Best rainy day caf&eacute;s</span>
+            </nav>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="subsection">
+          <p class="subsection__label">Tabs</p>
+          <div class="example-box">
+            <div class="tabs" role="tablist" aria-label="Place details">
+              <button class="tabs__item tabs__item--active" role="tab" aria-selected="true">About</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Reviews</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Photos</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Nearby</button>
+            </div>
+          </div>
+          <div class="example-box" style="margin-top: var(--space-3);">
+            <div class="tabs" role="tablist" aria-label="Neighborhood sections">
+              <button class="tabs__item" role="tab" aria-selected="false">All Places</button>
+              <button class="tabs__item tabs__item--active" role="tab" aria-selected="true">Food &amp; Drink</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Shops</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Parks</button>
+              <button class="tabs__item" role="tab" aria-selected="false">Culture</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           04 CARDS
+           ================================================================= -->
+      <section class="section" id="cards" aria-labelledby="section-cards">
+        <div class="section__header">
+          <span class="section__number">04</span>
+          <h2 class="section__title" id="section-cards">Cards</h2>
+          <p class="section__desc">Cards contain related content. Not everything needs a card. Use them when content benefits from visual grouping and interactive behavior.</p>
+        </div>
+
+        <!-- Place cards -->
+        <div class="subsection">
+          <p class="subsection__label">Place cards</p>
+          <div class="example-grid--3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+            <article class="card-place" tabindex="0" role="link" aria-label="Provisions Coffee in Capitol Hill">
+              <div class="card-place__img">Warm cafe interior</div>
+              <div class="card-place__body">
+                <h3 class="card-place__title">Provisions Coffee</h3>
+                <div class="card-place__meta">
+                  <span>1.2 mi</span>
+                  <span class="card-place__meta-sep">&middot;</span>
+                  <span>Capitol Hill</span>
+                </div>
+                <div class="card-place__rating" aria-label="Rating 4 out of 5">
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot rating-dot--empty"></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-place" tabindex="0" role="link" aria-label="Twice Sold Tales in Fremont">
+              <div class="card-place__img">Bookstore shelves</div>
+              <div class="card-place__body">
+                <h3 class="card-place__title">Twice Sold Tales</h3>
+                <div class="card-place__meta">
+                  <span>0.8 mi</span>
+                  <span class="card-place__meta-sep">&middot;</span>
+                  <span>Fremont</span>
+                </div>
+                <div class="card-place__rating" aria-label="Rating 5 out of 5">
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                </div>
+              </div>
+            </article>
+
+            <article class="card-place" tabindex="0" role="link" aria-label="Powell's City of Books in Pearl District">
+              <div class="card-place__img">Vast bookstore hall</div>
+              <div class="card-place__body">
+                <h3 class="card-place__title">Powell's City of Books</h3>
+                <div class="card-place__meta">
+                  <span>3.4 mi</span>
+                  <span class="card-place__meta-sep">&middot;</span>
+                  <span>Pearl District</span>
+                </div>
+                <div class="card-place__rating" aria-label="Rating 5 out of 5">
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                  <span class="rating-dot"></span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Collection cards -->
+        <div class="subsection">
+          <p class="subsection__label">Collection cards</p>
+          <div class="example-stack" style="max-width: 480px;">
+            <article class="card-collection" tabindex="0" role="link">
+              <div class="card-collection__img">&#9749;</div>
+              <div class="card-collection__body">
+                <h3 class="card-collection__title">Best rainy day caf&eacute;s</h3>
+                <p class="card-collection__desc">12 places &middot; Updated last week</p>
+              </div>
+            </article>
+            <article class="card-collection" tabindex="0" role="link">
+              <div class="card-collection__img">&#127807;</div>
+              <div class="card-collection__body">
+                <h3 class="card-collection__title">Parks worth the walk</h3>
+                <p class="card-collection__desc">8 places &middot; Updated 3 days ago</p>
+              </div>
+            </article>
+            <article class="card-collection" tabindex="0" role="link">
+              <div class="card-collection__img">&#128218;</div>
+              <div class="card-collection__body">
+                <h3 class="card-collection__title">Bookstores with character</h3>
+                <p class="card-collection__desc">6 places &middot; Updated yesterday</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="subsection">
+          <p class="subsection__label">Stat cards</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+            <div class="card-stat">
+              <div class="card-stat__number">247</div>
+              <div class="card-stat__label">Places discovered</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat__number">18</div>
+              <div class="card-stat__label">Collections curated</div>
+            </div>
+            <div class="card-stat">
+              <div class="card-stat__number">5</div>
+              <div class="card-stat__label">Neighborhoods explored</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feature card -->
+        <div class="subsection">
+          <p class="subsection__label">Feature card</p>
+          <div class="card-feature" style="max-width: 520px;">
+            <div class="card-feature__tag">This week in your neighborhood</div>
+            <h3 class="card-feature__title">A new bakery just opened on Pine Street</h3>
+            <p class="card-feature__desc">The folks behind Little Flour are bringing their sourdough and pastries to a sunny corner spot two blocks from your favorite coffee shop.</p>
+            <button class="btn-ghost" type="button">Read more about it <span class="arrow">&rarr;</span></button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           05 FORM INPUTS
+           ================================================================= -->
+      <section class="section" id="forms" aria-labelledby="section-forms">
+        <div class="section__header">
+          <span class="section__number">05</span>
+          <h2 class="section__title" id="section-forms">Form Inputs</h2>
+          <p class="section__desc">Inputs are quiet at rest and reveal themselves on interaction. No visible borders until the user engages. Error messages use conversational language.</p>
+        </div>
+
+        <!-- Default inputs -->
+        <div class="subsection">
+          <p class="subsection__label">Default input</p>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-8);">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="input-neighborhood">Neighborhood</label>
+                <input class="input" type="text" id="input-neighborhood" placeholder="Capitol Hill, Fremont, Ballard...">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-filled">Place name</label>
+                <input class="input" type="text" id="input-filled" value="Provisions Coffee">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-error">ZIP code</label>
+                <input class="input input--error" type="text" id="input-error" value="9810">
+                <p class="form-error">The ZIP code format isn't recognized</p>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-disabled">Location</label>
+                <input class="input" type="text" id="input-disabled" value="Seattle, WA" disabled>
+              </div>
+            </div>
+            <div>
+              <p class="subsection__note" style="margin-top: 0;">Default: no visible border. Hover: subtle border appears. Focus: solid accent border + subtle glow. Error: muted red border, conversational message below.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Underline input -->
+        <div class="subsection">
+          <p class="subsection__label">Underline input</p>
+          <div class="form-group">
+            <label class="form-label" for="input-underline">What are you looking for?</label>
+            <div class="input-underline-wrap">
+              <input class="input-underline" type="text" id="input-underline" placeholder="A quiet place to read, a sunny patio...">
+            </div>
+          </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="subsection">
+          <p class="subsection__label">Textarea</p>
+          <div class="form-group">
+            <label class="form-label" for="textarea-review">Your review</label>
+            <textarea class="textarea" id="textarea-review" placeholder="What made this place special to you?"></textarea>
+          </div>
+        </div>
+
+        <!-- Select -->
+        <div class="subsection">
+          <p class="subsection__label">Select</p>
+          <div class="form-group">
+            <label class="form-label" for="select-type">Place type</label>
+            <div class="select-wrap">
+              <select class="select" id="select-type">
+                <option value="">Choose a type</option>
+                <option>Coffee shop</option>
+                <option>Restaurant</option>
+                <option>Bookstore</option>
+                <option>Park</option>
+                <option>Gallery</option>
+                <option>Bar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Checkbox & Radio -->
+        <div class="subsection">
+          <p class="subsection__label">Checkbox &amp; Radio</p>
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-8);">
+            <div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox" checked>
+                  <span>Open now</span>
+                </label>
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox">
+                  <span>Dog friendly</span>
+                </label>
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox" checked>
+                  <span>Has outdoor seating</span>
+                </label>
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox">
+                  <span>Free wifi</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="sort" checked>
+                  <span>Nearest first</span>
+                </label>
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="sort">
+                  <span>Highest rated</span>
+                </label>
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="sort">
+                  <span>Recently added</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toggle -->
+        <div class="subsection">
+          <p class="subsection__label">Toggle / Switch</p>
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <label class="toggle-wrap">
+              <input type="checkbox" class="toggle" checked>
+              <span>Show places on map</span>
+            </label>
+            <label class="toggle-wrap">
+              <input type="checkbox" class="toggle">
+              <span>Notify me about new places</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Search -->
+        <div class="subsection">
+          <p class="subsection__label">Search input</p>
+          <div class="search-wrap">
+            <span class="search-wrap__icon">&#9906;</span>
+            <input class="search-input" type="search" placeholder="Search neighborhoods, places, collections..." aria-label="Search">
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           06 TABLES
+           ================================================================= -->
+      <section class="section" id="tables" aria-labelledby="section-tables">
+        <div class="section__header">
+          <span class="section__number">06</span>
+          <h2 class="section__title" id="section-tables">Tables</h2>
+          <p class="section__desc">Borderless by default. Alignment, whitespace, and tabular numerals do the heavy lifting. Hover reveals the active row.</p>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection__label">Borderless table</p>
+          <div class="table-wrap">
+            <table class="table" role="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Type</th>
+                  <th scope="col" class="num">Distance</th>
+                  <th scope="col" class="num">Rating</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="table__name">Provisions Coffee</td>
+                  <td><span class="table__type">Coffee</span></td>
+                  <td class="num">1.2 mi</td>
+                  <td class="num">4.8</td>
+                  <td><span class="badge-dot badge-dot--open"><span class="badge-dot__circle"></span> Open</span></td>
+                </tr>
+                <tr>
+                  <td class="table__name">Twice Sold Tales</td>
+                  <td><span class="table__type">Bookstore</span></td>
+                  <td class="num">0.8 mi</td>
+                  <td class="num">4.9</td>
+                  <td><span class="badge-dot badge-dot--open"><span class="badge-dot__circle"></span> Open</span></td>
+                </tr>
+                <tr>
+                  <td class="table__name">Little Flour Bakery</td>
+                  <td><span class="table__type">Bakery</span></td>
+                  <td class="num">0.3 mi</td>
+                  <td class="num">4.6</td>
+                  <td><span class="badge-dot badge-dot--soon"><span class="badge-dot__circle"></span> Coming Soon</span></td>
+                </tr>
+                <tr>
+                  <td class="table__name">Volunteer Park</td>
+                  <td><span class="table__type">Park</span></td>
+                  <td class="num">2.1 mi</td>
+                  <td class="num">4.7</td>
+                  <td><span class="badge-dot badge-dot--open"><span class="badge-dot__circle"></span> Open</span></td>
+                </tr>
+                <tr>
+                  <td class="table__name">The Walrus and the Carpenter</td>
+                  <td><span class="table__type">Restaurant</span></td>
+                  <td class="num">1.8 mi</td>
+                  <td class="num">4.5</td>
+                  <td><span class="badge-dot badge-dot--closed"><span class="badge-dot__circle"></span> Closed</span></td>
+                </tr>
+                <tr>
+                  <td class="table__name">Ada's Technical Books</td>
+                  <td><span class="table__type">Bookstore</span></td>
+                  <td class="num">1.4 mi</td>
+                  <td class="num">4.8</td>
+                  <td><span class="badge-dot badge-dot--open"><span class="badge-dot__circle"></span> Open</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           07 ALERTS & NOTIFICATIONS
+           ================================================================= -->
+      <section class="section" id="alerts" aria-labelledby="section-alerts">
+        <div class="section__header">
+          <span class="section__number">07</span>
+          <h2 class="section__title" id="section-alerts">Alerts &amp; Notifications</h2>
+          <p class="section__desc">Three tiers of visual weight for system feedback. Start with bare text, escalate only when the message needs more prominence.</p>
+        </div>
+
+        <!-- Bare text alerts -->
+        <div class="subsection">
+          <p class="subsection__label">Bare text</p>
+          <div class="example-stack" style="max-width: 480px;">
+            <p class="alert-bare alert-bare--success" role="status">Your neighborhood guide has been saved.</p>
+            <p class="alert-bare alert-bare--warning" role="status">This place hasn't been updated in a while.</p>
+            <p class="alert-bare alert-bare--error" role="alert">The collection couldn't be shared right now.</p>
+            <p class="alert-bare alert-bare--info" role="status">Three new places have opened in Capitol Hill this month.</p>
+          </div>
+        </div>
+
+        <!-- Left border alerts -->
+        <div class="subsection">
+          <p class="subsection__label">Left border</p>
+          <div class="example-stack" style="max-width: 520px;">
+            <div class="alert-border alert-border--success" role="status">
+              Your review of Provisions Coffee has been published. Thanks for sharing your experience with the neighborhood.
+            </div>
+            <div class="alert-border alert-border--warning" role="status">
+              This place's hours may have changed recently. We recommend checking before you visit.
+            </div>
+            <div class="alert-border alert-border--error" role="alert">
+              The neighborhood boundary couldn't be determined. The location data may be incomplete.
+            </div>
+            <div class="alert-border alert-border--info" role="status">
+              Collections with more than 5 places appear on the neighborhood page for others to discover.
+            </div>
+          </div>
+        </div>
+
+        <!-- Top border alerts -->
+        <div class="subsection">
+          <p class="subsection__label">Top border</p>
+          <div class="example-stack" style="max-width: 520px;">
+            <div class="alert-top alert-top--success" role="status">
+              <p class="alert-top__title">Collection published</p>
+              <p class="alert-top__body">Your "Best rainy day caf&eacute;s" collection is now visible to others exploring Capitol Hill.</p>
+            </div>
+            <div class="alert-top alert-top--error" role="alert">
+              <p class="alert-top__title">Location not found</p>
+              <p class="alert-top__body">The address provided doesn't match a known location. Double-check the spelling or try a nearby intersection.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           08 MODALS & DRAWERS
+           ================================================================= -->
+      <section class="section" id="modals" aria-labelledby="section-modals">
+        <div class="section__header">
+          <span class="section__number">08</span>
+          <h2 class="section__title" id="section-modals">Modals &amp; Drawers</h2>
+          <p class="section__desc">Overlaying surfaces for focused tasks. Modals center on screen for decisions, drawers slide from the right for detail panels.</p>
+        </div>
+
+        <!-- Modal -->
+        <div class="subsection">
+          <p class="subsection__label">Modal</p>
+          <div class="modal-demo" role="presentation">
+            <div class="modal-panel" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+              <button class="modal-panel__close" type="button" aria-label="Close dialog">&times;</button>
+              <h3 class="modal-panel__title" id="modal-title">Add to collection</h3>
+              <p class="modal-panel__desc">Choose a collection for Provisions Coffee, or create a new one to get started.</p>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="collection" checked>
+                  <span>Best rainy day caf&eacute;s</span>
+                </label>
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="collection">
+                  <span>Capitol Hill favorites</span>
+                </label>
+                <label class="radio-wrap">
+                  <input type="radio" class="radio" name="collection">
+                  <span>Places to bring visitors</span>
+                </label>
+              </div>
+              <div class="modal-panel__actions">
+                <button class="btn-secondary" type="button">Cancel</button>
+                <button class="btn-primary" type="button">Add to collection</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drawer -->
+        <div class="subsection">
+          <p class="subsection__label">Drawer</p>
+          <div class="drawer-demo" role="presentation">
+            <div class="drawer-panel" role="dialog" aria-labelledby="drawer-title">
+              <div class="drawer-panel__header">
+                <h3 class="drawer-panel__title" id="drawer-title">Place details</h3>
+                <button class="modal-panel__close" type="button" aria-label="Close drawer" style="position: static;">&times;</button>
+              </div>
+              <div style="margin-bottom: var(--space-4);">
+                <div style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--weight-regular); font-variation-settings: 'WONK' 1; margin-bottom: var(--space-2);">Provisions Coffee</div>
+                <div style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4);">1.2 mi &middot; Capitol Hill &middot; Open until 6pm</div>
+                <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-normal);">A bright corner shop with excellent single-origin pourovers and a rotating selection of pastries from Little Flour. The window seats are perfect for watching the neighborhood go by.</p>
+              </div>
+              <div style="display: flex; gap: var(--space-3); margin-top: auto;">
+                <button class="btn-primary" type="button">Save this place</button>
+                <button class="btn-ghost" type="button">Get directions <span class="arrow">&rarr;</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           09 EMPTY STATES
+           ================================================================= -->
+      <section class="section" id="empty-states" aria-labelledby="section-empty">
+        <div class="section__header">
+          <span class="section__number">09</span>
+          <h2 class="section__title" id="section-empty">Empty States</h2>
+          <p class="section__desc">When there's nothing to show yet, we invite exploration rather than display a dead end. Fraunces heading, DM Sans body, single call to action.</p>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection__label">Default empty state</p>
+          <div class="example-box example-box--elevated">
+            <div class="empty-state">
+              <div class="empty-state__pin" aria-hidden="true"></div>
+              <h3 class="empty-state__title">No saved places yet</h3>
+              <p class="empty-state__desc">Start exploring your neighborhood to build your collection. Every place you save will appear here, ready when you need it.</p>
+              <button class="btn-primary" type="button">Explore nearby places</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection__label">Empty collection</p>
+          <div class="example-box example-box--elevated">
+            <div class="empty-state">
+              <div class="empty-state__pin" aria-hidden="true"></div>
+              <h3 class="empty-state__title">This collection is empty</h3>
+              <p class="empty-state__desc">Add places you love and they'll show up here. Collections with more than five places get shared with the neighborhood.</p>
+              <button class="btn-ghost" type="button">Browse places to add <span class="arrow">&rarr;</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <p class="subsection__label">No search results</p>
+          <div class="example-box example-box--elevated">
+            <div class="empty-state">
+              <div class="empty-state__pin" aria-hidden="true"></div>
+              <h3 class="empty-state__title">Nothing matching that search</h3>
+              <p class="empty-state__desc">We couldn't find any places for "artisanal ice cream" in this neighborhood. Try broadening your search or exploring a different area.</p>
+              <button class="btn-ghost" type="button">Clear search and start over <span class="arrow">&rarr;</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           10 SKELETON LOADING
+           ================================================================= -->
+      <section class="section" id="skeletons" aria-labelledby="section-skeletons">
+        <div class="section__header">
+          <span class="section__number">10</span>
+          <h2 class="section__title" id="section-skeletons">Skeleton Loading</h2>
+          <p class="section__desc">Placeholder shapes that pulse gently while content loads. Built from the warm neutral palette so they feel intentional, not broken.</p>
+        </div>
+
+        <!-- Skeleton place card -->
+        <div class="subsection">
+          <p class="subsection__label">Place card skeleton</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);">
+            <div class="skeleton--card" aria-hidden="true">
+              <div class="skeleton skeleton--img"></div>
+              <div class="skeleton--card-body">
+                <div class="skeleton skeleton--heading"></div>
+                <div class="skeleton skeleton--text-sm"></div>
+                <div class="skeleton skeleton--text-sm" style="width: 40%;"></div>
+              </div>
+            </div>
+            <div class="skeleton--card" aria-hidden="true">
+              <div class="skeleton skeleton--img"></div>
+              <div class="skeleton--card-body">
+                <div class="skeleton skeleton--heading" style="width: 55%;"></div>
+                <div class="skeleton skeleton--text-sm"></div>
+                <div class="skeleton skeleton--text-sm" style="width: 35%;"></div>
+              </div>
+            </div>
+            <div class="skeleton--card" aria-hidden="true">
+              <div class="skeleton skeleton--img"></div>
+              <div class="skeleton--card-body">
+                <div class="skeleton skeleton--heading" style="width: 50%;"></div>
+                <div class="skeleton skeleton--text-sm" style="width: 65%;"></div>
+                <div class="skeleton skeleton--text-sm" style="width: 30%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skeleton text block -->
+        <div class="subsection">
+          <p class="subsection__label">Text block skeleton</p>
+          <div style="max-width: 420px;" aria-hidden="true">
+            <div class="skeleton skeleton--heading"></div>
+            <div class="skeleton skeleton--text"></div>
+            <div class="skeleton skeleton--text"></div>
+            <div class="skeleton skeleton--text" style="width: 75%;"></div>
+          </div>
+        </div>
+
+        <!-- Skeleton table rows -->
+        <div class="subsection">
+          <p class="subsection__label">Table row skeleton</p>
+          <div aria-hidden="true">
+            <div class="skeleton--row">
+              <div class="skeleton skeleton--circle"></div>
+              <div class="skeleton skeleton--bar"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+            </div>
+            <div class="skeleton--row">
+              <div class="skeleton skeleton--circle"></div>
+              <div class="skeleton skeleton--bar"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+            </div>
+            <div class="skeleton--row">
+              <div class="skeleton skeleton--circle"></div>
+              <div class="skeleton skeleton--bar"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+              <div class="skeleton skeleton--bar-short"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           11 TOOLTIPS & POPOVERS
+           ================================================================= -->
+      <section class="section" id="tooltips" aria-labelledby="section-tooltips">
+        <div class="section__header">
+          <span class="section__number">11</span>
+          <h2 class="section__title" id="section-tooltips">Tooltips &amp; Popovers</h2>
+          <p class="section__desc">Small surfaces for contextual information. Tooltips for labels, popovers for richer content. Both use elevated surfaces with warm shadows.</p>
+        </div>
+
+        <!-- Tooltip -->
+        <div class="subsection">
+          <p class="subsection__label">Tooltip</p>
+          <div class="example-box" style="padding: var(--space-16) var(--space-8); display: flex; gap: var(--space-16); align-items: flex-end;">
+            <div class="tooltip-demo">
+              <div class="tooltip" aria-hidden="true">Save to your collection</div>
+              <button class="btn-icon" type="button" aria-label="Save to your collection">&hearts;</button>
+            </div>
+            <div class="tooltip-demo">
+              <div class="tooltip" aria-hidden="true">Share this place</div>
+              <button class="btn-icon" type="button" aria-label="Share this place">&uarr;</button>
+            </div>
+            <div class="tooltip-demo">
+              <div class="tooltip" aria-hidden="true">Get walking directions</div>
+              <button class="btn-icon" type="button" aria-label="Get walking directions">&#10140;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Popover -->
+        <div class="subsection">
+          <p class="subsection__label">Popover</p>
+          <div class="example-box" style="padding: var(--space-10) var(--space-8);">
+            <div class="popover" style="display: inline-block;">
+              <p class="popover__title">Provisions Coffee</p>
+              <p class="popover__body">Corner of Pine &amp; 12th. Open 7am-6pm weekdays. Known for their single-origin pourovers and the sunlight that fills the front room all morning.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- =================================================================
+           12 PROGRESS & INDICATORS
+           ================================================================= -->
+      <section class="section" id="progress" aria-labelledby="section-progress">
+        <div class="section__header">
+          <span class="section__number">12</span>
+          <h2 class="section__title" id="section-progress">Progress &amp; Indicators</h2>
+          <p class="section__desc">Visual markers for completion and multi-step flows. Thin terracotta bars for progress, numbered circles for sequential steps.</p>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="subsection">
+          <p class="subsection__label">Progress bar</p>
+          <div style="max-width: 480px; display: flex; flex-direction: column; gap: var(--space-6);">
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span style="font-size: var(--text-xs); color: var(--text-secondary);">Neighborhood explored</span>
+                <span style="font-size: var(--text-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums;">72%</span>
+              </div>
+              <div class="progress-bar" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Neighborhood exploration progress">
+                <div class="progress-bar__fill" style="width: 72%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span style="font-size: var(--text-xs); color: var(--text-secondary);">Collection completeness</span>
+                <span style="font-size: var(--text-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums;">35%</span>
+              </div>
+              <div class="progress-bar" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="Collection completeness">
+                <div class="progress-bar__fill" style="width: 35%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+                <span style="font-size: var(--text-xs); color: var(--text-secondary);">Profile setup</span>
+                <span style="font-size: var(--text-xs); color: var(--text-secondary); font-variant-numeric: tabular-nums;">100%</span>
+              </div>
+              <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" aria-label="Profile setup complete">
+                <div class="progress-bar__fill" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step indicator -->
+        <div class="subsection">
+          <p class="subsection__label">Step indicator</p>
+          <div class="example-box" style="overflow-x: auto;">
+            <div class="steps" aria-label="Create collection steps">
+              <div class="step step--complete">
+                <span class="step__circle">&check;</span>
+                <span class="step__label">Name</span>
+              </div>
+              <div class="step__line step__line--active"></div>
+              <div class="step step--complete">
+                <span class="step__circle">&check;</span>
+                <span class="step__label">Add places</span>
+              </div>
+              <div class="step__line step__line--active"></div>
+              <div class="step step--active">
+                <span class="step__circle">3</span>
+                <span class="step__label">Description</span>
+              </div>
+              <div class="step__line"></div>
+              <div class="step">
+                <span class="step__circle">4</span>
+                <span class="step__label">Publish</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+
+    <!-- ===================================================================
+         SCRIPTS
+         =================================================================== -->
+    <script>
+      /* Theme toggle */
+      (function() {
+        const toggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+
+        /* Restore saved preference */
+        const saved = localStorage.getItem('parklet-theme');
+        if (saved) {
+          html.setAttribute('data-theme', saved);
+          toggle.textContent = saved === 'dark' ? 'Light' : 'Dark';
+        }
+
+        toggle.addEventListener('click', function() {
+          const current = html.getAttribute('data-theme');
+          const next = current === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', next);
+          toggle.textContent = next === 'dark' ? 'Light' : 'Dark';
+          localStorage.setItem('parklet-theme', next);
+        });
+      })();
+    </script>
+
+  </body>
+</html>

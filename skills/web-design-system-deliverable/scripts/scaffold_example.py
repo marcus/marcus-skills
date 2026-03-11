@@ -7,7 +7,7 @@ import shutil
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
-TEMPLATE_DIR = SKILL_DIR / "assets" / "example-system"
+TEMPLATE_DIR = SKILL_DIR / "assets" / "developing" / "meridian-system"
 TEXT_EXTENSIONS = {".html", ".css", ".js", ".json"}
 
 

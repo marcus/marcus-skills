@@ -376,10 +376,22 @@ References:
 
 ### 10. Reuse the Bundled Examples
 
-Use the bundled examples as reference implementations when the user wants a concrete starting point.
+Use the bundled examples as reference implementations when the user wants a concrete starting point. Examples are organized by quality tier under `assets/`.
 
-- `assets/theorem-system/` — the strongest current reference. Editorial serif/sans tension, warm copper accent (#b87a4b), warm off-values, agency-influenced design intelligence, dark/light themes, full application proof with sidebar dashboard.
-- `assets/example-system/` — the older baseline example. Simpler implementation patterns, less opinionated.
+**Featured** (`assets/featured/`) — production-grade references:
+- `theorem-system/` — the strongest current reference. Editorial serif/sans tension, warm copper accent (#b87a4b), warm off-values, agency-influenced design intelligence, dark/light themes, full application proof with sidebar dashboard.
+- `folio-system/` — polished, complete system with strong design coherence.
+
+**Stable** (`assets/stable/`) — solid implementations:
+- `relay-bureau/` — well-structured system, reliable patterns.
+- `parklet-system/` — clean, cohesive system.
+
+**Developing** (`assets/developing/`) — functional but still maturing:
+- `nerve-system/` — working system with room for refinement.
+- `meridian-system/` — baseline example with simpler implementation patterns.
+
+**Experimental** (`assets/experimental/`) — early-stage or rough:
+- `northstar-system/` — least polished, exploratory.
 
 Each example contains:
 - `index.html` — system overview and foundational surfaces.
@@ -392,7 +404,7 @@ Each example contains:
 
 All HTML files share a 4-item navigation: Overview, Components, Guidelines, Application.
 
-Use `scripts/scaffold_example.py <output-dir>` to copy the example deliverable into a working directory. Pass optional flags to rename the system and client placeholders.
+Use `scripts/scaffold_example.py <output-dir>` to copy the meridian example into a working directory. Pass optional flags to rename the system and client placeholders.
 
 ## Output Shape
 

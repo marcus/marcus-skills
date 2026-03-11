@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parklet Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400..700&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0..1;1,9..144,100..900,0..100,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* =======================================================================
+       PARKLET DESIGN SYSTEM — Overview Page
+       Every neighborhood has a secret.
+       ======================================================================= */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-normal);
+      color: var(--text-primary);
+      background-color: var(--surface-primary);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  color var(--duration-slow) var(--ease-smooth);
+    }
+
+    /* =======================================================================
+       NAVIGATION
+       ======================================================================= */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      background: var(--surface-primary);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width-full);
+      margin: 0 auto;
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: var(--tracking-snug);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: var(--tracking-wide);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a.active {
+      color: var(--text-accent);
+      font-weight: var(--weight-medium);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .theme-toggle {
+      appearance: none;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--border-accent);
+      color: var(--text-primary);
+    }
+
+    /* =======================================================================
+       LAYOUT UTILITIES
+       ======================================================================= */
+
+    .container {
+      max-width: var(--max-width-full);
+      margin: 0 auto;
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+
+    .container--narrow {
+      max-width: var(--max-width-content);
+    }
+
+    .section {
+      padding-top: var(--space-32);
+      padding-bottom: 0;
+    }
+
+    .section + .section {
+      padding-top: var(--space-24);
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-6);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-desc {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      max-width: 640px;
+    }
+
+    /* =======================================================================
+       HERO — Asymmetric split
+       ======================================================================= */
+
+    .hero {
+      padding: var(--space-32) 0;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-inner {
+      max-width: var(--max-width-full);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+      display: grid;
+      grid-template-columns: 55fr 45fr;
+      gap: var(--space-16);
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 620px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      line-height: var(--leading-display);
+      letter-spacing: var(--tracking-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-subtitle {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      max-width: 480px;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Pin-drop / leaf hybrid — CSS-rendered motif */
+    .hero-motif {
+      position: relative;
+      width: 240px;
+      height: 320px;
+    }
+
+    .pin-shape {
+      position: absolute;
+      width: 180px;
+      height: 240px;
+      background: var(--color-accent-500);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      top: 20px;
+      left: 40px;
+      opacity: 0.9;
+    }
+
+    .pin-shape::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: var(--surface-primary);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: background-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .pin-shape-shadow {
+      position: absolute;
+      width: 180px;
+      height: 240px;
+      background: var(--color-accent-200);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      top: 40px;
+      left: 56px;
+      opacity: 0.4;
+    }
+
+    /* Palette grid beside motif */
+    .palette-grid {
+      position: absolute;
+      right: -20px;
+      bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 28px);
+      gap: 6px;
+    }
+
+    .palette-grid-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* =======================================================================
+       BRAND POSITIONING
+       ======================================================================= */
+
+    .positioning {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    .positioning-text {
+      max-width: 520px;
+    }
+
+    .positioning-text p {
+      margin-bottom: var(--space-4);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+    }
+
+    .positioning-text p:first-of-type {
+      font-size: var(--text-lg);
+      color: var(--text-primary);
+    }
+
+    /* Personality 2x2 grid — typographic, not cards */
+    .personality-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-10) var(--space-8);
+    }
+
+    .personality-item {
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border-default);
+    }
+
+    .personality-trait {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      line-height: var(--leading-snug);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .personality-trait em {
+      color: var(--text-accent);
+      font-style: normal;
+    }
+
+    .personality-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-normal);
+      color: var(--text-secondary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* =======================================================================
+       DESIGN PRINCIPLES — Editorial numbered sections
+       ======================================================================= */
+
+    .principles-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      max-width: var(--max-width-wide);
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .principle-number {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 200;
+      font-variation-settings: 'WONK' 0;
+      line-height: var(--leading-none);
+      letter-spacing: var(--tracking-tight);
+      color: var(--text-accent);
+    }
+
+    .principle-content {
+      padding-top: var(--space-2);
+    }
+
+    .principle-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      line-height: var(--leading-snug);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .principle-desc {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      max-width: 560px;
+    }
+
+    /* =======================================================================
+       COLOR PALETTE
+       ======================================================================= */
+
+    .color-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .color-group-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    /* Neutral strip */
+    .color-strip {
+      display: flex;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .color-strip-block {
+      flex: 1;
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-2);
+    }
+
+    .color-strip-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: var(--tracking-wider);
+      opacity: 0.8;
+    }
+
+    /* Accent scale */
+    .accent-scale {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .accent-swatch {
+      flex: 1;
+      height: 64px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: var(--space-2);
+      transition: transform var(--duration-fast) var(--ease-spring);
+    }
+
+    .accent-swatch:hover {
+      transform: scale(var(--hover-scale));
+    }
+
+    .accent-swatch-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: var(--tracking-wider);
+    }
+
+    /* Functional dots */
+    .functional-colors {
+      display: flex;
+      gap: var(--space-10);
+      align-items: center;
+    }
+
+    .functional-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .functional-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .functional-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .functional-hex {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* Border examples */
+    .border-examples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    .border-example {
+      padding: var(--space-6);
+      border-radius: var(--radius-lg);
+    }
+
+    .border-example-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-1);
+    }
+
+    .border-example-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* Dark palette preview */
+    .dark-preview {
+      background: var(--color-black);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .dark-preview-swatch {
+      height: 56px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-2);
+    }
+
+    .dark-preview-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* =======================================================================
+       TYPOGRAPHY SPECIMENS
+       ======================================================================= */
+
+    .type-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .type-pairing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+
+    .type-family {
+      padding: var(--space-8);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-xl);
+    }
+
+    .type-family-name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-6);
+    }
+
+    .type-family-specimen {
+      font-size: var(--text-4xl);
+      line-height: var(--leading-display);
+      letter-spacing: var(--tracking-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+
+    .type-family-meta {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* Type scale display */
+    .type-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .type-scale-row {
+      display: grid;
+      grid-template-columns: 80px 100px 1fr;
+      align-items: baseline;
+      gap: var(--space-4);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .type-scale-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .type-scale-size {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* Tracking display */
+    .tracking-demo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .tracking-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: baseline;
+      gap: var(--space-6);
+    }
+
+    .tracking-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* Weight variations */
+    .weight-demo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .weight-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      align-items: baseline;
+      gap: var(--space-6);
+    }
+
+    .weight-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* WONK axis comparison */
+    .wonk-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+    }
+
+    .wonk-panel {
+      padding: var(--space-6);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-lg);
+    }
+
+    .wonk-panel-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-accent);
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+    }
+
+    .wonk-panel-text {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+    }
+
+    /* =======================================================================
+       SPACING & RHYTHM
+       ======================================================================= */
+
+    .spacing-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .spacing-grid-visual {
+      background: var(--surface-secondary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+    }
+
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+
+    .spacing-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .spacing-bar {
+      height: 24px;
+      background: var(--color-accent-200);
+      border-radius: var(--radius-sm);
+      transition: background var(--duration-fast) var(--ease-out);
+    }
+
+    .spacing-bar:hover {
+      background: var(--color-accent-400);
+    }
+
+    .spacing-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      min-width: 80px;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .spacing-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      min-width: 48px;
+    }
+
+    /* Section spacing visual */
+    .section-spacing-demo {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .spacing-tier {
+      display: grid;
+      grid-template-columns: 120px 1fr 80px;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .spacing-tier-label {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+    }
+
+    .spacing-tier-bar {
+      height: 32px;
+      background: var(--surface-accent);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+    }
+
+    .spacing-tier-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      text-align: right;
+    }
+
+    /* Density tiers */
+    .density-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .density-tier {
+      padding: var(--space-6);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .density-tier-name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .density-tier-context {
+      font-size: var(--text-sm);
+      color: var(--text-accent);
+      margin-bottom: var(--space-4);
+    }
+
+    .density-tier-values {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .density-tier-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* =======================================================================
+       SHAPE LANGUAGE
+       ======================================================================= */
+
+    .shape-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .radius-hierarchy {
+      display: flex;
+      gap: var(--space-6);
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .radius-example {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .radius-rect {
+      width: 80px;
+      height: 56px;
+      background: var(--color-accent-200);
+      border: 1px solid var(--color-accent-300);
+      transition: transform var(--duration-fast) var(--ease-spring),
+                  background var(--duration-fast) var(--ease-out);
+    }
+
+    .radius-rect:hover {
+      transform: scale(var(--hover-scale));
+      background: var(--color-accent-300);
+    }
+
+    .radius-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    .radius-value {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-tertiary);
+      opacity: 0.7;
+    }
+
+    .nested-radius-note {
+      padding: var(--space-6);
+      background: var(--surface-accent);
+      border-radius: var(--radius-lg);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      line-height: var(--leading-normal);
+      max-width: 560px;
+    }
+
+    .nested-radius-note code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: var(--surface-primary);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* =======================================================================
+       MOTION
+       ======================================================================= */
+
+    .motion-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .easing-curves {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .easing-card {
+      padding: var(--space-6);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .easing-name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .easing-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-accent);
+      margin-bottom: var(--space-3);
+    }
+
+    .easing-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-normal);
+    }
+
+    /* Duration scale */
+    .duration-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .duration-row {
+      display: grid;
+      grid-template-columns: 100px 80px 1fr;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .duration-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    .duration-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-accent);
+    }
+
+    .duration-bar {
+      height: 4px;
+      background: var(--color-accent-300);
+      border-radius: var(--radius-pill);
+    }
+
+    .motion-note {
+      font-size: var(--text-sm);
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      padding: var(--space-6);
+      background: var(--surface-accent);
+      border-radius: var(--radius-lg);
+      max-width: 640px;
+    }
+
+    /* Interactive hover demos */
+    .hover-demos {
+      display: flex;
+      gap: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .hover-demo-item {
+      padding: var(--space-5) var(--space-8);
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-default);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .hover-demo-spring {
+      border-radius: var(--radius-md);
+      transition: transform var(--duration-normal) var(--ease-spring),
+                  box-shadow var(--duration-normal) var(--ease-out);
+    }
+
+    .hover-demo-spring:hover {
+      transform: scale(var(--hover-scale));
+      box-shadow: var(--shadow-md);
+    }
+
+    .hover-demo-smooth {
+      border-radius: var(--radius-md);
+      transition: transform var(--duration-slow) var(--ease-smooth),
+                  background var(--duration-slow) var(--ease-smooth);
+    }
+
+    .hover-demo-smooth:hover {
+      transform: translateY(-2px);
+      background: var(--surface-accent);
+    }
+
+    .hover-demo-out {
+      border-radius: var(--radius-md);
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .hover-demo-out:hover {
+      border-color: var(--text-accent);
+      color: var(--text-accent);
+    }
+
+    .hover-demo-press {
+      border-radius: var(--radius-md);
+      transition: transform var(--duration-instant) var(--ease-out);
+    }
+
+    .hover-demo-press:active {
+      transform: scale(var(--press-scale));
+    }
+
+    .hover-demo-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin-top: var(--space-2);
+      text-align: center;
+    }
+
+    /* =======================================================================
+       SIGNATURE MOTIF
+       ======================================================================= */
+
+    .motif-section {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .motif-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-12) var(--space-8);
+      background: var(--surface-secondary);
+      border-radius: var(--radius-xl);
+    }
+
+    .motif-pin {
+      width: 120px;
+      height: 160px;
+      background: var(--color-accent-500);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      position: relative;
+    }
+
+    .motif-pin::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: var(--surface-secondary);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .motif-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .motif-usage-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .motif-usage-list li {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-normal);
+      padding-left: var(--space-6);
+      position: relative;
+    }
+
+    .motif-usage-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--color-accent-300);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+    }
+
+    /* =======================================================================
+       DARK THEME SECTION
+       ======================================================================= */
+
+    .dark-theme-section {
+      background: var(--color-black);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-12);
+      color: var(--color-gray-100);
+    }
+
+    .dark-theme-section .section-label {
+      color: var(--color-gray-400);
+    }
+
+    .dark-theme-section .section-title {
+      color: var(--color-gray-100);
+    }
+
+    .dark-theme-section .section-desc {
+      color: var(--color-gray-400);
+    }
+
+    .dark-theme-surfaces {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+    }
+
+    .dark-surface-sample {
+      height: 80px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: var(--space-3);
+    }
+
+    .dark-surface-name {
+      font-size: var(--text-xs);
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 2px;
+    }
+
+    .dark-surface-hex {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .dark-theme-text-demo {
+      margin-top: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .dark-text-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-6);
+    }
+
+    .dark-text-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-gray-500);
+      min-width: 100px;
+    }
+
+    /* =======================================================================
+       FOOTER
+       ======================================================================= */
+
+    .footer {
+      margin-top: var(--space-32);
+      padding: var(--space-12) 0;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .footer-inner {
+      max-width: var(--max-width-full);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      font-variation-settings: 'WONK' 1;
+      color: var(--text-tertiary);
+    }
+
+    /* =======================================================================
+       RESPONSIVE
+       ======================================================================= */
+
+    @media (max-width: 768px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: var(--space-10);
+      }
+
+      .hero-title {
+        font-size: var(--text-4xl);
+      }
+
+      .positioning {
+        grid-template-columns: 1fr;
+      }
+
+      .personality-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .type-pairing {
+        grid-template-columns: 1fr;
+      }
+
+      .principle {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .easing-curves {
+        grid-template-columns: 1fr;
+      }
+
+      .density-tiers {
+        grid-template-columns: 1fr;
+      }
+
+      .motif-section {
+        grid-template-columns: 1fr;
+      }
+
+      .dark-theme-surfaces {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav-links {
+        gap: var(--space-4);
+      }
+
+      .wonk-compare {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =====================================================================
+       NAVIGATION
+       ===================================================================== -->
+
+  <nav class="nav" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Parklet</a>
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">Overview</a></li>
+          <li><a href="components.html">Components</a></li>
+          <li><a href="guidelines.html">Guidelines</a></li>
+          <li><a href="application.html">Application</a></li>
+        </ul>
+        <button class="theme-toggle" aria-label="Toggle theme" type="button">
+          <span class="theme-toggle-icon">&#9789;</span>
+          <span class="theme-toggle-label">Theme</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- =====================================================================
+       HERO — Asymmetric layout
+       ===================================================================== -->
+
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <h1 class="hero-title">Parklet Design System</h1>
+        <p class="hero-subtitle">A design system for discovering neighborhoods — warm, curious, and built with care.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-motif">
+          <div class="pin-shape-shadow"></div>
+          <div class="pin-shape"></div>
+          <div class="palette-grid">
+            <div class="palette-grid-dot" style="background: var(--color-white);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-gray-50);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-gray-100);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-accent-200);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-accent-500);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-accent-700);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-gray-500);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-gray-700);"></div>
+            <div class="palette-grid-dot" style="background: var(--color-black);"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       BRAND POSITIONING
+       ===================================================================== -->
+
+  <section class="section" id="positioning">
+    <div class="container">
+      <span class="section-label">Brand</span>
+      <div class="positioning">
+        <div class="positioning-text">
+          <p>Parklet is a curated guide to a city's hidden gems — the coffee shops that roast their own beans, the bookstores where the owner still writes shelf notes, the parks with the best afternoon light, the street art that changes every season.</p>
+          <p>We built Parklet for urban explorers who are discerning about quality but approach discovery with childlike curiosity. People who trust recommendations from someone who has actually been there, not from an algorithm optimizing for engagement.</p>
+          <p>Every neighborhood has a secret. Parklet helps you find it.</p>
+        </div>
+        <div class="personality-grid">
+          <div class="personality-item">
+            <div class="personality-trait">Curious, <em>not nosy</em></div>
+            <p class="personality-desc">We explore with genuine interest and share what we find. We never pry, never intrude, never turn a quiet spot into a spectacle. Curiosity guided by respect.</p>
+          </div>
+          <div class="personality-item">
+            <div class="personality-trait">Warm, <em>not cute</em></div>
+            <p class="personality-desc">Approachable and genuine — never saccharine, never resorting to twee illustrations or forced friendliness. Warmth that feels like a real conversation.</p>
+          </div>
+          <div class="personality-item">
+            <div class="personality-trait">Opinionated, <em>not exclusive</em></div>
+            <p class="personality-desc">We have taste and stand by our picks. But our door is open to everyone. Opinionated curation that invites you in rather than shutting you out.</p>
+          </div>
+          <div class="personality-item">
+            <div class="personality-trait">Crafted, <em>not polished</em></div>
+            <p class="personality-desc">Intentional and considered at every level, but never sterile or over-produced. The character of handmade work — a slight irregularity that proves a human was here.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       DESIGN PRINCIPLES
+       ===================================================================== -->
+
+  <section class="section" id="principles">
+    <div class="container">
+      <span class="section-label">Principles</span>
+      <h2 class="section-title">Design Principles</h2>
+      <div class="principles-list">
+        <div class="principle">
+          <span class="principle-number">01</span>
+          <div class="principle-content">
+            <h3 class="principle-title">Neighborhood first</h3>
+            <p class="principle-desc">The neighborhood is the protagonist. Every design decision serves the content — the places, the stories, the texture of a block. The system stays out of the way so the neighborhood can speak.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <span class="principle-number">02</span>
+          <div class="principle-content">
+            <h3 class="principle-title">Delight in the details</h3>
+            <p class="principle-desc">A spring-eased hover. A hand-drawn pin-drop. A line of type that settles into its space with care. Delight lives in the small interactions — the moments that reward attention without demanding it.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <span class="principle-number">03</span>
+          <div class="principle-content">
+            <h3 class="principle-title">Clear hierarchy, easy wandering</h3>
+            <p class="principle-desc">Structure should guide without constraining. Users always know where they are and how to get somewhere else — but they also feel free to wander, to follow a tangent, to get happily lost.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <span class="principle-number">04</span>
+          <div class="principle-content">
+            <h3 class="principle-title">Let content breathe</h3>
+            <p class="principle-desc">Generous spacing is not wasted space. It is the typographic equivalent of a quiet street — room to notice things. Give content the vertical rhythm it needs to be read, not just scanned.</p>
+          </div>
+        </div>
+        <div class="principle">
+          <span class="principle-number">05</span>
+          <div class="principle-content">
+            <h3 class="principle-title">Accessible by default</h3>
+            <p class="principle-desc">Every interaction, every color pairing, every motion decision starts with accessibility. Not as an afterthought, not as a compliance checkbox — as the foundation. If it is not accessible, it is not done.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       COLOR PALETTE
+       ===================================================================== -->
+
+  <section class="section" id="color">
+    <div class="container">
+      <span class="section-label">Color</span>
+      <h2 class="section-title">Color Palette</h2>
+      <p class="section-desc">Warm cream neutrals rooted in paper and ceramic. A terracotta accent that evokes sun-baked storefronts. No pure black, no pure white.</p>
+
+      <div class="color-section">
+        <!-- Neutrals strip -->
+        <div>
+          <h3 class="color-group-title">Neutrals</h3>
+          <div class="color-strip">
+            <div class="color-strip-block" style="background: #FAF7F2;">
+              <span class="color-strip-label" style="color: var(--color-gray-500);">50</span>
+            </div>
+            <div class="color-strip-block" style="background: #F0EBE1;">
+              <span class="color-strip-label" style="color: var(--color-gray-500);">100</span>
+            </div>
+            <div class="color-strip-block" style="background: #E2D9CA;">
+              <span class="color-strip-label" style="color: var(--color-gray-500);">200</span>
+            </div>
+            <div class="color-strip-block" style="background: #C7BAA7;">
+              <span class="color-strip-label" style="color: var(--color-gray-600);">300</span>
+            </div>
+            <div class="color-strip-block" style="background: #A89A85;">
+              <span class="color-strip-label" style="color: var(--color-gray-700);">400</span>
+            </div>
+            <div class="color-strip-block" style="background: #8A7D6B;">
+              <span class="color-strip-label" style="color: var(--color-white);">500</span>
+            </div>
+            <div class="color-strip-block" style="background: #6B6052;">
+              <span class="color-strip-label" style="color: var(--color-white);">600</span>
+            </div>
+            <div class="color-strip-block" style="background: #4D4438;">
+              <span class="color-strip-label" style="color: var(--color-white);">700</span>
+            </div>
+            <div class="color-strip-block" style="background: #342E24;">
+              <span class="color-strip-label" style="color: var(--color-white);">800</span>
+            </div>
+            <div class="color-strip-block" style="background: #1C1814;">
+              <span class="color-strip-label" style="color: var(--color-white);">900</span>
+            </div>
+            <div class="color-strip-block" style="background: #141210;">
+              <span class="color-strip-label" style="color: var(--color-white);">950</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accent scale -->
+        <div>
+          <h3 class="color-group-title">Terracotta</h3>
+          <div class="accent-scale">
+            <div class="accent-swatch" style="background: #FDE8E0;">
+              <span class="accent-swatch-label" style="color: var(--color-accent-700);">100</span>
+            </div>
+            <div class="accent-swatch" style="background: #F9C4B0;">
+              <span class="accent-swatch-label" style="color: var(--color-accent-700);">200</span>
+            </div>
+            <div class="accent-swatch" style="background: #F09E7E;">
+              <span class="accent-swatch-label" style="color: var(--color-accent-800);">300</span>
+            </div>
+            <div class="accent-swatch" style="background: #E07A54;">
+              <span class="accent-swatch-label" style="color: #fff;">400</span>
+            </div>
+            <div class="accent-swatch" style="background: #C85A35;">
+              <span class="accent-swatch-label" style="color: #fff;">500</span>
+            </div>
+            <div class="accent-swatch" style="background: #A8432A;">
+              <span class="accent-swatch-label" style="color: #fff;">600</span>
+            </div>
+            <div class="accent-swatch" style="background: #7E3220;">
+              <span class="accent-swatch-label" style="color: #fff;">700</span>
+            </div>
+            <div class="accent-swatch" style="background: #5A2418;">
+              <span class="accent-swatch-label" style="color: #fff;">800</span>
+            </div>
+            <div class="accent-swatch" style="background: #3D1910;">
+              <span class="accent-swatch-label" style="color: #fff;">900</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Functional colors -->
+        <div>
+          <h3 class="color-group-title">Functional</h3>
+          <div class="functional-colors">
+            <div class="functional-item">
+              <div class="functional-dot" style="background: #3D8B5E;"></div>
+              <span class="functional-label">Success</span>
+              <span class="functional-hex">#3D8B5E</span>
+            </div>
+            <div class="functional-item">
+              <div class="functional-dot" style="background: #C4922A;"></div>
+              <span class="functional-label">Warning</span>
+              <span class="functional-hex">#C4922A</span>
+            </div>
+            <div class="functional-item">
+              <div class="functional-dot" style="background: #C4453A;"></div>
+              <span class="functional-label">Danger</span>
+              <span class="functional-hex">#C4453A</span>
+            </div>
+            <div class="functional-item">
+              <div class="functional-dot" style="background: #3A7DC4;"></div>
+              <span class="functional-label">Info</span>
+              <span class="functional-hex">#3A7DC4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Border examples -->
+        <div>
+          <h3 class="color-group-title">Borders</h3>
+          <div class="border-examples">
+            <div class="border-example" style="background: var(--surface-primary); border: 1px solid var(--border-subtle);">
+              <div class="border-example-label">Subtle</div>
+              <div class="border-example-value">rgba(52, 46, 36, 0.04)</div>
+            </div>
+            <div class="border-example" style="background: var(--surface-primary); border: 1px solid var(--border-default);">
+              <div class="border-example-label">Default</div>
+              <div class="border-example-value">rgba(52, 46, 36, 0.08)</div>
+            </div>
+            <div class="border-example" style="background: var(--surface-primary); border: 1px solid var(--border-strong);">
+              <div class="border-example-label">Strong</div>
+              <div class="border-example-value">rgba(52, 46, 36, 0.15)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dark palette preview -->
+        <div>
+          <h3 class="color-group-title">Dark Theme Palette</h3>
+          <div class="dark-preview">
+            <div class="dark-preview-swatch" style="background: #141210;">
+              <span class="dark-preview-label">Primary #141210</span>
+            </div>
+            <div class="dark-preview-swatch" style="background: #1C1A17;">
+              <span class="dark-preview-label">Secondary #1C1A17</span>
+            </div>
+            <div class="dark-preview-swatch" style="background: #252220;">
+              <span class="dark-preview-label">Tertiary #252220</span>
+            </div>
+            <div class="dark-preview-swatch" style="background: #C85A35;">
+              <span class="dark-preview-label">Accent #C85A35</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       TYPOGRAPHY SPECIMENS
+       ===================================================================== -->
+
+  <section class="section" id="typography">
+    <div class="container">
+      <span class="section-label">Typography</span>
+      <h2 class="section-title">Type System</h2>
+      <p class="section-desc">Fraunces brings the handcrafted warmth of a neighborhood sign. DM Sans keeps the body text clear and friendly. The tension between serif display and sans body creates editorial depth.</p>
+
+      <div class="type-section">
+        <!-- Font pairing -->
+        <div class="type-pairing">
+          <div class="type-family">
+            <div class="type-family-name">Display — Fraunces</div>
+            <div class="type-family-specimen" style="font-family: var(--font-display); font-variation-settings: 'WONK' 1;">Hidden Gems</div>
+            <div class="type-family-meta">Variable serif with WONK axis. Weight 400, WONK:1 for headings. Optical size 9-144.</div>
+          </div>
+          <div class="type-family">
+            <div class="type-family-name">Body — DM Sans</div>
+            <div class="type-family-specimen" style="font-family: var(--font-body); font-size: var(--text-3xl);">Neighborhood Stories</div>
+            <div class="type-family-meta">Geometric sans-serif. Weight 400 for body, 420 for emphasis, 550 for buttons.</div>
+          </div>
+        </div>
+
+        <!-- Type scale -->
+        <div>
+          <h3 class="color-group-title">Type Scale</h3>
+          <div class="type-scale">
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-5xl</span>
+              <span class="type-scale-size">56px</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-5xl); line-height: var(--leading-display); letter-spacing: var(--tracking-tight); font-variation-settings: 'WONK' 1; color: var(--text-primary);">The corner bakery</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-4xl</span>
+              <span class="type-scale-size">44px</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-4xl); line-height: var(--leading-display); letter-spacing: var(--tracking-tight); font-variation-settings: 'WONK' 1; color: var(--text-primary);">Morning light on brick</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-3xl</span>
+              <span class="type-scale-size">32px</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-3xl); line-height: var(--leading-tight); letter-spacing: var(--tracking-snug); font-variation-settings: 'WONK' 1; color: var(--text-primary);">A street worth walking slowly</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-2xl</span>
+              <span class="type-scale-size">26px</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); line-height: var(--leading-snug); letter-spacing: var(--tracking-snug); font-variation-settings: 'WONK' 1; color: var(--text-primary);">Places that feel like discoveries</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-xl</span>
+              <span class="type-scale-size">22px</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-xl); line-height: var(--leading-snug); font-variation-settings: 'WONK' 1; color: var(--text-primary);">Every block tells a story if you know where to look</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-lg</span>
+              <span class="type-scale-size">19px</span>
+              <span style="font-size: var(--text-lg); line-height: var(--leading-normal); color: var(--text-primary);">The best neighborhoods reward slow exploration — a window display here, a hand-lettered menu there.</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-base</span>
+              <span class="type-scale-size">17px</span>
+              <span style="font-size: var(--text-base); line-height: var(--leading-normal); color: var(--text-primary);">Tucked behind the florist on Maple Avenue, this coffee shop roasts single-origin beans from a small farm in Guatemala.</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-sm</span>
+              <span class="type-scale-size">14px</span>
+              <span style="font-size: var(--text-sm); line-height: var(--leading-normal); color: var(--text-secondary); letter-spacing: var(--tracking-wide);">Open Tuesday through Saturday, 7am to 3pm. Cash and card accepted.</span>
+            </div>
+            <div class="type-scale-row">
+              <span class="type-scale-name">text-xs</span>
+              <span class="type-scale-size">13px</span>
+              <span style="font-size: var(--text-xs); line-height: var(--leading-normal); color: var(--text-tertiary); letter-spacing: var(--tracking-wider);">Last updated 3 days ago by a verified local guide</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracking -->
+        <div>
+          <h3 class="color-group-title">Letter Spacing</h3>
+          <div class="tracking-demo">
+            <div class="tracking-row">
+              <span class="tracking-label">tracking-tight<br>-0.025em</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-3xl); letter-spacing: -0.025em; font-variation-settings: 'WONK' 1; color: var(--text-primary);">Hidden neighborhood</span>
+            </div>
+            <div class="tracking-row">
+              <span class="tracking-label">tracking-snug<br>-0.015em</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); letter-spacing: -0.015em; font-variation-settings: 'WONK' 1; color: var(--text-primary);">Hidden neighborhood</span>
+            </div>
+            <div class="tracking-row">
+              <span class="tracking-label">tracking-normal<br>0</span>
+              <span style="font-size: var(--text-base); letter-spacing: 0; color: var(--text-primary);">The morning light catches the window boxes on Elm Street.</span>
+            </div>
+            <div class="tracking-row">
+              <span class="tracking-label">tracking-wide<br>+0.02em</span>
+              <span style="font-size: var(--text-sm); letter-spacing: 0.02em; color: var(--text-secondary);">Open daily from sunrise to late afternoon</span>
+            </div>
+            <div class="tracking-row">
+              <span class="tracking-label">tracking-wider<br>+0.04em</span>
+              <span style="font-size: var(--text-xs); letter-spacing: 0.04em; color: var(--text-tertiary); text-transform: uppercase; font-weight: var(--weight-medium);">Featured neighborhood guide</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weight variations -->
+        <div>
+          <h3 class="color-group-title">Weight Variations</h3>
+          <div class="weight-demo">
+            <div class="weight-row">
+              <span class="weight-label">400 — Regular</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 400; font-variation-settings: 'WONK' 1; color: var(--text-primary);">A quiet corner in the city</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">420 — Medium</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 420; font-variation-settings: 'WONK' 1; color: var(--text-primary);">A quiet corner in the city</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">480 — Semibold</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 480; font-variation-settings: 'WONK' 1; color: var(--text-primary);">A quiet corner in the city</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">550 — Bold</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 550; font-variation-settings: 'WONK' 1; color: var(--text-primary);">A quiet corner in the city</span>
+            </div>
+          </div>
+
+          <div class="weight-demo" style="margin-top: var(--space-8);">
+            <div class="weight-row">
+              <span class="weight-label">DM Sans 400</span>
+              <span style="font-size: var(--text-base); font-weight: 400; color: var(--text-primary);">The bookshop on Birch Street has been here for forty years.</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">DM Sans 500</span>
+              <span style="font-size: var(--text-base); font-weight: 500; color: var(--text-primary);">The bookshop on Birch Street has been here for forty years.</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">DM Sans 700</span>
+              <span style="font-size: var(--text-base); font-weight: 700; color: var(--text-primary);">The bookshop on Birch Street has been here for forty years.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- WONK axis -->
+        <div>
+          <h3 class="color-group-title">Fraunces WONK Axis</h3>
+          <div class="wonk-compare">
+            <div class="wonk-panel">
+              <div class="wonk-panel-label">WONK: 0 — Standard</div>
+              <div class="wonk-panel-text" style="font-variation-settings: 'WONK' 0;">Coffee, Bookshops &amp; Rain</div>
+            </div>
+            <div class="wonk-panel">
+              <div class="wonk-panel-label">WONK: 1 — Expressive</div>
+              <div class="wonk-panel-text" style="font-variation-settings: 'WONK' 1;">Coffee, Bookshops &amp; Rain</div>
+            </div>
+          </div>
+          <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-top: var(--space-4); line-height: var(--leading-normal); max-width: 560px;">WONK:1 activates Fraunces' wonky, hand-drawn alternate glyphs. This is the default for Parklet display text — the subtle irregularity is part of the brand's crafted personality. WONK:0 is used for data-dense contexts where legibility takes priority.</p>
+        </div>
+
+        <!-- Line height -->
+        <div>
+          <h3 class="color-group-title">Line Height</h3>
+          <div class="weight-demo">
+            <div class="weight-row">
+              <span class="weight-label">leading-display<br>1.05</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-3xl); font-variation-settings: 'WONK' 1; line-height: 1.05; color: var(--text-primary);">Lines nearly<br>touching, editorial</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">leading-tight<br>1.15</span>
+              <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-variation-settings: 'WONK' 1; line-height: 1.15; color: var(--text-primary);">Headings with a bit<br>more room to breathe</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">leading-normal<br>1.55</span>
+              <span style="font-size: var(--text-base); line-height: 1.55; color: var(--text-primary); max-width: 480px;">Body text for comfortable reading. The generous line height gives each line room to exist, making longer passages feel approachable rather than dense.</span>
+            </div>
+            <div class="weight-row">
+              <span class="weight-label">leading-relaxed<br>1.65</span>
+              <span style="font-size: var(--text-lg); line-height: 1.65; color: var(--text-primary); max-width: 480px;">Long-form editorial. Neighborhood stories deserve this much space between lines — the rhythm of unhurried reading.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SPACING & RHYTHM
+       ===================================================================== -->
+
+  <section class="section" id="spacing">
+    <div class="container">
+      <span class="section-label">Spacing</span>
+      <h2 class="section-title">Spacing &amp; Rhythm</h2>
+      <p class="section-desc">Built on a 4px base grid. Generous section spacing is a primary signal of the brand's unhurried quality.</p>
+
+      <div class="spacing-section">
+        <!-- 4px grid visual -->
+        <div>
+          <h3 class="color-group-title">Scale</h3>
+          <div class="spacing-grid-visual">
+            <div class="spacing-row">
+              <span class="spacing-label">space-1</span>
+              <span class="spacing-value">4px</span>
+              <div class="spacing-bar" style="width: 4px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-2</span>
+              <span class="spacing-value">8px</span>
+              <div class="spacing-bar" style="width: 8px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-3</span>
+              <span class="spacing-value">12px</span>
+              <div class="spacing-bar" style="width: 12px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-4</span>
+              <span class="spacing-value">16px</span>
+              <div class="spacing-bar" style="width: 16px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-6</span>
+              <span class="spacing-value">24px</span>
+              <div class="spacing-bar" style="width: 24px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-8</span>
+              <span class="spacing-value">32px</span>
+              <div class="spacing-bar" style="width: 32px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-12</span>
+              <span class="spacing-value">48px</span>
+              <div class="spacing-bar" style="width: 48px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-16</span>
+              <span class="spacing-value">64px</span>
+              <div class="spacing-bar" style="width: 64px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-24</span>
+              <span class="spacing-value">96px</span>
+              <div class="spacing-bar" style="width: 96px;"></div>
+            </div>
+            <div class="spacing-row">
+              <span class="spacing-label">space-32</span>
+              <span class="spacing-value">128px</span>
+              <div class="spacing-bar" style="width: 128px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section vs group vs element spacing -->
+        <div>
+          <h3 class="color-group-title">Spacing Tiers</h3>
+          <div class="section-spacing-demo">
+            <div class="spacing-tier">
+              <span class="spacing-tier-label">Section</span>
+              <div class="spacing-tier-bar" style="width: 100%;"></div>
+              <span class="spacing-tier-value">96-128px</span>
+            </div>
+            <div class="spacing-tier">
+              <span class="spacing-tier-label">Group</span>
+              <div class="spacing-tier-bar" style="width: 50%;"></div>
+              <span class="spacing-tier-value">48-64px</span>
+            </div>
+            <div class="spacing-tier">
+              <span class="spacing-tier-label">Element</span>
+              <div class="spacing-tier-bar" style="width: 18.75%;"></div>
+              <span class="spacing-tier-value">16-24px</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Density tiers -->
+        <div>
+          <h3 class="color-group-title">Density</h3>
+          <div class="density-tiers">
+            <div class="density-tier">
+              <div class="density-tier-name">Relaxed</div>
+              <div class="density-tier-context">Marketing, editorial</div>
+              <div class="density-tier-values">
+                <span class="density-tier-value">Section: 128px</span>
+                <span class="density-tier-value">Group: 64px</span>
+                <span class="density-tier-value">Element: 32px</span>
+                <span class="density-tier-value">Body: 19px / 1.65</span>
+              </div>
+            </div>
+            <div class="density-tier">
+              <div class="density-tier-name">Standard</div>
+              <div class="density-tier-context">Default experience</div>
+              <div class="density-tier-values">
+                <span class="density-tier-value">Section: 96px</span>
+                <span class="density-tier-value">Group: 48px</span>
+                <span class="density-tier-value">Element: 24px</span>
+                <span class="density-tier-value">Body: 17px / 1.55</span>
+              </div>
+            </div>
+            <div class="density-tier">
+              <div class="density-tier-name">Compact</div>
+              <div class="density-tier-context">Dashboards, data views</div>
+              <div class="density-tier-values">
+                <span class="density-tier-value">Section: 64px</span>
+                <span class="density-tier-value">Group: 32px</span>
+                <span class="density-tier-value">Element: 16px</span>
+                <span class="density-tier-value">Body: 15px / 1.45</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SHAPE LANGUAGE
+       ===================================================================== -->
+
+  <section class="section" id="shape">
+    <div class="container">
+      <span class="section-label">Shape</span>
+      <h2 class="section-title">Shape Language</h2>
+      <p class="section-desc">Parklet's radius hierarchy is warmer and rounder than typical agency work. The playful brand earns softer corners — buttons at 12px, cards at 16px, features at 24px.</p>
+
+      <div class="shape-section">
+        <div class="radius-hierarchy">
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-none);"></div>
+            <span class="radius-name">none</span>
+            <span class="radius-value">0</span>
+          </div>
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-sm);"></div>
+            <span class="radius-name">sm</span>
+            <span class="radius-value">6px</span>
+          </div>
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-md);"></div>
+            <span class="radius-name">md</span>
+            <span class="radius-value">12px</span>
+          </div>
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-lg);"></div>
+            <span class="radius-name">lg</span>
+            <span class="radius-value">16px</span>
+          </div>
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-xl);"></div>
+            <span class="radius-name">xl</span>
+            <span class="radius-value">24px</span>
+          </div>
+          <div class="radius-example">
+            <div class="radius-rect" style="border-radius: var(--radius-pill);"></div>
+            <span class="radius-name">pill</span>
+            <span class="radius-value">9999px</span>
+          </div>
+        </div>
+
+        <div class="nested-radius-note">
+          <strong style="font-weight: var(--weight-medium);">Nested radius rule:</strong> When a rounded element sits inside another rounded element, the inner radius should be <code>outer radius - padding</code>. A card with <code>radius-lg (16px)</code> and <code>24px padding</code> would have inner elements at <code>radius-none</code>. A card with <code>16px radius</code> and <code>8px padding</code> would have inner elements at <code>8px radius</code>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MOTION
+       ===================================================================== -->
+
+  <section class="section" id="motion">
+    <div class="container">
+      <span class="section-label">Motion</span>
+      <h2 class="section-title">Motion</h2>
+      <p class="section-desc">Parklet uses spring easing more liberally than typical systems. The playful overshoot is part of the brand personality — interactions should feel buoyant, not mechanical.</p>
+
+      <div class="motion-section">
+        <!-- Easing curves -->
+        <div>
+          <h3 class="color-group-title">Easing Curves</h3>
+          <div class="easing-curves">
+            <div class="easing-card">
+              <div class="easing-name">ease-out</div>
+              <div class="easing-value">cubic-bezier(0.25, 0.1, 0.25, 1.0)</div>
+              <div class="easing-desc">General UI transitions. Entries, color changes, border states. Decelerates smoothly.</div>
+            </div>
+            <div class="easing-card">
+              <div class="easing-name">ease-spring</div>
+              <div class="easing-value">cubic-bezier(0.34, 1.56, 0.64, 1.0)</div>
+              <div class="easing-desc">Brand signature. Hover lifts, card interactions, toggle switches. The overshoot gives a buoyant, playful feel.</div>
+            </div>
+            <div class="easing-card">
+              <div class="easing-name">ease-smooth</div>
+              <div class="easing-value">cubic-bezier(0.52, 0.01, 0.26, 1)</div>
+              <div class="easing-desc">Theme transitions, page-level changes, smooth scroll behavior. Gradual and unhurried.</div>
+            </div>
+            <div class="easing-card">
+              <div class="easing-name">ease-in-out</div>
+              <div class="easing-value">cubic-bezier(0.45, 0.05, 0.55, 0.95)</div>
+              <div class="easing-desc">Symmetric transitions. Modals, drawers, elements entering and leaving with equal weight.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Duration scale -->
+        <div>
+          <h3 class="color-group-title">Duration Scale</h3>
+          <div class="duration-scale">
+            <div class="duration-row">
+              <span class="duration-name">instant</span>
+              <span class="duration-value">100ms</span>
+              <div class="duration-bar" style="width: 8%;"></div>
+            </div>
+            <div class="duration-row">
+              <span class="duration-name">fast</span>
+              <span class="duration-value">200ms</span>
+              <div class="duration-bar" style="width: 18%;"></div>
+            </div>
+            <div class="duration-row">
+              <span class="duration-name">normal</span>
+              <span class="duration-value">350ms</span>
+              <div class="duration-bar" style="width: 35%;"></div>
+            </div>
+            <div class="duration-row">
+              <span class="duration-name">slow</span>
+              <span class="duration-value">500ms</span>
+              <div class="duration-bar" style="width: 55%;"></div>
+            </div>
+            <div class="duration-row">
+              <span class="duration-name">slower</span>
+              <span class="duration-value">750ms</span>
+              <div class="duration-bar" style="width: 85%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="motion-note">
+          Parklet's durations run slightly longer than tool-focused systems like Linear or Raycast. The brand is about wandering, not efficiency — animations need room to breathe. Spring easing at 350ms feels buoyant. At 150ms it would feel twitchy.
+        </div>
+
+        <!-- Interactive hover examples -->
+        <div>
+          <h3 class="color-group-title">Interactive Examples</h3>
+          <div class="hover-demos">
+            <div>
+              <div class="hover-demo-item hover-demo-spring">Spring hover</div>
+              <div class="hover-demo-label">ease-spring, 350ms</div>
+            </div>
+            <div>
+              <div class="hover-demo-item hover-demo-smooth">Smooth lift</div>
+              <div class="hover-demo-label">ease-smooth, 500ms</div>
+            </div>
+            <div>
+              <div class="hover-demo-item hover-demo-out">Border accent</div>
+              <div class="hover-demo-label">ease-out, 200ms</div>
+            </div>
+            <div>
+              <div class="hover-demo-item hover-demo-press">Press me</div>
+              <div class="hover-demo-label">press-scale, 100ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       SIGNATURE MOTIF
+       ===================================================================== -->
+
+  <section class="section" id="motif">
+    <div class="container">
+      <span class="section-label">Motif</span>
+      <h2 class="section-title">Signature Motif</h2>
+      <p class="section-desc">An organic pin-drop / leaf hybrid — the shape of dropping a pin on a map, but with the softness of something that grew there naturally.</p>
+
+      <div class="motif-section">
+        <div class="motif-display">
+          <div class="motif-pin"></div>
+        </div>
+        <div class="motif-info">
+          <p style="font-size: var(--text-base); color: var(--text-secondary); line-height: var(--leading-relaxed);">The pin-drop shape is Parklet's visual signature. It is created with <code style="font-family: var(--font-mono); font-size: var(--text-sm); background: var(--surface-secondary); padding: 2px 6px; border-radius: var(--radius-sm);">border-radius: 50% 50% 50% 0</code> and a 45-degree rotation, producing a form that sits between a map marker and a leaf. The inner cutout reinforces the pin metaphor while creating visual lightness.</p>
+          <h3 class="color-group-title" style="margin-top: var(--space-4);">Usage Contexts</h3>
+          <ul class="motif-usage-list">
+            <li>Location markers on maps and neighborhood guides</li>
+            <li>Decorative accents in hero sections and feature callouts</li>
+            <li>Loading states — the pin-drop animates with the spring curve</li>
+            <li>List markers for curated recommendations</li>
+            <li>Favicon and app icon foundation</li>
+            <li>Background pattern at low opacity for empty states</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       DARK THEME
+       ===================================================================== -->
+
+  <section class="section" id="dark-theme">
+    <div class="container">
+      <div class="dark-theme-section">
+        <span class="section-label">Dark Theme</span>
+        <h2 class="section-title">Dark Palette</h2>
+        <p class="section-desc">The same warm personality, adapted for dark surfaces. Near-black backgrounds with a warm undertone. Terracotta accents glow against the dark canvas.</p>
+
+        <div class="dark-theme-surfaces">
+          <div class="dark-surface-sample" style="background: #141210; border: 1px solid rgba(255,255,255,0.06);">
+            <span class="dark-surface-name">Primary</span>
+            <span class="dark-surface-hex">#141210</span>
+          </div>
+          <div class="dark-surface-sample" style="background: #1C1A17; border: 1px solid rgba(255,255,255,0.06);">
+            <span class="dark-surface-name">Secondary</span>
+            <span class="dark-surface-hex">#1C1A17</span>
+          </div>
+          <div class="dark-surface-sample" style="background: #252220; border: 1px solid rgba(255,255,255,0.06);">
+            <span class="dark-surface-name">Tertiary</span>
+            <span class="dark-surface-hex">#252220</span>
+          </div>
+          <div class="dark-surface-sample" style="background: #3D1910; border: 1px solid rgba(255,255,255,0.06);">
+            <span class="dark-surface-name">Accent surface</span>
+            <span class="dark-surface-hex">#3D1910</span>
+          </div>
+        </div>
+
+        <div class="dark-theme-text-demo">
+          <div class="dark-text-row">
+            <span class="dark-text-label">text-primary</span>
+            <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-variation-settings: 'WONK' 1; color: var(--color-gray-100);">The night market on Cedar Avenue</span>
+          </div>
+          <div class="dark-text-row">
+            <span class="dark-text-label">text-secondary</span>
+            <span style="font-size: var(--text-base); color: var(--color-gray-400);">Street food vendors set up at dusk, filling the block with the smell of charcoal and spice.</span>
+          </div>
+          <div class="dark-text-row">
+            <span class="dark-text-label">text-accent</span>
+            <span style="font-size: var(--text-base); color: var(--color-accent-300);">Explore this neighborhood</span>
+          </div>
+          <div class="dark-text-row">
+            <span class="dark-text-label">text-tertiary</span>
+            <span style="font-size: var(--text-sm); color: var(--color-gray-500); letter-spacing: var(--tracking-wide);">Updated 2 hours ago</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FOOTER
+       ===================================================================== -->
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-text">Parklet Design System v1.0</span>
+      <span class="footer-logo">Parklet</span>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       SCRIPTS
+       ===================================================================== -->
+
+  <script>
+    // Theme toggle
+    (function() {
+      const toggle = document.querySelector('.theme-toggle');
+      const html = document.documentElement;
+      const icon = toggle.querySelector('.theme-toggle-icon');
+
+      // Check for saved preference
+      const saved = localStorage.getItem('parklet-theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+        icon.textContent = saved === 'dark' ? '\u2600' : '\u263D';
+      }
+
+      toggle.addEventListener('click', function() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('parklet-theme', next);
+        icon.textContent = next === 'dark' ? '\u2600' : '\u263D';
+      });
+    })();
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

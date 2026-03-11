@@ -1,0 +1,295 @@
+/* ==========================================================================
+   PARKLET DESIGN SYSTEM — Token Architecture
+   A neighborhood discovery platform. Playful, warm, whimsical but discerning.
+
+   Typography: Fraunces (display, variable) + DM Sans (body) + DM Mono
+   Personality: Inviting, buoyant, community-rooted, quietly opinionated
+   ========================================================================== */
+
+:root {
+  /* -----------------------------------------------------------------------
+     COLOR PRIMITIVES
+     Warm cream-paper palette. No clinical whites. Earthy terracotta accent
+     evokes ceramic tiles, neighborhood storefronts, sun-warmed brick.
+     ----------------------------------------------------------------------- */
+
+  /* Neutrals — cream paper warmth throughout */
+  --color-white: #FAF7F2;
+  --color-white-pure: #FFFFFF;
+  --color-gray-50: #F0EBE1;
+  --color-gray-100: #E2D9CA;
+  --color-gray-200: #C7BAA7;
+  --color-gray-300: #A89A85;
+  --color-gray-400: #8A7D6B;
+  --color-gray-500: #6B6052;
+  --color-gray-600: #4D4438;
+  --color-gray-700: #342E24;
+  --color-gray-800: #1C1814;
+  --color-black: #141210;
+
+  /* Accent — Terracotta. Warm, earthy, sun-baked.
+     Derived from terra cotta clay — neighborhood warmth, not startup neon. */
+  --color-accent-100: #FDE8E0;
+  --color-accent-200: #F9C4B0;
+  --color-accent-300: #F09E7E;
+  --color-accent-400: #E07A54;
+  --color-accent-500: #C85A35;
+  --color-accent-600: #A8432A;
+  --color-accent-700: #7E3220;
+  --color-accent-800: #5A2418;
+  --color-accent-900: #3D1910;
+
+  /* Functional — muted, harmonized with warm palette.
+     These sit quietly beside terracotta without clashing. */
+  --color-success: #3D8B5E;
+  --color-warning: #C4922A;
+  --color-danger: #C4453A;
+  --color-info: #3A7DC4;
+
+  /* -----------------------------------------------------------------------
+     SEMANTIC COLOR ROLES — Light theme
+     Cream paper surfaces. Terracotta accents. Warm-tinted shadows.
+     ----------------------------------------------------------------------- */
+  --surface-primary: var(--color-white);
+  --surface-secondary: var(--color-gray-50);
+  --surface-tertiary: var(--color-gray-100);
+  --surface-elevated: var(--color-white-pure);
+  --surface-inverse: var(--color-gray-800);
+  --surface-accent: var(--color-accent-100);
+
+  --text-primary: var(--color-gray-700);
+  --text-secondary: var(--color-gray-400);
+  --text-tertiary: var(--color-gray-300);
+  --text-inverse: var(--color-white);
+  --text-accent: var(--color-accent-600);
+  --text-on-accent: var(--color-white-pure);
+
+  /* Borders — opacity-based for theme flexibility */
+  --border-default: rgba(52, 46, 36, 0.08);
+  --border-subtle: rgba(52, 46, 36, 0.04);
+  --border-strong: rgba(52, 46, 36, 0.15);
+  --border-accent: var(--color-accent-300);
+
+  /* Shadows — warm-tinted ambient light (Stripe pattern but warm, not blue).
+     rgba(82,70,52) gives shadows a golden-hour quality. */
+  --shadow-color: 82, 70, 52;
+  --shadow-xs: 0 1px 2px rgba(var(--shadow-color), 0.06);
+  --shadow-sm: 0 2px 8px rgba(var(--shadow-color), 0.08), 0 1px 2px rgba(var(--shadow-color), 0.05);
+  --shadow-md: 0 8px 24px rgba(var(--shadow-color), 0.10), 0 2px 6px rgba(var(--shadow-color), 0.06);
+  --shadow-lg: 0 20px 50px rgba(var(--shadow-color), 0.12), 0 8px 20px rgba(var(--shadow-color), 0.06);
+  --shadow-xl: 0 30px 60px rgba(var(--shadow-color), 0.14), 0 12px 28px rgba(var(--shadow-color), 0.08);
+
+  /* -----------------------------------------------------------------------
+     TYPOGRAPHY
+     Fraunces: old-style variable serif with WONK and SOFT axes — intentional
+     irregularities give it a handcrafted, neighborhood-sign quality.
+     DM Sans: friendly geometric sans, warmer than Inter or Helvetica.
+     Weight 400 for headings — Fraunces at 400 with WONK:1 is already
+     expressive; hierarchy comes through size and serif, not boldness.
+     ----------------------------------------------------------------------- */
+
+  --font-display: 'Fraunces', 'Georgia', ui-serif, serif;
+  --font-body: 'DM Sans', -apple-system, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', 'SF Mono', 'Fira Code', monospace;
+
+  /* Type scale — flatter than defaults. Restraint creates editorial tension.
+     Display sizes use Fraunces. Body sizes use DM Sans. */
+  --text-xs: 0.8125rem;    /* 13px — caption, meta, timestamps */
+  --text-sm: 0.875rem;     /* 14px — labels, nav items, tag text */
+  --text-base: 1.0625rem;  /* 17px — body (agency standard, slightly above 16px default) */
+  --text-lg: 1.1875rem;    /* 19px — body large, lead paragraphs */
+  --text-xl: 1.375rem;     /* 22px — subheading, card titles */
+  --text-2xl: 1.625rem;    /* 26px — section heading */
+  --text-3xl: 2rem;        /* 32px — page heading */
+  --text-4xl: 2.75rem;     /* 44px — display */
+  --text-5xl: 3.5rem;      /* 56px — hero */
+
+  /* Line heights — varied by purpose. Tighter on display (Fraunces breathes
+     at 1.05), looser on body for long-form readability. */
+  --leading-none: 1.0;
+  --leading-display: 1.05;   /* hero text, display Fraunces */
+  --leading-tight: 1.15;     /* headings */
+  --leading-snug: 1.3;       /* subheadings */
+  --leading-normal: 1.55;    /* body text */
+  --leading-relaxed: 1.65;   /* long-form, article body */
+
+  /* Letter spacing — size-dependent (AREA 17 pattern):
+     negative on display (Fraunces looks best tight), positive on small text */
+  --tracking-tight: -0.025em;   /* display, hero */
+  --tracking-snug: -0.015em;    /* headings */
+  --tracking-normal: 0;         /* body */
+  --tracking-wide: 0.02em;      /* small text, captions */
+  --tracking-wider: 0.04em;     /* uppercase labels, overlines */
+
+  /* Font weights — 400 for headings (hierarchy via size/serif, not weight).
+     Non-standard 420, 480, 550 leverage variable font refinement
+     for subtle emphasis without jumping to bold. */
+  --weight-regular: 400;
+  --weight-medium: 420;     /* subtle emphasis, active nav items */
+  --weight-semibold: 480;   /* subheadings, emphasized body */
+  --weight-bold: 550;       /* strong emphasis, buttons (still not "bold") */
+  --weight-heavy: 700;      /* DM Sans bold, used sparingly */
+
+  /* -----------------------------------------------------------------------
+     SPACING
+     4px base grid. Generous section spacing (96-128px) creates
+     the premium, unhurried feel of a well-curated neighborhood guide.
+     ----------------------------------------------------------------------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px — card padding standard */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px — section spacing minimum */
+  --space-32: 8rem;     /* 128px — section spacing generous */
+
+  /* -----------------------------------------------------------------------
+     LAYOUT
+     ----------------------------------------------------------------------- */
+  --max-width-narrow: 640px;
+  --max-width-content: 920px;
+  --max-width-wide: 1120px;
+  --max-width-full: 1280px;
+
+  --grid-gutter: var(--space-6);
+  --page-padding: var(--space-6);
+
+  /* -----------------------------------------------------------------------
+     BORDER RADIUS — Playful shape hierarchy
+     Softer than typical agency work. The whimsical brand earns rounder
+     corners — buttons at 12px feel friendly, cards at 16px feel inviting.
+     Pill shapes reserved for avatars and floating actions.
+     ----------------------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-sm: 6px;      /* tags, badges, chips */
+  --radius-md: 12px;     /* buttons, inputs — friendlier than standard 6px */
+  --radius-lg: 16px;     /* cards, panels, dropdowns */
+  --radius-xl: 24px;     /* feature cards, hero images, modals */
+  --radius-pill: 9999px; /* avatars, floating actions, toggle tracks */
+
+  /* -----------------------------------------------------------------------
+     MOTION — Buoyant, springy
+     The spring curve (0.34, 1.56, 0.64, 1) overshoots intentionally —
+     a playful brand signature. Used more liberally than in serious tools.
+     Hover scale at 1.02 (not 1.015) — the brand is allowed to be fun.
+     ----------------------------------------------------------------------- */
+
+  /* Easing — custom curves, never CSS presets */
+  --ease-out: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1.0);  /* buoyant overshoot — brand signature */
+  --ease-smooth: cubic-bezier(0.52, 0.01, 0.26, 1);
+
+  /* Durations — slightly longer than tool-focused systems.
+     Playful animations need room to breathe. */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
+  --duration-slow: 500ms;
+  --duration-slower: 750ms;
+
+  /* Interaction signatures — more expressive than typical */
+  --hover-scale: 1.02;     /* playful brand earns this */
+  --press-scale: 0.97;     /* satisfying press-in */
+  --stagger-delay: 50ms;   /* list/grid item cascade */
+
+  /* -----------------------------------------------------------------------
+     Z-INDEX
+     ----------------------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-nav: 100;
+  --z-modal: 200;
+  --z-overlay: 300;
+  --z-toast: 400;
+}
+
+/* =========================================================================
+   DARK THEME
+   Deep warm black surfaces. Terracotta accents glow against dark backgrounds.
+   Borders at low white opacity to maintain warmth.
+   ========================================================================= */
+
+[data-theme="dark"] {
+  --surface-primary: var(--color-black);
+  --surface-secondary: #1C1A17;
+  --surface-tertiary: #252220;
+  --surface-elevated: #252220;
+  --surface-inverse: var(--color-white);
+  --surface-accent: var(--color-accent-900);
+
+  --text-primary: var(--color-gray-100);
+  --text-secondary: var(--color-gray-400);
+  --text-tertiary: var(--color-gray-500);
+  --text-inverse: var(--color-gray-700);
+  --text-accent: var(--color-accent-300);
+  --text-on-accent: var(--color-white-pure);
+
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: var(--color-accent-700);
+
+  /* Shadows shift to deeper black ambient */
+  --shadow-color: 0, 0, 0;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================================
+   REDUCED MOTION
+   Parallel design track — animations are removed, not degraded.
+   Scale effects disabled to avoid motion triggers.
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --hover-scale: 1;
+    --press-scale: 1;
+    --stagger-delay: 0ms;
+  }
+}
+
+/* =========================================================================
+   RESPONSIVE DENSITY TIERS
+   Relaxed = marketing/editorial (generous spacing, larger type).
+   Standard = default experience.
+   Compact = dashboards, data-dense views.
+   ========================================================================= */
+
+[data-density="relaxed"] {
+  --space-section: var(--space-32);   /* 128px between sections */
+  --space-group: var(--space-16);
+  --space-element: var(--space-8);
+  --text-base: 1.1875rem;            /* 19px body for editorial */
+  --leading-normal: 1.65;            /* long-form line height */
+}
+
+[data-density="standard"],
+:root {
+  --space-section: var(--space-24);   /* 96px between sections */
+  --space-group: var(--space-12);
+  --space-element: var(--space-6);
+}
+
+[data-density="compact"] {
+  --space-section: var(--space-16);
+  --space-group: var(--space-8);
+  --space-element: var(--space-4);
+  --text-base: 0.9375rem;            /* 15px for data density */
+  --leading-normal: 1.45;
+}
