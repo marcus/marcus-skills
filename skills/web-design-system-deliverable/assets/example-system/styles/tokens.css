@@ -1,0 +1,443 @@
+/* ============================================================
+   Meridian Design System — Token Architecture
+   Three-layer model: Primitive → Semantic → Component
+   ============================================================ */
+
+/* === LAYER 1: PRIMITIVES ===
+   Brand-agnostic raw values. Never reference directly in components. */
+
+:root {
+  /* --- Neutral (warm stone) --- */
+  --p-neutral-0:    #000000;
+  --p-neutral-50:   #0A0A08;
+  --p-neutral-100:  #121210;
+  --p-neutral-150:  #1A1A17;
+  --p-neutral-200:  #232320;
+  --p-neutral-250:  #2C2C28;
+  --p-neutral-300:  #38372F;
+  --p-neutral-400:  #504E46;
+  --p-neutral-500:  #6E6C62;
+  --p-neutral-600:  #8E8B80;
+  --p-neutral-700:  #B0ADA2;
+  --p-neutral-800:  #D0CDC2;
+  --p-neutral-900:  #E8E6DC;
+  --p-neutral-950:  #F5F3E9;
+  --p-neutral-1000: #FFFFFF;
+
+  /* --- Amber (primary accent) --- */
+  --p-amber-50:  #1A1408;
+  --p-amber-100: #2A200C;
+  --p-amber-200: #3E3010;
+  --p-amber-300: #5C4818;
+  --p-amber-400: #8A6C24;
+  --p-amber-500: #C49430;
+  --p-amber-600: #E0AC3C;
+  --p-amber-700: #F0C45C;
+  --p-amber-800: #F8D880;
+  --p-amber-900: #FFF0C0;
+
+  /* --- Teal (secondary) --- */
+  --p-teal-50:  #081A16;
+  --p-teal-100: #0C2A22;
+  --p-teal-200: #103C32;
+  --p-teal-300: #18584A;
+  --p-teal-400: #207862;
+  --p-teal-500: #2C9A7E;
+  --p-teal-600: #38B890;
+  --p-teal-700: #5CCCA8;
+  --p-teal-800: #88DCC0;
+  --p-teal-900: #C0F0E0;
+
+  /* --- Red (danger) --- */
+  --p-red-50:  #1C0808;
+  --p-red-100: #2C1010;
+  --p-red-200: #441818;
+  --p-red-300: #6C2424;
+  --p-red-400: #983030;
+  --p-red-500: #C44040;
+  --p-red-600: #E05050;
+  --p-red-700: #F07070;
+  --p-red-800: #F8A0A0;
+  --p-red-900: #FCE0E0;
+
+  /* --- Blue (info) --- */
+  --p-blue-50:  #080E1C;
+  --p-blue-100: #101C30;
+  --p-blue-200: #182C48;
+  --p-blue-300: #244468;
+  --p-blue-400: #306090;
+  --p-blue-500: #4080B8;
+  --p-blue-600: #5098D0;
+  --p-blue-700: #70B0E0;
+  --p-blue-800: #A0CCF0;
+  --p-blue-900: #D0E8F8;
+
+  /* --- Spacing scale (8px base) --- */
+  --p-space-0:  0;
+  --p-space-px: 1px;
+  --p-space-0-5: 0.125rem;  /* 2px */
+  --p-space-1:  0.25rem;    /* 4px */
+  --p-space-1-5: 0.375rem;  /* 6px */
+  --p-space-2:  0.5rem;     /* 8px */
+  --p-space-3:  0.75rem;    /* 12px */
+  --p-space-4:  1rem;       /* 16px */
+  --p-space-5:  1.25rem;    /* 20px */
+  --p-space-6:  1.5rem;     /* 24px */
+  --p-space-8:  2rem;       /* 32px */
+  --p-space-10: 2.5rem;     /* 40px */
+  --p-space-12: 3rem;       /* 48px */
+  --p-space-16: 4rem;       /* 64px */
+  --p-space-20: 5rem;       /* 80px */
+  --p-space-24: 6rem;       /* 96px */
+  --p-space-32: 8rem;       /* 128px */
+
+  /* --- Border radius --- */
+  --p-radius-none: 0;
+  --p-radius-xs:   2px;
+  --p-radius-sm:   4px;
+  --p-radius-md:   8px;
+  --p-radius-lg:   12px;
+  --p-radius-xl:   16px;
+  --p-radius-2xl:  24px;
+  --p-radius-full: 9999px;
+
+  /* --- Typography primitives --- */
+  --p-font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --p-font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --p-font-mono:    'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --p-text-2xs:  0.6875rem;  /* 11px */
+  --p-text-xs:   0.75rem;    /* 12px */
+  --p-text-sm:   0.875rem;   /* 14px */
+  --p-text-base: 1rem;       /* 16px */
+  --p-text-lg:   1.125rem;   /* 18px */
+  --p-text-xl:   1.25rem;    /* 20px */
+  --p-text-2xl:  1.5rem;     /* 24px */
+  --p-text-3xl:  2rem;       /* 32px */
+  --p-text-4xl:  2.5rem;     /* 40px */
+  --p-text-5xl:  clamp(2.5rem, 5vw, 3.5rem);   /* 40-56px fluid */
+  --p-text-6xl:  clamp(3rem, 6vw, 4.5rem);      /* 48-72px fluid */
+  --p-text-7xl:  clamp(3.5rem, 8vw, 6rem);      /* 56-96px fluid */
+
+  --p-leading-none:    1;
+  --p-leading-tight:   1.15;
+  --p-leading-snug:    1.3;
+  --p-leading-normal:  1.5;
+  --p-leading-relaxed: 1.65;
+
+  --p-tracking-tight:  -0.02em;
+  --p-tracking-normal: 0;
+  --p-tracking-wide:   0.02em;
+  --p-tracking-wider:  0.06em;
+
+  --p-weight-regular:  400;
+  --p-weight-medium:   500;
+  --p-weight-semibold: 600;
+  --p-weight-bold:     700;
+
+  /* --- Motion --- */
+  --p-duration-instant: 60ms;
+  --p-duration-fast:    120ms;
+  --p-duration-normal:  200ms;
+  --p-duration-slow:    350ms;
+  --p-duration-slower:  500ms;
+  --p-duration-dramatic: 700ms;
+
+  --p-ease-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --p-ease-emphasis:   cubic-bezier(0.2, 0, 0, 1.2);
+  --p-ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --p-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+
+  /* --- Shadows (dark theme base) --- */
+  --p-shadow-xs:  0 1px 2px rgba(0,0,0,0.4);
+  --p-shadow-sm:  0 2px 4px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.4);
+  --p-shadow-md:  0 4px 12px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.3);
+  --p-shadow-lg:  0 8px 24px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.3);
+  --p-shadow-xl:  0 16px 48px rgba(0,0,0,0.5), 0 8px 16px rgba(0,0,0,0.35);
+  --p-shadow-glow-amber: 0 0 20px rgba(224, 172, 60, 0.15);
+  --p-shadow-glow-teal:  0 0 20px rgba(56, 184, 144, 0.12);
+}
+
+
+/* === LAYER 2: SEMANTIC TOKENS ===
+   Meaningful roles. These are what components reference. */
+
+/* --- Dark theme (default) --- */
+:root,
+[data-theme="dark"] {
+  /* Surfaces */
+  --color-bg-canvas:   var(--p-neutral-50);
+  --color-bg-default:  var(--p-neutral-100);
+  --color-bg-subtle:   var(--p-neutral-150);
+  --color-bg-muted:    var(--p-neutral-200);
+  --color-bg-elevated: var(--p-neutral-250);
+  --color-bg-inset:    var(--p-neutral-0);
+  --color-bg-overlay:  rgba(0, 0, 0, 0.65);
+
+  /* Text */
+  --color-text-primary:   var(--p-neutral-950);
+  --color-text-secondary: var(--p-neutral-700);
+  --color-text-tertiary:  var(--p-neutral-500);
+  --color-text-disabled:  var(--p-neutral-400);
+  --color-text-inverse:   var(--p-neutral-100);
+  --color-text-on-accent: var(--p-neutral-50);
+
+  /* Accent */
+  --color-accent-default: var(--p-amber-600);
+  --color-accent-hover:   var(--p-amber-700);
+  --color-accent-active:  var(--p-amber-500);
+  --color-accent-subtle:  var(--p-amber-50);
+  --color-accent-text:    var(--p-amber-700);
+
+  /* Secondary accent */
+  --color-secondary-default: var(--p-teal-600);
+  --color-secondary-hover:   var(--p-teal-700);
+  --color-secondary-subtle:  var(--p-teal-50);
+  --color-secondary-text:    var(--p-teal-700);
+
+  /* Borders */
+  --color-border-default: var(--p-neutral-250);
+  --color-border-subtle:  var(--p-neutral-200);
+  --color-border-strong:  var(--p-neutral-400);
+  --color-border-accent:  var(--p-amber-500);
+
+  /* Status: Success */
+  --color-success-default: var(--p-teal-600);
+  --color-success-subtle:  var(--p-teal-50);
+  --color-success-text:    var(--p-teal-700);
+
+  /* Status: Danger */
+  --color-danger-default: var(--p-red-500);
+  --color-danger-subtle:  var(--p-red-50);
+  --color-danger-text:    var(--p-red-700);
+
+  /* Status: Warning */
+  --color-warning-default: var(--p-amber-500);
+  --color-warning-subtle:  var(--p-amber-50);
+  --color-warning-text:    var(--p-amber-700);
+
+  /* Status: Info */
+  --color-info-default: var(--p-blue-500);
+  --color-info-subtle:  var(--p-blue-50);
+  --color-info-text:    var(--p-blue-700);
+
+  /* Interactive states */
+  --color-focus-ring:    var(--p-amber-600);
+  --color-hover-overlay: rgba(255, 255, 255, 0.04);
+  --color-active-overlay: rgba(255, 255, 255, 0.06);
+
+  /* Semantic spacing */
+  --space-page-x:       var(--p-space-6);
+  --space-page-y:       var(--p-space-12);
+  --space-section-gap:  var(--p-space-16);
+  --space-card-padding: var(--p-space-6);
+  --space-input-x:      var(--p-space-4);
+  --space-input-y:      var(--p-space-3);
+  --space-stack-sm:     var(--p-space-2);
+  --space-stack-md:     var(--p-space-4);
+  --space-stack-lg:     var(--p-space-8);
+  --space-inline-sm:    var(--p-space-2);
+  --space-inline-md:    var(--p-space-4);
+  --space-inline-lg:    var(--p-space-8);
+
+  /* Semantic radius (shape hierarchy) */
+  --radius-interactive: var(--p-radius-md);   /* buttons, inputs */
+  --radius-container:   var(--p-radius-lg);   /* cards, panels */
+  --radius-surface:     var(--p-radius-xl);   /* modals, sheets */
+  --radius-badge:       var(--p-radius-full); /* tags, pills */
+
+  /* Semantic shadows */
+  --shadow-card:    var(--p-shadow-sm);
+  --shadow-dropdown: var(--p-shadow-md);
+  --shadow-modal:   var(--p-shadow-xl);
+  --shadow-tooltip: var(--p-shadow-md);
+
+  /* Semantic motion */
+  --motion-fast:    var(--p-duration-fast) var(--p-ease-standard);
+  --motion-normal:  var(--p-duration-normal) var(--p-ease-standard);
+  --motion-slow:    var(--p-duration-slow) var(--p-ease-standard);
+  --motion-spring:  var(--p-duration-normal) var(--p-ease-emphasis);
+  --motion-enter:   var(--p-duration-normal) var(--p-ease-decelerate);
+  --motion-exit:    var(--p-duration-fast) var(--p-ease-accelerate);
+}
+
+
+/* --- Light theme --- */
+[data-theme="light"] {
+  /* Surfaces */
+  --color-bg-canvas:   #FAF9F5;
+  --color-bg-default:  #FFFFFF;
+  --color-bg-subtle:   #F5F4F0;
+  --color-bg-muted:    #ECEBE5;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-inset:    #F0EFE9;
+  --color-bg-overlay:  rgba(0, 0, 0, 0.4);
+
+  /* Text */
+  --color-text-primary:   #141412;
+  --color-text-secondary: #5C5A52;
+  --color-text-tertiary:  #8E8B80;
+  --color-text-disabled:  #B0ADA2;
+  --color-text-inverse:   #F5F3E9;
+  --color-text-on-accent: #141412;
+
+  /* Accent */
+  --color-accent-default: var(--p-amber-500);
+  --color-accent-hover:   var(--p-amber-400);
+  --color-accent-active:  var(--p-amber-600);
+  --color-accent-subtle:  #FFF8E8;
+  --color-accent-text:    var(--p-amber-400);
+
+  /* Secondary accent */
+  --color-secondary-default: var(--p-teal-500);
+  --color-secondary-hover:   var(--p-teal-400);
+  --color-secondary-subtle:  #E8FAF4;
+  --color-secondary-text:    var(--p-teal-400);
+
+  /* Borders */
+  --color-border-default: #DDD9D0;
+  --color-border-subtle:  #EAE8E2;
+  --color-border-strong:  #C0BCB2;
+  --color-border-accent:  var(--p-amber-500);
+
+  /* Status (adjusted for light backgrounds) */
+  --color-success-default: var(--p-teal-500);
+  --color-success-subtle:  #E8FAF4;
+  --color-success-text:    var(--p-teal-400);
+
+  --color-danger-default: var(--p-red-500);
+  --color-danger-subtle:  #FDE8E8;
+  --color-danger-text:    var(--p-red-400);
+
+  --color-warning-default: var(--p-amber-500);
+  --color-warning-subtle:  #FFF8E8;
+  --color-warning-text:    var(--p-amber-400);
+
+  --color-info-default: var(--p-blue-500);
+  --color-info-subtle:  #E8F0FA;
+  --color-info-text:    var(--p-blue-400);
+
+  /* Interactive states */
+  --color-focus-ring:     var(--p-amber-500);
+  --color-hover-overlay:  rgba(0, 0, 0, 0.03);
+  --color-active-overlay: rgba(0, 0, 0, 0.06);
+
+  /* Light shadows */
+  --p-shadow-xs:  0 1px 2px rgba(0,0,0,0.05);
+  --p-shadow-sm:  0 2px 4px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --p-shadow-md:  0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --p-shadow-lg:  0 8px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --p-shadow-xl:  0 16px 48px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.06);
+  --p-shadow-glow-amber: 0 0 20px rgba(196, 148, 48, 0.1);
+  --p-shadow-glow-teal:  0 0 20px rgba(44, 154, 126, 0.08);
+}
+
+
+/* === LAYER 3: COMPONENT TOKENS ===
+   Component-specific overrides. Only when semantic tokens don't suffice. */
+
+:root {
+  /* Button */
+  --btn-height-sm:     2rem;
+  --btn-height-md:     2.5rem;
+  --btn-height-lg:     3rem;
+  --btn-padding-x-sm:  var(--p-space-3);
+  --btn-padding-x-md:  var(--p-space-5);
+  --btn-padding-x-lg:  var(--p-space-8);
+  --btn-radius:        var(--radius-interactive);
+  --btn-font-size:     var(--p-text-sm);
+  --btn-font-weight:   var(--p-weight-medium);
+  --btn-transition:    all var(--motion-fast);
+
+  /* Input */
+  --input-height:       2.5rem;
+  --input-padding-x:    var(--space-input-x);
+  --input-radius:       var(--radius-interactive);
+  --input-border-width: 1px;
+  --input-font-size:    var(--p-text-sm);
+
+  /* Card */
+  --card-padding:    var(--space-card-padding);
+  --card-radius:     var(--radius-container);
+  --card-border:     1px solid var(--color-border-subtle);
+  --card-shadow:     var(--shadow-card);
+
+  /* Badge */
+  --badge-height:      1.5rem;
+  --badge-padding-x:   var(--p-space-2);
+  --badge-radius:      var(--radius-badge);
+  --badge-font-size:   var(--p-text-xs);
+  --badge-font-weight: var(--p-weight-medium);
+
+  /* Avatar */
+  --avatar-size-sm: 1.5rem;
+  --avatar-size-md: 2rem;
+  --avatar-size-lg: 2.5rem;
+  --avatar-size-xl: 3rem;
+  --avatar-radius:  var(--p-radius-full);
+
+  /* Tooltip */
+  --tooltip-padding:   var(--p-space-2) var(--p-space-3);
+  --tooltip-radius:    var(--radius-interactive);
+  --tooltip-font-size: var(--p-text-xs);
+
+  /* Navigation */
+  --nav-height:      3.5rem;
+  --nav-item-gap:    var(--p-space-1);
+  --nav-item-radius: var(--p-radius-md);
+
+  /* Sidebar */
+  --sidebar-width:          260px;
+  --sidebar-width-collapsed: 56px;
+
+  /* Table */
+  --table-row-height:   2.75rem;
+  --table-cell-padding: var(--p-space-3) var(--p-space-4);
+  --table-header-bg:    var(--color-bg-subtle);
+
+  /* Modal */
+  --modal-width-sm:  420px;
+  --modal-width-md:  560px;
+  --modal-width-lg:  720px;
+  --modal-radius:    var(--radius-surface);
+  --modal-padding:   var(--p-space-8);
+}
+
+
+/* === RESPONSIVE BREAKPOINTS ===
+   Content-driven, not device-driven. */
+
+@media (min-width: 48rem) {   /* Medium: 768px */
+  :root {
+    --space-page-x: var(--p-space-8);
+  }
+}
+
+@media (min-width: 64rem) {   /* Expanded: 1024px */
+  :root {
+    --space-page-x: var(--p-space-12);
+    --space-page-y: var(--p-space-16);
+  }
+}
+
+@media (min-width: 90rem) {   /* Wide: 1440px */
+  :root {
+    --space-page-x: var(--p-space-16);
+    --space-page-y: var(--p-space-20);
+  }
+}
+
+
+/* === REDUCED MOTION ===
+   Parallel design track, not disabled animation. */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --p-duration-instant:  0ms;
+    --p-duration-fast:     0ms;
+    --p-duration-normal:   0ms;
+    --p-duration-slow:     0ms;
+    --p-duration-slower:   0ms;
+    --p-duration-dramatic: 0ms;
+  }
+}

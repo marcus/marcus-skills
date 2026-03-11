@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components — Meridian Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* Page-specific styles for the component showcase */
+    .component-section {
+      padding: var(--space-section-gap) 0;
+    }
+    .component-section + .component-section {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+    .component-category {
+      margin-bottom: var(--p-space-3);
+    }
+    .component-card {
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-container);
+      overflow: hidden;
+    }
+    .component-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--p-space-3) var(--p-space-5);
+      background: var(--color-bg-subtle);
+      border-bottom: 1px solid var(--color-border-subtle);
+      font-size: var(--p-text-xs);
+      font-weight: var(--p-weight-medium);
+      color: var(--color-text-secondary);
+      letter-spacing: var(--p-tracking-wide);
+    }
+    .component-card-body {
+      padding: var(--p-space-8);
+    }
+    .component-card-footer {
+      padding: var(--p-space-4) var(--p-space-5);
+      border-top: 1px solid var(--color-border-subtle);
+      background: var(--color-bg-inset);
+    }
+    .component-card-footer pre {
+      margin: 0;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
+    .component-card-footer code {
+      font-size: var(--p-text-xs);
+      background: transparent;
+      color: var(--color-text-tertiary);
+      padding: 0;
+    }
+    .example-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--p-space-4);
+    }
+    .example-row + .example-row {
+      margin-top: var(--p-space-6);
+    }
+    .example-label {
+      font-size: var(--p-text-xs);
+      font-weight: var(--p-weight-medium);
+      color: var(--color-text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: var(--p-tracking-wider);
+      min-width: 5rem;
+      flex-shrink: 0;
+    }
+    .example-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-6);
+    }
+    .example-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--p-space-6);
+    }
+    .state-note {
+      font-size: var(--p-text-xs);
+      color: var(--color-text-tertiary);
+      font-style: italic;
+    }
+    /* Simulated focus state class */
+    .focus {
+      outline: none;
+      border-color: var(--color-accent-default) !important;
+      box-shadow: 0 0 0 3px var(--color-accent-subtle) !important;
+    }
+    /* Simulated hover state for buttons */
+    .hover.btn-primary {
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+      box-shadow: var(--p-shadow-glow-amber);
+    }
+    .hover.btn-secondary {
+      background: var(--color-hover-overlay);
+      border-color: var(--color-border-strong);
+    }
+    .hover.btn-ghost {
+      color: var(--color-text-primary);
+      background: var(--color-hover-overlay);
+    }
+    .hover.btn-danger {
+      opacity: 0.9;
+    }
+    /* Status dot */
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-dot-active   { background: var(--color-success-default); }
+    .status-dot-warning  { background: var(--color-warning-default); }
+    .status-dot-error    { background: var(--color-danger-default); }
+    .status-dot-inactive { background: var(--color-text-disabled); }
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--p-space-2);
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+    }
+    /* Tabs inline */
+    .tab-group {
+      display: flex;
+      gap: var(--p-space-1);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .tab-item {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--p-space-2) var(--p-space-4);
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-medium);
+      color: var(--color-text-tertiary);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      cursor: pointer;
+      transition: var(--btn-transition);
+    }
+    .tab-item:hover {
+      color: var(--color-text-primary);
+    }
+    .tab-item.active {
+      color: var(--color-accent-text);
+      border-bottom-color: var(--color-accent-default);
+    }
+    /* Modal representation */
+    .modal-backdrop {
+      position: relative;
+      background: var(--color-bg-overlay);
+      border-radius: var(--radius-container);
+      padding: var(--p-space-12) var(--p-space-8);
+      display: flex;
+      justify-content: center;
+    }
+    .modal-card {
+      background: var(--color-bg-elevated);
+      border: 1px solid var(--color-border-default);
+      border-radius: var(--modal-radius);
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: var(--modal-width-sm);
+      overflow: hidden;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--p-space-6);
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+    .modal-body {
+      padding: var(--p-space-6);
+    }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--p-space-3);
+      padding: var(--p-space-4) var(--p-space-6);
+      border-top: 1px solid var(--color-border-subtle);
+      background: var(--color-bg-subtle);
+    }
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s var(--p-ease-decelerate), transform 0.5s var(--p-ease-decelerate);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Tooltip static display */
+    .tooltip-static .tooltip-content {
+      opacity: 1;
+      position: relative;
+      bottom: auto;
+      left: auto;
+      transform: none;
+      display: inline-block;
+      pointer-events: auto;
+    }
+    /* Input group max width for examples */
+    .input-example {
+      max-width: 320px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-mark"></span>
+      MERIDIAN
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="components.html" aria-current="page">Components</a></li>
+      <li><a href="guidelines.html">Guidelines</a></li>
+      <li><a href="application.html">Application</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-ghost btn-sm btn-icon" id="themeToggle" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="3.5"/>
+          <path d="M8 1.5v1M8 13.5v1M1.5 8h1M13.5 8h1M3.4 3.4l.7.7M11.9 11.9l.7.7M12.6 3.4l-.7.7M4.1 11.9l-.7.7"/>
+        </svg>
+      </button>
+      <a href="tokens.json" class="btn btn-secondary btn-sm" target="_blank">View tokens.json</a>
+    </div>
+  </nav>
+
+  <main class="page-container">
+
+    <!-- ============ HERO ============ -->
+    <header class="section" style="border-top: none; padding-top: var(--p-space-12);">
+      <div class="stack-md reveal">
+        <h1 class="text-display" style="font-style: italic;">Components</h1>
+        <p class="text-body-lg text-muted" style="max-width: 44rem;">Every component built on semantic tokens. Full state coverage. Dark and light.</p>
+      </div>
+    </header>
+
+
+    <!-- ================================================================
+         ACTIONS
+         ================================================================ -->
+
+    <!-- -------- BUTTONS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Actions</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Buttons</h2>
+        <p class="text-body text-muted">The primary interactive element. Four variants, three sizes, icon support, and full state coverage.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+
+        <!-- Variants -->
+        <div class="component-card">
+          <div class="component-card-header">Variants</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <button class="btn btn-primary">Primary</button>
+              <button class="btn btn-secondary">Secondary</button>
+              <button class="btn btn-ghost">Ghost</button>
+              <button class="btn btn-danger">Danger</button>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.btn .btn-primary | .btn-secondary | .btn-ghost | .btn-danger</code></pre>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="component-card">
+          <div class="component-card-header">Sizes</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <button class="btn btn-primary btn-sm">Small</button>
+              <button class="btn btn-primary">Medium</button>
+              <button class="btn btn-primary btn-lg">Large</button>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.btn-sm | (default) | .btn-lg</code></pre>
+          </div>
+        </div>
+
+        <!-- States -->
+        <div class="component-card">
+          <div class="component-card-header">States</div>
+          <div class="component-card-body">
+            <div class="example-stack">
+              <div>
+                <span class="example-label">Default</span>
+                <div class="example-row" style="margin-top: var(--p-space-3);">
+                  <button class="btn btn-primary">Primary</button>
+                  <button class="btn btn-secondary">Secondary</button>
+                  <button class="btn btn-ghost">Ghost</button>
+                  <button class="btn btn-danger">Danger</button>
+                </div>
+              </div>
+              <div>
+                <span class="example-label">Hover <span class="state-note">(simulated via .hover class)</span></span>
+                <div class="example-row" style="margin-top: var(--p-space-3);">
+                  <button class="btn btn-primary hover">Primary</button>
+                  <button class="btn btn-secondary hover">Secondary</button>
+                  <button class="btn btn-ghost hover">Ghost</button>
+                  <button class="btn btn-danger hover">Danger</button>
+                </div>
+              </div>
+              <div>
+                <span class="example-label">Disabled</span>
+                <div class="example-row" style="margin-top: var(--p-space-3);">
+                  <button class="btn btn-primary" disabled>Primary</button>
+                  <button class="btn btn-secondary" disabled>Secondary</button>
+                  <button class="btn btn-ghost" disabled>Ghost</button>
+                  <button class="btn btn-danger" disabled>Danger</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>:hover | :disabled | aria-disabled="true"</code></pre>
+          </div>
+        </div>
+
+        <!-- Icon Buttons -->
+        <div class="component-card">
+          <div class="component-card-header">Icon Buttons</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <button class="btn btn-primary btn-icon" aria-label="Add">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+              </button>
+              <button class="btn btn-secondary btn-icon" aria-label="Search">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.5 3.5"/></svg>
+              </button>
+              <button class="btn btn-ghost btn-icon" aria-label="Settings">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="2"/><path d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M12.6 3.4l-1.4 1.4M4.8 11.2l-1.4 1.4"/></svg>
+              </button>
+              <button class="btn btn-ghost btn-icon btn-sm" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+              </button>
+              <button class="btn btn-secondary btn-icon btn-lg" aria-label="Check">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.5 3.5L13 4"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.btn .btn-icon .btn-primary | .btn-sm | .btn-lg</code></pre>
+          </div>
+        </div>
+
+        <!-- Button with Icon + Text -->
+        <div class="component-card">
+          <div class="component-card-header">Button with Icon + Text</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <button class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8h10"/></svg>
+                New Agent
+              </button>
+              <button class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.5 3.5"/></svg>
+                Search
+              </button>
+              <button class="btn btn-ghost">
+                Settings
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.btn + inline SVG — icons inherit button color</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- LINKS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Actions</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Links</h2>
+        <p class="text-body text-muted">Inline text links with accent color and hover transitions.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Link States</div>
+        <div class="component-card-body">
+          <div class="example-stack">
+            <p class="text-body">This is a paragraph with an <a href="#">inline link</a> styled using the accent color.</p>
+            <p class="text-body text-muted state-note">Hover state lightens the link color. Visited styles follow browser defaults unless overridden.</p>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>a { color: var(--color-accent-text) } a:hover { color: var(--color-accent-hover) }</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         INPUTS
+         ================================================================ -->
+
+    <!-- -------- TEXT INPUT -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Inputs</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Text Input</h2>
+        <p class="text-body text-muted">Form inputs with label, hint, error, focus, and disabled states.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+        <div class="component-card">
+          <div class="component-card-header">Default &amp; Placeholder</div>
+          <div class="component-card-body">
+            <div class="example-row" style="align-items: flex-start;">
+              <div class="input-example">
+                <input type="text" class="input" placeholder="Enter agent name...">
+              </div>
+              <div class="input-example">
+                <input type="text" class="input" value="Orchestrator-v2">
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.input — placeholder via ::placeholder</code></pre>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-header">With Label + Hint</div>
+          <div class="component-card-body">
+            <div class="input-group input-example">
+              <label class="input-label">Agent Name</label>
+              <input type="text" class="input" placeholder="e.g. Orchestrator">
+              <span class="input-hint">Unique identifier for this agent instance.</span>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.input-group > .input-label + .input + .input-hint</code></pre>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-header">States</div>
+          <div class="component-card-body">
+            <div class="example-grid">
+              <div class="input-group">
+                <label class="input-label">Focus <span class="state-note">(simulated)</span></label>
+                <input type="text" class="input focus" value="Retriever">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Error</label>
+                <input type="text" class="input input-error" value="">
+                <span class="input-error-msg">Agent name is required.</span>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Disabled</label>
+                <input type="text" class="input" value="System Agent" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.focus | .input-error + .input-error-msg | :disabled</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- TEXTAREA -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Inputs</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Textarea</h2>
+        <p class="text-body text-muted">Multi-line text input for longer content like agent instructions.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Default with Label</div>
+        <div class="component-card-body">
+          <div class="input-group" style="max-width: 480px;">
+            <label class="input-label">System Prompt</label>
+            <textarea class="input" placeholder="Define the agent's behavior and constraints..."></textarea>
+            <span class="input-hint">Supports Markdown formatting.</span>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>textarea.input — auto height, resizable vertical</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- SELECT -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Inputs</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Select</h2>
+        <p class="text-body text-muted">Dropdown select with custom caret icon.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Default with Label</div>
+        <div class="component-card-body">
+          <div class="input-group" style="max-width: 320px;">
+            <label class="input-label">Agent Type</label>
+            <select class="input select">
+              <option>Orchestrator</option>
+              <option>Retriever</option>
+              <option>Classifier</option>
+              <option>Summarizer</option>
+              <option>Validator</option>
+            </select>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.input.select — custom appearance with SVG caret</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- TOGGLE / SWITCH -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Inputs</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Toggle / Switch</h2>
+        <p class="text-body text-muted">Binary on/off control with spring animation.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Off &amp; On States</div>
+        <div class="component-card-body">
+          <div class="example-row" style="gap: var(--p-space-8);">
+            <div class="flex items-center gap-3">
+              <span class="switch" role="switch" aria-checked="false" tabindex="0"></span>
+              <span class="text-body-sm text-muted">Inactive</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="switch active" role="switch" aria-checked="true" tabindex="0"></span>
+              <span class="text-body-sm">Active</span>
+            </div>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.switch | .switch.active — spring transition on knob</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         DATA DISPLAY
+         ================================================================ -->
+
+    <!-- -------- BADGES -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Data Display</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Badges</h2>
+        <p class="text-body text-muted">Status labels and categorical tags. Six semantic variants.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+        <div class="component-card">
+          <div class="component-card-header">All Variants</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <span class="badge badge-default">Default</span>
+              <span class="badge badge-accent">Accent</span>
+              <span class="badge badge-success">Success</span>
+              <span class="badge badge-danger">Danger</span>
+              <span class="badge badge-warning">Warning</span>
+              <span class="badge badge-info">Info</span>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.badge .badge-default | -accent | -success | -danger | -warning | -info</code></pre>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-header">With Dot Indicator</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <span class="badge badge-success badge-dot">Running</span>
+              <span class="badge badge-danger badge-dot">Failed</span>
+              <span class="badge badge-warning badge-dot">Queued</span>
+              <span class="badge badge-info badge-dot">Syncing</span>
+              <span class="badge badge-default badge-dot">Paused</span>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.badge.badge-dot — colored dot via ::before pseudo-element</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- CARDS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Data Display</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Cards</h2>
+        <p class="text-body text-muted">Containment surfaces with four visual variants and compositional layouts.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+        <div class="component-card">
+          <div class="component-card-header">Variants</div>
+          <div class="component-card-body">
+            <div class="example-grid">
+              <div class="card">
+                <div class="stack-sm">
+                  <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Default Card</p>
+                  <p class="text-caption">Standard container with subtle border. Used for most content grouping.</p>
+                </div>
+              </div>
+              <div class="card card-interactive" style="cursor: pointer;">
+                <div class="stack-sm">
+                  <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Interactive Card</p>
+                  <p class="text-caption">Hover to see lift effect. Used for clickable items.</p>
+                </div>
+              </div>
+              <div class="card card-elevated">
+                <div class="stack-sm">
+                  <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Elevated Card</p>
+                  <p class="text-caption">Shadow-based depth. No visible border. Floating panels.</p>
+                </div>
+              </div>
+              <div class="card card-accent">
+                <div class="stack-sm">
+                  <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Accent Card</p>
+                  <p class="text-caption">Amber border with accent-subtle background. Highlights and CTAs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.card | .card-interactive | .card-elevated | .card-accent</code></pre>
+          </div>
+        </div>
+
+        <!-- Card Compositions -->
+        <div class="component-card">
+          <div class="component-card-header">Compositions</div>
+          <div class="component-card-body">
+            <div class="example-grid">
+              <!-- Card with header/body/footer -->
+              <div class="card" style="padding: 0;">
+                <div style="padding: var(--p-space-4) var(--p-space-5); border-bottom: 1px solid var(--color-border-subtle);">
+                  <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Agent Performance</p>
+                </div>
+                <div style="padding: var(--p-space-5);">
+                  <div class="stack-sm">
+                    <p class="text-caption">Success rate this week</p>
+                    <p class="text-title" style="font-size: var(--p-text-3xl);">97.3%</p>
+                  </div>
+                </div>
+                <div style="padding: var(--p-space-3) var(--p-space-5); border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-subtle);">
+                  <span class="badge badge-success badge-dot" style="font-size: var(--p-text-xs);">+2.1% from last week</span>
+                </div>
+              </div>
+
+              <!-- Card with badge + avatar -->
+              <div class="card">
+                <div class="flex items-center gap-4" style="margin-bottom: var(--p-space-4);">
+                  <div class="avatar avatar-lg" style="background: var(--color-accent-subtle); color: var(--color-accent-text);">OR</div>
+                  <div class="stack-sm" style="gap: var(--p-space-1);">
+                    <p class="text-body-sm" style="font-weight: var(--p-weight-semibold);">Orchestrator</p>
+                    <span class="badge badge-success badge-dot" style="font-size: 10px;">Active</span>
+                  </div>
+                </div>
+                <p class="text-caption">Primary pipeline coordinator. Routes tasks to specialized sub-agents based on intent classification.</p>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>Card with header/body/footer | Card with .avatar + .badge</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- TABLE -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Data Display</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Table</h2>
+        <p class="text-body text-muted">Data tables with sortable headers, row hover, and inline badge status.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Agent Fleet Overview</div>
+        <div class="component-card-body" style="padding: 0;">
+          <div class="table-wrapper" style="border: none; border-radius: 0;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Agent Name</th>
+                  <th>Status</th>
+                  <th>Tasks</th>
+                  <th>Success Rate</th>
+                  <th>Last Active</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Orchestrator</td>
+                  <td><span class="badge badge-success badge-dot">Active</span></td>
+                  <td>12,847</td>
+                  <td>99.2%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">Just now</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Retriever</td>
+                  <td><span class="badge badge-success badge-dot">Active</span></td>
+                  <td>8,432</td>
+                  <td>97.8%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">2 min ago</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Classifier</td>
+                  <td><span class="badge badge-warning badge-dot">Degraded</span></td>
+                  <td>6,291</td>
+                  <td>94.1%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">5 min ago</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Summarizer</td>
+                  <td><span class="badge badge-danger badge-dot">Failed</span></td>
+                  <td>3,104</td>
+                  <td>87.3%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">1 hr ago</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Validator</td>
+                  <td><span class="badge badge-default badge-dot">Paused</span></td>
+                  <td>1,956</td>
+                  <td>99.5%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">3 hrs ago</td>
+                </tr>
+                <tr>
+                  <td style="font-weight: var(--p-weight-medium);">Synthesizer</td>
+                  <td><span class="badge badge-info badge-dot">Syncing</span></td>
+                  <td>4,720</td>
+                  <td>96.0%</td>
+                  <td class="text-caption" style="color: var(--color-text-tertiary);">8 min ago</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.table-wrapper > table > thead + tbody — rows hover via tr:hover</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- AVATARS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Data Display</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Avatars</h2>
+        <p class="text-body text-muted">User and agent identity indicators with initials and group overlap.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+        <div class="component-card">
+          <div class="component-card-header">Sizes</div>
+          <div class="component-card-body">
+            <div class="example-row">
+              <div style="text-align: center;">
+                <div class="avatar avatar-sm">S</div>
+                <p class="text-caption" style="margin-top: var(--p-space-2);">SM</p>
+              </div>
+              <div style="text-align: center;">
+                <div class="avatar">OR</div>
+                <p class="text-caption" style="margin-top: var(--p-space-2);">MD</p>
+              </div>
+              <div style="text-align: center;">
+                <div class="avatar avatar-lg">RE</div>
+                <p class="text-caption" style="margin-top: var(--p-space-2);">LG</p>
+              </div>
+              <div style="text-align: center;">
+                <div class="avatar avatar-xl" style="background: var(--color-accent-subtle); color: var(--color-accent-text);">CL</div>
+                <p class="text-caption" style="margin-top: var(--p-space-2);">XL</p>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.avatar .avatar-sm | (default md) | .avatar-lg | .avatar-xl</code></pre>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-header">Avatar Group</div>
+          <div class="component-card-body">
+            <div class="avatar-group">
+              <div class="avatar" style="background: var(--color-accent-subtle); color: var(--color-accent-text);">OR</div>
+              <div class="avatar" style="background: var(--color-success-subtle); color: var(--color-success-text);">RE</div>
+              <div class="avatar" style="background: var(--color-info-subtle); color: var(--color-info-text);">CL</div>
+              <div class="avatar" style="background: var(--color-warning-subtle); color: var(--color-warning-text);">SU</div>
+              <div class="avatar" style="background: var(--color-danger-subtle); color: var(--color-danger-text);">VA</div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.avatar-group > .avatar — negative margin overlap with border</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         FEEDBACK
+         ================================================================ -->
+
+    <!-- -------- PROGRESS BAR -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Feedback</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Progress Bar</h2>
+        <p class="text-body text-muted">Determinate progress indicators with semantic color variants.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Variants &amp; Widths</div>
+        <div class="component-card-body">
+          <div class="example-stack" style="gap: var(--p-space-6); max-width: 480px;">
+            <div class="stack-sm" style="gap: var(--p-space-2);">
+              <div class="flex justify-between">
+                <span class="text-caption">Pipeline execution</span>
+                <span class="text-caption">72%</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" style="width: 72%;"></div>
+              </div>
+            </div>
+            <div class="stack-sm" style="gap: var(--p-space-2);">
+              <div class="flex justify-between">
+                <span class="text-caption">Validation complete</span>
+                <span class="text-caption">100%</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar progress-bar-success" style="width: 100%;"></div>
+              </div>
+            </div>
+            <div class="stack-sm" style="gap: var(--p-space-2);">
+              <div class="flex justify-between">
+                <span class="text-caption">Error threshold</span>
+                <span class="text-caption">38%</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar progress-bar-danger" style="width: 38%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.progress > .progress-bar | .progress-bar-success | .progress-bar-danger</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- SKELETON LOADING -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Feedback</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Skeleton Loading</h2>
+        <p class="text-body text-muted">Content placeholders with animated pulse gradient.</p>
+      </div>
+
+      <div class="example-stack" style="gap: var(--p-space-8);">
+        <div class="component-card">
+          <div class="component-card-header">Text &amp; Shape Skeletons</div>
+          <div class="component-card-body">
+            <div class="example-grid">
+              <div class="stack-sm" style="gap: var(--p-space-3);">
+                <p class="text-caption" style="margin-bottom: var(--p-space-2);">Text lines</p>
+                <div class="skeleton skeleton-text" style="width: 90%;"></div>
+                <div class="skeleton skeleton-text" style="width: 100%;"></div>
+                <div class="skeleton skeleton-text" style="width: 70%;"></div>
+              </div>
+              <div>
+                <p class="text-caption" style="margin-bottom: var(--p-space-3);">Circle</p>
+                <div class="skeleton skeleton-circle" style="width: 48px; height: 48px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>.skeleton.skeleton-text | .skeleton.skeleton-circle</code></pre>
+          </div>
+        </div>
+
+        <div class="component-card">
+          <div class="component-card-header">Card Skeleton Composition</div>
+          <div class="component-card-body">
+            <div class="card" style="max-width: 320px;">
+              <div class="flex items-center gap-3" style="margin-bottom: var(--p-space-4);">
+                <div class="skeleton skeleton-circle" style="width: 40px; height: 40px; flex-shrink: 0;"></div>
+                <div class="stack-sm" style="gap: var(--p-space-2); flex: 1;">
+                  <div class="skeleton skeleton-text" style="width: 60%;"></div>
+                  <div class="skeleton skeleton-text" style="width: 40%; height: 0.75em;"></div>
+                </div>
+              </div>
+              <div class="stack-sm" style="gap: var(--p-space-2);">
+                <div class="skeleton skeleton-text" style="width: 100%;"></div>
+                <div class="skeleton skeleton-text" style="width: 90%;"></div>
+                <div class="skeleton skeleton-text" style="width: 75%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="component-card-footer">
+            <pre><code>Card with avatar skeleton + text line skeletons</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- STATUS INDICATORS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Feedback</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Status Indicators</h2>
+        <p class="text-body text-muted">Inline colored dots paired with labels for system state communication.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">All States</div>
+        <div class="component-card-body">
+          <div class="example-row" style="gap: var(--p-space-8);">
+            <span class="status-indicator">
+              <span class="status-dot status-dot-active"></span>
+              Active
+            </span>
+            <span class="status-indicator">
+              <span class="status-dot status-dot-warning"></span>
+              Warning
+            </span>
+            <span class="status-indicator">
+              <span class="status-dot status-dot-error"></span>
+              Error
+            </span>
+            <span class="status-indicator">
+              <span class="status-dot status-dot-inactive"></span>
+              Inactive
+            </span>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.status-indicator > .status-dot.status-dot-active | -warning | -error | -inactive</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         NAVIGATION
+         ================================================================ -->
+
+    <!-- -------- TABS -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Navigation</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Tabs</h2>
+        <p class="text-body text-muted">Horizontal tab navigation for switching between views within a context.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Tab Bar</div>
+        <div class="component-card-body">
+          <div class="tab-group">
+            <button class="tab-item active">Overview</button>
+            <button class="tab-item">Logs</button>
+            <button class="tab-item">Configuration</button>
+            <button class="tab-item">Metrics</button>
+          </div>
+          <div style="padding: var(--p-space-6); background: var(--color-bg-subtle); border-radius: 0 0 var(--p-radius-md) var(--p-radius-md); border: 1px solid var(--color-border-subtle); border-top: none;">
+            <p class="text-body-sm text-muted">Tab content area. The active tab's content renders here.</p>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.tab-group > .tab-item | .tab-item.active — border-bottom accent</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         OVERLAY
+         ================================================================ -->
+
+    <!-- -------- TOOLTIP -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Overlay</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Tooltip</h2>
+        <p class="text-body text-muted">Contextual information overlay triggered on hover.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Static Representation</div>
+        <div class="component-card-body">
+          <div class="flex items-center gap-8" style="padding-top: var(--p-space-10);">
+            <div class="tooltip tooltip-static" style="display: inline-block;">
+              <div class="tooltip-content">Deploy agent to production</div>
+              <button class="btn btn-primary btn-sm" style="margin-top: var(--p-space-3);">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>
+                Deploy
+              </button>
+            </div>
+            <div class="tooltip tooltip-static" style="display: inline-block;">
+              <div class="tooltip-content">Cmd + K</div>
+              <button class="btn btn-secondary btn-sm" style="margin-top: var(--p-space-3);">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="7" cy="7" r="4"/><path d="M10 10l3.5 3.5"/></svg>
+                Search
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.tooltip > .tooltip-content — positioned above, shown on :hover</code></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- -------- MODAL -------- -->
+    <section class="component-section reveal">
+      <p class="text-subheading component-category">Overlay</p>
+      <div class="stack-md" style="margin-bottom: var(--p-space-8);">
+        <h2 class="text-title">Modal</h2>
+        <p class="text-body text-muted">Blocking dialog with backdrop overlay. Shown here as a static representation.</p>
+      </div>
+
+      <div class="component-card">
+        <div class="component-card-header">Static Modal</div>
+        <div class="component-card-body" style="padding: 0;">
+          <div class="modal-backdrop">
+            <div class="modal-card">
+              <div class="modal-header">
+                <span style="font-weight: var(--p-weight-semibold); font-size: var(--p-text-base);">Decommission Agent</span>
+                <button class="btn btn-ghost btn-icon btn-sm" aria-label="Close">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p class="text-body-sm text-muted">Are you sure you want to decommission <strong style="color: var(--color-text-primary);">Summarizer-v3</strong>? This will terminate all active tasks and remove the agent from the fleet. This action cannot be undone.</p>
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm">Cancel</button>
+                <button class="btn btn-danger btn-sm">Decommission</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="component-card-footer">
+          <pre><code>.modal-backdrop > .modal-card > .modal-header + .modal-body + .modal-footer</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    // Theme Toggle
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+
+      const sunIcon = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3.5"/><path d="M8 1.5v1M8 13.5v1M1.5 8h1M13.5 8h1M3.4 3.4l.7.7M11.9 11.9l.7.7M12.6 3.4l-.7.7M4.1 11.9l-.7.7"/></svg>';
+      const moonIcon = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 8.5a5.5 5.5 0 0 1-7-7A5.5 5.5 0 1 0 13.5 8.5z"/></svg>';
+
+      function setTheme(theme) {
+        html.setAttribute('data-theme', theme);
+        localStorage.setItem('meridian-theme', theme);
+        toggle.innerHTML = theme === 'dark' ? sunIcon : moonIcon;
+        toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      }
+
+      const saved = localStorage.getItem('meridian-theme') || 'dark';
+      setTheme(saved);
+
+      toggle.addEventListener('click', function() {
+        setTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+    })();
+
+    // Scroll-triggered reveal animations via IntersectionObserver
+    (function() {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function(el) { el.classList.add('visible'); });
+        return;
+      }
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      els.forEach(function(el) { observer.observe(el); });
+    })();
+
+    // Interactive switch toggles
+    document.querySelectorAll('.switch').forEach(function(sw) {
+      sw.addEventListener('click', function() {
+        var isActive = this.classList.toggle('active');
+        this.setAttribute('aria-checked', isActive ? 'true' : 'false');
+      });
+    });
+  </script>
+
+</body>
+</html>

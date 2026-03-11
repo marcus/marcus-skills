@@ -34,6 +34,7 @@ Treat the output like a rebrand deliverable from a top-tier agency.
 - Keep accessibility non-negotiable: contrast documentation, ARIA patterns, keyboard navigation, screen reader expectations, color independence, and reduced-motion audit.
 - Prove the system works in a real application context — a product dashboard, a marketing landing page, or both.
 - Avoid generic UI filler. Every surface should have a reason to exist.
+- Never use thick left-border callouts with rounded corners (the colored left strip on a rounded card). This is the most recognizable AI-generated design pattern. Use icons, background tint, or uniform thin borders to differentiate callout types instead.
 
 ## Workflow
 

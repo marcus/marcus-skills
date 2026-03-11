@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridian Design System — Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* === PAGE-SPECIFIC OVERRIDES === */
+
+    .hero {
+      padding: var(--p-space-24) 0 var(--p-space-16);
+      max-width: 52rem;
+    }
+
+    .hero .text-hero {
+      font-style: italic;
+    }
+
+    .hero .text-body-lg {
+      max-width: 38rem;
+      margin-top: var(--p-space-6);
+    }
+
+    .hero-actions {
+      margin-top: var(--p-space-10);
+      display: flex;
+      gap: var(--p-space-4);
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: var(--p-space-8);
+      margin-top: var(--p-space-16);
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-1);
+    }
+
+    .hero-stat-value {
+      font-family: var(--p-font-body);
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .hero-stat-label {
+      font-size: var(--p-text-xs);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Section header */
+    .section-header {
+      margin-bottom: var(--p-space-12);
+    }
+
+    .section-header .text-subheading {
+      margin-bottom: var(--p-space-3);
+    }
+
+    .section-header .text-title-lg {
+      font-style: italic;
+    }
+
+    /* Color swatches */
+    .palette-strip {
+      display: flex;
+      gap: var(--p-space-2);
+      overflow-x: auto;
+      padding-bottom: var(--p-space-2);
+    }
+
+    .palette-strip-label {
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-medium);
+      color: var(--color-text-primary);
+      margin-bottom: var(--p-space-3);
+    }
+
+    .palette-group {
+      margin-bottom: var(--p-space-8);
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-1-5);
+      flex-shrink: 0;
+    }
+
+    .swatch-color {
+      width: 5rem;
+      height: 3.5rem;
+      border-radius: var(--radius-interactive);
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    .swatch-name {
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-secondary);
+    }
+
+    .swatch-hex {
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Semantic mapping cards */
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--p-space-6);
+    }
+
+    .semantic-card {
+      padding: var(--card-padding);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--card-radius);
+    }
+
+    .semantic-card-title {
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-semibold);
+      color: var(--color-text-primary);
+      margin-bottom: var(--p-space-4);
+    }
+
+    .semantic-row {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-3);
+      padding: var(--p-space-2) 0;
+    }
+
+    .semantic-row + .semantic-row {
+      border-top: 1px solid var(--color-border-subtle);
+    }
+
+    .semantic-swatch {
+      width: 2rem;
+      height: 1.25rem;
+      border-radius: var(--p-radius-xs);
+      flex-shrink: 0;
+      border: 1px solid rgba(128,128,128,0.1);
+    }
+
+    .semantic-label {
+      font-size: var(--p-text-xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-secondary);
+    }
+
+    /* Text semantic demo */
+    .semantic-text-sample {
+      flex-shrink: 0;
+    }
+
+    /* Status group */
+    .status-swatches {
+      display: flex;
+      gap: var(--p-space-1-5);
+    }
+
+    .status-swatch {
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: var(--p-radius-xs);
+      border: 1px solid rgba(128,128,128,0.1);
+    }
+
+    /* Type specimens */
+    .type-specimen {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--p-space-6);
+      padding: var(--p-space-6) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .type-specimen:first-child {
+      padding-top: 0;
+    }
+
+    .type-specimen:last-child {
+      border-bottom: none;
+    }
+
+    .type-specimen-text {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .type-specimen-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--p-space-1);
+      flex-shrink: 0;
+    }
+
+    .type-meta-class {
+      font-family: var(--p-font-mono);
+      font-size: var(--p-text-xs);
+      color: var(--color-accent-text);
+      background: var(--color-accent-subtle);
+      padding: var(--p-space-0-5) var(--p-space-2);
+      border-radius: var(--radius-badge);
+    }
+
+    .type-meta-detail {
+      font-size: var(--p-text-2xs);
+      color: var(--color-text-tertiary);
+      font-family: var(--p-font-mono);
+    }
+
+    /* Font pairing card */
+    .font-card {
+      padding: var(--p-space-8);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--card-radius);
+      margin-top: var(--p-space-10);
+    }
+
+    .font-card-title {
+      font-size: var(--p-text-xl);
+      font-weight: var(--p-weight-semibold);
+      margin-bottom: var(--p-space-6);
+    }
+
+    .font-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--p-space-6);
+    }
+
+    @media (max-width: 47.99rem) {
+      .font-card-grid { grid-template-columns: 1fr; }
+    }
+
+    .font-card-item-name {
+      font-size: var(--p-text-lg);
+      font-weight: var(--p-weight-semibold);
+      margin-bottom: var(--p-space-2);
+    }
+
+    .font-card-item-sample {
+      font-size: var(--p-text-3xl);
+      margin-bottom: var(--p-space-3);
+      color: var(--color-text-primary);
+      line-height: var(--p-leading-tight);
+    }
+
+    .font-card-item-desc {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--p-leading-relaxed);
+    }
+
+    /* Spacing scale */
+    .spacing-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-3);
+    }
+
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-4);
+    }
+
+    .spacing-label {
+      width: 5rem;
+      font-size: var(--p-text-xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .spacing-bar {
+      height: 1.25rem;
+      background: var(--color-accent-subtle);
+      border: 1px solid var(--color-border-accent);
+      border-radius: var(--p-radius-xs);
+      transition: width var(--p-duration-slow) var(--p-ease-emphasis);
+    }
+
+    .spacing-value {
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* Radius demo */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--p-space-6);
+      margin-top: var(--p-space-10);
+    }
+
+    @media (max-width: 47.99rem) {
+      .radius-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .radius-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--p-space-3);
+    }
+
+    .radius-box {
+      width: 5rem;
+      height: 5rem;
+      background: var(--color-bg-muted);
+      border: 1px solid var(--color-border-default);
+    }
+
+    .radius-demo-label {
+      font-size: var(--p-text-xs);
+      font-weight: var(--p-weight-medium);
+      color: var(--color-text-primary);
+    }
+
+    .radius-demo-value {
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Motion section */
+    .motion-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-4);
+    }
+
+    .motion-row {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-4);
+    }
+
+    .motion-label {
+      width: 6rem;
+      font-size: var(--p-text-xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .motion-bar-track {
+      flex: 1;
+      height: 2rem;
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-interactive);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .motion-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent-default), var(--color-accent-hover));
+      border-radius: var(--radius-interactive);
+      opacity: 0.8;
+    }
+
+    .motion-value {
+      width: 3rem;
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-tertiary);
+      flex-shrink: 0;
+    }
+
+    .easing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--p-space-6);
+      margin-top: var(--p-space-10);
+    }
+
+    @media (max-width: 63.99rem) {
+      .easing-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .easing-card {
+      padding: var(--card-padding);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--card-radius);
+      text-align: center;
+    }
+
+    .easing-name {
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-semibold);
+      color: var(--color-text-primary);
+      margin-bottom: var(--p-space-2);
+    }
+
+    .easing-value {
+      font-size: var(--p-text-2xs);
+      font-family: var(--p-font-mono);
+      color: var(--color-text-tertiary);
+      word-break: break-all;
+    }
+
+    .easing-curve {
+      width: 100%;
+      height: 80px;
+      margin: var(--p-space-4) 0;
+    }
+
+    .easing-curve path {
+      fill: none;
+      stroke: var(--color-accent-default);
+      stroke-width: 2;
+    }
+
+    .easing-curve .grid-line {
+      stroke: var(--color-border-subtle);
+      stroke-width: 0.5;
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: var(--p-space-12) 0;
+      border-top: 1px solid var(--color-border-subtle);
+      margin-top: var(--p-space-16);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--p-space-8);
+    }
+
+    .footer-brand {
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-semibold);
+      color: var(--color-text-primary);
+      letter-spacing: var(--p-tracking-wide);
+    }
+
+    .footer-tagline {
+      font-size: var(--p-text-xs);
+      color: var(--color-text-tertiary);
+      margin-top: var(--p-space-2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--p-space-6);
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .footer-links a:hover {
+      color: var(--color-text-primary);
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity var(--p-duration-slow) var(--p-ease-decelerate),
+                  transform var(--p-duration-slow) var(--p-ease-decelerate);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Theme toggle icon */
+    .theme-toggle-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (max-width: 47.99rem) {
+      .hero { padding: var(--p-space-16) 0 var(--p-space-10); }
+      .hero-stats { gap: var(--p-space-6); }
+      .type-specimen { flex-direction: column; gap: var(--p-space-2); }
+      .type-specimen-meta { align-items: flex-start; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== NAVIGATION ====== -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-mark"></span>
+      MERIDIAN
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active" aria-current="page">Overview</a></li>
+      <li><a href="components.html">Components</a></li>
+      <li><a href="guidelines.html">Guidelines</a></li>
+      <li><a href="application.html">Application</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-ghost btn-sm" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="theme-toggle-icon" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-dark">
+          <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1ZM6.5 3.5a4.5 4.5 0 0 1 0 9A5.002 5.002 0 0 0 6.5 3.5Z"/>
+        </svg>
+        <svg class="theme-toggle-icon" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-light" style="display:none;">
+          <circle cx="8" cy="8" r="3.5"/>
+          <path d="M8 0v2M8 14v2M0 8h2M14 8h2M2.34 2.34l1.42 1.42M12.24 12.24l1.42 1.42M2.34 13.66l1.42-1.42M12.24 3.76l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <a href="tokens.json" class="btn btn-ghost btn-sm">View tokens.json</a>
+    </div>
+  </nav>
+
+  <main class="page-container">
+
+    <!-- ====== HERO ====== -->
+    <section class="hero stagger-children">
+      <h1 class="text-hero" style="font-style: italic;">Design with intention.</h1>
+      <p class="text-body-lg">A comprehensive token-driven design system for building intelligent, agent-first SaaS experiences. Warm. Precise. Human.</p>
+      <div class="hero-actions">
+        <a href="components.html" class="btn btn-primary btn-lg">Explore components</a>
+        <a href="guidelines.html" class="btn btn-secondary btn-lg">View guidelines</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-value">120+</span>
+          <span class="hero-stat-label">Design tokens</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">24</span>
+          <span class="hero-stat-label">Components</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">Light & Dark</span>
+          <span class="hero-stat-label">Theme support</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value">WCAG AA</span>
+          <span class="hero-stat-label">Accessible</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====== COLOR SYSTEM ====== -->
+    <section class="section reveal" id="color">
+      <div class="section-header">
+        <p class="text-subheading">Foundation</p>
+        <h2 class="text-title-lg" style="font-style: italic;">Color</h2>
+      </div>
+
+      <!-- Neutral -->
+      <div class="palette-group">
+        <p class="palette-strip-label">Neutral</p>
+        <div class="palette-strip">
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-50);"></div><span class="swatch-name">50</span><span class="swatch-hex">#0A0A08</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-100);"></div><span class="swatch-name">100</span><span class="swatch-hex">#121210</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-200);"></div><span class="swatch-name">200</span><span class="swatch-hex">#232320</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-300);"></div><span class="swatch-name">300</span><span class="swatch-hex">#38372F</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-400);"></div><span class="swatch-name">400</span><span class="swatch-hex">#504E46</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-500);"></div><span class="swatch-name">500</span><span class="swatch-hex">#6E6C62</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-600);"></div><span class="swatch-name">600</span><span class="swatch-hex">#8E8B80</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-700);"></div><span class="swatch-name">700</span><span class="swatch-hex">#B0ADA2</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-800);"></div><span class="swatch-name">800</span><span class="swatch-hex">#D0CDC2</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-900);"></div><span class="swatch-name">900</span><span class="swatch-hex">#E8E6DC</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-neutral-950);"></div><span class="swatch-name">950</span><span class="swatch-hex">#F5F3E9</span></div>
+        </div>
+      </div>
+
+      <!-- Amber -->
+      <div class="palette-group">
+        <p class="palette-strip-label">Amber</p>
+        <div class="palette-strip">
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-50);"></div><span class="swatch-name">50</span><span class="swatch-hex">#1A1408</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-100);"></div><span class="swatch-name">100</span><span class="swatch-hex">#2A200C</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-200);"></div><span class="swatch-name">200</span><span class="swatch-hex">#3E3010</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-300);"></div><span class="swatch-name">300</span><span class="swatch-hex">#5C4818</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-400);"></div><span class="swatch-name">400</span><span class="swatch-hex">#8A6C24</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-500);"></div><span class="swatch-name">500</span><span class="swatch-hex">#C49430</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-600);"></div><span class="swatch-name">600</span><span class="swatch-hex">#E0AC3C</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-700);"></div><span class="swatch-name">700</span><span class="swatch-hex">#F0C45C</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-800);"></div><span class="swatch-name">800</span><span class="swatch-hex">#F8D880</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-amber-900);"></div><span class="swatch-name">900</span><span class="swatch-hex">#FFF0C0</span></div>
+        </div>
+      </div>
+
+      <!-- Teal -->
+      <div class="palette-group">
+        <p class="palette-strip-label">Teal</p>
+        <div class="palette-strip">
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-50);"></div><span class="swatch-name">50</span><span class="swatch-hex">#081A16</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-100);"></div><span class="swatch-name">100</span><span class="swatch-hex">#0C2A22</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-200);"></div><span class="swatch-name">200</span><span class="swatch-hex">#103C32</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-300);"></div><span class="swatch-name">300</span><span class="swatch-hex">#18584A</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-400);"></div><span class="swatch-name">400</span><span class="swatch-hex">#207862</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-500);"></div><span class="swatch-name">500</span><span class="swatch-hex">#2C9A7E</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-600);"></div><span class="swatch-name">600</span><span class="swatch-hex">#38B890</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-700);"></div><span class="swatch-name">700</span><span class="swatch-hex">#5CCCA8</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-800);"></div><span class="swatch-name">800</span><span class="swatch-hex">#88DCC0</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-teal-900);"></div><span class="swatch-name">900</span><span class="swatch-hex">#C0F0E0</span></div>
+        </div>
+      </div>
+
+      <!-- Red -->
+      <div class="palette-group">
+        <p class="palette-strip-label">Red</p>
+        <div class="palette-strip">
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-50);"></div><span class="swatch-name">50</span><span class="swatch-hex">#1C0808</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-200);"></div><span class="swatch-name">200</span><span class="swatch-hex">#441818</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-400);"></div><span class="swatch-name">400</span><span class="swatch-hex">#983030</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-500);"></div><span class="swatch-name">500</span><span class="swatch-hex">#C44040</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-600);"></div><span class="swatch-name">600</span><span class="swatch-hex">#E05050</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-800);"></div><span class="swatch-name">800</span><span class="swatch-hex">#F8A0A0</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-red-900);"></div><span class="swatch-name">900</span><span class="swatch-hex">#FCE0E0</span></div>
+        </div>
+      </div>
+
+      <!-- Blue -->
+      <div class="palette-group">
+        <p class="palette-strip-label">Blue</p>
+        <div class="palette-strip">
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-50);"></div><span class="swatch-name">50</span><span class="swatch-hex">#080E1C</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-200);"></div><span class="swatch-name">200</span><span class="swatch-hex">#182C48</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-400);"></div><span class="swatch-name">400</span><span class="swatch-hex">#306090</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-500);"></div><span class="swatch-name">500</span><span class="swatch-hex">#4080B8</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-600);"></div><span class="swatch-name">600</span><span class="swatch-hex">#5098D0</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-800);"></div><span class="swatch-name">800</span><span class="swatch-hex">#A0CCF0</span></div>
+          <div class="swatch"><div class="swatch-color" style="background: var(--p-blue-900);"></div><span class="swatch-name">900</span><span class="swatch-hex">#D0E8F8</span></div>
+        </div>
+      </div>
+
+      <!-- Semantic mapping -->
+      <h3 class="text-heading" style="margin-top: var(--p-space-12); margin-bottom: var(--p-space-6);">Semantic mapping</h3>
+      <div class="semantic-grid">
+
+        <!-- Surfaces -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Surfaces</p>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-bg-canvas);"></div>
+            <span class="semantic-label">canvas</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-bg-default);"></div>
+            <span class="semantic-label">default</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-bg-subtle);"></div>
+            <span class="semantic-label">subtle</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-bg-muted);"></div>
+            <span class="semantic-label">muted</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-bg-elevated);"></div>
+            <span class="semantic-label">elevated</span>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Text hierarchy</p>
+          <div class="semantic-row">
+            <span class="semantic-text-sample" style="color: var(--color-text-primary); font-weight: var(--p-weight-semibold); font-size: var(--p-text-sm);">Aa</span>
+            <span class="semantic-label">primary</span>
+          </div>
+          <div class="semantic-row">
+            <span class="semantic-text-sample" style="color: var(--color-text-secondary); font-weight: var(--p-weight-medium); font-size: var(--p-text-sm);">Aa</span>
+            <span class="semantic-label">secondary</span>
+          </div>
+          <div class="semantic-row">
+            <span class="semantic-text-sample" style="color: var(--color-text-tertiary); font-size: var(--p-text-sm);">Aa</span>
+            <span class="semantic-label">tertiary</span>
+          </div>
+          <div class="semantic-row">
+            <span class="semantic-text-sample" style="color: var(--color-text-disabled); font-size: var(--p-text-sm);">Aa</span>
+            <span class="semantic-label">disabled</span>
+          </div>
+        </div>
+
+        <!-- Accent -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Accent</p>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-accent-default);"></div>
+            <span class="semantic-label">default</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-accent-hover);"></div>
+            <span class="semantic-label">hover</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-accent-subtle);"></div>
+            <span class="semantic-label">subtle</span>
+          </div>
+          <div class="semantic-row">
+            <div class="semantic-swatch" style="background: var(--color-accent-text);"></div>
+            <span class="semantic-label">text</span>
+          </div>
+        </div>
+
+        <!-- Success -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Success</p>
+          <div class="semantic-row">
+            <div class="status-swatches">
+              <div class="status-swatch" style="background: var(--color-success-default);"></div>
+              <div class="status-swatch" style="background: var(--color-success-subtle);"></div>
+              <div class="status-swatch" style="background: var(--color-success-text);"></div>
+            </div>
+            <span class="semantic-label">default / subtle / text</span>
+          </div>
+        </div>
+
+        <!-- Danger -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Danger</p>
+          <div class="semantic-row">
+            <div class="status-swatches">
+              <div class="status-swatch" style="background: var(--color-danger-default);"></div>
+              <div class="status-swatch" style="background: var(--color-danger-subtle);"></div>
+              <div class="status-swatch" style="background: var(--color-danger-text);"></div>
+            </div>
+            <span class="semantic-label">default / subtle / text</span>
+          </div>
+        </div>
+
+        <!-- Warning -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Warning</p>
+          <div class="semantic-row">
+            <div class="status-swatches">
+              <div class="status-swatch" style="background: var(--color-warning-default);"></div>
+              <div class="status-swatch" style="background: var(--color-warning-subtle);"></div>
+              <div class="status-swatch" style="background: var(--color-warning-text);"></div>
+            </div>
+            <span class="semantic-label">default / subtle / text</span>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="semantic-card">
+          <p class="semantic-card-title">Info</p>
+          <div class="semantic-row">
+            <div class="status-swatches">
+              <div class="status-swatch" style="background: var(--color-info-default);"></div>
+              <div class="status-swatch" style="background: var(--color-info-subtle);"></div>
+              <div class="status-swatch" style="background: var(--color-info-text);"></div>
+            </div>
+            <span class="semantic-label">default / subtle / text</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====== TYPOGRAPHY ====== -->
+    <section class="section reveal" id="typography">
+      <div class="section-header">
+        <p class="text-subheading">Foundation</p>
+        <h2 class="text-title-lg" style="font-style: italic;">Typography</h2>
+      </div>
+
+      <div class="type-specimens">
+        <div class="type-specimen">
+          <span class="type-specimen-text text-hero" style="font-style: italic;">Design with intention</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-hero</span>
+            <span class="type-meta-detail">Instrument Serif / 56-96px fluid</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-display" style="font-style: italic;">Build for tomorrow</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-display</span>
+            <span class="type-meta-detail">Instrument Serif / 48-72px fluid</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-title-lg" style="font-style: italic;">Agent-first thinking</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-title-lg</span>
+            <span class="type-meta-detail">Instrument Serif / 40-56px fluid</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-title">System architecture</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-title</span>
+            <span class="type-meta-detail">Inter Semibold / 32px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-heading">Component library</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-heading</span>
+            <span class="type-meta-detail">Inter Semibold / 20px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-body-lg">Designed for clarity at every scale, from data-dense dashboards to conversational agent interfaces.</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-body-lg</span>
+            <span class="type-meta-detail">Inter Regular / 18px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-body">Token-driven architecture ensures consistency across teams and products while enabling rapid iteration.</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-body</span>
+            <span class="type-meta-detail">Inter Regular / 16px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-body-sm">All components follow WCAG AA contrast requirements and support keyboard navigation.</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-body-sm</span>
+            <span class="type-meta-detail">Inter Regular / 14px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-caption">Last updated 3 minutes ago</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-caption</span>
+            <span class="type-meta-detail">Inter / 12px</span>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <span class="type-specimen-text text-mono">const agent = await meridian.init()</span>
+          <div class="type-specimen-meta">
+            <span class="type-meta-class">.text-mono</span>
+            <span class="type-meta-detail">JetBrains Mono / 14px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Font pairing rationale -->
+      <div class="font-card">
+        <h3 class="font-card-title">Font pairing rationale</h3>
+        <div class="font-card-grid">
+          <div>
+            <p class="font-card-item-sample" style="font-family: var(--p-font-display); font-style: italic;">Instrument Serif</p>
+            <p class="font-card-item-desc">Editorial warmth and personality. Excellent x-height for readability at display sizes. The italic cut brings a sense of considered elegance to headlines. Used for hero, display, and title-lg styles.</p>
+          </div>
+          <div>
+            <p class="font-card-item-sample" style="font-family: var(--p-font-body); font-weight: 600;">Inter</p>
+            <p class="font-card-item-desc">Geometric clarity with superior screen rendering. Wide weight range from 400-700 handles every context from body copy to bold headings. Optimized for UI with tabular figures and distinct letterforms.</p>
+          </div>
+          <div>
+            <p class="font-card-item-sample" style="font-family: var(--p-font-mono);">JetBrains Mono</p>
+            <p class="font-card-item-desc">Purpose-built for code, data, and technical content. Consistent character width enables perfect alignment in tables and code blocks. Distinct zero and capital O prevent confusion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====== SPACING & RADIUS ====== -->
+    <section class="section reveal" id="spacing">
+      <div class="section-header">
+        <p class="text-subheading">Foundation</p>
+        <h2 class="text-title-lg" style="font-style: italic;">Spacing</h2>
+      </div>
+
+      <div class="spacing-scale">
+        <div class="spacing-row">
+          <span class="spacing-label">space-1</span>
+          <div class="spacing-bar" style="width: 0.25rem;"></div>
+          <span class="spacing-value">0.25rem / 4px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-2</span>
+          <div class="spacing-bar" style="width: 0.5rem;"></div>
+          <span class="spacing-value">0.5rem / 8px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-3</span>
+          <div class="spacing-bar" style="width: 0.75rem;"></div>
+          <span class="spacing-value">0.75rem / 12px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-4</span>
+          <div class="spacing-bar" style="width: 1rem;"></div>
+          <span class="spacing-value">1rem / 16px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-5</span>
+          <div class="spacing-bar" style="width: 1.25rem;"></div>
+          <span class="spacing-value">1.25rem / 20px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-6</span>
+          <div class="spacing-bar" style="width: 1.5rem;"></div>
+          <span class="spacing-value">1.5rem / 24px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-8</span>
+          <div class="spacing-bar" style="width: 2rem;"></div>
+          <span class="spacing-value">2rem / 32px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-10</span>
+          <div class="spacing-bar" style="width: 2.5rem;"></div>
+          <span class="spacing-value">2.5rem / 40px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-12</span>
+          <div class="spacing-bar" style="width: 3rem;"></div>
+          <span class="spacing-value">3rem / 48px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-16</span>
+          <div class="spacing-bar" style="width: 4rem;"></div>
+          <span class="spacing-value">4rem / 64px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-20</span>
+          <div class="spacing-bar" style="width: 5rem;"></div>
+          <span class="spacing-value">5rem / 80px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-24</span>
+          <div class="spacing-bar" style="width: 6rem;"></div>
+          <span class="spacing-value">6rem / 96px</span>
+        </div>
+        <div class="spacing-row">
+          <span class="spacing-label">space-32</span>
+          <div class="spacing-bar" style="width: 8rem;"></div>
+          <span class="spacing-value">8rem / 128px</span>
+        </div>
+      </div>
+
+      <!-- Radius hierarchy -->
+      <h3 class="text-heading" style="margin-top: var(--p-space-16); margin-bottom: var(--p-space-4);">Radius hierarchy</h3>
+      <p class="text-body-sm" style="color: var(--color-text-tertiary); margin-bottom: var(--p-space-2);">Shape communicates function. Smaller radii for interactive elements, larger for containers.</p>
+      <div class="radius-grid">
+        <div class="radius-demo">
+          <div class="radius-box" style="border-radius: var(--radius-interactive);"></div>
+          <span class="radius-demo-label">Interactive</span>
+          <span class="radius-demo-value">8px</span>
+        </div>
+        <div class="radius-demo">
+          <div class="radius-box" style="border-radius: var(--radius-container);"></div>
+          <span class="radius-demo-label">Container</span>
+          <span class="radius-demo-value">12px</span>
+        </div>
+        <div class="radius-demo">
+          <div class="radius-box" style="border-radius: var(--radius-surface);"></div>
+          <span class="radius-demo-label">Surface</span>
+          <span class="radius-demo-value">16px</span>
+        </div>
+        <div class="radius-demo">
+          <div class="radius-box" style="border-radius: var(--radius-badge);"></div>
+          <span class="radius-demo-label">Badge</span>
+          <span class="radius-demo-value">full</span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ====== MOTION ====== -->
+    <section class="section reveal" id="motion">
+      <div class="section-header">
+        <p class="text-subheading">Foundation</p>
+        <h2 class="text-title-lg" style="font-style: italic;">Motion</h2>
+      </div>
+
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-6);">Duration scale</h3>
+      <div class="motion-scale">
+        <div class="motion-row">
+          <span class="motion-label">instant</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 8.5%;"></div></div>
+          <span class="motion-value">60ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">fast</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 17%;"></div></div>
+          <span class="motion-value">120ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">normal</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 28.5%;"></div></div>
+          <span class="motion-value">200ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">slow</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 50%;"></div></div>
+          <span class="motion-value">350ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">slower</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 71.4%;"></div></div>
+          <span class="motion-value">500ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">dramatic</span>
+          <div class="motion-bar-track"><div class="motion-bar" style="width: 100%;"></div></div>
+          <span class="motion-value">700ms</span>
+        </div>
+      </div>
+
+      <h3 class="text-heading" style="margin-top: var(--p-space-12); margin-bottom: var(--p-space-4);">Easing curves</h3>
+      <div class="easing-grid">
+        <div class="easing-card">
+          <p class="easing-name">Standard</p>
+          <svg class="easing-curve" viewBox="0 0 100 80">
+            <line class="grid-line" x1="0" y1="0" x2="100" y2="0"/>
+            <line class="grid-line" x1="0" y1="80" x2="100" y2="80"/>
+            <path d="M 0 80 C 20 80, 0 0, 100 0"/>
+          </svg>
+          <p class="easing-value">cubic-bezier(0.2, 0, 0, 1)</p>
+        </div>
+        <div class="easing-card">
+          <p class="easing-name">Emphasis</p>
+          <svg class="easing-curve" viewBox="0 0 100 80">
+            <line class="grid-line" x1="0" y1="0" x2="100" y2="0"/>
+            <line class="grid-line" x1="0" y1="80" x2="100" y2="80"/>
+            <path d="M 0 80 C 20 80, 0 -16, 100 0"/>
+          </svg>
+          <p class="easing-value">cubic-bezier(0.2, 0, 0, 1.2)</p>
+        </div>
+        <div class="easing-card">
+          <p class="easing-name">Decelerate</p>
+          <svg class="easing-curve" viewBox="0 0 100 80">
+            <line class="grid-line" x1="0" y1="0" x2="100" y2="0"/>
+            <line class="grid-line" x1="0" y1="80" x2="100" y2="80"/>
+            <path d="M 0 80 C 0 80, 0 0, 100 0"/>
+          </svg>
+          <p class="easing-value">cubic-bezier(0, 0, 0, 1)</p>
+        </div>
+        <div class="easing-card">
+          <p class="easing-name">Accelerate</p>
+          <svg class="easing-curve" viewBox="0 0 100 80">
+            <line class="grid-line" x1="0" y1="0" x2="100" y2="0"/>
+            <line class="grid-line" x1="0" y1="80" x2="100" y2="80"/>
+            <path d="M 0 80 C 40 80, 100 0, 100 0"/>
+          </svg>
+          <p class="easing-value">cubic-bezier(0.4, 0, 1, 1)</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="page-container" style="padding-top: 0; padding-bottom: 0;">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">Meridian Design System</p>
+          <p class="footer-tagline">Built for agentic AI products</p>
+        </div>
+        <nav>
+          <ul class="footer-links">
+            <li><a href="index.html">Overview</a></li>
+            <li><a href="components.html">Components</a></li>
+            <li><a href="guidelines.html">Guidelines</a></li>
+            <li><a href="application.html">Application</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    // Theme toggle
+    (function() {
+      const toggle = document.getElementById('theme-toggle');
+      const html = document.documentElement;
+      const iconDark = document.getElementById('theme-icon-dark');
+      const iconLight = document.getElementById('theme-icon-light');
+
+      // Restore persisted theme
+      const saved = localStorage.getItem('meridian-theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+        updateIcons(saved);
+      }
+
+      toggle.addEventListener('click', function() {
+        const current = html.getAttribute('data-theme') || 'dark';
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('meridian-theme', next);
+        updateIcons(next);
+      });
+
+      function updateIcons(theme) {
+        if (theme === 'light') {
+          iconDark.style.display = 'none';
+          iconLight.style.display = 'block';
+        } else {
+          iconDark.style.display = 'block';
+          iconLight.style.display = 'none';
+        }
+      }
+    })();
+
+    // Scroll-triggered reveal
+    (function() {
+      const reveals = document.querySelectorAll('.reveal');
+      if (!reveals.length) return;
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      reveals.forEach(function(el) { observer.observe(el); });
+    })();
+  </script>
+
+</body>
+</html>

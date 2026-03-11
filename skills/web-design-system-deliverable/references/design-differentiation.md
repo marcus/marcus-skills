@@ -113,6 +113,7 @@ What IS generic:
 - Breaking grids for "visual energy" in product UI — grids should break for emphasis, not novelty.
 - Unmotivated pill shapes on every interactive element.
 - One radius value applied uniformly across all element types.
+- **Thick left-border callouts with rounded corners.** The colored left border strip on a rounded card (often used for alerts, DO/DON'T examples, status messages) is the single most recognizable AI-generated design pattern. It signals "an LLM made this." Never use it. Instead, differentiate callout types with icons, background tint, or full-border treatment. If a border is needed, use a uniform 1px border — not an asymmetric fat left strip.
 
 ## Core Principle
 

@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guidelines — Meridian Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* === PAGE-SPECIFIC STYLES === */
+
+    .hero-section {
+      padding: var(--p-space-20) 0 var(--p-space-16);
+    }
+
+    .section-label {
+      display: inline-block;
+      margin-bottom: var(--p-space-4);
+    }
+
+    /* Principle cards */
+    .principle-card {
+      padding: var(--p-space-8);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-container);
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-6);
+    }
+
+    .principle-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      background: var(--color-accent-subtle);
+      color: var(--color-accent-text);
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-semibold);
+      border-radius: var(--p-radius-full);
+      flex-shrink: 0;
+    }
+
+    .principle-title {
+      font-size: var(--p-text-xl);
+      font-weight: var(--p-weight-semibold);
+      color: var(--color-text-primary);
+    }
+
+    .principle-description {
+      font-size: var(--p-text-base);
+      line-height: var(--p-leading-relaxed);
+      color: var(--color-text-secondary);
+    }
+
+    /* DO / DON'T cards */
+    .guideline-example {
+      padding: var(--p-space-3) var(--p-space-4);
+      font-size: var(--p-text-sm);
+      line-height: var(--p-leading-normal);
+      display: flex;
+      align-items: baseline;
+      gap: var(--p-space-3);
+    }
+
+    .guideline-do {
+      color: var(--color-success-text);
+    }
+
+    .guideline-dont {
+      color: var(--color-danger-text);
+    }
+
+    .guideline-example-label {
+      font-weight: var(--p-weight-semibold);
+      font-size: var(--p-text-xs);
+      text-transform: uppercase;
+      letter-spacing: var(--p-tracking-wider);
+      flex-shrink: 0;
+    }
+
+    /* Token layer diagram */
+    .token-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-4);
+      padding: var(--p-space-8);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-container);
+    }
+
+    .token-layer {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-4);
+      padding: var(--p-space-5) var(--p-space-6);
+      border-radius: var(--radius-interactive);
+      border: 1px solid var(--color-border-subtle);
+      position: relative;
+    }
+
+    .token-layer-primitive {
+      background: var(--color-accent-subtle);
+      border-color: var(--color-border-accent);
+    }
+
+    .token-layer-semantic {
+      background: var(--color-secondary-subtle);
+      border-color: var(--color-secondary-default);
+    }
+
+    .token-layer-component {
+      background: var(--color-info-subtle);
+      border-color: var(--color-info-default);
+    }
+
+    .token-layer-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--p-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--p-weight-bold);
+      font-size: var(--p-text-sm);
+      flex-shrink: 0;
+    }
+
+    .token-layer-primitive .token-layer-icon {
+      background: var(--color-accent-default);
+      color: var(--color-text-on-accent);
+    }
+
+    .token-layer-semantic .token-layer-icon {
+      background: var(--color-secondary-default);
+      color: var(--color-text-on-accent);
+    }
+
+    .token-layer-component .token-layer-icon {
+      background: var(--color-info-default);
+      color: var(--color-text-on-accent);
+    }
+
+    .token-layer-name {
+      font-weight: var(--p-weight-semibold);
+      font-size: var(--p-text-base);
+    }
+
+    .token-layer-desc {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .token-arrow {
+      display: flex;
+      justify-content: center;
+      color: var(--color-text-tertiary);
+      font-size: var(--p-text-xl);
+      padding-left: var(--p-space-8);
+    }
+
+    /* Surface hierarchy */
+    .surface-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-3);
+    }
+
+    .surface-item {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-4);
+      padding: var(--p-space-4) var(--p-space-5);
+      border-radius: var(--radius-interactive);
+      border: 1px solid var(--color-border-subtle);
+    }
+
+    .surface-swatch {
+      width: 3rem;
+      height: 3rem;
+      border-radius: var(--p-radius-md);
+      border: 1px solid var(--color-border-default);
+      flex-shrink: 0;
+    }
+
+    .surface-info {
+      flex: 1;
+    }
+
+    .surface-name {
+      font-weight: var(--p-weight-medium);
+      font-family: var(--p-font-mono);
+      font-size: var(--p-text-sm);
+    }
+
+    .surface-use {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      margin-top: var(--p-space-0-5);
+    }
+
+    /* Contrast table */
+    .contrast-pass {
+      color: var(--color-success-text);
+      font-weight: var(--p-weight-semibold);
+    }
+
+    .contrast-fail {
+      color: var(--color-danger-text);
+      font-weight: var(--p-weight-semibold);
+    }
+
+    /* Type scale card */
+    .type-scale-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--p-space-6);
+      padding: var(--p-space-4) 0;
+      border-bottom: 1px solid var(--color-border-subtle);
+    }
+
+    .type-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .type-scale-label {
+      font-family: var(--p-font-mono);
+      font-size: var(--p-text-xs);
+      color: var(--color-accent-text);
+      white-space: nowrap;
+      min-width: 8rem;
+    }
+
+    .type-scale-use {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      text-align: right;
+    }
+
+    /* Density cards */
+    .density-card {
+      padding: var(--p-space-6);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-container);
+    }
+
+    .density-label {
+      font-weight: var(--p-weight-semibold);
+      font-size: var(--p-text-lg);
+      margin-bottom: var(--p-space-1);
+    }
+
+    .density-context {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--p-space-4);
+    }
+
+    .density-visual {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-bg-subtle);
+      border-radius: var(--p-radius-md);
+      overflow: hidden;
+    }
+
+    .density-block {
+      background: var(--color-bg-muted);
+      border-radius: var(--p-radius-xs);
+      height: 0.75rem;
+    }
+
+    /* Wireframe diagrams */
+    .wireframe {
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-interactive);
+      padding: var(--p-space-4);
+      min-height: 8rem;
+    }
+
+    .wireframe-box {
+      background: var(--color-bg-muted);
+      border-radius: var(--p-radius-sm);
+    }
+
+    .wireframe-stack {
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-2);
+      height: 100%;
+    }
+
+    .wireframe-split {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--p-space-2);
+      height: 100%;
+    }
+
+    .wireframe-bento {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: var(--p-space-2);
+      height: 100%;
+    }
+
+    .wireframe-bento > :first-child {
+      grid-row: 1 / -1;
+    }
+
+    /* Motion timeline */
+    .motion-row {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-4);
+      padding: var(--p-space-3) 0;
+    }
+
+    .motion-label {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      min-width: 10rem;
+    }
+
+    .motion-bar-track {
+      flex: 1;
+      height: 6px;
+      background: var(--color-bg-muted);
+      border-radius: var(--p-radius-full);
+      overflow: hidden;
+    }
+
+    .motion-bar {
+      height: 100%;
+      background: var(--color-accent-default);
+      border-radius: var(--p-radius-full);
+    }
+
+    .motion-value {
+      font-family: var(--p-font-mono);
+      font-size: var(--p-text-xs);
+      color: var(--color-text-tertiary);
+      min-width: 4rem;
+      text-align: right;
+    }
+
+    /* Accessibility checklist */
+    .a11y-item {
+      display: flex;
+      gap: var(--p-space-4);
+      padding: var(--p-space-5) var(--p-space-6);
+      background: var(--color-bg-default);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-container);
+    }
+
+    .a11y-icon {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-accent-subtle);
+      color: var(--color-accent-text);
+      border-radius: var(--p-radius-md);
+      font-size: var(--p-text-sm);
+      font-weight: var(--p-weight-bold);
+      flex-shrink: 0;
+    }
+
+    .a11y-title {
+      font-weight: var(--p-weight-semibold);
+      margin-bottom: var(--p-space-1);
+    }
+
+    .a11y-desc {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--p-leading-relaxed);
+    }
+
+    /* Rules list */
+    .rules-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--p-space-3);
+    }
+
+    .rules-list li {
+      padding: var(--p-space-3) var(--p-space-4);
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-interactive);
+      font-size: var(--p-text-sm);
+      line-height: var(--p-leading-relaxed);
+      color: var(--color-text-secondary);
+      position: relative;
+      padding-left: var(--p-space-8);
+    }
+
+    .rules-list li::before {
+      content: '';
+      position: absolute;
+      left: var(--p-space-3);
+      top: calc(var(--p-space-3) + 0.45em);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent-default);
+    }
+
+    /* Pairing rules */
+    .pairing-rule {
+      padding: var(--p-space-3) var(--p-space-4);
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-interactive);
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: var(--space-section-gap);
+      padding: var(--p-space-8) 0;
+      border-top: 1px solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: var(--p-space-3);
+    }
+
+    .footer-mark {
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, var(--p-amber-600), var(--p-amber-500));
+      border-radius: var(--p-radius-xs);
+    }
+
+    .footer-text {
+      font-size: var(--p-text-sm);
+      color: var(--color-text-tertiary);
+    }
+
+    /* Scroll-reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity var(--p-duration-slow) var(--p-ease-decelerate),
+                  transform var(--p-duration-slow) var(--p-ease-decelerate);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Grid rule card */
+    .grid-rule-card {
+      padding: var(--p-space-5);
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-interactive);
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--p-leading-relaxed);
+    }
+
+    .grid-rule-value {
+      font-family: var(--p-font-mono);
+      font-size: var(--p-text-lg);
+      color: var(--color-text-primary);
+      font-weight: var(--p-weight-semibold);
+      margin-bottom: var(--p-space-1);
+    }
+
+    /* Composition pattern label */
+    .pattern-label {
+      font-weight: var(--p-weight-semibold);
+      font-size: var(--p-text-sm);
+      margin-bottom: var(--p-space-2);
+      color: var(--color-text-primary);
+    }
+
+    .pattern-desc {
+      font-size: var(--p-text-xs);
+      color: var(--color-text-tertiary);
+      margin-top: var(--p-space-2);
+    }
+
+    /* Status color rules */
+    .status-rule {
+      padding: var(--p-space-4) var(--p-space-5);
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-interactive);
+      font-size: var(--p-text-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--p-leading-relaxed);
+    }
+
+    /* Naming convention table mono cells */
+    td code {
+      font-size: var(--p-text-xs);
+    }
+
+    @media (max-width: 47.99rem) {
+      .hero-section {
+        padding: var(--p-space-12) 0 var(--p-space-8);
+      }
+
+      .motion-row {
+        flex-wrap: wrap;
+      }
+
+      .motion-label {
+        min-width: 100%;
+      }
+
+      .type-scale-item {
+        flex-direction: column;
+        gap: var(--p-space-1);
+      }
+
+      .type-scale-use {
+        text-align: left;
+      }
+
+      .site-footer {
+        flex-direction: column;
+        gap: var(--p-space-4);
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ NAVIGATION ============ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-mark" aria-hidden="true"></span>
+      MERIDIAN
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="components.html">Components</a></li>
+      <li><a href="guidelines.html" aria-current="page">Guidelines</a></li>
+      <li><a href="application.html">Application</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-ghost btn-icon btn-sm" id="theme-toggle" aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="8" r="3.5"/>
+          <line x1="8" y1="1" x2="8" y2="2.5"/>
+          <line x1="8" y1="13.5" x2="8" y2="15"/>
+          <line x1="1" y1="8" x2="2.5" y2="8"/>
+          <line x1="13.5" y1="8" x2="15" y2="8"/>
+          <line x1="3.05" y1="3.05" x2="4.1" y2="4.1"/>
+          <line x1="11.9" y1="11.9" x2="12.95" y2="12.95"/>
+          <line x1="3.05" y1="12.95" x2="4.1" y2="11.9"/>
+          <line x1="11.9" y1="4.1" x2="12.95" y2="3.05"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="page-container">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero-section">
+      <h1 class="text-display" style="font-style: italic;">Guidelines</h1>
+      <p class="text-body-lg text-muted" style="margin-top: var(--p-space-4); max-width: 40rem;">
+        Principles, patterns, and rules for building coherent interfaces.
+      </p>
+    </section>
+
+    <!-- ============ 1. DESIGN PRINCIPLES ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Principles</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Design Principles</h2>
+
+      <div class="grid grid-2" style="gap: var(--p-space-6);">
+
+        <!-- Principle 1 -->
+        <div class="principle-card reveal">
+          <div class="flex items-center gap-3">
+            <span class="principle-number">1</span>
+            <span class="principle-title">Warm precision</span>
+          </div>
+          <p class="principle-description">
+            We combine technical confidence with human warmth. Every sharp edge is balanced by an organic texture. Precision without coldness.
+          </p>
+          <div class="stack-sm">
+            <div class="guideline-example guideline-do">
+              <div class="guideline-example-label">DO</div>
+              Use amber accents to add warmth to data-heavy screens
+            </div>
+            <div class="guideline-example guideline-dont">
+              <div class="guideline-example-label">DON'T</div>
+              Use cool blue-gray as the dominant surface color
+            </div>
+          </div>
+        </div>
+
+        <!-- Principle 2 -->
+        <div class="principle-card reveal">
+          <div class="flex items-center gap-3">
+            <span class="principle-number">2</span>
+            <span class="principle-title">Purposeful restraint</span>
+          </div>
+          <p class="principle-description">
+            Every element earns its place. White space is a feature, not a gap. Density is a choice, not a default.
+          </p>
+          <div class="stack-sm">
+            <div class="guideline-example guideline-do">
+              <div class="guideline-example-label">DO</div>
+              Let content breathe with generous spacing between sections
+            </div>
+            <div class="guideline-example guideline-dont">
+              <div class="guideline-example-label">DON'T</div>
+              Fill every available pixel with UI elements
+            </div>
+          </div>
+        </div>
+
+        <!-- Principle 3 -->
+        <div class="principle-card reveal">
+          <div class="flex items-center gap-3">
+            <span class="principle-number">3</span>
+            <span class="principle-title">Agent-first clarity</span>
+          </div>
+          <p class="principle-description">
+            Autonomous systems need transparent interfaces. Status, progress, and decision-making should be visible and understandable at a glance.
+          </p>
+          <div class="stack-sm">
+            <div class="guideline-example guideline-do">
+              <div class="guideline-example-label">DO</div>
+              Show agent status with clear indicators and human-readable summaries
+            </div>
+            <div class="guideline-example guideline-dont">
+              <div class="guideline-example-label">DON'T</div>
+              Hide system behavior behind abstract progress bars
+            </div>
+          </div>
+        </div>
+
+        <!-- Principle 4 -->
+        <div class="principle-card reveal">
+          <div class="flex items-center gap-3">
+            <span class="principle-number">4</span>
+            <span class="principle-title">Editorial confidence</span>
+          </div>
+          <p class="principle-description">
+            Our typography and layout choices convey authority. We present information with the care of a well-edited publication.
+          </p>
+          <div class="stack-sm">
+            <div class="guideline-example guideline-do">
+              <div class="guideline-example-label">DO</div>
+              Use the serif display face for key statements and page titles
+            </div>
+            <div class="guideline-example guideline-dont">
+              <div class="guideline-example-label">DON'T</div>
+              Mix more than 2 typefaces on a single screen
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ 2. TOKEN USAGE ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Tokens</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-4);">Token Usage</h2>
+      <p class="text-body-lg text-muted" style="margin-bottom: var(--p-space-8); max-width: 40rem;">
+        The three-layer model ensures design decisions propagate predictably from raw values to finished components.
+      </p>
+
+      <!-- Three-layer diagram -->
+      <div class="token-diagram reveal" style="margin-bottom: var(--p-space-8);">
+        <div class="token-layer token-layer-primitive">
+          <div class="token-layer-icon">P</div>
+          <div>
+            <div class="token-layer-name">Primitive</div>
+            <div class="token-layer-desc">Brand-agnostic raw values. Colors, sizes, durations.</div>
+          </div>
+        </div>
+        <div class="token-arrow" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="10" y1="2" x2="10" y2="18"/>
+            <polyline points="5,13 10,18 15,13"/>
+          </svg>
+        </div>
+        <div class="token-layer token-layer-semantic">
+          <div class="token-layer-icon">S</div>
+          <div>
+            <div class="token-layer-name">Semantic</div>
+            <div class="token-layer-desc">Meaningful roles. The primary API for consuming the system.</div>
+          </div>
+        </div>
+        <div class="token-arrow" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="10" y1="2" x2="10" y2="18"/>
+            <polyline points="5,13 10,18 15,13"/>
+          </svg>
+        </div>
+        <div class="token-layer token-layer-component">
+          <div class="token-layer-icon">C</div>
+          <div>
+            <div class="token-layer-name">Component</div>
+            <div class="token-layer-desc">Scoped overrides when semantic tokens can't express the need.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Naming convention table -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Naming convention</h3>
+      <div class="table-wrapper reveal" style="margin-bottom: var(--p-space-8);">
+        <table>
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Pattern</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Primitive</td>
+              <td><code>--p-{category}-{value}</code></td>
+              <td><code>--p-amber-600</code></td>
+            </tr>
+            <tr>
+              <td>Semantic</td>
+              <td><code>--color-{role}-{variant}</code></td>
+              <td><code>--color-accent-default</code></td>
+            </tr>
+            <tr>
+              <td>Component</td>
+              <td><code>--{component}-{property}</code></td>
+              <td><code>--btn-height-md</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Rules -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Rules</h3>
+      <ul class="rules-list reveal">
+        <li>Never use primitive tokens in components directly</li>
+        <li>Semantic tokens are the primary API for consuming the design system</li>
+        <li>Component tokens exist only when a component needs values that can't be expressed semantically</li>
+      </ul>
+    </section>
+
+    <!-- ============ 3. COLOR USAGE ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Color</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Color Usage</h2>
+
+      <!-- Surface hierarchy -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Surface hierarchy</h3>
+      <div class="surface-stack reveal" style="margin-bottom: var(--p-space-10);">
+        <div class="surface-item">
+          <div class="surface-swatch" style="background: var(--color-bg-canvas);"></div>
+          <div class="surface-info">
+            <div class="surface-name">canvas</div>
+            <div class="surface-use">Page background. The base layer everything sits on.</div>
+          </div>
+        </div>
+        <div class="surface-item">
+          <div class="surface-swatch" style="background: var(--color-bg-default);"></div>
+          <div class="surface-info">
+            <div class="surface-name">default</div>
+            <div class="surface-use">Cards, panels, and primary content containers.</div>
+          </div>
+        </div>
+        <div class="surface-item">
+          <div class="surface-swatch" style="background: var(--color-bg-subtle);"></div>
+          <div class="surface-info">
+            <div class="surface-name">subtle</div>
+            <div class="surface-use">Hover states, table headers, secondary backgrounds.</div>
+          </div>
+        </div>
+        <div class="surface-item">
+          <div class="surface-swatch" style="background: var(--color-bg-muted);"></div>
+          <div class="surface-info">
+            <div class="surface-name">muted</div>
+            <div class="surface-use">Disabled states, skeleton loaders, inert surfaces.</div>
+          </div>
+        </div>
+        <div class="surface-item">
+          <div class="surface-swatch" style="background: var(--color-bg-elevated);"></div>
+          <div class="surface-info">
+            <div class="surface-name">elevated</div>
+            <div class="surface-use">Dropdowns, tooltips, popovers. Floats above default.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text contrast -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Text contrast requirements</h3>
+      <div class="table-wrapper reveal" style="margin-bottom: var(--p-space-10);">
+        <table>
+          <thead>
+            <tr>
+              <th>Text token</th>
+              <th>canvas</th>
+              <th>default</th>
+              <th>subtle</th>
+              <th>muted</th>
+              <th>elevated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>text-primary</code></td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+            </tr>
+            <tr>
+              <td><code>text-secondary</code></td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+            </tr>
+            <tr>
+              <td><code>text-tertiary</code></td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-pass">AA</td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-pass">AA</td>
+            </tr>
+            <tr>
+              <td><code>text-disabled</code></td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-fail">Fail</td>
+              <td class="contrast-fail">Fail</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Status color rules -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Status color rules</h3>
+      <div class="stack-md reveal">
+        <div class="status-rule">
+          Never use color alone to convey meaning &mdash; always pair with text, icon, or shape.
+        </div>
+        <div class="status-rule">
+          Status backgrounds (subtle variants) are for containers; status defaults are for indicators and badges.
+        </div>
+        <div class="status-rule">
+          The amber accent should be reserved for primary actions and brand moments &mdash; don't use it for warnings in the same context.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4. TYPOGRAPHY USAGE ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Typography</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Typography Usage</h2>
+
+      <!-- Type scale application -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Type scale application</h3>
+      <div class="card reveal" style="margin-bottom: var(--p-space-10);">
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-hero</span>
+          <span class="type-scale-use">Landing page headlines only</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-display</span>
+          <span class="type-scale-use">Page titles, major section headers</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-title-lg</span>
+          <span class="type-scale-use">Feature section titles</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-title</span>
+          <span class="type-scale-use">Section headers, card titles</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-heading</span>
+          <span class="type-scale-use">Subsection headers, list titles</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-body-lg</span>
+          <span class="type-scale-use">Lead paragraphs, feature descriptions</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-body</span>
+          <span class="type-scale-use">Default body copy</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-body-sm</span>
+          <span class="type-scale-use">Secondary information, table cells</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-caption</span>
+          <span class="type-scale-use">Labels, metadata, timestamps</span>
+        </div>
+        <div class="type-scale-item">
+          <span class="type-scale-label">text-mono</span>
+          <span class="type-scale-use">Code, data values, API references</span>
+        </div>
+      </div>
+
+      <!-- Pairing rules -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Pairing rules</h3>
+      <div class="stack-md reveal">
+        <div class="pairing-rule">Use <strong>Instrument Serif</strong> (italic) for display and hero text only</div>
+        <div class="pairing-rule">Use <strong>Inter</strong> for all UI text, body copy, and interactive elements</div>
+        <div class="pairing-rule">Never set Instrument Serif below <code>24px</code></div>
+        <div class="pairing-rule">Use <strong>JetBrains Mono</strong> for inline code, data tables, and technical identifiers</div>
+      </div>
+    </section>
+
+    <!-- ============ 5. SPACING & LAYOUT ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Layout</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Spacing &amp; Layout</h2>
+
+      <!-- Density tiers -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Density tiers</h3>
+      <div class="grid grid-3 reveal" style="margin-bottom: var(--p-space-10);">
+        <div class="density-card">
+          <div class="density-label">Relaxed</div>
+          <div class="density-context">Hero sections, marketing pages</div>
+          <div class="density-visual" style="gap: var(--p-space-6); padding: var(--p-space-5);">
+            <div class="density-block" style="width: 80%;"></div>
+            <div class="density-block" style="width: 60%;"></div>
+            <div class="density-block" style="width: 70%;"></div>
+          </div>
+          <div class="text-caption" style="margin-top: var(--p-space-3);">
+            <code>space-8</code> to <code>space-16</code> gaps
+          </div>
+        </div>
+        <div class="density-card">
+          <div class="density-label">Standard</div>
+          <div class="density-context">Dashboards, documentation</div>
+          <div class="density-visual" style="gap: var(--p-space-3); padding: var(--p-space-4);">
+            <div class="density-block" style="width: 80%;"></div>
+            <div class="density-block" style="width: 60%;"></div>
+            <div class="density-block" style="width: 70%;"></div>
+          </div>
+          <div class="text-caption" style="margin-top: var(--p-space-3);">
+            <code>space-4</code> to <code>space-8</code> gaps
+          </div>
+        </div>
+        <div class="density-card">
+          <div class="density-label">Compact</div>
+          <div class="density-context">Data tables, toolbars, admin</div>
+          <div class="density-visual" style="gap: var(--p-space-1); padding: var(--p-space-2);">
+            <div class="density-block" style="width: 80%;"></div>
+            <div class="density-block" style="width: 60%;"></div>
+            <div class="density-block" style="width: 70%;"></div>
+          </div>
+          <div class="text-caption" style="margin-top: var(--p-space-3);">
+            <code>space-2</code> to <code>space-4</code> gaps
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid rules -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Grid rules</h3>
+      <div class="grid grid-3 reveal" style="margin-bottom: var(--p-space-10);">
+        <div class="grid-rule-card">
+          <div class="grid-rule-value">4 / 8 / 12</div>
+          Column system: compact, medium, expanded
+        </div>
+        <div class="grid-rule-card">
+          <div class="grid-rule-value">80rem</div>
+          Maximum content width (1280px)
+        </div>
+        <div class="grid-rule-card">
+          <div class="grid-rule-value">Fluid</div>
+          Page padding scales with breakpoints (see responsive tokens)
+        </div>
+      </div>
+
+      <!-- Composition patterns -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Composition patterns</h3>
+      <div class="grid grid-3 reveal">
+        <div>
+          <div class="pattern-label">Stack</div>
+          <div class="wireframe" style="height: 10rem;">
+            <div class="wireframe-stack">
+              <div class="wireframe-box" style="height: 2rem;"></div>
+              <div class="wireframe-box" style="height: 2rem;"></div>
+              <div class="wireframe-box" style="height: 2rem;"></div>
+            </div>
+          </div>
+          <div class="pattern-desc">Vertical arrangement with consistent gaps</div>
+        </div>
+        <div>
+          <div class="pattern-label">Split</div>
+          <div class="wireframe" style="height: 10rem;">
+            <div class="wireframe-split" style="height: 100%;">
+              <div class="wireframe-box"></div>
+              <div class="wireframe-box"></div>
+            </div>
+          </div>
+          <div class="pattern-desc">Two-column with sidebar + main content</div>
+        </div>
+        <div>
+          <div class="pattern-label">Bento</div>
+          <div class="wireframe" style="height: 10rem;">
+            <div class="wireframe-bento" style="height: 100%;">
+              <div class="wireframe-box"></div>
+              <div class="wireframe-box"></div>
+              <div class="wireframe-box"></div>
+            </div>
+          </div>
+          <div class="pattern-desc">Asymmetric grid of cards at varying sizes</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6. MOTION GUIDELINES ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Motion</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Motion Guidelines</h2>
+
+      <div class="grid grid-2 reveal" style="margin-bottom: var(--p-space-10);">
+        <div>
+          <h3 class="text-heading" style="margin-bottom: var(--p-space-3);">When to animate</h3>
+          <ul class="rules-list">
+            <li>State changes (hover, focus, active, disabled)</li>
+            <li>Entrances and exits (modals, dropdowns, toasts)</li>
+            <li>Feedback (success confirmations, error shakes)</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-heading" style="margin-bottom: var(--p-space-3);">When NOT to animate</h3>
+          <ul class="rules-list">
+            <li>Content that's already visible on screen</li>
+            <li>Decorative motion with no functional purpose</li>
+            <li>Anything on page load that delays comprehension</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Duration guidance -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-4);">Duration guidance</h3>
+      <div class="card reveal" style="margin-bottom: var(--p-space-10);">
+        <div class="motion-row">
+          <span class="motion-label">Micro-interactions</span>
+          <div class="motion-bar-track">
+            <div class="motion-bar" style="width: 15%;"></div>
+          </div>
+          <span class="motion-value">120ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">Component transitions</span>
+          <div class="motion-bar-track">
+            <div class="motion-bar" style="width: 25%;"></div>
+          </div>
+          <span class="motion-value">200ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">Page transitions</span>
+          <div class="motion-bar-track">
+            <div class="motion-bar" style="width: 45%;"></div>
+          </div>
+          <span class="motion-value">350ms</span>
+        </div>
+        <div class="motion-row">
+          <span class="motion-label">Dramatic reveals</span>
+          <div class="motion-bar-track">
+            <div class="motion-bar" style="width: 65%;"></div>
+          </div>
+          <span class="motion-value">500ms+</span>
+        </div>
+      </div>
+
+      <!-- Reduced motion -->
+      <h3 class="text-heading" style="margin-bottom: var(--p-space-3);">Reduced motion</h3>
+      <div class="status-rule reveal">
+        Always provide a parallel track &mdash; use opacity-only transitions instead of transforms when <code>prefers-reduced-motion</code> is active. Motion should degrade gracefully, never disappear entirely.
+      </div>
+    </section>
+
+    <!-- ============ 7. ACCESSIBILITY ============ -->
+    <section class="section reveal">
+      <p class="text-subheading section-label">Accessibility</p>
+      <h2 class="text-title" style="margin-bottom: var(--p-space-8);">Accessibility</h2>
+
+      <div class="stack-md">
+        <div class="a11y-item reveal">
+          <div class="a11y-icon" aria-hidden="true">Aa</div>
+          <div>
+            <div class="a11y-title">Contrast</div>
+            <div class="a11y-desc">
+              Minimum 4.5:1 for normal text, 3:1 for large text (18px+ or 14px bold). All semantic color pairings are validated against WCAG AA.
+            </div>
+          </div>
+        </div>
+        <div class="a11y-item reveal">
+          <div class="a11y-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="1" width="12" height="12" rx="2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="a11y-title">Focus indicators</div>
+            <div class="a11y-desc">
+              2px amber ring with 2px offset on all interactive elements. Focus must be visible in both light and dark themes.
+            </div>
+          </div>
+        </div>
+        <div class="a11y-item reveal">
+          <div class="a11y-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <path d="M2 7h10M7 2v10"/>
+            </svg>
+          </div>
+          <div>
+            <div class="a11y-title">Keyboard navigation</div>
+            <div class="a11y-desc">
+              Tab for focus, Enter/Space for activation, Escape for dismissal. All interactive patterns must be operable without a pointer device.
+            </div>
+          </div>
+        </div>
+        <div class="a11y-item reveal">
+          <div class="a11y-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="7" cy="7" r="5.5"/>
+              <path d="M5 7h4"/>
+            </svg>
+          </div>
+          <div>
+            <div class="a11y-title">Screen reader</div>
+            <div class="a11y-desc">
+              All interactive elements must have accessible names. Status changes announced via <code>aria-live</code>. Decorative elements hidden with <code>aria-hidden="true"</code>.
+            </div>
+          </div>
+        </div>
+        <div class="a11y-item reveal">
+          <div class="a11y-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <circle cx="7" cy="7" r="5.5"/>
+              <circle cx="7" cy="7" r="2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="a11y-title">Color independence</div>
+            <div class="a11y-desc">
+              Status indicators must include icon or text label alongside color. Never rely on color as the sole differentiator.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="site-footer">
+      <div class="footer-left">
+        <div class="footer-mark" aria-hidden="true"></div>
+        <span class="footer-text">Meridian Design System</span>
+      </div>
+      <span class="footer-text">Built for agentic AI interfaces</span>
+    </footer>
+
+  </main>
+
+  <!-- ============ SCRIPTS ============ -->
+  <script>
+    // Theme toggle
+    const toggle = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('meridian-theme', theme);
+      toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+
+    toggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+    });
+
+    // Restore saved theme
+    const saved = localStorage.getItem('meridian-theme');
+    if (saved) setTheme(saved);
+
+    // IntersectionObserver for scroll-reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
