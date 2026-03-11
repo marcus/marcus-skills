@@ -258,7 +258,7 @@
         pointer-events: none;
       }
 
-      /* Primary */
+      /* Primary — pill + accent fill. One per page max. */
       .btn--primary {
         background: var(--color-accent-500);
         color: var(--text-on-accent);
@@ -269,7 +269,7 @@
         transform: scale(var(--hover-scale));
       }
 
-      /* Secondary */
+      /* Secondary — border, no fill */
       .btn--secondary {
         background: transparent;
         color: var(--text-primary);
@@ -281,18 +281,98 @@
         transform: scale(var(--hover-scale));
       }
 
-      /* Ghost */
+      /* Ghost — text + arrow, no container */
       .btn--ghost {
         background: transparent;
         color: var(--text-secondary);
         border: none;
-        border-radius: var(--radius-md);
-        padding: 10px 12px;
+        border-radius: 0;
+        padding: 10px 8px;
+        gap: var(--space-2);
+      }
+      .btn--ghost .btn-arrow {
+        display: inline-block;
+        transition: transform var(--duration-fast) var(--ease-out);
       }
       .btn--ghost:hover:not(:disabled) {
         color: var(--text-primary);
-        text-decoration: underline;
-        text-underline-offset: 3px;
+      }
+      .btn--ghost:hover:not(:disabled) .btn-arrow {
+        transform: translateX(4px);
+      }
+
+      /* Swiss minimal — no border, no fill. Scale + shadow on hover. */
+      .btn--swiss {
+        background: transparent;
+        color: var(--text-primary);
+        border: none;
+        border-radius: 0;
+        padding: 12px 24px;
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-normal);
+      }
+      .btn--swiss:hover:not(:disabled) {
+        transform: scale(1.04);
+        box-shadow: var(--shadow-sm);
+      }
+      .btn--swiss:active:not(:disabled) {
+        transform: scale(0.98);
+        box-shadow: none;
+      }
+
+      /* Editorial — serif italic, underline from center on hover */
+      .btn--editorial {
+        background: transparent;
+        color: var(--text-primary);
+        border: none;
+        border-radius: 0;
+        padding: 10px 0;
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-normal);
+        font-size: var(--text-base);
+        overflow: visible;
+      }
+      .btn--editorial::after {
+        content: '';
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        width: 0;
+        height: 1px;
+        background: var(--text-primary);
+        transition: width var(--duration-fast) var(--ease-out), left var(--duration-fast) var(--ease-out);
+      }
+      .btn--editorial:hover:not(:disabled)::after {
+        width: 100%;
+        left: 0;
+      }
+      .btn--editorial:active:not(:disabled) {
+        transform: none;
+      }
+
+      /* Luxury — black fill, uppercase, sharp corners */
+      .btn--luxury {
+        background: var(--color-gray-900);
+        color: var(--color-white);
+        border-radius: 0;
+        padding: 14px 32px;
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      [data-theme="dark"] .btn--luxury {
+        background: var(--color-white);
+        color: var(--color-gray-900);
+      }
+      .btn--luxury:hover:not(:disabled) {
+        background: var(--color-gray-800);
+        transform: scale(var(--hover-scale));
+      }
+      [data-theme="dark"] .btn--luxury:hover:not(:disabled) {
+        background: var(--color-gray-100);
       }
 
       /* Danger */
@@ -355,27 +435,102 @@
         padding: 10px 14px;
         width: 100%;
         max-width: 320px;
-        transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+        transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
         outline: none;
       }
       .input::placeholder { color: var(--text-tertiary); }
-      .input:focus {
+      .input:focus-visible {
         border-color: var(--color-accent-500);
         box-shadow: 0 0 0 3px var(--color-accent-100);
       }
-      [data-theme="dark"] .input:focus {
+      [data-theme="dark"] .input:focus-visible {
         box-shadow: 0 0 0 3px var(--color-accent-900);
       }
       .input--error {
         border-color: var(--color-danger);
       }
-      .input--error:focus {
+      .input--error:focus-visible {
         box-shadow: 0 0 0 3px rgba(196, 75, 63, 0.15);
       }
       .input:disabled {
         opacity: 0.4;
         cursor: not-allowed;
         background: var(--surface-secondary);
+      }
+
+      /* Invisible input — transparent at rest, border on hover, solid on focus */
+      .input--invisible {
+        background: transparent;
+        border-color: transparent;
+        border-radius: var(--radius-sm);
+        padding: 10px 12px;
+      }
+      .input--invisible:hover:not(:focus-visible):not(:disabled) {
+        border-color: var(--border-default);
+      }
+      .input--invisible:focus-visible {
+        background: var(--surface-primary);
+        border-color: var(--color-accent-500);
+        box-shadow: 0 0 0 3px var(--color-accent-100);
+      }
+      [data-theme="dark"] .input--invisible:focus-visible {
+        box-shadow: 0 0 0 3px var(--color-accent-900);
+      }
+
+      /* Bottom-line input — underline only, animates from center on focus */
+      .input--bottomline {
+        border: none;
+        border-bottom: 1px solid var(--border-strong);
+        border-radius: 0;
+        padding: 10px 0;
+        background: transparent;
+        position: relative;
+      }
+      .input-bottomline-wrap {
+        position: relative;
+        max-width: 320px;
+      }
+      .input-bottomline-wrap::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--color-accent-500);
+        transition: width var(--duration-normal) var(--ease-out), left var(--duration-normal) var(--ease-out);
+      }
+      .input-bottomline-wrap:focus-within::after {
+        width: 100%;
+        left: 0;
+      }
+      .input--bottomline:focus-visible {
+        border-color: transparent;
+        box-shadow: none;
+      }
+
+      /* Luxury input — sharp corners, generous padding, serif labels */
+      .input--luxury {
+        border-radius: 0;
+        padding: 16px 20px;
+        font-size: 15px;
+        border-color: var(--border-default);
+      }
+      .input--luxury:focus-visible {
+        border-color: var(--color-gray-900);
+        box-shadow: none;
+      }
+      [data-theme="dark"] .input--luxury:focus-visible {
+        border-color: var(--color-gray-100);
+        box-shadow: none;
+      }
+      .input-label--luxury {
+        font-family: var(--font-display);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-regular);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
       }
 
       .input-group { display: flex; flex-direction: column; gap: var(--space-1); max-width: 320px; }
@@ -410,8 +565,8 @@
         cursor: pointer;
         transition: border-color var(--duration-fast) var(--ease-out);
       }
-      .select:focus { border-color: var(--color-accent-500); box-shadow: 0 0 0 3px var(--color-accent-100); }
-      [data-theme="dark"] .select:focus { box-shadow: 0 0 0 3px var(--color-accent-900); }
+      .select:focus-visible { border-color: var(--color-accent-500); box-shadow: 0 0 0 3px var(--color-accent-100); }
+      [data-theme="dark"] .select:focus-visible { box-shadow: 0 0 0 3px var(--color-accent-900); }
 
       /* Textarea */
       textarea.input {
@@ -656,6 +811,62 @@
       .breadcrumbs__current { color: var(--text-primary); }
 
       /* --- Badges & Tags --------------------------------------------------- */
+
+      /* Typography-only tag — no container, editorial pattern */
+      .tag-typo {
+        font-family: var(--font-body);
+        font-size: 0.6875rem;
+        font-weight: var(--weight-semibold);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        line-height: 1;
+      }
+      .tag-typo--accent { color: var(--text-accent); }
+
+      /* Dot indicator — 7px colored dot + text, no container */
+      .dot-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        color: var(--text-primary);
+      }
+      .dot-indicator__dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .dot-indicator__dot--success { background: var(--color-success); }
+      .dot-indicator__dot--warning { background: var(--color-warning); }
+      .dot-indicator__dot--danger { background: var(--color-danger); }
+      .dot-indicator__dot--info { background: var(--color-info); }
+      .dot-indicator__dot--neutral { background: var(--color-gray-400); }
+      .dot-indicator__dot--accent { background: var(--color-accent-500); }
+
+      /* Monochrome icon+border badge */
+      .badge-mono {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-primary);
+        padding: 4px 10px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        line-height: 1.2;
+      }
+      .badge-mono svg {
+        width: 13px;
+        height: 13px;
+        flex-shrink: 0;
+      }
+
+      /* Classic badge — one colored pill variant reserved */
       .badge {
         display: inline-flex;
         align-items: center;
@@ -708,6 +919,54 @@
       .tag__remove:hover { color: var(--text-primary); }
 
       /* --- Alerts ---------------------------------------------------------- */
+
+      /* Bare text alert — just colored text, no container */
+      .alert-bare {
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+        padding: var(--space-2) 0;
+      }
+      .alert-bare--success { color: var(--color-success); }
+      .alert-bare--warning { color: var(--color-warning); }
+      .alert-bare--danger { color: var(--color-danger); }
+      .alert-bare--info { color: var(--color-info); }
+
+      /* Left-border alert — 2px left accent line, neutral text */
+      .alert-left {
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+        padding: var(--space-3) var(--space-5);
+        border-left: 2px solid;
+        color: var(--text-primary);
+      }
+      .alert-left--success { border-color: var(--color-success); }
+      .alert-left--warning { border-color: var(--color-warning); }
+      .alert-left--danger { border-color: var(--color-danger); }
+      .alert-left--info { border-color: var(--color-info); }
+      .alert-left__title {
+        font-weight: var(--weight-medium);
+        margin-bottom: var(--space-1);
+      }
+
+      /* Top-border accent alert — 3px colored top edge on neutral card */
+      .alert-top {
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+        padding: var(--space-5) var(--space-5);
+        background: var(--surface-secondary);
+        border-top: 3px solid;
+        color: var(--text-primary);
+      }
+      .alert-top--success { border-color: var(--color-success); }
+      .alert-top--warning { border-color: var(--color-warning); }
+      .alert-top--danger { border-color: var(--color-danger); }
+      .alert-top--info { border-color: var(--color-info); }
+      .alert-top__title {
+        font-weight: var(--weight-medium);
+        margin-bottom: var(--space-1);
+      }
+
+      /* Full container alert — reserved for critical/blocking only */
       .alert {
         display: flex;
         gap: var(--space-3);
@@ -728,24 +987,6 @@
         font-weight: var(--weight-medium);
         margin-bottom: var(--space-1);
       }
-      .alert--info {
-        background: rgba(74, 127, 181, 0.06);
-        border-color: rgba(74, 127, 181, 0.2);
-        color: var(--text-primary);
-      }
-      .alert--info .alert__icon { color: var(--color-info); }
-      .alert--success {
-        background: rgba(58, 154, 107, 0.06);
-        border-color: rgba(58, 154, 107, 0.2);
-        color: var(--text-primary);
-      }
-      .alert--success .alert__icon { color: var(--color-success); }
-      .alert--warning {
-        background: rgba(196, 138, 44, 0.06);
-        border-color: rgba(196, 138, 44, 0.2);
-        color: var(--text-primary);
-      }
-      .alert--warning .alert__icon { color: var(--color-warning); }
       .alert--danger {
         background: rgba(196, 75, 63, 0.06);
         border-color: rgba(196, 75, 63, 0.2);
@@ -753,56 +994,104 @@
       }
       .alert--danger .alert__icon { color: var(--color-danger); }
 
-      /* --- Table ----------------------------------------------------------- */
-      .table-wrap {
+      /* --- Tables ---------------------------------------------------------- */
+
+      /* Borderless table — alignment + whitespace + tabular-nums, no dividers */
+      .table-borderless-wrap {
         overflow-x: auto;
-        border: 1px solid var(--border-default);
-        border-radius: var(--radius-none);
       }
-      .table {
+      .table-borderless {
         width: 100%;
         border-collapse: collapse;
         font-size: var(--text-sm);
       }
-      .table th {
+      .table-borderless th {
         text-align: left;
         font-weight: var(--weight-medium);
         font-size: var(--text-xs);
         letter-spacing: var(--tracking-wider);
         text-transform: uppercase;
         color: var(--text-tertiary);
-        padding: var(--space-3) var(--space-4);
-        border-bottom: 1px solid var(--border-default);
-        background: var(--surface-secondary);
+        opacity: 0.6;
+        padding: var(--space-3) var(--space-5) var(--space-3) 0;
         white-space: nowrap;
-        cursor: pointer;
-        user-select: none;
+        border-bottom: 1px solid var(--border-default);
       }
-      .table th:hover { color: var(--text-secondary); }
-      .table th .sort-icon {
-        display: inline-block;
-        margin-left: var(--space-1);
-        opacity: 0.4;
-        font-size: 10px;
-      }
-      .table th.sorted .sort-icon { opacity: 1; color: var(--text-accent); }
-      .table td {
-        padding: var(--space-3) var(--space-4);
-        border-bottom: 1px solid var(--border-subtle);
+      .table-borderless th:last-child { padding-right: 0; }
+      .table-borderless td {
+        padding: 14px var(--space-5) 14px 0;
         color: var(--text-primary);
         vertical-align: middle;
       }
-      .table tbody tr {
+      .table-borderless td:last-child { padding-right: 0; }
+      .table-borderless tbody tr {
         transition: background var(--duration-fast) var(--ease-out);
       }
-      .table tbody tr:hover {
-        background: var(--surface-secondary);
+      .table-borderless tbody tr:hover {
+        background: rgba(0, 0, 0, 0.03);
       }
-      .table tbody tr:last-child td { border-bottom: none; }
-      .table .cell-mono {
+      [data-theme="dark"] .table-borderless tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .table-borderless .col-num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .table-borderless th.col-num { text-align: right; }
+      .table-borderless .cell-mono {
         font-family: var(--font-mono);
         font-size: var(--text-xs);
         color: var(--text-secondary);
+      }
+
+      /* Editorial table — serif italic headers, monospace numbers, strong top rule */
+      .table-editorial-wrap {
+        overflow-x: auto;
+        border-top: 2px solid var(--text-primary);
+      }
+      .table-editorial {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+      }
+      .table-editorial th {
+        text-align: left;
+        font-family: var(--font-display);
+        font-style: italic;
+        font-weight: var(--weight-regular);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        padding: var(--space-4) var(--space-5) var(--space-3) 0;
+        white-space: nowrap;
+        border-bottom: 1px solid var(--border-default);
+      }
+      .table-editorial th:last-child { padding-right: 0; }
+      .table-editorial td {
+        padding: 14px var(--space-5) 14px 0;
+        color: var(--text-primary);
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      .table-editorial td:last-child { padding-right: 0; }
+      .table-editorial tbody tr:last-child td { border-bottom: none; }
+      .table-editorial tbody tr {
+        transition: background var(--duration-fast) var(--ease-out);
+      }
+      .table-editorial tbody tr:hover {
+        background: rgba(0, 0, 0, 0.02);
+      }
+      [data-theme="dark"] .table-editorial tbody tr:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .table-editorial .col-num {
+        text-align: right;
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        font-variant-numeric: tabular-nums;
+      }
+      .table-editorial th.col-num {
+        text-align: right;
+        font-family: var(--font-display);
       }
 
       /* --- Modal ----------------------------------------------------------- */
@@ -1068,6 +1357,17 @@
       }
       .vis-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+      /* --- Variant label ---------------------------------------------------- */
+      .variant-label {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-tertiary);
+        font-style: italic;
+        margin-bottom: var(--space-3);
+        display: block;
+      }
+
       /* responsive */
       @media (max-width: 640px) {
         .hero__title { font-size: var(--text-3xl); }
@@ -1110,8 +1410,8 @@
       <!-- Hero -->
       <section class="hero">
         <span class="hero__kicker">Component reference</span>
-        <h1 class="hero__title">Every component, every state, built to spec.</h1>
-        <p class="hero__lead">Live examples with interactive states. Each element follows the token architecture precisely, so what you see here is what ships.</p>
+        <h1 class="hero__title">Low chrome by default. Filled containers are the exception.</h1>
+        <p class="hero__lead">Components default to text-only, dots, and bare affordances. Filled containers are reserved for the single highest-priority instance. Every variant shown here is production-ready.</p>
       </section>
 
       <!-- Section Nav -->
@@ -1135,62 +1435,103 @@
            ============================================================= -->
       <section class="comp-section" id="buttons">
         <h2 class="comp-section__heading">Buttons</h2>
-        <p class="comp-section__desc">Priority hierarchy through shape, fill, and weight. Primary actions use the pill signature; secondary and ghost recede intentionally.</p>
+        <p class="comp-section__desc">Shape and chrome hierarchy, not just color. Ghost and text buttons are the most common; filled primary is the exception. Six tiers from maximum to minimum visual weight.</p>
 
         <div class="subsection">
-          <span class="subsection__label">Priority ladder</span>
-          <div class="row row--lg">
+          <span class="subsection__label">Full priority ladder</span>
+          <div class="row row--lg" style="gap: var(--space-8);">
             <button class="btn btn--primary" type="button">Deploy workflow</button>
             <button class="btn btn--secondary" type="button">Configure agent</button>
-            <button class="btn btn--ghost" type="button">View logs</button>
+            <button class="btn btn--swiss" type="button">View analytics</button>
+            <button class="btn btn--ghost" type="button">View documentation <span class="btn-arrow">&rarr;</span></button>
+            <button class="btn btn--editorial" type="button">Read the case study</button>
+          </div>
+          <p class="spec-note">Primary (1 per page): pill, accent fill, weight 450. Secondary: 6px radius, 1px border. Swiss: no border/fill, scale+shadow hover. Ghost: text+arrow, arrow slides on hover. Editorial: serif italic, underline-from-center hover.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Ghost / text+arrow buttons</span>
+          <div class="stack" style="gap: var(--space-4); align-items: flex-start;">
+            <button class="btn btn--ghost" type="button">Explore all workflows <span class="btn-arrow">&rarr;</span></button>
+            <button class="btn btn--ghost" type="button">Read the documentation <span class="btn-arrow">&rarr;</span></button>
+            <button class="btn btn--ghost" type="button">View agent performance <span class="btn-arrow">&rarr;</span></button>
+          </div>
+          <p class="spec-note">No container. Text + arrow glyph. Arrow gap widens 4px on hover. This is the primary navigation affordance at Apple, Notion, and Vercel. Should be the most common button type.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Swiss minimal buttons</span>
+          <div class="row row--lg">
+            <button class="btn btn--swiss" type="button">View analytics</button>
+            <button class="btn btn--swiss" type="button">Export report</button>
+            <button class="btn btn--swiss" type="button">Agent settings</button>
+          </div>
+          <p class="spec-note">No border, no fill at rest. Hover lifts via scale(1.04) + shadow-sm. Active presses to scale(0.98). Works for secondary actions in any context.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Editorial buttons</span>
+          <div class="row row--lg">
+            <button class="btn btn--editorial" type="button">Read the case study</button>
+            <button class="btn btn--editorial" type="button">Learn more about agents</button>
+            <button class="btn btn--editorial" type="button">View the full changelog</button>
+          </div>
+          <p class="spec-note">Serif italic, no container. 1px underline grows from center on hover. Best for content-heavy, editorial contexts.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Luxury / fashion buttons</span>
+          <div class="row row--lg">
+            <button class="btn btn--luxury" type="button">Request a demo</button>
+            <button class="btn btn--luxury" type="button">Begin trial</button>
+          </div>
+          <p class="spec-note">Black fill, ALL-CAPS, 0.2em letter-spacing, sharp corners. Inverts in dark mode. For high-fashion or editorial brand directions.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Danger + icon buttons</span>
+          <div class="row row--lg">
             <button class="btn btn--danger" type="button">Terminate run</button>
             <button class="btn btn--icon" type="button" aria-label="Settings">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2m0 10v2m-5-7H1m14 0h-2M3.05 3.05l1.41 1.41m7.08 7.08l1.41 1.41M3.05 12.95l1.41-1.41m7.08-7.08l1.41-1.41"/></svg>
             </button>
           </div>
-          <p class="spec-note">Primary: pill, accent fill, weight 450. Secondary: 6px radius, 1px border. Ghost: text only, underline on hover. Danger: 6px radius, danger fill. Icon: square, 6px radius.</p>
+          <p class="spec-note">Danger: 6px radius, danger fill. Only for destructive actions. Icon: 36px square, 6px radius, 1px border.</p>
         </div>
 
         <div class="subsection">
-          <span class="subsection__label">Hover state (scale 1.015)</span>
+          <span class="subsection__label">States — hover</span>
           <div class="row row--lg">
             <button class="btn btn--primary" type="button" style="transform: scale(1.015);">Deploy workflow</button>
             <button class="btn btn--secondary" type="button" style="transform: scale(1.015);">Configure agent</button>
+            <button class="btn btn--swiss" type="button" style="transform: scale(1.04); box-shadow: var(--shadow-sm);">View analytics</button>
           </div>
-          <p class="spec-note">Barely perceptible scale shift on hover. 160ms transition with custom cubic-bezier(0.22, 0.61, 0.36, 1).</p>
+          <p class="spec-note">Primary/secondary: scale(1.015). Swiss: scale(1.04) + shadow-sm. 160ms with cubic-bezier(0.22, 0.61, 0.36, 1).</p>
         </div>
 
         <div class="subsection">
-          <span class="subsection__label">Focus visible</span>
+          <span class="subsection__label">States — focus visible</span>
           <div class="row row--lg">
             <button class="btn btn--primary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">Deploy workflow</button>
-            <button class="btn btn--secondary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">Configure agent</button>
+            <button class="btn btn--ghost" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">View docs <span class="btn-arrow">&rarr;</span></button>
           </div>
-          <p class="spec-note">2px accent ring with 2px offset. Visible on keyboard navigation only.</p>
+          <p class="spec-note">2px accent ring, 2px offset. Uses :focus-visible so mouse users don't see focus rings.</p>
         </div>
 
         <div class="subsection">
-          <span class="subsection__label">Active (pressed)</span>
-          <div class="row row--lg">
-            <button class="btn btn--primary" type="button" style="transform: scale(0.98);">Deploy workflow</button>
-            <button class="btn btn--secondary" type="button" style="transform: scale(0.98);">Configure agent</button>
-          </div>
-          <p class="spec-note">Scale 0.98 on press — subtle, tactile feedback.</p>
-        </div>
-
-        <div class="subsection">
-          <span class="subsection__label">Disabled</span>
+          <span class="subsection__label">States — disabled</span>
           <div class="row row--lg">
             <button class="btn btn--primary" type="button" disabled>Deploy workflow</button>
             <button class="btn btn--secondary" type="button" disabled>Configure agent</button>
-            <button class="btn btn--ghost" type="button" disabled>View logs</button>
+            <button class="btn btn--ghost" type="button" disabled>View logs <span class="btn-arrow">&rarr;</span></button>
+            <button class="btn btn--editorial" type="button" disabled>Read case study</button>
             <button class="btn btn--danger" type="button" disabled>Terminate run</button>
           </div>
           <p class="spec-note">Opacity 0.4, pointer-events: none, cursor: not-allowed.</p>
         </div>
 
         <div class="subsection">
-          <span class="subsection__label">Loading</span>
+          <span class="subsection__label">States — loading</span>
           <div class="row row--lg">
             <button class="btn btn--primary btn--loading" type="button" aria-busy="true">Deploying...</button>
             <button class="btn btn--secondary btn--loading" type="button" aria-busy="true">Configuring...</button>
@@ -1206,10 +1547,11 @@
            ============================================================= -->
       <section class="comp-section" id="forms">
         <h2 class="comp-section__heading">Form inputs</h2>
-        <p class="comp-section__desc">Consistent 6px radius, subtle borders, accent-colored focus rings. Every control follows the same visual grammar.</p>
+        <p class="comp-section__desc">Inputs should be quiet at rest and reveal themselves on interaction. Four variants from invisible to luxury, each suited to a different context.</p>
 
         <div class="subsection">
-          <span class="subsection__label">Text inputs</span>
+          <span class="subsection__label">Standard bordered input</span>
+          <span class="variant-label">One option, not the default. Appropriate for data-dense admin forms.</span>
           <div class="grid-2">
             <div class="input-group">
               <label class="input-label" for="wf-name">Workflow name</label>
@@ -1223,14 +1565,66 @@
             <div class="input-group">
               <label class="input-label" for="wf-name-error">Workflow name (error)</label>
               <input class="input input--error" type="text" id="wf-name-error" value="   ">
-              <span class="input-error-msg">Workflow name cannot be blank.</span>
+              <span class="input-error-msg">The workflow name format isn't recognized.</span>
             </div>
             <div class="input-group">
               <label class="input-label" for="wf-name-disabled">Workflow name (disabled)</label>
               <input class="input" type="text" id="wf-name-disabled" value="System workflow" disabled>
             </div>
           </div>
-          <p class="spec-note">6px radius, 1px border. Focus: accent ring (3px box-shadow). Error: danger border color.</p>
+          <p class="spec-note">6px radius, 1px border. Focus-visible: accent ring (3px box-shadow). Error: danger border color, passive voice message.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Invisible input (Notion pattern)</span>
+          <span class="variant-label">Transparent at rest. Border appears on hover, solid + background on focus. Best for inline editing.</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="inv-name">Agent name</label>
+              <input class="input input--invisible" type="text" id="inv-name" value="Customer classifier v2">
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="inv-empty">Agent description</label>
+              <input class="input input--invisible" type="text" id="inv-empty" placeholder="Add a description...">
+            </div>
+          </div>
+          <p class="spec-note">No border at rest. Hover: border-default appears. Focus: accent border + accent ring + surface background. Content is the only resting indicator.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Bottom-line input</span>
+          <span class="variant-label">Underline only. 2px accent line grows from center on focus. Best for login forms and simple data entry.</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="bl-email">Email address</label>
+              <div class="input-bottomline-wrap">
+                <input class="input input--bottomline" type="email" id="bl-email" placeholder="you@company.com">
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="bl-pass">Password</label>
+              <div class="input-bottomline-wrap">
+                <input class="input input--bottomline" type="password" id="bl-pass" placeholder="Enter your password">
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">No container borders, just a bottom 1px line. On focus, a 2px accent underline grows from center outward. Clean, editorial feel.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Luxury input</span>
+          <span class="variant-label">Sharp corners, generous padding, serif labels. Best for high-fashion or editorial brand directions.</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label input-label--luxury" for="lux-name">Full name</label>
+              <input class="input input--luxury" type="text" id="lux-name" placeholder="First and last name">
+            </div>
+            <div class="input-group">
+              <label class="input-label input-label--luxury" for="lux-company">Company</label>
+              <input class="input input--luxury" type="text" id="lux-company" value="Theorem Industries">
+            </div>
+          </div>
+          <p class="spec-note">Border-radius: 0. Padding: 16px 20px. Font: 15px. Serif uppercase labels with 0.12em tracking. Focus darkens border to full black.</p>
         </div>
 
         <div class="subsection">
@@ -1345,7 +1739,7 @@
               <p class="card__body">5-step pipeline with document extraction, entity resolution, and compliance verification. Last run completed in 3.2s.</p>
               <div class="card__footer">
                 <span>Updated 2 hours ago</span>
-                <span class="badge badge--success">Active</span>
+                <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--success"></span> Active</span>
               </div>
             </div>
             <div class="card-elevated">
@@ -1354,11 +1748,11 @@
               <p class="card__body">Aggregates data from 12 sources, generates executive summary, and distributes to stakeholder channels.</p>
               <div class="card__footer">
                 <span>Updated 5 days ago</span>
-                <span class="badge badge--warning">Paused</span>
+                <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--warning"></span> Paused</span>
               </div>
             </div>
           </div>
-          <p class="spec-note">8px radius, shadow-sm, surface-elevated background. For standalone content items.</p>
+          <p class="spec-note">8px radius, shadow-sm, surface-elevated background. Status shown with dot indicators instead of colored pills.</p>
         </div>
 
         <div class="subsection">
@@ -1439,23 +1833,83 @@
            ============================================================= -->
       <section class="comp-section" id="badges">
         <h2 class="comp-section__heading">Badges &amp; tags</h2>
-        <p class="comp-section__desc">Pill-shaped status indicators. Badges are read-only; tags are interactive and removable.</p>
+        <p class="comp-section__desc">Status communicated through typography, dots, and icons rather than colored pills. Colored pills are reserved for a single use case at most.</p>
 
         <div class="subsection">
-          <span class="subsection__label">Badges</span>
-          <div class="row">
-            <span class="badge badge--default">Draft</span>
-            <span class="badge badge--accent">In review</span>
-            <span class="badge badge--success">Deployed</span>
-            <span class="badge badge--warning">Degraded</span>
-            <span class="badge badge--danger">Failed</span>
-            <span class="badge badge--info">Queued</span>
+          <span class="subsection__label">Typography-only tags (FT pattern)</span>
+          <span class="variant-label">No container. Status is a compositional element creating whitespace, not a colored blob.</span>
+          <div style="display: flex; flex-direction: column; gap: var(--space-6); max-width: 480px;">
+            <div>
+              <span class="tag-typo tag-typo--accent">Featured workflow</span>
+              <div style="font-family: var(--font-display); font-size: var(--text-xl); letter-spacing: var(--tracking-snug); line-height: var(--leading-snug); margin-top: var(--space-2);">Customer onboarding pipeline</div>
+            </div>
+            <div>
+              <span class="tag-typo">System agent</span>
+              <div style="font-family: var(--font-display); font-size: var(--text-xl); letter-spacing: var(--tracking-snug); line-height: var(--leading-snug); margin-top: var(--space-2);">Classifier v2</div>
+            </div>
+            <div>
+              <span class="tag-typo">Deprecated</span>
+              <div style="font-family: var(--font-display); font-size: var(--text-xl); letter-spacing: var(--tracking-snug); line-height: var(--leading-snug); margin-top: var(--space-2);">Legacy document parser</div>
+            </div>
           </div>
-          <p class="spec-note">Pill radius, 11px uppercase text, weight 450. Semantic background tints at ~12% opacity.</p>
+          <p class="spec-note">Sans-serif uppercase, 11px, weight 550, wide tracking. Creates editorial structure through type contrast. No container, no pill, no background.</p>
         </div>
 
         <div class="subsection">
-          <span class="subsection__label">Tags (removable)</span>
+          <span class="subsection__label">Dot indicators (Linear pattern)</span>
+          <span class="variant-label">7px colored circle + text. Conveys state with minimal visual weight.</span>
+          <div class="stack" style="gap: var(--space-4);">
+            <div class="row row--lg">
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--success"></span> Deployed</span>
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--warning"></span> Degraded</span>
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--danger"></span> Failed</span>
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--info"></span> Queued</span>
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--neutral"></span> Draft</span>
+              <span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--accent"></span> In review</span>
+            </div>
+          </div>
+          <p class="spec-note">7px dot, gap 8px, normal-weight text. No background, no border. Status is clear from the dot color alone.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Monochrome icon+border badges</span>
+          <span class="variant-label">Status communicated through icon shape, not traffic-light colors. Essential for accessibility and print.</span>
+          <div class="row row--lg">
+            <span class="badge-mono">
+              <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 7L5.5 9L9.5 4.5"/></svg>
+              Deployed
+            </span>
+            <span class="badge-mono">
+              <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6.5 3.5v3.5"/><circle cx="6.5" cy="9.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+              Degraded
+            </span>
+            <span class="badge-mono">
+              <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4l5 5M9 4l-5 5"/></svg>
+              Failed
+            </span>
+            <span class="badge-mono">
+              <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M6.5 4v3l2 1"/></svg>
+              Queued
+            </span>
+            <span class="badge-mono">
+              <svg viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3.5 6.5h6"/></svg>
+              Draft
+            </span>
+          </div>
+          <p class="spec-note">1px border, 3px radius, weight 450. SVG icon communicates status independent of color. Monochrome by default.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Colored pill (reserved use)</span>
+          <span class="variant-label">At most one use case in the system. Shown for reference; dot indicators are preferred.</span>
+          <div class="row">
+            <span class="badge badge--danger">Critical</span>
+          </div>
+          <p class="spec-note">Colored pills reserved for the single highest-severity status only. All other states use dots or typography.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Removable tags</span>
           <div class="row">
             <span class="tag">production <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
             <span class="tag">team:platform <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
@@ -1473,42 +1927,69 @@
            ============================================================= -->
       <section class="comp-section" id="alerts">
         <h2 class="comp-section__heading">Alerts</h2>
-        <p class="comp-section__desc">Background-tinted containers with icon + uniform border. No thick left-border pattern.</p>
+        <p class="comp-section__desc">Three tiers of severity mapped to visual weight. Alerts should be quiet unless they are critical. Full colored containers are reserved for blocking errors only.</p>
 
-        <div class="stack" style="gap: var(--space-4); max-width: 600px;">
-          <div class="alert alert--info">
-            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M9 8.5V12.5"/><circle cx="9" cy="6" r="0.5" fill="currentColor" stroke="none"/></svg>
-            <div class="alert__content">
-              <div class="alert__title">Deployment scheduled</div>
-              Workflow "Customer onboarding" is queued for deployment to production at 14:00 UTC. No action required.
-            </div>
+        <div class="subsection">
+          <span class="subsection__label">Bare text alerts (low severity)</span>
+          <span class="variant-label">Just colored text. No container. For confirmations and non-blocking status.</span>
+          <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+            <p class="alert-bare alert-bare--success">Changes saved successfully.</p>
+            <p class="alert-bare alert-bare--info">Deployment scheduled for 14:00 UTC. No action required.</p>
+            <p class="alert-bare alert-bare--warning">Classifier agent response time has increased by 18% in the last hour.</p>
           </div>
+          <p class="spec-note">No container, no border, no icon. Just colored text at text-sm. The lightest possible alert treatment.</p>
+        </div>
 
-          <div class="alert alert--success">
-            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6 9.5L8 11.5L12 7"/></svg>
-            <div class="alert__content">
-              <div class="alert__title">Deployment complete</div>
+        <div class="subsection">
+          <span class="subsection__label">Left-border alerts (low-medium severity)</span>
+          <span class="variant-label">2px left accent line. Text in normal color. For actionable but non-urgent notifications.</span>
+          <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+            <div class="alert-left alert-left--success">
+              <div class="alert-left__title">Deployment complete</div>
               All 3 agents deployed successfully. Health checks passing. Average response time: 142ms.
             </div>
-          </div>
-
-          <div class="alert alert--warning">
-            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 1.5L16.5 15H1.5L9 1.5z"/><path d="M9 7v3.5"/><circle cx="9" cy="13" r="0.5" fill="currentColor" stroke="none"/></svg>
-            <div class="alert__content">
-              <div class="alert__title">Elevated latency detected</div>
+            <div class="alert-left alert-left--info">
+              <div class="alert-left__title">Deployment scheduled</div>
+              Workflow "Customer onboarding" is queued for deployment to production at 14:00 UTC.
+            </div>
+            <div class="alert-left alert-left--warning">
+              <div class="alert-left__title">Elevated latency detected</div>
               Classifier agent p95 latency has exceeded 500ms for the past 15 minutes. Consider scaling the agent pool.
             </div>
           </div>
+          <p class="spec-note">2px left border as the only accent. Neutral text color. Bold title + normal body. Clean and understated.</p>
+        </div>
 
-          <div class="alert alert--danger">
-            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5"/></svg>
-            <div class="alert__content">
-              <div class="alert__title">Pipeline failure</div>
-              Run #4,831 failed at step 3 (entity resolution). Error: upstream API returned 503. 2 retries exhausted.
+        <div class="subsection">
+          <span class="subsection__label">Top-border accent alerts (medium severity, Carbon pattern)</span>
+          <span class="variant-label">3px colored top border on a neutral card. For important notices that need attention.</span>
+          <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+            <div class="alert-top alert-top--warning">
+              <div class="alert-top__title">Agent pool approaching capacity</div>
+              Current utilization is at 89%. Auto-scaling will trigger at 95%. Review scaling rules to prevent throttling.
+            </div>
+            <div class="alert-top alert-top--info">
+              <div class="alert-top__title">New API version available</div>
+              Theorem SDK v3.2 introduces streaming responses and improved error handling. Migration guide available.
             </div>
           </div>
+          <p class="spec-note">Neutral surface-secondary background. 3px colored top edge. Rest of the card is quiet. Bold title + normal body.</p>
         </div>
-        <p class="spec-note" style="margin-top: var(--space-4);">Icon + tinted background + 1px uniform border. No left-border accent stripe.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Full container alert (critical only)</span>
+          <span class="variant-label">Reserved for genuinely critical/blocking alerts. Muted tints, not saturated backgrounds.</span>
+          <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+            <div class="alert alert--danger">
+              <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5"/></svg>
+              <div class="alert__content">
+                <div class="alert__title">Pipeline failure</div>
+                Run #4,831 failed at step 3 (entity resolution). The upstream API returned 503. 2 retries were exhausted. Manual intervention is required to resume processing.
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">Tinted background at 6% opacity + 1px border at 20% opacity. Reserved for blocking errors only. Uses passive voice for error messages.</p>
+        </div>
       </section>
 
       <hr class="comp-section__divider">
@@ -1518,73 +1999,146 @@
            ============================================================= -->
       <section class="comp-section" id="tables">
         <h2 class="comp-section__heading">Tables</h2>
-        <p class="comp-section__desc">Compact density, sharp corners, subtle row borders. Sortable headers with hover highlight on rows.</p>
+        <p class="comp-section__desc">Strip chrome, let data breathe. No zebra stripes. Alignment, whitespace, and tabular-nums do the structural work. Two approaches: borderless and editorial.</p>
 
-        <div class="table-wrap">
-          <table class="table">
-            <thead>
-              <tr>
-                <th class="sorted">Run ID <span class="sort-icon">&#9660;</span></th>
-                <th>Workflow <span class="sort-icon">&#9660;</span></th>
-                <th>Status <span class="sort-icon">&#9660;</span></th>
-                <th>Duration <span class="sort-icon">&#9660;</span></th>
-                <th>Agent <span class="sort-icon">&#9660;</span></th>
-                <th>Completed <span class="sort-icon">&#9660;</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="cell-mono">#4,831</td>
-                <td>Customer onboarding</td>
-                <td><span class="badge badge--danger">Failed</span></td>
-                <td>12.4s</td>
-                <td>Orchestrator</td>
-                <td class="cell-mono">2 min ago</td>
-              </tr>
-              <tr>
-                <td class="cell-mono">#4,830</td>
-                <td>Quarterly report synthesis</td>
-                <td><span class="badge badge--success">Completed</span></td>
-                <td>48.2s</td>
-                <td>Summarizer</td>
-                <td class="cell-mono">8 min ago</td>
-              </tr>
-              <tr>
-                <td class="cell-mono">#4,829</td>
-                <td>Customer onboarding</td>
-                <td><span class="badge badge--success">Completed</span></td>
-                <td>3.1s</td>
-                <td>Orchestrator</td>
-                <td class="cell-mono">14 min ago</td>
-              </tr>
-              <tr>
-                <td class="cell-mono">#4,828</td>
-                <td>Document classification</td>
-                <td><span class="badge badge--success">Completed</span></td>
-                <td>1.8s</td>
-                <td>Classifier v2</td>
-                <td class="cell-mono">22 min ago</td>
-              </tr>
-              <tr>
-                <td class="cell-mono">#4,827</td>
-                <td>Customer onboarding</td>
-                <td><span class="badge badge--warning">Degraded</span></td>
-                <td>7.6s</td>
-                <td>Orchestrator</td>
-                <td class="cell-mono">31 min ago</td>
-              </tr>
-              <tr>
-                <td class="cell-mono">#4,826</td>
-                <td>Intake triage</td>
-                <td><span class="badge badge--info">Queued</span></td>
-                <td>&mdash;</td>
-                <td>Classifier v2</td>
-                <td class="cell-mono">&mdash;</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="subsection">
+          <span class="subsection__label">Borderless table</span>
+          <span class="variant-label">No dividers, no outer border. Hover provides wayfinding. Right-aligned numeric columns with tabular-nums.</span>
+          <div class="table-borderless-wrap">
+            <table class="table-borderless">
+              <thead>
+                <tr>
+                  <th>Run</th>
+                  <th>Workflow</th>
+                  <th>Status</th>
+                  <th>Agent</th>
+                  <th class="col-num">Duration</th>
+                  <th class="col-num">Tokens</th>
+                  <th>Completed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="cell-mono">#4,831</td>
+                  <td>Customer onboarding</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--danger"></span> Failed</span></td>
+                  <td>Orchestrator</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">12.4s</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">8,241</td>
+                  <td class="cell-mono">2 min ago</td>
+                </tr>
+                <tr>
+                  <td class="cell-mono">#4,830</td>
+                  <td>Quarterly report synthesis</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--success"></span> Completed</span></td>
+                  <td>Summarizer</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">48.2s</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">34,892</td>
+                  <td class="cell-mono">8 min ago</td>
+                </tr>
+                <tr>
+                  <td class="cell-mono">#4,829</td>
+                  <td>Customer onboarding</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--success"></span> Completed</span></td>
+                  <td>Orchestrator</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">3.1s</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">12,847</td>
+                  <td class="cell-mono">14 min ago</td>
+                </tr>
+                <tr>
+                  <td class="cell-mono">#4,828</td>
+                  <td>Document classification</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--success"></span> Completed</span></td>
+                  <td>Classifier v2</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">1.8s</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">4,103</td>
+                  <td class="cell-mono">22 min ago</td>
+                </tr>
+                <tr>
+                  <td class="cell-mono">#4,827</td>
+                  <td>Customer onboarding</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--warning"></span> Degraded</span></td>
+                  <td>Orchestrator</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">7.6s</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">11,429</td>
+                  <td class="cell-mono">31 min ago</td>
+                </tr>
+                <tr>
+                  <td class="cell-mono">#4,826</td>
+                  <td>Intake triage</td>
+                  <td><span class="dot-indicator"><span class="dot-indicator__dot dot-indicator__dot--info"></span> Queued</span></td>
+                  <td>Classifier v2</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">&mdash;</td>
+                  <td class="col-num" style="font-variant-numeric: tabular-nums;">&mdash;</td>
+                  <td class="cell-mono">&mdash;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="spec-note">No outer border, no row borders, no zebra stripes. Headers: muted opacity, weight 500, small uppercase. Hover: rgba(0,0,0,0.03). Numeric columns right-aligned with font-variant-numeric: tabular-nums. Status shown with dot indicators.</p>
         </div>
-        <p class="spec-note">0 radius on container. Header: weight 450, uppercase xs text. Hover row highlight via surface-secondary. Sortable columns with directional icon.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Editorial table</span>
+          <span class="variant-label">Serif italic headers, monospace numbers, strong 2px top rule. Reads like an annual report data table.</span>
+          <div class="table-editorial-wrap">
+            <table class="table-editorial">
+              <thead>
+                <tr>
+                  <th>Agent</th>
+                  <th>Model</th>
+                  <th class="col-num">Accuracy</th>
+                  <th class="col-num">Avg latency</th>
+                  <th class="col-num">Runs / day</th>
+                  <th class="col-num">Cost / 1k</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Classifier v2</td>
+                  <td>theorem-4-turbo</td>
+                  <td class="col-num">94.7%</td>
+                  <td class="col-num">142ms</td>
+                  <td class="col-num">2,431</td>
+                  <td class="col-num">$0.84</td>
+                </tr>
+                <tr>
+                  <td>Summarizer</td>
+                  <td>theorem-4-turbo</td>
+                  <td class="col-num">&mdash;</td>
+                  <td class="col-num">891ms</td>
+                  <td class="col-num">847</td>
+                  <td class="col-num">$2.16</td>
+                </tr>
+                <tr>
+                  <td>Retriever</td>
+                  <td>theorem-embed-3</td>
+                  <td class="col-num">97.2%</td>
+                  <td class="col-num">68ms</td>
+                  <td class="col-num">12,840</td>
+                  <td class="col-num">$0.12</td>
+                </tr>
+                <tr>
+                  <td>Orchestrator</td>
+                  <td>theorem-4-turbo</td>
+                  <td class="col-num">&mdash;</td>
+                  <td class="col-num">3,241ms</td>
+                  <td class="col-num">1,204</td>
+                  <td class="col-num">$4.87</td>
+                </tr>
+                <tr>
+                  <td>Entity resolver</td>
+                  <td>theorem-4</td>
+                  <td class="col-num">91.3%</td>
+                  <td class="col-num">234ms</td>
+                  <td class="col-num">1,892</td>
+                  <td class="col-num">$0.43</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="spec-note">2px top rule. Serif italic headers. Monospace numbers with tabular-nums. 1px bottom borders on rows at subtle opacity. 14px row padding. Right-aligned numeric columns with headers matching alignment.</p>
+        </div>
       </section>
 
       <hr class="comp-section__divider">
@@ -1608,12 +2162,12 @@
                 You are about to deploy the "Customer onboarding" workflow to production. This will replace the currently active version. All in-flight runs will complete before the switch.
               </div>
               <div class="modal__footer">
-                <button class="btn btn--secondary" type="button">Cancel</button>
+                <button class="btn btn--ghost" type="button">Cancel <span class="btn-arrow"></span></button>
                 <button class="btn btn--primary" type="button">Deploy to production</button>
               </div>
             </div>
           </div>
-          <p class="spec-note">12px radius, shadow-xl. Backdrop: rgba overlay + backdrop-filter: blur(6px).</p>
+          <p class="spec-note">12px radius, shadow-xl. Backdrop: rgba overlay + backdrop-filter: blur(6px). Cancel uses ghost button; confirm uses primary.</p>
         </div>
 
         <div class="subsection">
@@ -1629,10 +2183,10 @@
                 <p>Steps completed: 5/5</p>
                 <p>Tokens used: 12,847</p>
               </div>
-              <button class="btn btn--secondary" type="button" style="align-self: flex-start;">View full log</button>
+              <button class="btn btn--ghost" type="button" style="align-self: flex-start;">View full log <span class="btn-arrow">&rarr;</span></button>
             </div>
           </div>
-          <p class="spec-note">0 radius (structural). Slides from right, border-left separator. Content area remains visible.</p>
+          <p class="spec-note">0 radius (structural). Slides from right, border-left separator. Uses ghost button with arrow for the secondary action.</p>
         </div>
       </section>
 
