@@ -152,6 +152,16 @@ These are the most recognizable AI-generated design patterns. If you catch yours
 
 13. **Lorem ipsum or generic placeholder copy.** Write real, contextual content. Table data about "agent runs," form fields for "workflow name," alerts about "deployment status." Every piece of text should feel like it belongs in the product.
 
+14. **Saturated colored pills for every badge/tag.** Green pill "Active," red pill "Error," blue pill "Info" — the traffic-light pill palette is the single most AI-generated pattern for status indication. Use typography-only tags (different weight/case, no container), dot indicators (7px colored circle + text), or monochrome icon+border badges instead. Reserve colored pills for one specific use case at most.
+
+15. **Colored-container alerts with rounded corners and icons.** Blue background + blue border + info icon + rounded corners is the default AI alert. Use bare text (just colored text, no container), left-border-only accent (2px left line), or top-border accent (3px colored top edge on a neutral card) instead. Alerts should be quiet unless they're critical.
+
+16. **Fully bordered inputs at rest.** A visible border on every input in every state is the form equivalent of putting everything in cards. Use invisible inputs (border appears only on hover/focus), bottom-line-only inputs (underline animates from center on focus), or luxury inputs (sharp corners, serif labels, generous padding). The input should be quiet at rest and reveal itself on interaction.
+
+17. **Zebra-striped tables with visible borders and colored status pills.** This combination — alternating row backgrounds, 1px borders on every cell, green/red/yellow pills in the status column — is the canonical AI table. Use borderless tables (alignment + whitespace + tabular-nums, no dividers), editorial tables (serif headers, monospace numbers, strong top rule only), or minimal tables (single bottom-border per row at 6% opacity). Right-align numeric columns. Use `font-variant-numeric: tabular-nums` on all number columns.
+
+18. **Filled rounded-rectangle buttons for every action.** A blue (or purple) filled rectangle with 8px radius and white text is the AI default for all buttons. Instead, use shape hierarchy: text+arrow buttons (no container — just text and a → glyph) for navigation, editorial buttons (serif italic, underline on hover) for content actions, Swiss minimal (no border/fill, scale+shadow on hover) for secondary actions. Reserve filled buttons for the single highest-priority action on a page. Ghost/outline should be more common than filled.
+
 ## Quick Start
 
 1. Run brand strategy first: audit, positioning, personality, visual directions, design principles.
@@ -255,11 +265,41 @@ For each component, capture:
 
 **Component-specific design intelligence:**
 
-- **Buttons**: primary = pill + accent fill + weight 450. Secondary = 6px radius + border + transparent bg. Ghost = text only + underline on hover. Danger = moderate radius + danger fill. Shape hierarchy is non-negotiable — primary and secondary must look visually distinct beyond color.
-- **Alerts**: icon prefix + background tint + uniform 1px border. NEVER a thick left-border strip. Info = accent tint. Success = green tint. Warning = yellow tint. Danger = red tint.
-- **Tables**: sharp corners (0 radius), compact density, uppercase header text at weight 450-500, subtle row borders, hover row highlight. Use tabular-nums lining-nums for numeric columns.
+- **Buttons**: Use a shape/chrome hierarchy — not just color — to distinguish action levels. Five distinct tiers, matched to context:
+  - **Primary** (1 per page max): pill + accent fill + weight 450. The only button that gets a colored container.
+  - **Secondary**: 6px radius + 1px border + transparent bg. Or Swiss minimal: no border, no fill, just text with generous padding — hover lifts via scale(1.04) + subtle shadow.
+  - **Ghost/navigation**: text + arrow glyph (→ or ›), no container at all. The arrow gap widens on hover. This replaces button chrome as the primary affordance at Apple, Notion, and Vercel.
+  - **Editorial**: serif italic text, no container. Underline grows from center on hover. For content-heavy contexts.
+  - **Luxury/fashion**: black fill, ALL-CAPS, 0.2em letter-spacing, sharp corners (radius 0). For high-fashion or editorial brand directions.
+  - **Neo-brutalist** (when brand calls for it): 3px black border, 4px 4px hard offset shadow (zero blur), sharp corners. Hover translates button into its shadow (press-down effect).
+  - **Danger**: moderate radius + danger fill. Only for destructive actions.
+  - Shape hierarchy is non-negotiable — primary and secondary must look visually distinct beyond color. The highest-end sites use the fewest filled buttons. Ghost/text-only should be the most common button type, not filled.
+
+- **Badges/tags/status indicators**: Eliminate colored pills as the default. Three premium alternatives:
+  - **Typography-only** (FT pattern): the tag is just a different typeface, weight, or case — no container, no pill, no background. A sans-serif uppercase label at 0.7rem/weight 600 next to a serif headline creates editorial structure. The tag functions as a compositional element creating whitespace, not as a colored blob.
+  - **Dot-only**: a 7px colored circle adjacent to text. No container. Used by Linear for issue status. Conveys state with minimal visual weight.
+  - **Monochrome icon+border**: 1px border badge with an SVG icon (checkmark, X, clock, dash) and text. Status is communicated through icon shape, not through traffic-light colors. Essential for accessibility and print contexts.
+  - Reserve colored pills for at most one specific use case in the system. If using them, limit to 3-4 colors max, at 15-20% opacity backgrounds (not fully saturated).
+
+- **Alerts/notifications**: Kill the colored-container-with-icon default. Three tiers of alert severity mapped to visual weight:
+  - **Bare text** (low severity): just colored text, no container. "Changes saved." in success color. Or a left-border variant: 2px left line as the only accent, text in normal color.
+  - **Top-border accent** (medium severity, Carbon pattern): neutral card with a 3px colored top border. The rest of the card is quiet. Bold title + normal body text.
+  - **Full container** (high severity only): reserve colored backgrounds for genuinely critical/blocking alerts. Even then, use muted tints (15-20% opacity of the status color), not saturated backgrounds.
+  - Error messages should use passive voice ("The ZIP code format isn't recognized" not "You entered an invalid ZIP code"). Validate on blur, never on keystroke. Muted red tones (#b91c1c), not bright #FF0000.
+
+- **Form inputs**: Inputs should be quiet at rest and reveal themselves on interaction. Three premium approaches:
+  - **Invisible input** (Notion pattern): completely transparent at rest — no border, no background. Hover reveals a subtle border. Focus brings solid border + background. The content is the only indicator. Best for inline editing, settings panels, and content-focused interfaces.
+  - **Bottom-line only**: no container borders, just a bottom underline. On focus, a 2px accent line grows from the center outward (transition on width + left). Clean, editorial feel. Best for login forms and simple data entry.
+  - **Luxury checkout**: sharp corners (border-radius: 0), generous padding (16px 20px), serif labels in uppercase with wide tracking. Focus darkens the border to full black. Best for high-fashion or editorial brand directions.
+  - **Proportions**: generic inputs use padding 8px 12px at 36px height. Premium inputs use 12-16px vertical / 16-20px horizontal at 40-48px height with 15-16px font. The extra padding is a primary signal of quality.
+  - Use `:focus-visible` (not `:focus`) so mouse users don't see focus rings. Minimum 16px font on mobile to prevent iOS auto-zoom.
+
+- **Tables**: Strip chrome, let data breathe. Two premium table directions:
+  - **Borderless**: no dividers, no outer border, no zebra stripes. Alignment, generous whitespace, and `font-variant-numeric: tabular-nums` do all the structural work. Hover provides wayfinding (background rgba(0,0,0,0.03)). Headers are muted (50% opacity, weight 500, small uppercase).
+  - **Editorial**: serif italic headers, monospace numbers (JetBrains Mono or similar), a strong 2px top rule on the table, 1px bottom borders on rows. Generous row padding (14px vertical). Reads like a data table in an annual report.
+  - **Universal rules**: right-align quantitative numbers (amounts, percentages). Left-align qualitative numbers (dates, IDs). Use `font-variant-numeric: tabular-nums` on ALL number columns so digits align. Headers must match their column's alignment. Never center-align text columns. Zebra stripes compound with hover/selected/disabled states — use hover highlighting instead. Row heights: condensed 40px, regular 48px, relaxed 56px.
+
 - **Cards**: structural cards = 0 radius + border-subtle + no shadow. Elevated cards = 8px radius + shadow-sm. Interactive cards = elevated + hover scale(1.015) + shadow-md on hover.
-- **Inputs**: 6px radius, subtle border, focus ring in accent color with 2px offset. Error state uses danger border + danger text, not a colored background.
 - **Navigation**: weight 400, 14px, no text-transform. Active state uses accent color or underline, not a background pill. 4-6 items maximum.
 - **Empty states**: serif heading (weight 400), body description, single primary CTA. Simple illustration or icon, not an elaborate graphic.
 

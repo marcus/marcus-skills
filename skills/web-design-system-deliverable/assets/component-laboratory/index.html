@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Laboratory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --page-bg: #fafafa;
+    --text: #1a1a1a;
+    --text-muted: rgba(26,26,26,0.5);
+    --text-faint: rgba(26,26,26,0.25);
+    --border: rgba(26,26,26,0.1);
+    --border-strong: rgba(26,26,26,0.2);
+    --accent: #2563eb;
+    --danger: #b91c1c;
+    --success: #047857;
+    --warning: #b45309;
+    --surface: #fff;
+  }
+
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--page-bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Layout ---- */
+  .lab { max-width: 1100px; margin: 0 auto; padding: 80px 32px 120px; }
+  .lab-header { margin-bottom: 80px; }
+  .lab-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .lab-header p { color: var(--text-muted); max-width: 540px; font-size: 0.9rem; }
+
+  .section { margin-bottom: 96px; }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exploration {
+    margin-bottom: 64px;
+  }
+  .exploration:last-child { margin-bottom: 0; }
+  .exp-title {
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .exp-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    max-width: 480px;
+  }
+  .exp-stage {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 48px;
+  }
+
+  /* ---- Generic vs. label ---- */
+  .compare-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+  .compare-row {
+    display: flex;
+    gap: 64px;
+    align-items: flex-start;
+  }
+  .compare-col { flex: 1; }
+
+  /* ==============================
+     1. BUTTONS — Text-only / Arrow
+     ============================== */
+  .btn-text-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: gap 0.25s ease;
+  }
+  .btn-text-arrow:hover { gap: 12px; }
+  .btn-text-arrow .arrow {
+    display: inline-block;
+    transition: transform 0.25s ease;
+    font-size: 1.1em;
+  }
+  .btn-text-arrow:hover .arrow { transform: translateX(2px); }
+
+  /* ==============================
+     2. BUTTONS — Swiss Minimal
+     ============================== */
+  .btn-swiss {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 14px 32px;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
+    letter-spacing: 0.01em;
+  }
+  .btn-swiss:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+  .btn-swiss:active { transform: scale(0.98); box-shadow: none; }
+
+  /* ==============================
+     3. BUTTONS — Neo-Brutalist
+     ============================== */
+  .btn-brut {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #000;
+    background: #facc15;
+    border: 3px solid #000;
+    cursor: pointer;
+    padding: 12px 28px;
+    box-shadow: 4px 4px 0 0 #000;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-brut:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 #000;
+  }
+  .btn-brut:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 0 #000;
+  }
+
+  /* ==============================
+     4. BUTTONS — Editorial
+     ============================== */
+  .btn-editorial {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 0;
+    position: relative;
+    display: inline-block;
+  }
+  .btn-editorial::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--text);
+    transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1), left 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .btn-editorial:hover::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* ==============================
+     5. BUTTONS — Luxury / Fashion
+     ============================== */
+  .btn-luxury {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #000;
+    border: none;
+    cursor: pointer;
+    padding: 16px 40px;
+    transition: background 0.3s ease;
+  }
+  .btn-luxury:hover {
+    background: #222;
+  }
+
+  /* ==============================
+     6. BADGES — Typography-only (FT)
+     ============================== */
+  .badge-typo {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .badge-typo.accent { color: #9f1239; }
+
+  /* ==============================
+     7. BADGES — Dot-only
+     ============================== */
+  .badge-dot {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .badge-dot::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+  .badge-dot.success { --dot-color: #10b981; }
+  .badge-dot.success::before { background: var(--dot-color); }
+  .badge-dot.warning { --dot-color: #f59e0b; }
+  .badge-dot.warning::before { background: var(--dot-color); }
+  .badge-dot.error { --dot-color: #ef4444; }
+  .badge-dot.error::before { background: var(--dot-color); }
+  .badge-dot.neutral::before { background: var(--text-faint); }
+
+  /* ==============================
+     8. BADGES — Monochrome
+     ============================== */
+  .badge-mono {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text);
+    padding: 4px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+  }
+  .badge-mono svg { width: 14px; height: 14px; }
+
+  /* ==============================
+     9. ALERTS — Bare text
+     ============================== */
+  .alert-bare {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+  .alert-bare.info { color: var(--accent); }
+  .alert-bare.danger { color: var(--danger); }
+  .alert-bare.success { color: var(--success); }
+  .alert-bare.warning { color: var(--warning); }
+  .alert-bare-line {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding-left: 16px;
+    border-left: 2px solid;
+    background: none;
+  }
+  .alert-bare-line.info { border-color: var(--accent); color: var(--text); }
+  .alert-bare-line.danger { border-color: var(--danger); color: var(--text); }
+
+  /* ==============================
+     10. ALERTS — Top-border accent (Carbon)
+     ============================== */
+  .alert-carbon {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid;
+  }
+  .alert-carbon.success { border-top-color: var(--success); }
+  .alert-carbon.danger { border-top-color: var(--danger); }
+  .alert-carbon.warning { border-top-color: var(--warning); }
+  .alert-carbon.info { border-top-color: var(--accent); }
+  .alert-carbon strong {
+    display: block;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
+  /* ==============================
+     11. FORMS — Invisible input (Notion)
+     ============================== */
+  .input-invisible {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text);
+    transition: border-color 0.2s ease, background 0.2s ease;
+    outline: none;
+  }
+  .input-invisible:hover {
+    border-color: var(--border);
+  }
+  .input-invisible:focus {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+  .input-invisible::placeholder { color: var(--text-faint); }
+
+  /* ==============================
+     12. FORMS — Bottom-line only
+     ============================== */
+  .input-line-wrap {
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .input-line {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .input-line::placeholder { color: var(--text-faint); }
+  .input-line-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--text);
+    transition: width 0.35s cubic-bezier(0.23, 1, 0.32, 1), left 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .input-line-wrap:focus-within::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* ==============================
+     13. FORMS — Luxury checkout
+     ============================== */
+  .form-luxury label {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .input-luxury {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid var(--border-strong);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  .input-luxury:focus { border-color: var(--text); }
+  .input-luxury::placeholder { color: var(--text-faint); }
+  .form-luxury-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  /* ==============================
+     14. TABLE — Borderless
+     ============================== */
+  .table-borderless {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-borderless th {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 0 16px 16px;
+  }
+  .table-borderless th.num { text-align: right; }
+  .table-borderless td {
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    color: var(--text);
+    vertical-align: top;
+  }
+  .table-borderless td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-borderless td.muted { color: var(--text-muted); }
+  .table-borderless tbody tr {
+    transition: background 0.15s ease;
+  }
+  .table-borderless tbody tr:hover td {
+    background: rgba(0,0,0,0.03);
+  }
+
+  /* ==============================
+     15. TABLE — Editorial
+     ============================== */
+  .table-editorial-wrap {
+    border-top: 2px solid var(--text);
+  }
+  .table-editorial {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-editorial th {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-editorial th.num { text-align: right; }
+  .table-editorial td {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .table-editorial td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+  .table-editorial tbody tr:last-child td { border-bottom: none; }
+  .table-editorial tbody tr {
+    transition: background 0.15s ease;
+  }
+  .table-editorial tbody tr:hover td {
+    background: rgba(0,0,0,0.02);
+  }
+
+  /* ---- Generic versions for comparison ---- */
+  .btn-generic {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #fff;
+    background: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background 0.15s;
+  }
+  .btn-generic:hover { background: #2563eb; }
+  .btn-generic.outline {
+    color: #3b82f6;
+    background: transparent;
+    border: 1px solid #3b82f6;
+  }
+
+  .badge-generic {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 100px;
+    color: #fff;
+  }
+  .badge-generic.green { background: #22c55e; }
+  .badge-generic.yellow { background: #eab308; color: #000; }
+  .badge-generic.red { background: #ef4444; }
+  .badge-generic.blue { background: #3b82f6; }
+
+  .alert-generic {
+    font-size: 0.85rem;
+    padding: 14px 18px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .alert-generic.info { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+  .alert-generic.danger { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+  .input-generic {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text);
+    outline: none;
+  }
+  .input-generic:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+  /* Generic table */
+  .table-generic-wrap {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .table-generic {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table-generic th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b7280;
+    background: #f9fafb;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .table-generic td {
+    font-size: 0.85rem;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .table-generic tbody tr:nth-child(even) td { background: #f9fafb; }
+
+  /* ---- Utility ---- */
+  .flex-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .flex-col { display: flex; flex-direction: column; gap: 12px; }
+  .stack-sm { display: flex; flex-direction: column; gap: 6px; }
+  .mb-12 { margin-bottom: 12px; }
+  .mb-24 { margin-bottom: 24px; }
+  .mb-40 { margin-bottom: 40px; }
+  .max-w-sm { max-width: 360px; }
+  .max-w-md { max-width: 480px; }
+
+  /* ---- Headline for each exploration ---- */
+  .exp-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+
+  @media (max-width: 720px) {
+    .compare-row { flex-direction: column; gap: 32px; }
+    .exp-stage { padding: 32px 24px; }
+    .form-luxury-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="lab">
+
+  <header class="lab-header">
+    <h1>Component Laboratory</h1>
+    <p>Explorations of buttons, badges, alerts, forms, and tables that move beyond default AI-generated aesthetics. Each shows a distinct design direction drawn from real-world references.</p>
+  </header>
+
+  <!-- ===================== BUTTONS ===================== -->
+  <div class="section">
+    <div class="section-label">Buttons</div>
+
+    <!-- 1. Text-only / Arrow -->
+    <div class="exploration">
+      <div class="exp-number">01</div>
+      <div class="exp-title">Text + Arrow</div>
+      <div class="exp-desc">Collins / AREA 17 / Apple pattern. No container at all — just text and a directional glyph. The arrow gap widens on hover.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <button class="btn-generic">Learn More</button>
+              <button class="btn-generic outline">View Details</button>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Text + Arrow</div>
+            <div class="flex-row">
+              <button class="btn-text-arrow">Learn more <span class="arrow">→</span></button>
+              <button class="btn-text-arrow">View details <span class="arrow">→</span></button>
+              <button class="btn-text-arrow">Buy <span class="arrow">›</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Swiss Minimal -->
+    <div class="exploration">
+      <div class="exp-number">02</div>
+      <div class="exp-title">Swiss Minimal</div>
+      <div class="exp-desc">No border, no fill. Just text with generous padding. Hover lifts and scales 4% with a subtle shadow — the entire element transforms physically.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <button class="btn-generic">Get Started</button>
+              <button class="btn-generic outline">Contact Us</button>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Swiss Minimal</div>
+            <div class="flex-row">
+              <button class="btn-swiss">Get Started</button>
+              <button class="btn-swiss">Contact Us</button>
+              <button class="btn-swiss">Documentation</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Neo-Brutalist -->
+    <div class="exploration">
+      <div class="exp-number">03</div>
+      <div class="exp-title">Neo-Brutalist</div>
+      <div class="exp-desc">3px black border, hard-offset shadow with zero blur, sharp corners. Hover presses the button down into its shadow. Tactile and loud.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <button class="btn-generic">Subscribe</button>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Neo-Brutalist</div>
+            <div class="flex-row">
+              <button class="btn-brut">Subscribe</button>
+              <button class="btn-brut" style="background: #a3e635;">Sign Up</button>
+              <button class="btn-brut" style="background: #f472b6;">Learn More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Editorial -->
+    <div class="exploration">
+      <div class="exp-number">04</div>
+      <div class="exp-title">Editorial</div>
+      <div class="exp-desc">Serif italic text, no container. An underline grows from center on hover. Reads as a link in a magazine layout — quiet, confident, typographic.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <button class="btn-generic">Read the Story</button>
+              <button class="btn-generic outline">Watch Video</button>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Editorial</div>
+            <div class="flex-row" style="gap: 32px;">
+              <button class="btn-editorial">Read the story</button>
+              <button class="btn-editorial">Watch video</button>
+              <button class="btn-editorial">View collection</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Luxury / Fashion -->
+    <div class="exploration">
+      <div class="exp-number">05</div>
+      <div class="exp-title">Luxury / Fashion</div>
+      <div class="exp-desc">Balenciaga-inspired: black fill, ALL-CAPS, aggressive letter-spacing (0.2em), sharp corners. Hover widens the tracking further. No border-radius, no softness.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <button class="btn-generic">Add to Bag</button>
+              <button class="btn-generic outline">Wishlist</button>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Luxury</div>
+            <div class="flex-row">
+              <button class="btn-luxury">Add to Bag</button>
+              <button class="btn-luxury" style="background: transparent; color: #000; border: 1px solid #000;">Wishlist</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== BADGES / TAGS ===================== -->
+  <div class="section">
+    <div class="section-label">Badges &amp; Tags</div>
+
+    <!-- 6. Typography-only -->
+    <div class="exploration">
+      <div class="exp-number">06</div>
+      <div class="exp-title">Typography-only</div>
+      <div class="exp-desc">Financial Times pattern. The tag is just a different typeface, weight, or color — no container, no pill, no background. The tag functions as a compositional element creating whitespace.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <span class="badge-generic green">Active</span>
+              <span class="badge-generic blue">Technology</span>
+              <span class="badge-generic yellow">Pending</span>
+              <span class="badge-generic red">Urgent</span>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Typography-only</div>
+            <div class="stack-sm">
+              <div>
+                <span class="badge-typo accent">Analysis</span>
+                <span style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-left: 12px;">Markets rally as rate cuts signal shift</span>
+              </div>
+              <div>
+                <span class="badge-typo">Technology</span>
+                <span style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-left: 12px;">OpenAI restructures research division</span>
+              </div>
+              <div>
+                <span class="badge-typo" style="color: #1d4ed8;">Opinion</span>
+                <span style="font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-left: 12px;">The case for caution in emerging markets</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Dot-only -->
+    <div class="exploration">
+      <div class="exp-number">07</div>
+      <div class="exp-title">Dot-only</div>
+      <div class="exp-desc">Minimal presence indicator. Just a 7px colored dot adjacent to text — no container, no pill shape. Used by Linear for issue status.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <span class="badge-generic green">Deployed</span>
+              <span class="badge-generic yellow">Building</span>
+              <span class="badge-generic red">Failed</span>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Dot-only</div>
+            <div class="flex-col">
+              <span class="badge-dot success">Production — deployed 2m ago</span>
+              <span class="badge-dot warning">Staging — building</span>
+              <span class="badge-dot error">Preview — build failed</span>
+              <span class="badge-dot neutral">Development — idle</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Monochrome -->
+    <div class="exploration">
+      <div class="exp-number">08</div>
+      <div class="exp-title">Monochrome</div>
+      <div class="exp-desc">Shape + icon only, no color differentiation. Status is communicated through icon shape and typography — not through traffic-light colors.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-row">
+              <span class="badge-generic green">Passed</span>
+              <span class="badge-generic red">Failed</span>
+              <span class="badge-generic blue">Running</span>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Monochrome</div>
+            <div class="flex-row">
+              <span class="badge-mono">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 8 7 11 12 5"/></svg>
+                Passed
+              </span>
+              <span class="badge-mono">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>
+                Failed
+              </span>
+              <span class="badge-mono">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="5"/><line x1="8" y1="5" x2="8" y2="8"/><line x1="8" y1="8" x2="10" y2="10"/></svg>
+                Running
+              </span>
+              <span class="badge-mono">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="8" x2="12" y2="8"/></svg>
+                Skipped
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== ALERTS ===================== -->
+  <div class="section">
+    <div class="section-label">Alerts &amp; Notifications</div>
+
+    <!-- 9. Bare text -->
+    <div class="exploration">
+      <div class="exp-number">09</div>
+      <div class="exp-title">Bare Text</div>
+      <div class="exp-desc">No container at all. Just colored text, or a single thin accent line. The message stands alone. Also shown: left-border-only variant.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-col">
+              <div class="alert-generic info">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="4.5" r="1"/><rect x="7" y="7" width="2" height="5" rx="0.5"/></svg>
+                Your changes have been saved successfully.
+              </div>
+              <div class="alert-generic danger">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="4.5" r="1"/><rect x="7" y="7" width="2" height="5" rx="0.5"/></svg>
+                Unable to connect to the database.
+              </div>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Bare Text</div>
+            <div class="flex-col">
+              <p class="alert-bare info">Changes saved.</p>
+              <p class="alert-bare danger">Unable to connect to the database.</p>
+              <p class="alert-bare success">Deployment complete.</p>
+              <div style="margin-top: 8px;">
+                <p class="compare-label" style="margin-bottom: 12px;">Left-line variant</p>
+                <p class="alert-bare-line info">Your account has been updated. Changes may take a few minutes to propagate.</p>
+                <p class="alert-bare-line danger" style="margin-top: 12px;">The API key has expired. Generate a new one in Settings.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Top-border accent -->
+    <div class="exploration">
+      <div class="exp-number">10</div>
+      <div class="exp-title">Top-Border Accent</div>
+      <div class="exp-desc">Carbon Design System pattern. A 3px colored top border on a neutral card body. The rest of the card is quiet — severity is communicated through one edge.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-col">
+              <div class="alert-generic info">Deployment started for production.</div>
+              <div class="alert-generic danger">Build failed on commit a3f2c1.</div>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Top-Border</div>
+            <div class="flex-col" style="gap: 16px;">
+              <div class="alert-carbon info">
+                <strong>Information</strong>
+                Deployment started for production environment.
+              </div>
+              <div class="alert-carbon success">
+                <strong>Success</strong>
+                All 47 tests passed. Build artifact uploaded.
+              </div>
+              <div class="alert-carbon danger">
+                <strong>Error</strong>
+                Build failed on commit a3f2c1. Check the logs for details.
+              </div>
+              <div class="alert-carbon warning">
+                <strong>Warning</strong>
+                API rate limit at 85%. Consider upgrading your plan.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== FORMS ===================== -->
+  <div class="section">
+    <div class="section-label">Forms &amp; Inputs</div>
+
+    <!-- 11. Invisible input -->
+    <div class="exploration">
+      <div class="exp-number">11</div>
+      <div class="exp-title">Invisible Input</div>
+      <div class="exp-desc">Notion pattern. No visible input at rest — completely transparent. Hover reveals a subtle border. Focus brings a solid border and background. The content is the only indicator.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-col max-w-sm">
+              <input class="input-generic" placeholder="Project name" />
+              <input class="input-generic" placeholder="Description" />
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Invisible</div>
+            <div class="flex-col max-w-sm">
+              <input class="input-invisible" placeholder="Project name" value="Component Laboratory" />
+              <input class="input-invisible" placeholder="Add a description..." />
+              <input class="input-invisible" placeholder="Add tags..." />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. Bottom-line only -->
+    <div class="exploration">
+      <div class="exp-number">12</div>
+      <div class="exp-title">Bottom-Line Only</div>
+      <div class="exp-desc">Just an underline — no container borders. On focus, a 2px accent line grows from the center outward. Clean, editorial feel.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-col max-w-sm">
+              <input class="input-generic" placeholder="Email address" />
+              <input class="input-generic" type="password" placeholder="Password" />
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Bottom-Line</div>
+            <div class="flex-col max-w-sm">
+              <div class="input-line-wrap">
+                <input class="input-line" placeholder="Email address" />
+              </div>
+              <div class="input-line-wrap">
+                <input class="input-line" type="password" placeholder="Password" />
+              </div>
+              <div class="input-line-wrap">
+                <input class="input-line" placeholder="Full name" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. Luxury checkout -->
+    <div class="exploration">
+      <div class="exp-number">13</div>
+      <div class="exp-title">Luxury Checkout</div>
+      <div class="exp-desc">Generous padding (16px 20px), sharp corners (border-radius: 0), serif labels in uppercase. Inspired by Balenciaga / high-fashion checkout flows. Whitespace does the heavy lifting.</div>
+      <div class="exp-stage">
+        <div class="compare-row">
+          <div class="compare-col">
+            <div class="compare-label">Generic</div>
+            <div class="flex-col max-w-sm">
+              <input class="input-generic" placeholder="Full name" />
+              <input class="input-generic" placeholder="Email" />
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <input class="input-generic" placeholder="City" />
+                <input class="input-generic" placeholder="ZIP" />
+              </div>
+            </div>
+          </div>
+          <div class="compare-col">
+            <div class="compare-label">Luxury</div>
+            <div class="form-luxury max-w-md">
+              <div class="flex-col" style="gap: 24px;">
+                <div>
+                  <label>Full Name</label>
+                  <input class="input-luxury" placeholder="" />
+                </div>
+                <div>
+                  <label>Email Address</label>
+                  <input class="input-luxury" placeholder="" />
+                </div>
+                <div class="form-luxury-row">
+                  <div>
+                    <label>City</label>
+                    <input class="input-luxury" placeholder="" />
+                  </div>
+                  <div>
+                    <label>Postal Code</label>
+                    <input class="input-luxury" placeholder="" />
+                  </div>
+                </div>
+                <div>
+                  <button class="btn-luxury" style="width: 100%; margin-top: 8px;">Place Order</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TABLES ===================== -->
+  <div class="section">
+    <div class="section-label">Tables</div>
+
+    <!-- 14. Borderless -->
+    <div class="exploration">
+      <div class="exp-number">14</div>
+      <div class="exp-title">Borderless</div>
+      <div class="exp-desc">No dividers, no outer border, no zebra stripes. Alignment, whitespace, and tabular-nums do all the work. Hover provides wayfinding.</div>
+      <div class="exp-stage">
+        <div class="compare-row" style="flex-direction: column; gap: 40px;">
+          <div>
+            <div class="compare-label mb-12">Generic</div>
+            <div class="table-generic-wrap">
+              <table class="table-generic">
+                <thead><tr><th>Name</th><th>Role</th><th>Status</th><th>Revenue</th></tr></thead>
+                <tbody>
+                  <tr><td>Acme Corp</td><td>Enterprise</td><td><span class="badge-generic green" style="font-size:0.7rem;padding:2px 8px;">Active</span></td><td>$124,500</td></tr>
+                  <tr><td>Globex Inc</td><td>Startup</td><td><span class="badge-generic yellow" style="font-size:0.7rem;padding:2px 8px;">Trial</span></td><td>$3,200</td></tr>
+                  <tr><td>Initech</td><td>Mid-market</td><td><span class="badge-generic green" style="font-size:0.7rem;padding:2px 8px;">Active</span></td><td>$67,800</td></tr>
+                  <tr><td>Wayne Ent.</td><td>Enterprise</td><td><span class="badge-generic red" style="font-size:0.7rem;padding:2px 8px;">Churned</span></td><td>$0</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="compare-label mb-12">Borderless</div>
+            <table class="table-borderless">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th class="num">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Acme Corp</td>
+                  <td class="muted">Enterprise</td>
+                  <td><span class="badge-dot success">Active</span></td>
+                  <td class="num">124,500</td>
+                </tr>
+                <tr>
+                  <td>Globex Inc</td>
+                  <td class="muted">Startup</td>
+                  <td><span class="badge-dot warning">Trial</span></td>
+                  <td class="num">3,200</td>
+                </tr>
+                <tr>
+                  <td>Initech</td>
+                  <td class="muted">Mid-market</td>
+                  <td><span class="badge-dot success">Active</span></td>
+                  <td class="num">67,800</td>
+                </tr>
+                <tr>
+                  <td>Wayne Enterprises</td>
+                  <td class="muted">Enterprise</td>
+                  <td><span class="badge-dot error">Churned</span></td>
+                  <td class="num">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15. Editorial -->
+    <div class="exploration">
+      <div class="exp-number">15</div>
+      <div class="exp-title">Editorial</div>
+      <div class="exp-desc">Serif italic headers, monospace numbers, generous spacing, a strong top rule. Reads like a data table in a magazine or annual report. Minimal chrome, maximum legibility.</div>
+      <div class="exp-stage">
+        <div class="compare-row" style="flex-direction: column; gap: 40px;">
+          <div>
+            <div class="compare-label mb-12">Generic</div>
+            <div class="table-generic-wrap">
+              <table class="table-generic">
+                <thead><tr><th>Quarter</th><th>Users</th><th>Revenue</th><th>Growth</th></tr></thead>
+                <tbody>
+                  <tr><td>Q1 2025</td><td>12,400</td><td>$1.2M</td><td>+14%</td></tr>
+                  <tr><td>Q2 2025</td><td>15,800</td><td>$1.5M</td><td>+25%</td></tr>
+                  <tr><td>Q3 2025</td><td>19,200</td><td>$1.9M</td><td>+27%</td></tr>
+                  <tr><td>Q4 2025</td><td>24,100</td><td>$2.4M</td><td>+26%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <div class="compare-label mb-12">Editorial</div>
+            <div class="table-editorial-wrap">
+              <table class="table-editorial">
+                <thead>
+                  <tr>
+                    <th>Quarter</th>
+                    <th class="num">Users</th>
+                    <th class="num">Revenue</th>
+                    <th class="num">Growth</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Q1 2025</td>
+                    <td class="num">12,400</td>
+                    <td class="num">1.2M</td>
+                    <td class="num">+14%</td>
+                  </tr>
+                  <tr>
+                    <td>Q2 2025</td>
+                    <td class="num">15,800</td>
+                    <td class="num">1.5M</td>
+                    <td class="num">+27%</td>
+                  </tr>
+                  <tr>
+                    <td>Q3 2025</td>
+                    <td class="num">19,200</td>
+                    <td class="num">1.9M</td>
+                    <td class="num">+27%</td>
+                  </tr>
+                  <tr>
+                    <td>Q4 2025</td>
+                    <td class="num">24,100</td>
+                    <td class="num">2.4M</td>
+                    <td class="num">+26%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

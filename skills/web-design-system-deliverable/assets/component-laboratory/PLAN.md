@@ -10,8 +10,9 @@ AI defaults. Separate from the Folio system.
 - [x] Research: Tables/data display (saved to tables-research.md)
 - [x] Research: Badges/tags/alerts (saved to badges-alerts-research.md)
 - [x] Research: Counterintuitive UI patterns (saved to counterintuitive-research.md)
-- [ ] Research: Buttons (agent a21fd9a7c66c76ddf still running — check output file)
-- [ ] Build: Single HTML page with ~12 style explorations
+- [x] Research: Buttons (saved to buttons-research.md)
+- [x] Build: Single HTML page with 15 style explorations (index.html)
+- [x] Integrate: Added anti-patterns #14-18 and expanded component design intelligence in SKILL.md
 
 ## Design Directions to Explore (from research)
 
