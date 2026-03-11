@@ -91,6 +91,10 @@
     {
       "name": "stereo-design-system",
       "description": "Skeuomorphic design system inspired by high-end stereo receivers. Brushed brass controls, warm amber displays, dark chassis panels. Use for retro-hardware UI, audio/music interfaces, control panels with physical-world metaphors, or any dark warm interface with brass/gold accents."
+    },
+    {
+      "name": "architecture-review",
+      "description": "Conduct architectural reviews for new or existing projects. Enterprise ARB governance + modern agentic patterns. Covers architecture decisions, ADRs, security, testing, observability, project scaffolding, and agent-native structure."
     }
   ]
 }
