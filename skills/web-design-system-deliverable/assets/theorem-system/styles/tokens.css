@@ -1,0 +1,279 @@
+/* ==========================================================================
+   THEOREM DESIGN SYSTEM — Token Architecture
+   An agentic AI platform designed like a high-end tool, not an AI startup.
+
+   Typography: Source Serif 4 (display) + Inter (body/UI)
+   Personality: Precise, editorial, quietly confident
+   ========================================================================== */
+
+:root {
+  /* -----------------------------------------------------------------------
+     COLOR PRIMITIVES
+     Warm off-values throughout. No pure black or pure white.
+     Inspired by Collins (#f8f8f7/#140700) and Stripe (#0a2540).
+     ----------------------------------------------------------------------- */
+
+  /* Neutrals — warm undertone */
+  --color-white: #f8f7f4;
+  --color-white-pure: #ffffff;
+  --color-gray-50: #f2f0ec;
+  --color-gray-100: #e8e5df;
+  --color-gray-200: #d4d0c8;
+  --color-gray-300: #b8b3a8;
+  --color-gray-400: #948e82;
+  --color-gray-500: #716b60;
+  --color-gray-600: #56514a;
+  --color-gray-700: #3d3935;
+  --color-gray-800: #2a2724;
+  --color-gray-900: #1a1714;
+  --color-black: #111010;
+
+  /* Accent — single brand color. Warm copper, traces back to the warm neutral temperature. */
+  --color-accent-100: #faf0e6;
+  --color-accent-200: #f0d8be;
+  --color-accent-300: #deb78f;
+  --color-accent-400: #c9956a;
+  --color-accent-500: #b87a4b;
+  --color-accent-600: #9a6338;
+  --color-accent-700: #7a4e2d;
+  --color-accent-800: #5a3a22;
+  --color-accent-900: #3b2617;
+
+  /* Functional — restrained, not a rainbow */
+  --color-success: #3a9a6b;
+  --color-warning: #c48a2c;
+  --color-danger: #c44b3f;
+  --color-info: #4a7fb5;
+
+  /* -----------------------------------------------------------------------
+     SEMANTIC COLOR ROLES — Light theme
+     ----------------------------------------------------------------------- */
+  --surface-primary: var(--color-white);
+  --surface-secondary: var(--color-gray-50);
+  --surface-tertiary: var(--color-gray-100);
+  --surface-elevated: var(--color-white-pure);
+  --surface-inverse: var(--color-gray-900);
+  --surface-accent: var(--color-accent-100);
+
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-500);
+  --text-tertiary: var(--color-gray-400);
+  --text-inverse: var(--color-white);
+  --text-accent: var(--color-accent-600);
+  --text-on-accent: var(--color-white-pure);
+
+  --border-default: rgba(26, 23, 20, 0.08);
+  --border-subtle: rgba(26, 23, 20, 0.04);
+  --border-strong: rgba(26, 23, 20, 0.15);
+  --border-accent: var(--color-accent-300);
+
+  /* Shadows — blue-tinted ambient light (Stripe pattern) */
+  --shadow-color: 220, 220, 235;
+  --shadow-xs: 0 1px 2px rgba(var(--shadow-color), 0.08);
+  --shadow-sm: 0 2px 8px rgba(var(--shadow-color), 0.08), 0 1px 2px rgba(var(--shadow-color), 0.06);
+  --shadow-md: 0 8px 24px rgba(var(--shadow-color), 0.10), 0 2px 6px rgba(var(--shadow-color), 0.06);
+  --shadow-lg: 0 20px 50px rgba(var(--shadow-color), 0.12), 0 8px 20px rgba(var(--shadow-color), 0.06);
+  --shadow-xl: 0 30px 60px rgba(var(--shadow-color), 0.14), 0 12px 28px rgba(var(--shadow-color), 0.08);
+
+  /* -----------------------------------------------------------------------
+     TYPOGRAPHY
+     Serif + sans pairing for editorial tension (Collins pattern).
+     Weight 400 for headings (Craft/Instrument pattern).
+     Negative tracking on display (every agency does this).
+     ----------------------------------------------------------------------- */
+
+  --font-display: 'Source Serif 4', 'Georgia', ui-serif, serif;
+  --font-body: 'Inter', -apple-system, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+  /* Type scale — editorial, not mechanical.
+     Display sizes use serif. Body sizes use sans. */
+  --text-xs: 0.8125rem;    /* 13px — caption, meta */
+  --text-sm: 0.875rem;     /* 14px — labels, nav */
+  --text-base: 1.0625rem;  /* 17px — body (slightly larger than default, like Pentagram's 19px) */
+  --text-lg: 1.1875rem;    /* 19px — body large */
+  --text-xl: 1.375rem;     /* 22px — subheading */
+  --text-2xl: 1.75rem;     /* 28px — section heading */
+  --text-3xl: 2.25rem;     /* 36px — page heading */
+  --text-4xl: 3rem;        /* 48px — display */
+  --text-5xl: 3.75rem;     /* 60px — hero */
+
+  /* Line heights — varied by purpose, not uniform (agency pattern) */
+  --leading-none: 1.0;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+  --leading-loose: 1.7;
+
+  /* Letter spacing — size-dependent (AREA 17 pattern):
+     positive on small text, negative on large */
+  --tracking-tight: -0.025em;
+  --tracking-snug: -0.015em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.01em;
+  --tracking-wider: 0.025em;
+
+  /* Font weights — restrained. 400 for headings (Craft/Instrument).
+     Non-standard 450 for subtle emphasis (Linear's 510 pattern). */
+  --weight-regular: 400;
+  --weight-medium: 450;
+  --weight-semibold: 550;
+  --weight-bold: 650;
+
+  /* -----------------------------------------------------------------------
+     SPACING
+     4px base grid. 96-128px section spacing (Pentagram/BASIC pattern).
+     ----------------------------------------------------------------------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* -----------------------------------------------------------------------
+     LAYOUT
+     ----------------------------------------------------------------------- */
+  --max-width-narrow: 640px;
+  --max-width-content: 920px;
+  --max-width-wide: 1120px;
+  --max-width-full: 1280px;
+
+  --grid-gutter: var(--space-6);
+  --page-padding: var(--space-6);
+
+  /* -----------------------------------------------------------------------
+     BORDER RADIUS
+     Shape hierarchy by element type (differentiation doc pattern).
+     Sharp containers. Moderate controls. Pills for signatures only.
+     ----------------------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-sm: 3px;     /* data-dense: table cells, toolbar items */
+  --radius-md: 6px;     /* interactive: inputs, secondary buttons */
+  --radius-lg: 8px;     /* elevated: cards, modals */
+  --radius-xl: 12px;    /* feature: large panels, hero cards */
+  --radius-pill: 9999px; /* signature: primary CTA, tags, badges */
+
+  /* -----------------------------------------------------------------------
+     MOTION
+     Custom cubic-bezier (every agency uses custom curves).
+     160ms hover (Linear/Vercel range). Subtle scale (Stripe 1.015).
+     ----------------------------------------------------------------------- */
+
+  /* Easing — custom curves, never presets */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.52, 0.01, 0.26, 1);
+
+  /* Durations */
+  --duration-instant: 80ms;
+  --duration-fast: 160ms;
+  --duration-normal: 280ms;
+  --duration-slow: 450ms;
+  --duration-slower: 700ms;
+
+  /* Interaction signatures */
+  --hover-scale: 1.015;
+  --press-scale: 0.98;
+  --stagger-delay: 60ms;
+
+  /* -----------------------------------------------------------------------
+     Z-INDEX
+     ----------------------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-nav: 100;
+  --z-modal: 200;
+  --z-overlay: 300;
+  --z-toast: 400;
+}
+
+/* =========================================================================
+   DARK THEME
+   True black background with barely-off-black surfaces (Linear pattern).
+   Ultra-subtle borders at 5-6% white opacity.
+   ========================================================================= */
+
+[data-theme="dark"] {
+  --surface-primary: var(--color-black);
+  --surface-secondary: #161514;
+  --surface-tertiary: #1e1d1b;
+  --surface-elevated: #1e1d1b;
+  --surface-inverse: var(--color-white);
+  --surface-accent: var(--color-accent-900);
+
+  --text-primary: #e8e5df;
+  --text-secondary: #948e82;
+  --text-tertiary: #716b60;
+  --text-inverse: var(--color-gray-900);
+  --text-accent: var(--color-accent-300);
+  --text-on-accent: var(--color-white-pure);
+
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: var(--color-accent-700);
+
+  /* Shadows shift to darker ambient */
+  --shadow-color: 0, 0, 0;
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.4), 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================================================================
+   REDUCED MOTION
+   Parallel design track, not disabled animation (deliverable standard).
+   ========================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --hover-scale: 1;
+    --press-scale: 1;
+    --stagger-delay: 0ms;
+  }
+}
+
+/* =========================================================================
+   RESPONSIVE DENSITY TIERS
+   Marketing = relaxed. Dashboard = standard. Data = compact.
+   ========================================================================= */
+
+[data-density="relaxed"] {
+  --space-section: var(--space-32);
+  --space-group: var(--space-16);
+  --space-element: var(--space-8);
+  --text-base: 1.1875rem;
+  --leading-normal: 1.6;
+}
+
+[data-density="standard"],
+:root {
+  --space-section: var(--space-24);
+  --space-group: var(--space-12);
+  --space-element: var(--space-6);
+}
+
+[data-density="compact"] {
+  --space-section: var(--space-16);
+  --space-group: var(--space-8);
+  --space-element: var(--space-4);
+  --text-base: 0.9375rem;
+  --leading-normal: 1.4;
+}

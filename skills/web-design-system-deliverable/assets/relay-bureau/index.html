@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relay Bureau Design System — Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-wordmark">
+          <strong>Relay Bureau</strong>
+          <span>Example design system deliverable</span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" aria-current="page">Overview</a></li>
+        <li><a href="components.html">Components</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="application.html">Application</a></li>
+      </ul>
+      <div class="nav-meta">v0.9 / light-first / editorial-industrial</div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">New bundled example / built from live agency references</span>
+          <h1 class="hero-title">Software that thinks in public and still looks <span class="serif">composed.</span></h1>
+          <p class="hero-copy">
+            Relay Bureau is a light-first design system for modern SaaS that needs authority without cosplay. It borrows the editorial scale of Instrument and BASIC/DEPT, the type rigor and product warmth of DIA, the cinematic restraint of Fantasy, and the color confidence of Koto, then forces those instincts into a usable product grammar.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="application.html">Open application proof</a>
+            <a class="btn btn-secondary" href="components.html">Inspect the component inventory</a>
+            <span class="marquee">five source references translated into one system</span>
+          </div>
+        </div>
+
+        <aside class="stage tone-dark">
+          <span class="kicker">Reference splice</span>
+          <h2 class="panel-title">The visual spine is editorial control, not “AI product” cliché.</h2>
+          <p class="panel-lead">Monumental grotesk hierarchy, warm mineral neutrals, cobalt used as a signal rather than wallpaper, sharp structural rails, and serif only where it carries judgment or emphasis.</p>
+          <div class="metric-band" style="margin-top: 1.25rem;">
+            <div class="metric">
+              <div class="metric-value">05</div>
+              <div class="metric-label">Agency references actively sampled</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">03</div>
+              <div class="metric-label">Density tiers for brand, product, and data</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">04</div>
+              <div class="metric-label">Distinct shape roles in the token system</div>
+            </div>
+            <div class="metric">
+              <div class="metric-value">02</div>
+              <div class="metric-label">Complete theme modes, light and dark</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Brand strategy</span>
+          <h2 class="section-title">A product layer for teams running parallel work with taste, stakes, and real editorial accountability.</h2>
+        </div>
+        <p class="section-copy">
+          The loose market direction is “agentic AI SaaS,” but the positioning is intentionally broader: Relay Bureau is for orchestrated work, not robot theater. It should feel credible to a design-led product team, an operations lead, or a strategy desk.
+        </p>
+      </div>
+
+      <div class="panel-grid">
+        <article class="panel">
+          <span class="kicker">Positioning</span>
+          <h3 class="panel-title">Current gap</h3>
+          <p class="panel-lead">Most “intelligent operations” products either look like dark cyberpunk dashboards or flattened startup utility kits. Neither communicates judgment.</p>
+          <ul class="note-list" style="margin-top: 1rem;">
+            <li>Target position: a control room with publication standards.</li>
+            <li>Audience: operators, strategists, design-conscious product teams, client-facing leads.</li>
+            <li>Promise: coordination software that can carry nuance, not just throughput.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <span class="kicker">Personality spectrum</span>
+          <h3 class="panel-title">Where the brand sits</h3>
+          <ul class="note-list">
+            <li>Premium over mass, but never precious.</li>
+            <li>Modern over futuristic.</li>
+            <li>Restrained over playful, with selective theatricality.</li>
+            <li>Warm over cold, but still exacting.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Direction study</span>
+          <h2 class="section-title">Three viable directions were explored. Only one survives real product use.</h2>
+        </div>
+        <p class="section-copy">
+          The chosen direction needed enough brand signature to stand apart in a portfolio review while still producing forms, tables, rails, and inspector panels that could survive a real software build.
+        </p>
+      </div>
+
+      <div class="panel">
+        <table class="direction-table">
+          <thead>
+            <tr>
+              <th>Direction</th>
+              <th>Thesis</th>
+              <th>Strength</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Hard Throughput</strong><span class="meta">monochrome utility / sharp geometry</span></td>
+              <td>Lean into compressed type, chrome-less rails, and pure efficiency.</td>
+              <td>High density, easy to ship.</td>
+              <td>Too close to generic devtool minimalism.</td>
+            </tr>
+            <tr>
+              <td><strong>Cinematic Soft-Tech</strong><span class="meta">glows / atmosphere / immersive product frames</span></td>
+              <td>Use Fantasy-style saturation and heroic motion to dramatize workflow.</td>
+              <td>Memorable first impression.</td>
+              <td>Product surfaces lose discipline fast.</td>
+            </tr>
+            <tr class="is-picked">
+              <td><strong>Editorial Control</strong><span class="meta">chosen direction</span></td>
+              <td>Warm paper field, industrial rails, cobalt as signal, serif used for judgment and release valves.</td>
+              <td>Balances presentation and utility. Feels authored by humans.</td>
+              <td>Requires restraint to avoid over-styling.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Design principles</span>
+          <h2 class="section-title">The system should settle arguments, not just decorate them.</h2>
+        </div>
+        <p class="section-copy">
+          Each principle is meant to kill a common failure mode in modern SaaS UI: uniform radii, over-carded layouts, neon used as identity, and motion treated as garnish instead of information.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="panel">
+          <h3 class="panel-title">1. Publish the process</h3>
+          <p class="panel-lead">Show stages, ownership, and rationale. Systems that coordinate work should narrate their own state.</p>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">2. Use contrast like editorial layout</h3>
+          <p class="panel-lead">Pair monumental headers with compact metadata. Large-and-small contrast should do more than color ever can.</p>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">3. Reserve spectacle for moments of consequence</h3>
+          <p class="panel-lead">Cobalt, glows, and serif flourishes appear where something is launched, approved, or escalated. The baseline stays calm.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Foundation</span>
+          <h2 class="section-title">Warm neutrals and mineral accents replace the expected black-plus-neon AI palette.</h2>
+        </div>
+        <p class="section-copy">
+          The color system is built around paper, ink, cobalt, moss, ember, and gold. The typography pairing puts Bricolage Grotesque in charge of UI structure while Fraunces provides just enough editorial relief to keep the system from flattening into software sameness.
+        </p>
+      </div>
+
+      <div class="panel-grid">
+        <article class="panel">
+          <h3 class="panel-title">Color system</h3>
+          <div class="swatch-grid">
+            <div class="swatch">
+              <div class="swatch-chip" style="background:#fcfbf8;"></div>
+              <div class="swatch-meta">Paper 0 / #FCFBF8</div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-chip" style="background:#16191f;"></div>
+              <div class="swatch-meta">Ink 1 / #16191F</div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-chip" style="background:#315fff;"></div>
+              <div class="swatch-meta">Cobalt 4 / #315FFF</div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-chip" style="background:#5e705a;"></div>
+              <div class="swatch-meta">Moss 3 / #5E705A</div>
+            </div>
+            <div class="swatch">
+              <div class="swatch-chip" style="background:#ba6434;"></div>
+              <div class="swatch-meta">Ember 3 / #BA6434</div>
+            </div>
+          </div>
+          <p class="panel-note" style="margin-top:1rem;">Use cobalt for primary action and live state, moss for healthy progress, ember for interruption, and gold for review-required states.</p>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Type specimens</h3>
+          <div class="type-lockup">
+            <div class="type-row">
+              <div>
+                <div class="hero-display">The room is live.</div>
+                <div class="type-label">Bricolage Grotesque / hero / step-5</div>
+              </div>
+            </div>
+            <div class="type-row">
+              <div>
+                <div class="editorial-line">Release only what can hold up under scrutiny.</div>
+                <div class="type-label">Fraunces / editorial line / step-3</div>
+              </div>
+            </div>
+            <div class="type-row">
+              <div>
+                <div class="mono-row">run.atlas.042 / owner: maya / mode: supervised</div>
+                <div class="type-label">IBM Plex Mono / system metadata</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Motion and assets</span>
+          <h2 class="section-title">Motion behaves like a release system: reveal, confirm, hand off.</h2>
+        </div>
+        <p class="section-copy">
+          Durations are short, easing is elastic only at meaningful transition points, and reduced motion swaps animation for opacity and state swaps. Visual assets favor architectural photography, annotated product crops, and directional graphics over soft AI illustration.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Interaction signatures</h3>
+          <ul class="bullet-list">
+            <li>Buttons lift 1px on hover; approvals and launches get the only glow.</li>
+            <li>Panel reveals use 180ms slide + fade. Drawers use 280ms with no overshoot.</li>
+            <li>Timeline updates cascade by 60ms to clarify event order.</li>
+            <li>Reduced motion uses instant opacity/state changes with preserved focus flow.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Asset direction</h3>
+          <ul class="bullet-list">
+            <li>Photography: workspaces, prototypes, screens, and artifacts with directional light.</li>
+            <li>Illustration: diagrams and abstract routing lines, never mascot scenes.</li>
+            <li>Iconography: geometric, low-stroke, slightly industrial.</li>
+            <li>Graphic devices: cropped rails, capsule counters, and banded labels.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Reference map</span>
+          <h2 class="section-title">This example names its sources instead of pretending good taste appeared from nowhere.</h2>
+        </div>
+        <p class="section-copy">
+          These links are not style matches. They are the specific human-made references that informed the system’s decisions around type, layout, motion, and how a product brand can stay distinctive under operational load.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Influence list</h3>
+          <ul class="bullet-list">
+            <li><a href="https://www.instrument.com/work" target="_blank" rel="noreferrer">Instrument / Work</a> for oversized typographic framing and chip-based navigation.</li>
+            <li><a href="https://www.basicagency.com/case-studies/culture-manual-branding-web-design" target="_blank" rel="noreferrer">BASIC/DEPT / Culture Manual</a> for stark scale, centered metadata, and restrained spectacle.</li>
+            <li><a href="https://dia.tv/project/flodesk/" target="_blank" rel="noreferrer">DIA / Flodesk</a> for warm type systems, shape cadence, and product-brand continuity.</li>
+            <li><a href="https://fantasy.co/work/salesforce" target="_blank" rel="noreferrer">Fantasy / Salesforce</a> for cinematic color pressure and presentation-grade product staging.</li>
+            <li><a href="https://koto.com/work" target="_blank" rel="noreferrer">Koto / Work</a> for bold color confidence and portfolio surfaces that still feel controlled.</li>
+          </ul>
+        </article>
+
+        <article class="stage tone-dark">
+          <span class="kicker">Preview</span>
+          <h3 class="panel-title">Next stop: the application proof.</h3>
+          <p class="panel-lead">The proof page shifts to dark mode and demonstrates the system in a sidebar-plus-stage-plus-rail product shell. That is where the brand thesis either survives, or it doesn’t.</p>
+          <div class="hero-actions" style="margin-top:1rem;">
+            <a class="btn btn-primary" href="application.html">View the product shell</a>
+            <a class="btn btn-secondary" href="guidelines.html">Read the rules</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>Relay Bureau is a new example deliverable for the `web-design-system-deliverable` skill. It exists to give future runs a stronger visual baseline than the bundled legacy samples.</p>
+    </footer>
+  </main>
+</body>
+</html>

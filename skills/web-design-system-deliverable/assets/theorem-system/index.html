@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theorem Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* =======================================================================
+       THEOREM DESIGN SYSTEM — Overview Page Styles
+       ======================================================================= */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-normal);
+      color: var(--text-primary);
+      background-color: var(--surface-primary);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  color var(--duration-slow) var(--ease-smooth);
+    }
+
+    /* =======================================================================
+       NAVIGATION
+       ======================================================================= */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      background-color: var(--surface-primary);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .nav__inner {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav__link {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: var(--tracking-wide);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .nav__link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav__link--active {
+      color: var(--text-primary);
+    }
+
+    .nav__right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .theme-toggle {
+      appearance: none;
+      border: 1px solid var(--border-default);
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    /* =======================================================================
+       LAYOUT
+       ======================================================================= */
+
+    .container {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+
+    .section {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border-default);
+    }
+
+    .section__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-8);
+    }
+
+    .section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .section__desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 600px;
+    }
+
+    /* =======================================================================
+       HERO — Asymmetric editorial layout
+       ======================================================================= */
+
+    .hero {
+      padding-top: var(--space-32);
+      padding-bottom: var(--space-24);
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-16);
+      align-items: end;
+    }
+
+    .hero__left {
+      /* The title column — tight, constrained */
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: -0.035em;
+      line-height: var(--leading-none);
+      color: var(--text-primary);
+    }
+
+    .hero__version {
+      display: inline-block;
+      margin-top: var(--space-4);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .hero__right {
+      max-width: 560px;
+    }
+
+    .hero__tagline {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero__body {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 480px;
+    }
+
+    /* =======================================================================
+       DESIGN PRINCIPLES — Numbered inline sections
+       ======================================================================= */
+
+    .principles {
+      /* No card wrappers. Typography does the work. */
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: var(--space-6);
+      padding: var(--space-10) 0;
+    }
+
+    .principle + .principle {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .principle__number {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-none);
+      color: var(--text-tertiary);
+    }
+
+    .principle__content {
+      padding-top: var(--space-1);
+    }
+
+    .principle__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .principle__desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 560px;
+    }
+
+    /* =======================================================================
+       COLOR PALETTE — Horizontal strip layout
+       ======================================================================= */
+
+    .color-group {
+      margin-bottom: var(--space-12);
+    }
+
+    .color-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .color-group__label {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-4);
+    }
+
+    .color-strip {
+      display: flex;
+      gap: 0;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+
+    .color-swatch {
+      flex: 1;
+      padding: var(--space-10) var(--space-3) var(--space-3);
+      min-width: 0;
+      position: relative;
+    }
+
+    .color-swatch__name {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      margin-bottom: var(--space-1);
+      opacity: 0.85;
+    }
+
+    .color-swatch__hex {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0;
+      opacity: 0.65;
+    }
+
+    .color-swatch__contrast {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      opacity: 0.55;
+      margin-top: var(--space-1);
+    }
+
+    /* Functional color strip */
+    .color-strip--functional {
+      display: flex;
+      gap: var(--space-4);
+      border: none;
+      border-radius: 0;
+    }
+
+    .color-strip--functional .color-swatch {
+      flex: none;
+      width: 120px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-default);
+    }
+
+    /* =======================================================================
+       TYPOGRAPHY SPECIMEN
+       ======================================================================= */
+
+    .type-specimen {
+      margin-bottom: var(--space-12);
+    }
+
+    .type-specimen:last-child {
+      margin-bottom: 0;
+    }
+
+    .type-specimen__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wider);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .type-sample {
+      margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+
+    .type-sample__text {
+      color: var(--text-primary);
+      min-width: 0;
+    }
+
+    .type-sample__meta {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      letter-spacing: 0;
+    }
+
+    .type-sample--display-5xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: -0.035em;
+      line-height: var(--leading-none);
+    }
+
+    .type-sample--display-4xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+    }
+
+    .type-sample--display-3xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+    }
+
+    .type-sample--display-2xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+    }
+
+    .type-sample--display-xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+    }
+
+    .type-sample--body-lg .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-normal);
+      line-height: var(--leading-relaxed);
+    }
+
+    .type-sample--body-base .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-normal);
+      line-height: var(--leading-normal);
+    }
+
+    .type-sample--body-sm .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      line-height: var(--leading-normal);
+    }
+
+    .type-sample--body-xs .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wider);
+      line-height: var(--leading-normal);
+    }
+
+    /* =======================================================================
+       SPACING & LAYOUT
+       ======================================================================= */
+
+    .spacing-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-12);
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .spacing-item__bar {
+      height: 20px;
+      background-color: var(--color-accent-200);
+      border-radius: var(--radius-sm);
+      transition: background-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    [data-theme="dark"] .spacing-item__bar {
+      background-color: var(--color-accent-800);
+    }
+
+    .spacing-item__label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      min-width: 100px;
+      letter-spacing: 0;
+    }
+
+    .spacing-item__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    /* Density tiers */
+    .density-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .density-tier {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .density-tier__header {
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--border-default);
+      background: var(--surface-secondary);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .density-tier__name {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .density-tier__use {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    .density-tier__body {
+      padding: var(--space-5);
+    }
+
+    .density-tier__row {
+      display: flex;
+      justify-content: space-between;
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+    }
+
+    .density-tier__row:last-child {
+      border-bottom: none;
+    }
+
+    .density-tier__token {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    /* =======================================================================
+       MOTION
+       ======================================================================= */
+
+    .motion-curves {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-12);
+    }
+
+    .motion-curve {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .motion-curve__preview {
+      height: 80px;
+      position: relative;
+      margin-bottom: var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .motion-curve__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-accent-500);
+      position: absolute;
+      bottom: var(--space-3);
+      left: 0;
+    }
+
+    .motion-curve:hover .motion-curve__dot {
+      left: calc(100% - 10px);
+    }
+
+    .motion-curve:nth-child(1) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-out);
+    }
+
+    .motion-curve:nth-child(2) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-in-out);
+    }
+
+    .motion-curve:nth-child(3) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-spring);
+    }
+
+    .motion-curve:nth-child(4) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-smooth);
+    }
+
+    .motion-curve__name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .motion-curve__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    .motion-durations {
+      margin-bottom: var(--space-12);
+    }
+
+    .duration-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+    }
+
+    .duration-item {
+      text-align: left;
+    }
+
+    .duration-item__bar-wrap {
+      height: 4px;
+      background: var(--surface-tertiary);
+      border-radius: 2px;
+      margin-bottom: var(--space-3);
+      overflow: hidden;
+      transition: background-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .duration-item__bar {
+      height: 100%;
+      background: var(--color-accent-400);
+      border-radius: 2px;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform var(--duration-slow) var(--ease-out);
+    }
+
+    .duration-item:hover .duration-item__bar {
+      transform: scaleX(1);
+    }
+
+    .duration-item__name {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-1);
+    }
+
+    .duration-item__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    .interaction-signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .interaction-sig {
+      padding: var(--space-6);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      transition: border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .interaction-sig__name {
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .interaction-sig__desc {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-3);
+    }
+
+    .interaction-sig__token {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-accent);
+    }
+
+    /* =======================================================================
+       FOOTER
+       ======================================================================= */
+
+    .footer {
+      padding: var(--space-12) 0;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer__text {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .footer__mark {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-snug);
+    }
+
+    /* =======================================================================
+       RESPONSIVE
+       ======================================================================= */
+
+    @media (max-width: 768px) {
+      .hero__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+
+      .hero__title {
+        font-size: var(--text-4xl);
+      }
+
+      .density-tiers {
+        grid-template-columns: 1fr;
+      }
+
+      .motion-curves {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .duration-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .interaction-signatures {
+        grid-template-columns: 1fr;
+      }
+
+      .type-sample {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+
+      .type-sample__meta {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <div style="display: flex; align-items: center; gap: var(--space-8);">
+        <a href="index.html" class="nav__logo">Theorem</a>
+        <ul class="nav__links">
+          <li><a href="index.html" class="nav__link nav__link--active" aria-current="page">Overview</a></li>
+          <li><a href="components.html" class="nav__link">Components</a></li>
+          <li><a href="guidelines.html" class="nav__link">Guidelines</a></li>
+          <li><a href="application.html" class="nav__link">Application</a></li>
+        </ul>
+      </div>
+      <div class="nav__right">
+        <button class="theme-toggle" id="themeToggle">Dark mode</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="hero__left">
+          <h1 class="hero__title">Theorem</h1>
+          <span class="hero__version">v1.0 Design System</span>
+        </div>
+        <div class="hero__right">
+          <p class="hero__tagline">A design system built on the premise that precision is the highest form of expression.</p>
+          <p class="hero__body">Theorem provides the typographic, spatial, and chromatic foundation for an agentic AI platform. It borrows from editorial tradition rather than technology convention. Every token is deliberate. Every omission is intentional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Design Principles -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Principles</span>
+      <div class="principles">
+
+        <div class="principle">
+          <div class="principle__number">1</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Precision over decoration</h3>
+            <p class="principle__desc">Every element earns its place. White space is the primary design material. If something can be removed without loss of meaning, it should be. The system favors structural clarity over ornamental richness.</p>
+          </div>
+        </div>
+
+        <div class="principle">
+          <div class="principle__number">2</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Typography carries the brand</h3>
+            <p class="principle__desc">The tension between serif and sans, the hierarchy of weight and tracking, the editorial spacing between elements. These do the visual work before color enters the conversation. Type is not a vehicle for content. It is the content.</p>
+          </div>
+        </div>
+
+        <div class="principle">
+          <div class="principle__number">3</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Restraint signals confidence</h3>
+            <p class="principle__desc">One accent color. Subtle borders. Motion you feel but don't notice. The system resists the impulse to announce itself. It communicates authority through what it withholds, not what it displays.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Color</span>
+      <h2 class="section__heading">Color palette</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Warm neutrals and a single warm copper accent. No pure black, no pure white. Blue-tinted shadows in light mode, true dark in dark mode.</p>
+
+      <!-- Neutral Scale -->
+      <div class="color-group">
+        <div class="color-group__label">Neutral scale</div>
+        <div class="color-strip">
+          <div class="color-swatch" style="background-color: #f8f7f4; color: #1a1714;">
+            <div class="color-swatch__name">White</div>
+            <div class="color-swatch__hex">#f8f7f4</div>
+            <div class="color-swatch__contrast">1.07:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #f2f0ec; color: #1a1714;">
+            <div class="color-swatch__name">Gray 50</div>
+            <div class="color-swatch__hex">#f2f0ec</div>
+            <div class="color-swatch__contrast">1.15:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #e8e5df; color: #1a1714;">
+            <div class="color-swatch__name">Gray 100</div>
+            <div class="color-swatch__hex">#e8e5df</div>
+            <div class="color-swatch__contrast">1.29:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #d4d0c8; color: #1a1714;">
+            <div class="color-swatch__name">Gray 200</div>
+            <div class="color-swatch__hex">#d4d0c8</div>
+            <div class="color-swatch__contrast">1.63:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #b8b3a8; color: #1a1714;">
+            <div class="color-swatch__name">Gray 300</div>
+            <div class="color-swatch__hex">#b8b3a8</div>
+            <div class="color-swatch__contrast">2.24:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #948e82; color: #1a1714;">
+            <div class="color-swatch__name">Gray 400</div>
+            <div class="color-swatch__hex">#948e82</div>
+            <div class="color-swatch__contrast">3.27:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #716b60; color: #f8f7f4;">
+            <div class="color-swatch__name">Gray 500</div>
+            <div class="color-swatch__hex">#716b60</div>
+            <div class="color-swatch__contrast">4.67:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #56514a; color: #f8f7f4;">
+            <div class="color-swatch__name">Gray 600</div>
+            <div class="color-swatch__hex">#56514a</div>
+            <div class="color-swatch__contrast">6.46:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #3d3935; color: #f8f7f4;">
+            <div class="color-swatch__name">Gray 700</div>
+            <div class="color-swatch__hex">#3d3935</div>
+            <div class="color-swatch__contrast">8.97:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #2a2724; color: #f8f7f4;">
+            <div class="color-swatch__name">Gray 800</div>
+            <div class="color-swatch__hex">#2a2724</div>
+            <div class="color-swatch__contrast">11.64:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #1a1714; color: #f8f7f4;">
+            <div class="color-swatch__name">Gray 900</div>
+            <div class="color-swatch__hex">#1a1714</div>
+            <div class="color-swatch__contrast">14.68:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #111010; color: #f8f7f4;">
+            <div class="color-swatch__name">Black</div>
+            <div class="color-swatch__hex">#111010</div>
+            <div class="color-swatch__contrast">16.30:1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accent Scale -->
+      <div class="color-group">
+        <div class="color-group__label">Accent scale &mdash; warm copper</div>
+        <div class="color-strip">
+          <div class="color-swatch" style="background-color: #faf0e6; color: #1a1714;">
+            <div class="color-swatch__name">Accent 100</div>
+            <div class="color-swatch__hex">#faf0e6</div>
+            <div class="color-swatch__contrast">1.18:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #f0d8be; color: #1a1714;">
+            <div class="color-swatch__name">Accent 200</div>
+            <div class="color-swatch__hex">#f0d8be</div>
+            <div class="color-swatch__contrast">1.59:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #deb78f; color: #1a1714;">
+            <div class="color-swatch__name">Accent 300</div>
+            <div class="color-swatch__hex">#deb78f</div>
+            <div class="color-swatch__contrast">2.35:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #c9956a; color: #1a1714;">
+            <div class="color-swatch__name">Accent 400</div>
+            <div class="color-swatch__hex">#c9956a</div>
+            <div class="color-swatch__contrast">3.32:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #b87a4b; color: #ffffff;">
+            <div class="color-swatch__name">Accent 500</div>
+            <div class="color-swatch__hex">#b87a4b</div>
+            <div class="color-swatch__contrast">4.38:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #9a6338; color: #ffffff;">
+            <div class="color-swatch__name">Accent 600</div>
+            <div class="color-swatch__hex">#9a6338</div>
+            <div class="color-swatch__contrast">5.74:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #7a4e2d; color: #ffffff;">
+            <div class="color-swatch__name">Accent 700</div>
+            <div class="color-swatch__hex">#7a4e2d</div>
+            <div class="color-swatch__contrast">7.62:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #5a3a22; color: #ffffff;">
+            <div class="color-swatch__name">Accent 800</div>
+            <div class="color-swatch__hex">#5a3a22</div>
+            <div class="color-swatch__contrast">10.32:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #3b2617; color: #ffffff;">
+            <div class="color-swatch__name">Accent 900</div>
+            <div class="color-swatch__hex">#3b2617</div>
+            <div class="color-swatch__contrast">13.46:1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functional Colors -->
+      <div class="color-group">
+        <div class="color-group__label">Functional</div>
+        <div class="color-strip color-strip--functional">
+          <div class="color-swatch" style="background-color: #3a9a6b; color: #ffffff;">
+            <div class="color-swatch__name">Success</div>
+            <div class="color-swatch__hex">#3a9a6b</div>
+            <div class="color-swatch__contrast">3.52:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #c48a2c; color: #1a1714;">
+            <div class="color-swatch__name">Warning</div>
+            <div class="color-swatch__hex">#c48a2c</div>
+            <div class="color-swatch__contrast">2.51:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #c44b3f; color: #ffffff;">
+            <div class="color-swatch__name">Danger</div>
+            <div class="color-swatch__hex">#c44b3f</div>
+            <div class="color-swatch__contrast">4.14:1</div>
+          </div>
+          <div class="color-swatch" style="background-color: #4a7fb5; color: #ffffff;">
+            <div class="color-swatch__name">Info</div>
+            <div class="color-swatch__hex">#4a7fb5</div>
+            <div class="color-swatch__contrast">3.30:1</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Typography Specimen -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Typography</span>
+      <h2 class="section__heading">Type specimen</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Source Serif 4 for display. Inter for everything else. Tracking tightens as size increases. The serif carries authority; the sans does the work.</p>
+
+      <!-- Display — Source Serif 4 -->
+      <div class="type-specimen">
+        <div class="type-specimen__label">Source Serif 4 &mdash; Display</div>
+
+        <div class="type-sample type-sample--display-5xl">
+          <div class="type-sample__text">Agent orchestration</div>
+          <div class="type-sample__meta">60px / -0.035em / 1.0</div>
+        </div>
+
+        <div class="type-sample type-sample--display-4xl">
+          <div class="type-sample__text">Structured reasoning at scale</div>
+          <div class="type-sample__meta">48px / -0.025em / 1.1</div>
+        </div>
+
+        <div class="type-sample type-sample--display-3xl">
+          <div class="type-sample__text">Every inference leaves a trail</div>
+          <div class="type-sample__meta">36px / -0.025em / 1.1</div>
+        </div>
+
+        <div class="type-sample type-sample--display-2xl">
+          <div class="type-sample__text">The interface between intention and execution</div>
+          <div class="type-sample__meta">28px / -0.015em / 1.25</div>
+        </div>
+
+        <div class="type-sample type-sample--display-xl">
+          <div class="type-sample__text">Precision as a design principle, not an afterthought</div>
+          <div class="type-sample__meta">22px / -0.015em / 1.25</div>
+        </div>
+      </div>
+
+      <!-- Body — Inter -->
+      <div class="type-specimen">
+        <div class="type-specimen__label">Inter &mdash; Body &amp; UI</div>
+
+        <div class="type-sample type-sample--body-lg">
+          <div class="type-sample__text">Agents operate within defined boundaries. Theorem provides the coordination layer that lets teams set those boundaries with confidence, monitor execution in real time, and intervene only when the system asks them to.</div>
+          <div class="type-sample__meta">19px / 0em / 1.6</div>
+        </div>
+
+        <div class="type-sample type-sample--body-base">
+          <div class="type-sample__text">Each workflow is a directed graph of tasks, tool calls, and decision points. The runtime evaluates preconditions before execution and records outputs as structured artifacts. Failures are isolated to their branch.</div>
+          <div class="type-sample__meta">17px / 0em / 1.5</div>
+        </div>
+
+        <div class="type-sample type-sample--body-sm">
+          <div class="type-sample__text">Labels, navigation items, and secondary interface text use the 14px size with positive tracking. This compensates for the reduced legibility at smaller sizes and gives UI elements a quiet, measured quality.</div>
+          <div class="type-sample__meta">14px / +0.01em / 1.5</div>
+        </div>
+
+        <div class="type-sample type-sample--body-xs">
+          <div class="type-sample__text">CAPTIONS, METADATA, AND TERTIARY INFORMATION. TIMESTAMPS, VERSION NUMBERS, TOKEN COUNTS.</div>
+          <div class="type-sample__meta">13px / +0.025em / 1.5</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Spacing & Layout -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Spacing &amp; Layout</span>
+      <h2 class="section__heading">Spatial system</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Built on a 4px base grid. Section spacing starts at 96px. The scale is non-linear by design — the jumps between larger values are proportionally bigger, creating breathing room where it matters.</p>
+
+      <!-- Spacing Scale -->
+      <div class="spacing-scale">
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-1</div>
+          <div class="spacing-item__bar" style="width: 4px;"></div>
+          <div class="spacing-item__value">4px / 0.25rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-2</div>
+          <div class="spacing-item__bar" style="width: 8px;"></div>
+          <div class="spacing-item__value">8px / 0.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-3</div>
+          <div class="spacing-item__bar" style="width: 12px;"></div>
+          <div class="spacing-item__value">12px / 0.75rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-4</div>
+          <div class="spacing-item__bar" style="width: 16px;"></div>
+          <div class="spacing-item__value">16px / 1rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-5</div>
+          <div class="spacing-item__bar" style="width: 20px;"></div>
+          <div class="spacing-item__value">20px / 1.25rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-6</div>
+          <div class="spacing-item__bar" style="width: 24px;"></div>
+          <div class="spacing-item__value">24px / 1.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-8</div>
+          <div class="spacing-item__bar" style="width: 32px;"></div>
+          <div class="spacing-item__value">32px / 2rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-10</div>
+          <div class="spacing-item__bar" style="width: 40px;"></div>
+          <div class="spacing-item__value">40px / 2.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-12</div>
+          <div class="spacing-item__bar" style="width: 48px;"></div>
+          <div class="spacing-item__value">48px / 3rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-16</div>
+          <div class="spacing-item__bar" style="width: 64px;"></div>
+          <div class="spacing-item__value">64px / 4rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-20</div>
+          <div class="spacing-item__bar" style="width: 80px;"></div>
+          <div class="spacing-item__value">80px / 5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-24</div>
+          <div class="spacing-item__bar" style="width: 96px;"></div>
+          <div class="spacing-item__value">96px / 6rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-32</div>
+          <div class="spacing-item__bar" style="width: 128px;"></div>
+          <div class="spacing-item__value">128px / 8rem</div>
+        </div>
+      </div>
+
+      <!-- Density Tiers -->
+      <div class="color-group__label" style="margin-bottom: var(--space-4);">Density tiers</div>
+      <div class="density-tiers">
+
+        <div class="density-tier">
+          <div class="density-tier__header">
+            <div class="density-tier__name">Relaxed</div>
+            <div class="density-tier__use">Marketing, landing pages</div>
+          </div>
+          <div class="density-tier__body">
+            <div class="density-tier__row">
+              <span>Section</span>
+              <span class="density-tier__token">128px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Group</span>
+              <span class="density-tier__token">64px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Element</span>
+              <span class="density-tier__token">32px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Body text</span>
+              <span class="density-tier__token">19px / 1.6</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="density-tier">
+          <div class="density-tier__header">
+            <div class="density-tier__name">Standard</div>
+            <div class="density-tier__use">Application UI, dashboards</div>
+          </div>
+          <div class="density-tier__body">
+            <div class="density-tier__row">
+              <span>Section</span>
+              <span class="density-tier__token">96px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Group</span>
+              <span class="density-tier__token">48px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Element</span>
+              <span class="density-tier__token">24px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Body text</span>
+              <span class="density-tier__token">17px / 1.5</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="density-tier">
+          <div class="density-tier__header">
+            <div class="density-tier__name">Compact</div>
+            <div class="density-tier__use">Data tables, toolbars</div>
+          </div>
+          <div class="density-tier__body">
+            <div class="density-tier__row">
+              <span>Section</span>
+              <span class="density-tier__token">64px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Group</span>
+              <span class="density-tier__token">32px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Element</span>
+              <span class="density-tier__token">16px</span>
+            </div>
+            <div class="density-tier__row">
+              <span>Body text</span>
+              <span class="density-tier__token">15px / 1.4</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Motion</span>
+      <h2 class="section__heading">Movement language</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Custom easing curves, never CSS presets. Motion should be felt, not watched. Hover interactions at 160ms. Transitions at 280ms. Entrances at 450ms. Stagger at 60ms per item.</p>
+
+      <!-- Easing Curves -->
+      <div class="color-group__label" style="margin-bottom: var(--space-4);">Easing curves &mdash; hover to preview</div>
+      <div class="motion-curves">
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Ease Out</div>
+          <div class="motion-curve__value">cubic-bezier(0.22, 0.61, 0.36, 1)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Ease In-Out</div>
+          <div class="motion-curve__value">cubic-bezier(0.45, 0.05, 0.55, 0.95)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Spring</div>
+          <div class="motion-curve__value">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Smooth</div>
+          <div class="motion-curve__value">cubic-bezier(0.52, 0.01, 0.26, 1)</div>
+        </div>
+
+      </div>
+
+      <!-- Duration Scale -->
+      <div class="motion-durations">
+        <div class="color-group__label" style="margin-bottom: var(--space-4);">Duration scale &mdash; hover to animate</div>
+        <div class="duration-list">
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 80ms;"></div>
+            </div>
+            <div class="duration-item__name">Instant</div>
+            <div class="duration-item__value">80ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 160ms;"></div>
+            </div>
+            <div class="duration-item__name">Fast</div>
+            <div class="duration-item__value">160ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 280ms;"></div>
+            </div>
+            <div class="duration-item__name">Normal</div>
+            <div class="duration-item__value">280ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 450ms;"></div>
+            </div>
+            <div class="duration-item__name">Slow</div>
+            <div class="duration-item__value">450ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 700ms;"></div>
+            </div>
+            <div class="duration-item__name">Slower</div>
+            <div class="duration-item__value">700ms</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaction Signatures -->
+      <div class="color-group__label" style="margin-bottom: var(--space-4);">Interaction signatures</div>
+      <div class="interaction-signatures">
+
+        <div class="interaction-sig">
+          <div class="interaction-sig__name">Hover lift</div>
+          <div class="interaction-sig__desc">Interactive elements scale up subtly on hover. Barely perceptible, but enough to confirm the element is alive. Applied to cards, buttons, and linked containers.</div>
+          <div class="interaction-sig__token">transform: scale(1.015)</div>
+        </div>
+
+        <div class="interaction-sig">
+          <div class="interaction-sig__name">Press sink</div>
+          <div class="interaction-sig__desc">On mousedown, elements contract slightly. The tactile response bridges the gap between cursor and interface. Released on mouseup with spring easing.</div>
+          <div class="interaction-sig__token">transform: scale(0.98)</div>
+        </div>
+
+        <div class="interaction-sig">
+          <div class="interaction-sig__name">Stagger entrance</div>
+          <div class="interaction-sig__desc">Lists and grids reveal items sequentially with a 60ms delay between each. The cascade draws the eye through content in reading order without demanding attention.</div>
+          <div class="interaction-sig__token">transition-delay: n * 60ms</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__text">Theorem Design System. Tokens, principles, and documentation.</span>
+        <span class="footer__mark">Theorem</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+
+      // Check for saved preference
+      const saved = localStorage.getItem('theorem-theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+        toggle.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode';
+      }
+
+      toggle.addEventListener('click', function() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        toggle.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+        localStorage.setItem('theorem-theme', next);
+      });
+    })();
+  </script>
+
+</body>
+</html>

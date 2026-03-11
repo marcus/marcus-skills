@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relay Bureau Design System — Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-wordmark">
+          <strong>Relay Bureau</strong>
+          <span>Example design system deliverable</span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="components.html">Components</a></li>
+        <li><a href="guidelines.html" aria-current="page">Guidelines</a></li>
+        <li><a href="application.html">Application</a></li>
+      </ul>
+      <div class="nav-meta">voice / assets / accessibility / governance</div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Usage rules</span>
+          <h1 class="hero-title">A strong system is mostly made of <span class="serif">boundaries.</span></h1>
+          <p class="hero-copy">
+            Relay Bureau’s differentiation comes from a few disciplined choices repeated consistently: structural rails instead of card grids, type contrast instead of decorative noise, motion as confirmation, and copy that sounds like a composed producer rather than a chatbot.
+          </p>
+        </div>
+        <aside class="panel">
+          <span class="kicker">What to protect</span>
+          <ul class="note-list">
+            <li>Do not flatten the type hierarchy. Large vs. small contrast is doing real brand work.</li>
+            <li>Do not fill neutral surfaces with cobalt. Accent is a signal, not a backdrop.</li>
+            <li>Do not replace rails with stacked cards. Layout is part of the identity.</li>
+            <li>Do not overuse serif. It is the release valve, not the default voice.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Voice and tone</span>
+          <h2 class="section-title">Direct, literate, and slightly stern.</h2>
+        </div>
+        <p class="section-copy">
+          The product speaks like a senior producer. It is not robotic, but it also never performs friendliness when clarity is needed. Tone shifts by context, but the underlying voice stays composed.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="panel">
+          <h3 class="panel-title">Voice attributes</h3>
+          <ul class="bullet-list">
+            <li>Precise: describe what changed, who owns it, and what happens next.</li>
+            <li>Editorial: prefer framing that reveals judgment, not just status.</li>
+            <li>Controlled: avoid exclamation points, hype words, and synthetic encouragement.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">CTA pattern</h3>
+          <ul class="bullet-list">
+            <li>Primary: verb first. Example: “Release summary”, “Open review”, “Route for approval”.</li>
+            <li>Secondary: noun or short verb phrase. Example: “Revision notes”, “Assign owner”.</li>
+            <li>Danger: full phrase, never a single dramatic word. Example: “Archive this route”.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">Error and empty-state copy</h3>
+          <ul class="bullet-list">
+            <li>Error pattern: state the mismatch, then give one next step.</li>
+            <li>Empty pattern: explain why the lane is empty and whether that is desirable.</li>
+            <li>Never use motivational filler like “You’re all caught up!” unless the product genuinely benefits from warmth.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Composition rules</span>
+          <h2 class="section-title">Use structure before ornament.</h2>
+        </div>
+        <p class="section-copy">
+          The pages are designed to work like production layouts. Long-form explanation goes wide. Data and options live in rails. Cards are reserved for repeated items or contained states, never for the whole page architecture.
+        </p>
+      </div>
+
+      <div class="do-dont">
+        <article class="rule-card do">
+          <strong>Do</strong>
+          <ul class="bullet-list" style="margin-top:0.75rem;">
+            <li>Build pages with a rail, a stage, and an inspector when complexity is high.</li>
+            <li>Switch density by context: relaxed for overview, standard for narrative work, compact for tables.</li>
+            <li>Pair big statements with tight metadata rows so the interface feels authored.</li>
+          </ul>
+        </article>
+        <article class="rule-card dont">
+          <strong>Don’t</strong>
+          <ul class="bullet-list" style="margin-top:0.75rem;">
+            <li>Turn every section into a rounded card grid.</li>
+            <li>Use one radius everywhere. Relay Bureau depends on structural, control, and signature shapes staying distinct.</li>
+            <li>Introduce dark mode as a separate art direction. It should feel like the same room with the lights lowered.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Visual assets</span>
+          <h2 class="section-title">The asset system is architectural, not illustrative.</h2>
+        </div>
+        <p class="section-copy">
+          The design references point toward strong product staging, custom-type confidence, and art direction that can live in both marketing and software. Relay Bureau keeps that but refuses mascot-ized AI imagery.
+        </p>
+      </div>
+
+      <div class="asset-grid">
+        <article class="asset-tile">
+          <strong>Photography: directional light, desks, prototypes, materials, and real devices. Cropped for tension, not softness.</strong>
+        </article>
+        <article class="asset-tile">
+          <strong>Graphic devices: route lines, capsule counters, cropped bars, and thin separators that suggest flow without becoming diagrams.</strong>
+        </article>
+        <article class="asset-tile">
+          <strong>Iconography: low-stroke geometric shapes that can hold up inside compact rails, dense tables, and command bars.</strong>
+        </article>
+        <article class="asset-tile">
+          <strong>Illustration: abstract systems and editorial notation only. No floating robots, glowing brains, or generic holograms.</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Responsive strategy</span>
+          <h2 class="section-title">Collapse intelligently. Don’t just stack.</h2>
+        </div>
+        <p class="section-copy">
+          The product shell is intended to reflow from three columns to a single stage with collapsible sections. Sidebars become top modules. Inspector content becomes inline detail blocks. Marketing sections keep their large type, but utility metadata compresses early.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="panel">
+          <h3 class="panel-title">Breakpoints</h3>
+          <ul class="bullet-list">
+            <li>Wide: 1152px and up for rail + stage + inspector.</li>
+            <li>Medium: 768px to 1151px for stage-first with stacked support panels.</li>
+            <li>Compact: below 768px with chip rows wrapping and forms expanding full width.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">Touch targets</h3>
+          <ul class="bullet-list">
+            <li>Primary controls keep 48px minimum tap height.</li>
+            <li>Chip groups wrap rather than shrinking below readability.</li>
+            <li>Dense tables switch to stacked rows with strong field labels when space collapses.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">Container logic</h3>
+          <ul class="bullet-list">
+            <li>Hero statements scale fluidly.</li>
+            <li>Body copy stays fixed for reading stability.</li>
+            <li>Rails can disappear; hierarchy cannot.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Accessibility audit</span>
+          <h2 class="section-title">AA contrast, visible focus, keyboard-first movement, reduced motion by default path.</h2>
+        </div>
+        <p class="section-copy">
+          Accessibility is treated here as documentation, not a single checkbox. The system assumes asynchronous work, frequent route changes, and review flows that need audible and visual confirmation.
+        </p>
+      </div>
+
+      <div class="a11y-grid">
+        <article class="a11y-item">
+          <strong>Contrast</strong>
+          <p class="panel-note">Paper + ink, cobalt + paper, moss + paper, and inverse surfaces all clear AA for primary text. Accent tints are used for backgrounds only when paired with dark text.</p>
+        </article>
+        <article class="a11y-item">
+          <strong>Keyboard map</strong>
+          <p class="panel-note">Command row, filters, sidebar items, tables, and drawers are reachable in source order. Opening overlays moves focus in; closing returns focus to the trigger.</p>
+        </article>
+        <article class="a11y-item">
+          <strong>Screen reader behavior</strong>
+          <p class="panel-note">Async save, publish, and routing updates should announce through polite live regions. Error summaries should link to the field with the issue.</p>
+        </article>
+        <article class="a11y-item">
+          <strong>Reduced motion</strong>
+          <p class="panel-note">Staggers, shimmer, and slide-in choreography all degrade to instant state change when users opt out of animation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Governance and handoff</span>
+          <h2 class="section-title">Protect the thesis while leaving room for extension.</h2>
+        </div>
+        <p class="section-copy">
+          New components should inherit the system’s structural rules before they inherit its look. If a new surface breaks the rail-stage-rail logic, it needs a stronger argument than “this is how the framework generated it.”
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="panel">
+          <h3 class="panel-title">Extension rules</h3>
+          <ul class="bullet-list">
+            <li>New components must map to existing shape roles before introducing new radii.</li>
+            <li>Any new accent color must attach to a semantic state, not a campaign.</li>
+            <li>Visual experiments belong in proof pages before entering the component library.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">Token integration</h3>
+          <ul class="bullet-list">
+            <li>Source of truth: `tokens.json` plus CSS custom properties in `styles/tokens.css`.</li>
+            <li>Suggested pipeline: Style Dictionary to CSS, JSON, iOS, Android.</li>
+            <li>Figma setup: primitives, semantics, components, and theme modes as separate variable groups.</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <h3 class="panel-title">Handoff checklist</h3>
+          <ul class="bullet-list">
+            <li>Ship interactive states and copy rules together.</li>
+            <li>Document which proof pages validate new components.</li>
+            <li>Keep screenshots of light and dark mode in the package for fast review.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>Relay Bureau is opinionated on purpose. If a future extension starts to look generic, the answer is usually to restore the layout and type logic, not to add more effects.</p>
+    </footer>
+  </main>
+</body>
+</html>

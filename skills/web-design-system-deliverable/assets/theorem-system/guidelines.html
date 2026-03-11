@@ -1,0 +1,2276 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guidelines — Theorem Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      font-feature-settings: "kern" 1, "liga" 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-normal);
+      color: var(--text-primary);
+      background: var(--surface-primary);
+      min-height: 100vh;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+
+    ::selection {
+      background: rgba(184, 122, 75, 0.16);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-accent-500);
+      outline-offset: 2px;
+    }
+
+    /* === NAVIGATION === */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(16px) saturate(140%);
+      background: rgba(248, 247, 244, 0.85);
+    }
+
+    [data-theme="dark"] .site-nav {
+      background: rgba(17, 16, 16, 0.85);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width-full);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-brand-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--color-accent-500);
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-brand-mark svg {
+      width: 16px;
+      height: 16px;
+      color: #fff;
+    }
+
+    .nav-brand-name {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      display: block;
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 0;
+      transition: color var(--duration-fast) var(--ease-out),
+                  background var(--duration-fast) var(--ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a[aria-current="page"] {
+      color: var(--text-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border-default);
+      border-radius: 0;
+      padding: var(--space-2);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--duration-fast) var(--ease-out),
+                  border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+
+    /* === PAGE LAYOUT === */
+    .page {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    .page-narrow {
+      max-width: var(--max-width-content);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+    }
+
+    /* === PAGE HEADER === */
+    .page-header {
+      padding: var(--space-24) 0 var(--space-16);
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      gap: var(--space-12);
+      align-items: end;
+    }
+
+    .page-header-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+    }
+
+    .page-header-title {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-none);
+      letter-spacing: var(--tracking-tight);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-6);
+    }
+
+    .page-header-desc {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+      max-width: 540px;
+    }
+
+    .page-header-meta {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-tertiary);
+    }
+
+    .page-header-meta strong {
+      display: block;
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-1);
+    }
+
+    /* === SECTIONS === */
+    .section {
+      padding: var(--space-24) 0;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .section:first-of-type {
+      border-top: none;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 0.35fr 0.65fr;
+      gap: var(--space-12);
+      margin-bottom: var(--space-12);
+    }
+
+    .section-number {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-3);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .section-desc {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* === SUBSECTION === */
+    .subsection {
+      margin-bottom: var(--space-12);
+    }
+
+    .subsection:last-child {
+      margin-bottom: 0;
+    }
+
+    .subsection-title {
+      font-family: var(--font-body);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-medium);
+      line-height: var(--leading-snug);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-6);
+    }
+
+    .subsection-desc {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-8);
+      max-width: 640px;
+    }
+
+    /* === GRIDS === */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+    .grid-asym-30-70 { display: grid; grid-template-columns: 0.3fr 0.7fr; gap: var(--space-8); }
+    .grid-asym-40-60 { display: grid; grid-template-columns: 0.4fr 0.6fr; gap: var(--space-8); }
+
+    /* === CARDS === */
+    .card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+    }
+
+    .card-flat {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    .card-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-2);
+    }
+
+    .card-body {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* === VOICE ATTRIBUTE CARDS === */
+    .voice-card {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--space-8);
+    }
+
+    .voice-card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-6);
+    }
+
+    .voice-card-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--surface-accent);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-accent);
+      flex-shrink: 0;
+    }
+
+    .voice-card-icon svg { width: 18px; height: 18px; }
+
+    .voice-card-name {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .voice-card-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0 0 var(--space-4);
+    }
+
+    .voice-detail-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .voice-detail-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .voice-detail-list li {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      padding: var(--space-1) 0;
+    }
+
+    .voice-detail-list li::before {
+      content: "\2014\00a0";
+      color: var(--text-tertiary);
+    }
+
+    /* === DO / DON'T EXAMPLES === */
+    .example-pair {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-6);
+    }
+
+    .example-do {
+      background: rgba(58, 154, 107, 0.08);
+      border: 1px solid rgba(58, 154, 107, 0.15);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+    }
+
+    .example-dont {
+      background: rgba(196, 75, 63, 0.08);
+      border: 1px solid rgba(196, 75, 63, 0.15);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+    }
+
+    [data-theme="dark"] .example-do {
+      background: rgba(58, 154, 107, 0.1);
+      border-color: rgba(58, 154, 107, 0.2);
+    }
+
+    [data-theme="dark"] .example-dont {
+      background: rgba(196, 75, 63, 0.1);
+      border-color: rgba(196, 75, 63, 0.2);
+    }
+
+    .example-label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+
+    .example-do .example-label {
+      color: var(--color-success);
+    }
+
+    .example-dont .example-label {
+      color: var(--color-danger);
+    }
+
+    .example-label svg { width: 14px; height: 14px; }
+
+    .example-text {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    /* === TONE SHIFTS === */
+    .tone-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+
+    .tone-card {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    .tone-card-context {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-accent);
+      margin-bottom: var(--space-2);
+    }
+
+    .tone-card-desc {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* === TYPOGRAPHY SPECIMENS === */
+    .type-specimen {
+      border-bottom: 1px solid var(--border-default);
+      padding: var(--space-6) 0;
+    }
+
+    .type-specimen:last-child {
+      border-bottom: none;
+    }
+
+    .type-specimen-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-8);
+    }
+
+    .type-specimen-sample {
+      flex: 1;
+      color: var(--text-primary);
+    }
+
+    .type-specimen-meta {
+      flex-shrink: 0;
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      line-height: var(--leading-relaxed);
+      color: var(--text-tertiary);
+      min-width: 160px;
+    }
+
+    /* === TRACKING CHART === */
+    .tracking-chart {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .tracking-chart th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-strong);
+    }
+
+    .tracking-chart td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    .tracking-chart td:first-child {
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    .tracking-chart td code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-accent);
+      background: var(--surface-accent);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* === COLOR SWATCHES === */
+    .swatch-row {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+      margin-bottom: var(--space-6);
+    }
+
+    .swatch {
+      flex: 1;
+    }
+
+    .swatch-chip {
+      height: 64px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-default);
+      margin-bottom: var(--space-2);
+    }
+
+    .swatch-label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+    }
+
+    .swatch-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* === COLOR USAGE TABLE === */
+    .usage-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .usage-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-strong);
+    }
+
+    .usage-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      vertical-align: top;
+    }
+
+    .usage-table td:first-child {
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    /* === SIDE-BY-SIDE THEME DEMO === */
+    .theme-demo {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+
+    .theme-demo-light {
+      background: #f8f7f4;
+      color: #1a1714;
+      padding: var(--space-8);
+    }
+
+    .theme-demo-dark {
+      background: #111010;
+      color: #e8e5df;
+      padding: var(--space-8);
+    }
+
+    .theme-demo-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: var(--space-4);
+    }
+
+    .theme-demo-swatch {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+    }
+
+    .theme-demo-chip {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(128, 128, 128, 0.2);
+    }
+
+    .theme-demo-text {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+    }
+
+    .theme-demo-text-secondary {
+      font-size: var(--text-sm);
+      margin-top: var(--space-2);
+    }
+
+    .theme-demo-light .theme-demo-text-secondary { color: #716b60; }
+    .theme-demo-dark .theme-demo-text-secondary { color: #948e82; }
+
+    .theme-demo-text-tertiary {
+      font-size: var(--text-sm);
+      margin-top: var(--space-1);
+    }
+
+    .theme-demo-light .theme-demo-text-tertiary { color: #948e82; }
+    .theme-demo-dark .theme-demo-text-tertiary { color: #716b60; }
+
+    /* === SPACING VISUAL === */
+    .spacing-visual {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-4);
+      padding: var(--space-8) 0;
+    }
+
+    .spacing-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .spacing-bar {
+      width: 48px;
+      background: var(--color-accent-200);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-accent-300);
+    }
+
+    .spacing-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* === DENSITY COMPARISON === */
+    .density-compare {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    .density-card {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .density-card-header {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-accent);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      background: var(--surface-secondary);
+    }
+
+    .density-card-body {
+      padding: var(--space-4);
+    }
+
+    .density-card-body.relaxed {
+      padding: var(--space-8);
+    }
+
+    .density-card-body.compact {
+      padding: var(--space-2) var(--space-3);
+    }
+
+    .density-line {
+      height: 8px;
+      background: var(--surface-tertiary);
+      border-radius: 2px;
+      margin-bottom: var(--space-2);
+    }
+
+    .density-line:last-child { margin-bottom: 0; }
+    .density-line.short { width: 60%; }
+    .density-line.medium { width: 80%; }
+
+    .density-card-body.relaxed .density-line { margin-bottom: var(--space-4); height: 10px; }
+    .density-card-body.compact .density-line { margin-bottom: var(--space-1); height: 6px; }
+
+    /* === MAX-WIDTH VISUAL === */
+    .maxwidth-visual {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      padding: var(--space-6) 0;
+    }
+
+    .maxwidth-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .maxwidth-line {
+      height: 6px;
+      background: var(--color-accent-200);
+      border-radius: 3px;
+      border: 1px solid var(--color-accent-300);
+    }
+
+    .maxwidth-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      min-width: 100px;
+    }
+
+    .maxwidth-use {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    /* === MOTION === */
+    .easing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .easing-card {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      text-align: center;
+    }
+
+    .easing-card-name {
+      font-weight: var(--weight-medium);
+      font-size: var(--text-sm);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .easing-card-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+      word-break: break-all;
+    }
+
+    .easing-curve-visual {
+      height: 80px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: var(--space-3);
+    }
+
+    .easing-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--color-accent-500);
+      border-radius: 50%;
+      animation: ease-demo 2s infinite alternate;
+    }
+
+    .easing-card:nth-child(1) .easing-dot { animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1); }
+    .easing-card:nth-child(2) .easing-dot { animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+    .easing-card:nth-child(3) .easing-dot { animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .easing-card:nth-child(4) .easing-dot { animation-timing-function: cubic-bezier(0.52, 0.01, 0.26, 1); }
+
+    @keyframes ease-demo {
+      from { transform: translateY(0); }
+      to { transform: translateY(-60px); }
+    }
+
+    .duration-table {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    .duration-card {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    .duration-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      letter-spacing: var(--tracking-tight);
+      margin-bottom: var(--space-1);
+    }
+
+    .duration-name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .duration-use {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* === INTERACTION SIGNATURES === */
+    .interaction-demos {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .interaction-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-8);
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+    }
+
+    .demo-box {
+      width: 64px;
+      height: 64px;
+      background: var(--color-accent-500);
+      border-radius: var(--radius-lg);
+      transition: transform var(--duration-fast) var(--ease-out);
+    }
+
+    .demo-hover:hover .demo-box {
+      transform: scale(var(--hover-scale));
+    }
+
+    .demo-press .demo-box:active {
+      transform: scale(var(--press-scale));
+    }
+
+    .demo-focus .demo-box:focus-visible {
+      outline: 2px solid var(--color-accent-500);
+      outline-offset: 2px;
+    }
+
+    .interaction-demo-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .interaction-demo-value {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+    }
+
+    /* === ACCESSIBILITY TABLE === */
+    .a11y-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+
+    .a11y-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-strong);
+    }
+
+    .a11y-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      vertical-align: middle;
+    }
+
+    .a11y-table td:first-child {
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    .status-pass {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: var(--color-success);
+      font-weight: var(--weight-medium);
+    }
+
+    .status-fail {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: var(--color-danger);
+      font-weight: var(--weight-medium);
+    }
+
+    .status-pass svg, .status-fail svg { width: 14px; height: 14px; }
+
+    /* === A11Y RULE CARDS === */
+    .a11y-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .a11y-card {
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+
+    .a11y-card-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--surface-accent);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-accent);
+      margin-bottom: var(--space-4);
+    }
+
+    .a11y-card-icon svg { width: 18px; height: 18px; }
+
+    .a11y-card-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-2);
+    }
+
+    .a11y-card-body {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* === VISUAL ASSETS === */
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .asset-card {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+
+    .asset-card-visual {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .asset-card-content {
+      padding: var(--space-6);
+    }
+
+    .asset-card-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+      margin: 0 0 var(--space-2);
+    }
+
+    .asset-card-body {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .asset-card-specs {
+      margin-top: var(--space-4);
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    .asset-spec {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+    }
+
+    /* === ICON GRID DEMO === */
+    .icon-demo-grid {
+      display: flex;
+      gap: var(--space-6);
+      align-items: center;
+    }
+
+    .icon-demo-item {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+    }
+
+    .icon-demo-item svg { width: 20px; height: 20px; }
+
+    /* === NOTE / CALLOUT === */
+    .callout {
+      display: flex;
+      gap: var(--space-4);
+      padding: var(--space-6);
+      background: var(--surface-accent);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-lg);
+      margin: var(--space-6) 0;
+    }
+
+    .callout-icon {
+      flex-shrink: 0;
+      color: var(--text-accent);
+    }
+
+    .callout-icon svg { width: 20px; height: 20px; }
+
+    .callout-text {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-primary);
+    }
+
+    /* === WEIGHT RULE === */
+    .weight-rule {
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      padding: var(--space-5) var(--space-6);
+      background: var(--surface-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+    }
+
+    .weight-rule code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-accent);
+      background: var(--surface-accent);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* === FOOTER === */
+    .site-footer {
+      padding: var(--space-12) 0;
+      border-top: 1px solid var(--border-default);
+      margin-top: var(--space-24);
+    }
+
+    .footer-inner {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: 0 var(--space-6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      margin: 0;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 72rem) {
+      .page-header { grid-template-columns: 1fr; }
+      .section-header { grid-template-columns: 1fr; }
+      .easing-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 48rem) {
+      .page-header-title { font-size: var(--text-4xl); }
+      .grid-2, .grid-3, .grid-4, .example-pair,
+      .tone-grid, .density-compare, .theme-demo,
+      .duration-table, .interaction-demos,
+      .a11y-grid, .asset-grid, .easing-grid { grid-template-columns: 1fr; }
+      .type-specimen-row { flex-direction: column; gap: var(--space-2); }
+      .type-specimen-meta { text-align: left; min-width: auto; }
+      .nav-inner { flex-direction: column; align-items: flex-start; padding: var(--space-3) var(--space-6); }
+      .nav-links { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-brand-mark">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+            <path d="M8 2L14 14H2L8 2Z"/>
+          </svg>
+        </div>
+        <span class="nav-brand-name">Theorem</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="components.html">Components</a></li>
+        <li><a href="guidelines.html" aria-current="page">Guidelines</a></li>
+        <li><a href="application.html">Application</a></li>
+      </ul>
+      <div class="nav-right">
+        <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg class="icon-moon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 9.27A7 7 0 1 1 8.73 2.5a5.5 5.5 0 0 0 6.77 6.77Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3.5"/><path d="M9 1.5v2M9 14.5v2M1.5 9h2M14.5 9h2M3.7 3.7l1.4 1.4M12.9 12.9l1.4 1.4M3.7 14.3l1.4-1.4M12.9 5.1l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header class="page">
+    <div class="page-header">
+      <div>
+        <p class="page-header-label">Design System / Guidelines</p>
+        <h1 class="page-header-title">How We Build</h1>
+        <p class="page-header-desc">Principles, patterns, and production rules that govern every surface of Theorem. This is not a suggestion list. These guidelines are load-bearing.</p>
+      </div>
+      <div class="page-header-meta">
+        <strong>In this document</strong>
+        <p>Voice &amp; Tone, Typography Usage, Color Usage, Spacing &amp; Layout, Motion Guidelines, Accessibility, Visual Assets Direction</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <!-- ============================================================
+         SECTION 1 — VOICE & TONE
+         ============================================================ -->
+    <section class="section" id="voice-tone">
+      <div class="section-header">
+        <div>
+          <p class="section-number">01</p>
+          <h2 class="section-title">Voice &amp; Tone</h2>
+        </div>
+        <p class="section-desc">Theorem speaks like a senior engineer with design taste. Every word should earn its place. We are precise without being cold, confident without being loud.</p>
+      </div>
+
+      <!-- Voice Attributes -->
+      <div class="subsection">
+        <h3 class="subsection-title">Voice Attributes</h3>
+        <div class="grid-3">
+          <div class="voice-card">
+            <div class="voice-card-header">
+              <div class="voice-card-icon">
+                <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="1.5"/><path d="M9 2v4.5M9 11.5V16M2 9h4.5M11.5 9H16"/></svg>
+              </div>
+              <h4 class="voice-card-name">Precise</h4>
+            </div>
+            <p class="voice-card-desc">Say exactly what you mean. No filler words, no ambiguous language, no marketing approximations.</p>
+            <div class="voice-detail-label">Boundaries</div>
+            <ul class="voice-detail-list">
+              <li>Specific over general. "3 workflows deployed" not "workflows updated."</li>
+              <li>Numbers over adjectives. Measurements over feelings.</li>
+            </ul>
+            <div class="voice-detail-label">Anti-patterns</div>
+            <ul class="voice-detail-list">
+              <li>Vague reassurance: "Everything looks great!"</li>
+              <li>Weasel words: "Might," "possibly," "up to"</li>
+            </ul>
+          </div>
+
+          <div class="voice-card">
+            <div class="voice-card-header">
+              <div class="voice-card-icon">
+                <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 9h10M9 4l5 5-5 5"/></svg>
+              </div>
+              <h4 class="voice-card-name">Direct</h4>
+            </div>
+            <p class="voice-card-desc">Lead with the action or the answer. Skip the preamble. Respect the reader's time.</p>
+            <div class="voice-detail-label">Boundaries</div>
+            <ul class="voice-detail-list">
+              <li>Active voice by default. "Deploy the workflow" not "The workflow can be deployed."</li>
+              <li>Front-load the important word in every sentence.</li>
+            </ul>
+            <div class="voice-detail-label">Anti-patterns</div>
+            <ul class="voice-detail-list">
+              <li>Burying the lead: "In order to achieve better results, you might want to consider..."</li>
+              <li>Passive deflection: "An error was encountered."</li>
+            </ul>
+          </div>
+
+          <div class="voice-card">
+            <div class="voice-card-header">
+              <div class="voice-card-icon">
+                <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 14h12M5 10h8M7 6h4"/></svg>
+              </div>
+              <h4 class="voice-card-name">Grounded</h4>
+            </div>
+            <p class="voice-card-desc">Speak from evidence, not aspiration. We describe what things do, not what they could theoretically become.</p>
+            <div class="voice-detail-label">Boundaries</div>
+            <ul class="voice-detail-list">
+              <li>Present tense for current capabilities. Future tense only for roadmap.</li>
+              <li>Technical accuracy over marketing momentum.</li>
+            </ul>
+            <div class="voice-detail-label">Anti-patterns</div>
+            <ul class="voice-detail-list">
+              <li>Hype language: "Revolutionary," "game-changing," "powered by magic"</li>
+              <li>Unfounded superlatives: "The most advanced," "the only platform"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tone Shifts -->
+      <div class="subsection">
+        <h3 class="subsection-title">Tone Shifts by Context</h3>
+        <p class="subsection-desc">The voice stays constant. The tone adjusts to context.</p>
+        <div class="tone-grid">
+          <div class="tone-card">
+            <p class="tone-card-context">Onboarding</p>
+            <p class="tone-card-desc">Warmer. Allow a moment of welcome. Still direct, but acknowledge the human on the other side. "Welcome. Let's configure your first workspace."</p>
+          </div>
+          <div class="tone-card">
+            <p class="tone-card-context">Errors</p>
+            <p class="tone-card-desc">Calm and specific. Name the problem, state what happened, offer the next step. Never blame the user. "Deployment failed: insufficient permissions on staging-east."</p>
+          </div>
+          <div class="tone-card">
+            <p class="tone-card-context">Marketing</p>
+            <p class="tone-card-desc">Confident, not hyperbolic. Let the product speak. Describe real capabilities with real specificity. Avoid "unlock," "supercharge," "leverage."</p>
+          </div>
+          <div class="tone-card">
+            <p class="tone-card-context">Documentation</p>
+            <p class="tone-card-desc">Clear, concise, scannable. Short paragraphs. Code examples over prose explanations. No opinion unless it prevents an error.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA Conventions -->
+      <div class="subsection">
+        <h3 class="subsection-title">CTA Conventions</h3>
+        <p class="subsection-desc">Verb-first, action-specific. The label should describe exactly what happens when clicked.</p>
+        <div class="example-pair">
+          <div class="example-do">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg>
+              Do
+            </div>
+            <p class="example-text">"Deploy workflow"<br>"Create agent"<br>"Export as CSV"<br>"Connect data source"</p>
+          </div>
+          <div class="example-dont">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+              Don't
+            </div>
+            <p class="example-text">"Get started"<br>"Submit"<br>"Click here"<br>"Learn more"</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Naming Principles -->
+      <div class="subsection">
+        <h3 class="subsection-title">Naming Principles</h3>
+        <div class="example-pair">
+          <div class="example-do">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg>
+              Do
+            </div>
+            <p class="example-text">"Workflow" (clear, functional)<br>"Agent log" (descriptive)<br>"Run history" (plain language)<br>"Deployment target" (technical but precise)</p>
+          </div>
+          <div class="example-dont">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+              Don't
+            </div>
+            <p class="example-text">"TheoFlow&trade;" (jargon for jargon's sake)<br>"Your AI assistant thinks..." (anthropomorphizing)<br>"Brainspace" (clever naming over clarity)<br>"SynapseLink" (branded complexity)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 2 — TYPOGRAPHY USAGE
+         ============================================================ -->
+    <section class="section" id="typography">
+      <div class="section-header">
+        <div>
+          <p class="section-number">02</p>
+          <h2 class="section-title">Typography Usage</h2>
+        </div>
+        <p class="section-desc">Source Serif 4 and Inter create editorial tension. Serif signals importance and presence. Sans-serif does the work. Never mix these roles.</p>
+      </div>
+
+      <!-- Font Pairing -->
+      <div class="subsection">
+        <h3 class="subsection-title">The Pairing</h3>
+        <div class="grid-2">
+          <div class="card">
+            <p class="card-title" style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-regular); letter-spacing: var(--tracking-snug); margin-bottom: var(--space-4);">Source Serif 4</p>
+            <p class="card-body"><strong>Use for:</strong> Display headings, hero headlines, marketing headlines, empty state headings, page titles on landing pages.</p>
+            <p class="card-body" style="margin-top: var(--space-2);"><strong>Weight:</strong> 400 always. Never bold.</p>
+          </div>
+          <div class="card">
+            <p class="card-title" style="font-family: var(--font-body); font-size: var(--text-2xl); font-weight: var(--weight-medium); letter-spacing: var(--tracking-snug); margin-bottom: var(--space-4);">Inter</p>
+            <p class="card-body"><strong>Use for:</strong> Everything else. Body text, UI labels, navigation, form elements, buttons, table headers, subheadings, component text.</p>
+            <p class="card-body" style="margin-top: var(--space-2);"><strong>Weight:</strong> 400 default, 450 for emphasis, 550 for nav active and table headers.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heading Hierarchy -->
+      <div class="subsection">
+        <h3 class="subsection-title">Heading Hierarchy</h3>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-display); font-size: var(--text-5xl); font-weight: var(--weight-regular); line-height: var(--leading-none); letter-spacing: var(--tracking-tight);">
+              Heading One
+            </div>
+            <div class="type-specimen-meta">
+              H1 / 60px<br>
+              Source Serif 4<br>
+              Weight 400<br>
+              Line-height 1.0<br>
+              Tracking -0.025em
+            </div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-display); font-size: var(--text-4xl); font-weight: var(--weight-regular); line-height: var(--leading-none); letter-spacing: var(--tracking-tight);">
+              Heading Two
+            </div>
+            <div class="type-specimen-meta">
+              H2 / 48px<br>
+              Source Serif 4<br>
+              Weight 400<br>
+              Line-height 1.0<br>
+              Tracking -0.025em
+            </div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--weight-regular); line-height: var(--leading-tight); letter-spacing: var(--tracking-snug);">
+              Heading Three
+            </div>
+            <div class="type-specimen-meta">
+              H3 / 36px<br>
+              Source Serif 4<br>
+              Weight 400<br>
+              Line-height 1.1<br>
+              Tracking -0.015em
+            </div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-body); font-size: var(--text-2xl); font-weight: var(--weight-medium); line-height: var(--leading-snug); letter-spacing: var(--tracking-snug);">
+              Heading Four
+            </div>
+            <div class="type-specimen-meta">
+              H4 / 28px<br>
+              Inter<br>
+              Weight 450<br>
+              Line-height 1.25<br>
+              Tracking -0.015em
+            </div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-body); font-size: var(--text-xl); font-weight: var(--weight-medium); line-height: var(--leading-snug); letter-spacing: var(--tracking-normal);">
+              Heading Five
+            </div>
+            <div class="type-specimen-meta">
+              H5 / 22px<br>
+              Inter<br>
+              Weight 450<br>
+              Line-height 1.25<br>
+              Tracking 0
+            </div>
+          </div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-row">
+            <div class="type-specimen-sample" style="font-family: var(--font-body); font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: var(--leading-snug); letter-spacing: var(--tracking-wide);">
+              Heading Six
+            </div>
+            <div class="type-specimen-meta">
+              H6 / 17px<br>
+              Inter<br>
+              Weight 550<br>
+              Line-height 1.25<br>
+              Tracking 0.01em
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body Text -->
+      <div class="subsection">
+        <h3 class="subsection-title">Body Text</h3>
+        <div class="grid-3">
+          <div class="card-flat">
+            <p style="font-family: var(--font-body); font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--text-primary); margin: 0 0 var(--space-4);">Body Large renders at 19px for lead paragraphs and featured content.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">19px / Inter / 400 / 1.6</p>
+          </div>
+          <div class="card-flat">
+            <p style="font-family: var(--font-body); font-size: var(--text-base); line-height: var(--leading-normal); color: var(--text-primary); margin: 0 0 var(--space-4);">Body Base renders at 17px. This is the default reading size for all body text across the platform.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">17px / Inter / 400 / 1.5</p>
+          </div>
+          <div class="card-flat">
+            <p style="font-family: var(--font-body); font-size: var(--text-sm); line-height: var(--leading-normal); color: var(--text-primary); margin: 0 0 var(--space-4);">Body Small at 14px for captions, meta information, labels, and supporting text.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">14px / Inter / 400 / 1.5</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monospace -->
+      <div class="subsection">
+        <h3 class="subsection-title">Monospace</h3>
+        <p class="subsection-desc">JetBrains Mono for code blocks, agent IDs, technical values, API endpoints, and system-generated identifiers. Never for body text or headings.</p>
+        <div class="card-flat">
+          <p style="font-family: var(--font-mono); font-size: var(--text-sm); line-height: var(--leading-relaxed); color: var(--text-primary); margin: 0;">
+            agent_id: thm-7x2k9f<br>
+            status: deployed<br>
+            endpoint: /api/v2/workflows/run<br>
+            latency: 142ms
+          </p>
+        </div>
+      </div>
+
+      <!-- Tracking Rules -->
+      <div class="subsection">
+        <h3 class="subsection-title">Tracking Rules</h3>
+        <p class="subsection-desc">Letter-spacing is size-dependent. Large text gets tight. Small text gets wide. This creates optical consistency.</p>
+        <table class="tracking-chart">
+          <thead>
+            <tr>
+              <th>Size Range</th>
+              <th>Token</th>
+              <th>Value</th>
+              <th>Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>48px+ (Display)</td>
+              <td><code>--tracking-tight</code></td>
+              <td><code>-0.025em</code></td>
+              <td>Large text needs tightening to feel cohesive</td>
+            </tr>
+            <tr>
+              <td>28-47px (Heading)</td>
+              <td><code>--tracking-snug</code></td>
+              <td><code>-0.015em</code></td>
+              <td>Moderate tightening for section headings</td>
+            </tr>
+            <tr>
+              <td>17-27px (Body)</td>
+              <td><code>--tracking-normal</code></td>
+              <td><code>0</code></td>
+              <td>Default tracking at reading sizes</td>
+            </tr>
+            <tr>
+              <td>14-16px (Small)</td>
+              <td><code>--tracking-wide</code></td>
+              <td><code>0.01em</code></td>
+              <td>Slight widening aids readability</td>
+            </tr>
+            <tr>
+              <td>13px and below</td>
+              <td><code>--tracking-wider</code></td>
+              <td><code>0.025em</code></td>
+              <td>Caps labels and meta text need open tracking</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Weight Rules -->
+      <div class="subsection">
+        <h3 class="subsection-title">Weight Rules</h3>
+        <div class="weight-rule">
+          Prefer weight <code>400</code> for all text. Use <code>450</code> for subtle emphasis within body text or card titles. Reserve <code>550</code> and above for navigation active states, table headers, and strong system labels only. Theorem does not shout.
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 3 — COLOR USAGE
+         ============================================================ -->
+    <section class="section" id="color">
+      <div class="section-header">
+        <div>
+          <p class="section-number">03</p>
+          <h2 class="section-title">Color Usage</h2>
+        </div>
+        <p class="section-desc">Color is a tool for hierarchy and state, not decoration. The vast majority of any Theorem surface is neutral. Color appears with intention.</p>
+      </div>
+
+      <!-- When to use accent -->
+      <div class="subsection">
+        <h3 class="subsection-title">When to Use the Accent</h3>
+        <p class="subsection-desc">The accent color (#b87a4b) has exactly four sanctioned uses.</p>
+        <div class="grid-4">
+          <div class="card-flat">
+            <p class="card-title">Primary CTAs</p>
+            <p class="card-body">Filled buttons for the primary action on a screen.</p>
+          </div>
+          <div class="card-flat">
+            <p class="card-title">Active States</p>
+            <p class="card-body">Selected tabs, active navigation items, toggle on-states.</p>
+          </div>
+          <div class="card-flat">
+            <p class="card-title">Links</p>
+            <p class="card-body">Inline text links and navigation highlights.</p>
+          </div>
+          <div class="card-flat">
+            <p class="card-title">Focus Rings</p>
+            <p class="card-body">Keyboard focus indicators on all interactive elements.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- When NOT to use color -->
+      <div class="subsection">
+        <h3 class="subsection-title">When Not to Use Color</h3>
+        <div class="example-pair">
+          <div class="example-do">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg>
+              Do
+            </div>
+            <p class="example-text">Use warm grays for borders and dividers.<br>Use off-white tints for section backgrounds.<br>Use weight or size changes for heading emphasis.<br>Use spacing to create visual hierarchy.</p>
+          </div>
+          <div class="example-dont">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+              Don't
+            </div>
+            <p class="example-text">Colored borders on structural containers.<br>Tinted section backgrounds for visual variety.<br>Colored heading text for emphasis.<br>Multiple accent colors for "visual interest."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functional Colors -->
+      <div class="subsection">
+        <h3 class="subsection-title">Functional Colors</h3>
+        <p class="subsection-desc">Functional colors appear only in their semantic context. They never appear as decoration.</p>
+        <div class="grid-4">
+          <div class="card-flat">
+            <div style="width: 100%; height: 40px; background: var(--color-success); border-radius: var(--radius-sm); margin-bottom: var(--space-3);"></div>
+            <p class="card-title">Success</p>
+            <p class="card-body">#3a9a6b — Completed actions, successful deployments, passing checks.</p>
+          </div>
+          <div class="card-flat">
+            <div style="width: 100%; height: 40px; background: var(--color-warning); border-radius: var(--radius-sm); margin-bottom: var(--space-3);"></div>
+            <p class="card-title">Warning</p>
+            <p class="card-body">#c48a2c — Approaching limits, degraded performance, requires attention.</p>
+          </div>
+          <div class="card-flat">
+            <div style="width: 100%; height: 40px; background: var(--color-danger); border-radius: var(--radius-sm); margin-bottom: var(--space-3);"></div>
+            <p class="card-title">Danger</p>
+            <p class="card-body">#c44b3f — Errors, failed deployments, destructive actions, system failures.</p>
+          </div>
+          <div class="card-flat">
+            <div style="width: 100%; height: 40px; background: var(--color-info); border-radius: var(--radius-sm); margin-bottom: var(--space-3);"></div>
+            <p class="card-title">Info</p>
+            <p class="card-body">#4a7fb5 — Neutral informational messages, tips, contextual guidance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gray Hierarchy -->
+      <div class="subsection">
+        <h3 class="subsection-title">Text Color Hierarchy</h3>
+        <p class="subsection-desc">Three levels of text color create clear reading priority across every surface.</p>
+        <div class="grid-3">
+          <div class="card">
+            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--text-primary); margin: 0 0 var(--space-3);">Primary</p>
+            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0 0 var(--space-2);">Headings, body text, labels, values that must be read first.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">--text-primary / gray-900</p>
+          </div>
+          <div class="card">
+            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--text-secondary); margin: 0 0 var(--space-3);">Secondary</p>
+            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0 0 var(--space-2);">Descriptions, supporting paragraphs, form help text.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">--text-secondary / gray-500</p>
+          </div>
+          <div class="card">
+            <p style="font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--text-tertiary); margin: 0 0 var(--space-3);">Tertiary</p>
+            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0 0 var(--space-2);">Timestamps, placeholder text, disabled labels, meta.</p>
+            <p style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">--text-tertiary / gray-400</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dark Theme Side-by-Side -->
+      <div class="subsection">
+        <h3 class="subsection-title">Light &amp; Dark Themes</h3>
+        <p class="subsection-desc">Same semantic system, different palette. Both themes maintain identical hierarchy and contrast relationships.</p>
+        <div class="theme-demo">
+          <div class="theme-demo-light">
+            <p class="theme-demo-label">Light Theme</p>
+            <div class="theme-demo-swatch">
+              <div class="theme-demo-chip" style="background: #f8f7f4;"></div>
+              <div class="theme-demo-chip" style="background: #f2f0ec;"></div>
+              <div class="theme-demo-chip" style="background: #e8e5df;"></div>
+              <div class="theme-demo-chip" style="background: #b87a4b;"></div>
+              <div class="theme-demo-chip" style="background: #1a1714;"></div>
+            </div>
+            <p class="theme-demo-text">Primary text on warm off-white.</p>
+            <p class="theme-demo-text-secondary">Secondary text for supporting content.</p>
+            <p class="theme-demo-text-tertiary">Tertiary text for metadata.</p>
+          </div>
+          <div class="theme-demo-dark">
+            <p class="theme-demo-label">Dark Theme</p>
+            <div class="theme-demo-swatch">
+              <div class="theme-demo-chip" style="background: #111010;"></div>
+              <div class="theme-demo-chip" style="background: #161514;"></div>
+              <div class="theme-demo-chip" style="background: #1e1d1b;"></div>
+              <div class="theme-demo-chip" style="background: #deb78f;"></div>
+              <div class="theme-demo-chip" style="background: #e8e5df;"></div>
+            </div>
+            <p class="theme-demo-text">Primary text on true black.</p>
+            <p class="theme-demo-text-secondary">Secondary text for supporting content.</p>
+            <p class="theme-demo-text-tertiary">Tertiary text for metadata.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 4 — SPACING & LAYOUT
+         ============================================================ -->
+    <section class="section" id="spacing">
+      <div class="section-header">
+        <div>
+          <p class="section-number">04</p>
+          <h2 class="section-title">Spacing &amp; Layout</h2>
+        </div>
+        <p class="section-desc">Generous whitespace is the single strongest signal of quality. Space is not "wasted" — it is the primary structural material.</p>
+      </div>
+
+      <!-- Density Tiers -->
+      <div class="subsection">
+        <h3 class="subsection-title">Density Tiers</h3>
+        <p class="subsection-desc">Three density modes allow the same components to work across marketing sites, dashboards, and data-heavy tables.</p>
+        <div class="density-compare">
+          <div class="density-card">
+            <div class="density-card-header">Relaxed</div>
+            <div class="density-card-body relaxed">
+              <div class="density-line"></div>
+              <div class="density-line short"></div>
+              <div class="density-line medium"></div>
+              <div class="density-line short"></div>
+            </div>
+          </div>
+          <div class="density-card">
+            <div class="density-card-header">Standard</div>
+            <div class="density-card-body">
+              <div class="density-line"></div>
+              <div class="density-line short"></div>
+              <div class="density-line medium"></div>
+              <div class="density-line short"></div>
+            </div>
+          </div>
+          <div class="density-card">
+            <div class="density-card-header">Compact</div>
+            <div class="density-card-body compact">
+              <div class="density-line"></div>
+              <div class="density-line short"></div>
+              <div class="density-line medium"></div>
+              <div class="density-line short"></div>
+            </div>
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top: var(--space-4);">
+          <div class="card-flat">
+            <p class="card-title">Relaxed</p>
+            <p class="card-body">128px section spacing, 64px group spacing, 32px element spacing. 19px base text. Marketing pages, landing pages, editorial content.</p>
+          </div>
+          <div class="card-flat">
+            <p class="card-title">Standard</p>
+            <p class="card-body">96px section spacing, 48px group spacing, 24px element spacing. 17px base text. Dashboards, settings, general application views.</p>
+          </div>
+          <div class="card-flat">
+            <p class="card-title">Compact</p>
+            <p class="card-body">64px section spacing, 32px group spacing, 16px element spacing. 15px base text. Data tables, dense lists, monitoring views.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Rhythm -->
+      <div class="subsection">
+        <h3 class="subsection-title">Section Rhythm</h3>
+        <div class="spacing-visual">
+          <div class="spacing-block">
+            <div class="spacing-bar" style="height: 96px;"></div>
+            <span class="spacing-label">96px</span>
+            <span class="spacing-label">Between sections</span>
+          </div>
+          <div class="spacing-block">
+            <div class="spacing-bar" style="height: 48px;"></div>
+            <span class="spacing-label">48px</span>
+            <span class="spacing-label">Within sections</span>
+          </div>
+          <div class="spacing-block">
+            <div class="spacing-bar" style="height: 24px;"></div>
+            <span class="spacing-label">24px</span>
+            <span class="spacing-label">Within groups</span>
+          </div>
+          <div class="spacing-block">
+            <div class="spacing-bar" style="height: 16px;"></div>
+            <span class="spacing-label">16px</span>
+            <span class="spacing-label">Between elements</span>
+          </div>
+          <div class="spacing-block">
+            <div class="spacing-bar" style="height: 8px;"></div>
+            <span class="spacing-label">8px</span>
+            <span class="spacing-label">Tight grouping</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Max-Widths -->
+      <div class="subsection">
+        <h3 class="subsection-title">Grid Max-Widths</h3>
+        <div class="maxwidth-visual">
+          <div class="maxwidth-bar">
+            <span class="maxwidth-label">640px</span>
+            <div class="maxwidth-line" style="width: 45%;"></div>
+            <span class="maxwidth-use">Long-form text, forms, settings</span>
+          </div>
+          <div class="maxwidth-bar">
+            <span class="maxwidth-label">920px</span>
+            <div class="maxwidth-line" style="width: 65%;"></div>
+            <span class="maxwidth-use">Content pages, documentation</span>
+          </div>
+          <div class="maxwidth-bar">
+            <span class="maxwidth-label">1120px</span>
+            <div class="maxwidth-line" style="width: 80%;"></div>
+            <span class="maxwidth-use">Standard application layout</span>
+          </div>
+          <div class="maxwidth-bar">
+            <span class="maxwidth-label">1280px</span>
+            <div class="maxwidth-line" style="width: 92%;"></div>
+            <span class="maxwidth-use">Wide dashboards, data views</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Asymmetric Layouts -->
+      <div class="subsection">
+        <h3 class="subsection-title">Asymmetric Layouts</h3>
+        <p class="subsection-desc">Prefer asymmetric splits over equal columns for content with differing purposes. Use 30/70 for label + content, 40/60 for text + visual.</p>
+        <div class="grid-asym-30-70" style="padding: var(--space-6); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); margin-bottom: var(--space-4);">
+          <div style="background: var(--color-accent-100); border: 1px dashed var(--color-accent-300); border-radius: var(--radius-sm); padding: var(--space-4); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-accent);">30%<br>Label / Meta</div>
+          <div style="background: var(--surface-tertiary); border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); padding: var(--space-4); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-secondary);">70%<br>Content / Detail</div>
+        </div>
+        <div class="grid-asym-40-60" style="padding: var(--space-6); background: var(--surface-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle);">
+          <div style="background: var(--color-accent-100); border: 1px dashed var(--color-accent-300); border-radius: var(--radius-sm); padding: var(--space-4); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-accent);">40%<br>Text / Explanation</div>
+          <div style="background: var(--surface-tertiary); border: 1px dashed var(--border-strong); border-radius: var(--radius-sm); padding: var(--space-4); text-align: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-secondary);">60%<br>Visual / Demo</div>
+        </div>
+      </div>
+
+      <!-- Card vs Inline -->
+      <div class="subsection">
+        <h3 class="subsection-title">Card vs Inline Sections</h3>
+        <div class="example-pair">
+          <div class="example-do">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg>
+              Use Cards When
+            </div>
+            <p class="example-text">Content can be acted upon independently.<br>Items represent discrete objects (agents, workflows).<br>The surface is elevated from the page (modals, panels).<br>Content needs visual separation from siblings.</p>
+          </div>
+          <div class="example-dont">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+              Use Inline Sections When
+            </div>
+            <p class="example-text">Content is part of a continuous reading flow.<br>Items share context and should feel connected.<br>The hierarchy is established by typography alone.<br>You need maximum information density.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 5 — MOTION GUIDELINES
+         ============================================================ -->
+    <section class="section" id="motion">
+      <div class="section-header">
+        <div>
+          <p class="section-number">05</p>
+          <h2 class="section-title">Motion Guidelines</h2>
+        </div>
+        <p class="section-desc">Animation reinforces spatial relationships and provides feedback. It should feel inevitable, not performative. Every animation must answer: "What does this help the user understand?"</p>
+      </div>
+
+      <!-- Easing Curves -->
+      <div class="subsection">
+        <h3 class="subsection-title">Easing Curves</h3>
+        <p class="subsection-desc">Four custom curves. Never use CSS presets (ease, ease-in-out). Each curve has a specific character.</p>
+        <div class="easing-grid">
+          <div class="easing-card">
+            <div class="easing-curve-visual">
+              <div class="easing-dot"></div>
+            </div>
+            <p class="easing-card-name">Ease Out</p>
+            <p class="easing-card-value">cubic-bezier(0.22, 0.61, 0.36, 1)</p>
+            <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">Fast start, gentle land. Default for most UI transitions.</p>
+          </div>
+          <div class="easing-card">
+            <div class="easing-curve-visual">
+              <div class="easing-dot"></div>
+            </div>
+            <p class="easing-card-name">Ease In-Out</p>
+            <p class="easing-card-value">cubic-bezier(0.45, 0.05, 0.55, 0.95)</p>
+            <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">Symmetric. For state changes that feel deliberate.</p>
+          </div>
+          <div class="easing-card">
+            <div class="easing-curve-visual">
+              <div class="easing-dot"></div>
+            </div>
+            <p class="easing-card-name">Spring</p>
+            <p class="easing-card-value">cubic-bezier(0.34, 1.56, 0.64, 1)</p>
+            <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">Overshoots slightly. For playful micro-interactions and toggles.</p>
+          </div>
+          <div class="easing-card">
+            <div class="easing-curve-visual">
+              <div class="easing-dot"></div>
+            </div>
+            <p class="easing-card-name">Smooth</p>
+            <p class="easing-card-value">cubic-bezier(0.52, 0.01, 0.26, 1)</p>
+            <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin: 0;">Heavy, deliberate. For page transitions and large reveals.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duration Rules -->
+      <div class="subsection">
+        <h3 class="subsection-title">Duration Rules</h3>
+        <div class="duration-table">
+          <div class="duration-card">
+            <p class="duration-value">160ms</p>
+            <p class="duration-name">Micro-interactions</p>
+            <p class="duration-use">Hover states, button press, toggle, focus rings, tooltip show/hide.</p>
+          </div>
+          <div class="duration-card">
+            <p class="duration-value">280ms</p>
+            <p class="duration-name">Transitions</p>
+            <p class="duration-use">Panel open/close, tab switching, dropdown expand, card state changes.</p>
+          </div>
+          <div class="duration-card">
+            <p class="duration-value">450ms</p>
+            <p class="duration-name">Reveals</p>
+            <p class="duration-use">Content entering viewport, modal appearance, page section fade-in.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaction Signatures -->
+      <div class="subsection">
+        <h3 class="subsection-title">Interaction Signatures</h3>
+        <div class="interaction-demos">
+          <div class="interaction-demo demo-hover">
+            <div class="demo-box" tabindex="0"></div>
+            <p class="interaction-demo-label">Hover Scale</p>
+            <p class="interaction-demo-value">scale(1.015)</p>
+          </div>
+          <div class="interaction-demo demo-press">
+            <div class="demo-box" tabindex="0"></div>
+            <p class="interaction-demo-label">Press Scale</p>
+            <p class="interaction-demo-value">scale(0.98)</p>
+          </div>
+          <div class="interaction-demo">
+            <div style="display: flex; gap: var(--space-2);">
+              <div class="demo-box" style="width: 32px; height: 32px; animation: stagger-demo 1.5s infinite var(--ease-out);"></div>
+              <div class="demo-box" style="width: 32px; height: 32px; animation: stagger-demo 1.5s infinite var(--ease-out); animation-delay: 60ms;"></div>
+              <div class="demo-box" style="width: 32px; height: 32px; animation: stagger-demo 1.5s infinite var(--ease-out); animation-delay: 120ms;"></div>
+            </div>
+            <p class="interaction-demo-label">Stagger Delay</p>
+            <p class="interaction-demo-value">60ms between items</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reduced Motion -->
+      <div class="subsection">
+        <h3 class="subsection-title">Reduced Motion</h3>
+        <div class="callout">
+          <div class="callout-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 7v3M10 13h.01"/></svg>
+          </div>
+          <div class="callout-text">
+            Reduced motion is a <strong>parallel design track</strong>, not disabled animation. When <code style="font-family: var(--font-mono); font-size: var(--text-xs); background: var(--surface-secondary); padding: 2px 6px; border-radius: var(--radius-sm);">prefers-reduced-motion: reduce</code> is active, all durations go to 0ms, scale transforms are disabled, and stagger delays are removed. The layout and states remain identical — only the interpolation is removed.
+          </div>
+        </div>
+      </div>
+
+      <!-- Motion Do/Don't -->
+      <div class="subsection">
+        <h3 class="subsection-title">Motion Boundaries</h3>
+        <div class="example-pair">
+          <div class="example-do">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg>
+              Do
+            </div>
+            <p class="example-text">Animate content entering or leaving the viewport.<br>Animate state feedback (hover, press, focus).<br>Animate sequential item appearance with stagger.<br>Use spring easing for toggle switches.</p>
+          </div>
+          <div class="example-dont">
+            <div class="example-label">
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg>
+              Don't
+            </div>
+            <p class="example-text">Animate structural layout changes (grid reflow).<br>Add loading spinners longer than 700ms without context.<br>Use bounce or elastic easing on data-heavy views.<br>Animate color changes on large surface areas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 6 — ACCESSIBILITY
+         ============================================================ -->
+    <section class="section" id="accessibility">
+      <div class="section-header">
+        <div>
+          <p class="section-number">06</p>
+          <h2 class="section-title">Accessibility</h2>
+        </div>
+        <p class="section-desc">Accessibility is a design constraint, not a compliance checkbox. Every decision in this system accounts for the widest possible range of human interaction.</p>
+      </div>
+
+      <!-- Contrast Ratios -->
+      <div class="subsection">
+        <h3 class="subsection-title">Contrast Ratios</h3>
+        <p class="subsection-desc">All semantic color pairings are tested against WCAG 2.1 criteria. AA is the minimum. AAA is the target for body text.</p>
+        <table class="a11y-table">
+          <thead>
+            <tr>
+              <th>Pairing</th>
+              <th>Ratio</th>
+              <th>AA (4.5:1)</th>
+              <th>AAA (7:1)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Primary text on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">15.2:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+            </tr>
+            <tr>
+              <td>Secondary text on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">5.8:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+            <tr>
+              <td>Tertiary text on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">4.6:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+            <tr>
+              <td>Accent on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">5.1:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+            <tr>
+              <td>White on accent button</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">4.9:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+            <tr>
+              <td>Success on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">4.7:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+            <tr>
+              <td>Danger on surface</td>
+              <td style="font-family: var(--font-mono); font-size: var(--text-xs);">5.3:1</td>
+              <td><span class="status-pass"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 7.5l3 3 6.5-6.5"/></svg> Pass</span></td>
+              <td><span class="status-fail"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l8 8M11 3l-8 8"/></svg> Fail</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Focus, Keyboard, Screen Readers, Color Independence -->
+      <div class="subsection">
+        <h3 class="subsection-title">Interaction Accessibility</h3>
+        <div class="a11y-grid">
+          <div class="a11y-card">
+            <div class="a11y-card-icon">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="12" height="12" rx="2"/><path d="M6 9h6"/></svg>
+            </div>
+            <h4 class="a11y-card-title">Focus Management</h4>
+            <p class="a11y-card-body">All interactive elements show a visible focus ring using the accent color (#b87a4b) with a 2px solid outline and 2px offset. Focus rings are never suppressed. The outline uses <code style="font-family: var(--font-mono); font-size: var(--text-xs);">:focus-visible</code> to avoid showing on mouse clicks.</p>
+          </div>
+          <div class="a11y-card">
+            <div class="a11y-card-icon">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="5" width="14" height="8" rx="1.5"/><path d="M5 8h2v2H5zM9 8h1M12 8h1M5 11h8"/></svg>
+            </div>
+            <h4 class="a11y-card-title">Keyboard Navigation</h4>
+            <p class="a11y-card-body">All interactive components are keyboard navigable. Tab order follows visual reading order. Modals trap focus. Escape closes overlays. Arrow keys navigate within composite widgets (tabs, menus, radio groups).</p>
+          </div>
+          <div class="a11y-card">
+            <div class="a11y-card-icon">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 5h12M3 9h8M3 13h10"/></svg>
+            </div>
+            <h4 class="a11y-card-title">Screen Readers</h4>
+            <p class="a11y-card-body">Use <code style="font-family: var(--font-mono); font-size: var(--text-xs);">aria-live="polite"</code> for status changes (deployments, workflow completions). Provide meaningful alt text for all images. Icon-only buttons require <code style="font-family: var(--font-mono); font-size: var(--text-xs);">aria-label</code>. Form inputs require associated labels.</p>
+          </div>
+          <div class="a11y-card">
+            <div class="a11y-card-icon">
+              <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7"/><path d="M9 5v4l3 2"/></svg>
+            </div>
+            <h4 class="a11y-card-title">Color Independence</h4>
+            <p class="a11y-card-body">Never convey meaning through color alone. Every status indicator pairs color with an icon or text label. Error states use both red color and an error icon. Success uses both green and a check icon. Charts use patterns in addition to colors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SECTION 7 — VISUAL ASSETS DIRECTION
+         ============================================================ -->
+    <section class="section" id="assets">
+      <div class="section-header">
+        <div>
+          <p class="section-number">07</p>
+          <h2 class="section-title">Visual Assets Direction</h2>
+        </div>
+        <p class="section-desc">Every visual element in Theorem is intentional. Photography is editorial. Illustration is structural. Icons are precise. Graphic devices are restrained.</p>
+      </div>
+
+      <div class="asset-grid">
+        <!-- Photography -->
+        <div class="asset-card">
+          <div class="asset-card-visual" style="background: linear-gradient(135deg, #2a2724, #56514a);">
+            <div style="width: 80px; height: 60px; border: 1.5px solid rgba(255,255,255,0.3); border-radius: 0; display: flex; align-items: center; justify-content: center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="12" cy="12" r="3"/><path d="M3 8h2M19 8h2"/></svg>
+            </div>
+          </div>
+          <div class="asset-card-content">
+            <h4 class="asset-card-title">Photography</h4>
+            <p class="asset-card-body">High contrast, desaturated, warm tones. Shot with intention — not stock. Subjects should feel candid but composed. Avoid overly staged environments. Prefer detail shots over wide establishing shots.</p>
+            <div class="asset-card-specs">
+              <span class="asset-spec">High contrast</span>
+              <span class="asset-spec">Desaturated</span>
+              <span class="asset-spec">Warm tones</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Illustration -->
+        <div class="asset-card">
+          <div class="asset-card-visual" style="background: var(--surface-secondary);">
+            <svg width="100" height="80" viewBox="0 0 100 80" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5">
+              <rect x="10" y="10" width="30" height="30"/>
+              <circle cx="70" cy="25" r="15"/>
+              <line x1="10" y1="60" x2="90" y2="60"/>
+              <line x1="25" y1="45" x2="25" y2="70"/>
+              <polygon points="55,50 70,70 85,50" fill="none"/>
+            </svg>
+          </div>
+          <div class="asset-card-content">
+            <h4 class="asset-card-title">Illustration</h4>
+            <p class="asset-card-body">Geometric, restrained palette limited to grays plus the accent color. Line-based, not filled. Convey structure and relationships, not emotion. Avoid gradients within illustrations.</p>
+            <div class="asset-card-specs">
+              <span class="asset-spec">Geometric</span>
+              <span class="asset-spec">Line-based</span>
+              <span class="asset-spec">Gray + accent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Iconography -->
+        <div class="asset-card">
+          <div class="asset-card-visual" style="background: var(--surface-secondary);">
+            <div class="icon-demo-grid">
+              <div class="icon-demo-item">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10h14M10 3l7 7-7 7"/></svg>
+              </div>
+              <div class="icon-demo-item">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>
+              </div>
+              <div class="icon-demo-item">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h12M4 10h12M4 15h8"/></svg>
+              </div>
+              <div class="icon-demo-item">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12" rx="1"/><path d="M8 10l2 2 4-4"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="asset-card-content">
+            <h4 class="asset-card-title">Iconography</h4>
+            <p class="asset-card-body">20px default size on a square grid. 1.5px stroke weight. No fills — outline only. Rounded caps and joins. Optically aligned within the grid. Every icon must be legible at 16px.</p>
+            <div class="asset-card-specs">
+              <span class="asset-spec">20px grid</span>
+              <span class="asset-spec">1.5px stroke</span>
+              <span class="asset-spec">Rounded caps</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Graphic Devices -->
+        <div class="asset-card">
+          <div class="asset-card-visual" style="background: var(--surface-secondary); padding: var(--space-6);">
+            <div style="width: 100%; display: flex; flex-direction: column; gap: var(--space-4); padding: 0 var(--space-6);">
+              <div style="border-top: 1px solid var(--text-tertiary); padding-top: var(--space-2);">
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary);">01</span>
+              </div>
+              <div style="border-top: 1px solid var(--text-tertiary); padding-top: var(--space-2);">
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary);">02</span>
+              </div>
+              <div style="border-top: 1px solid var(--text-tertiary); padding-top: var(--space-2);">
+                <span style="font-family: var(--font-mono); font-size: 10px; color: var(--text-tertiary);">03</span>
+              </div>
+            </div>
+          </div>
+          <div class="asset-card-content">
+            <h4 class="asset-card-title">Graphic Devices</h4>
+            <p class="asset-card-body">Thin rules (1px) as structural dividers. Generous whitespace as the primary layout tool. Numbered sections (01, 02, 03) using monospace for sequential structure. No decorative borders or ornamental elements.</p>
+            <div class="asset-card-specs">
+              <span class="asset-spec">1px rules</span>
+              <span class="asset-spec">Whitespace</span>
+              <span class="asset-spec">Numbered sections</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-text">Theorem Design System v1.0</p>
+      <p class="footer-text">Built for precision.</p>
+    </div>
+  </footer>
+
+  <style>
+    @keyframes stagger-demo {
+      0%, 100% { opacity: 0.3; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-12px); }
+    }
+  </style>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

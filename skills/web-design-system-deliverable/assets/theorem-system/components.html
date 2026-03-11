@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <title>Theorem Design System — Components</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=Inter:wght@400;450;500;550;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/tokens.css">
+    <style>
+      /* =======================================================================
+         THEOREM COMPONENTS PAGE — Inline Styles
+         All component styles self-contained for the design system deliverable.
+         ======================================================================= */
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--weight-regular);
+        line-height: var(--leading-normal);
+        letter-spacing: var(--tracking-normal);
+        color: var(--text-primary);
+        background: var(--surface-primary);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- Top Bar --------------------------------------------------------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-nav);
+        background: var(--surface-primary);
+        border-bottom: 1px solid var(--border-default);
+        backdrop-filter: blur(12px);
+        background: rgba(248, 247, 244, 0.85);
+      }
+      [data-theme="dark"] .topbar {
+        background: rgba(17, 16, 16, 0.85);
+      }
+      .topbar__inner {
+        max-width: var(--max-width-full);
+        margin: 0 auto;
+        padding: var(--space-3) var(--space-6);
+        display: flex;
+        align-items: center;
+        gap: var(--space-8);
+      }
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-tight);
+      }
+      .brand-lockup__name {
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+      }
+      .topnav {
+        display: flex;
+        gap: var(--space-1);
+        flex: 1;
+      }
+      .topnav a {
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-md);
+        transition: color var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out);
+        letter-spacing: var(--tracking-wide);
+      }
+      .topnav a:hover { color: var(--text-primary); background: var(--border-subtle); }
+      .topnav a[aria-current="page"] {
+        color: var(--text-primary);
+        font-weight: var(--weight-medium);
+      }
+      .topbar__actions { margin-left: auto; }
+
+      /* --- Theme Toggle ---------------------------------------------------- */
+      .theme-toggle {
+        appearance: none;
+        border: 1px solid var(--border-default);
+        background: var(--surface-secondary);
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .theme-toggle:hover {
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+
+      /* --- Page Shell ------------------------------------------------------ */
+      .shell {
+        max-width: var(--max-width-wide);
+        margin: 0 auto;
+        padding: var(--space-12) var(--space-6) var(--space-32);
+      }
+
+      /* --- Hero ------------------------------------------------------------ */
+      .hero {
+        margin-bottom: var(--space-24);
+      }
+      .hero__kicker {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-accent);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+      .hero__title {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-tight);
+        color: var(--text-primary);
+        max-width: 720px;
+        margin-bottom: var(--space-5);
+      }
+      .hero__lead {
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+        max-width: 560px;
+      }
+
+      /* --- Section Anchors ------------------------------------------------- */
+      .section-nav {
+        display: flex;
+        gap: var(--space-1);
+        padding-bottom: var(--space-8);
+        border-bottom: 1px solid var(--border-default);
+        margin-bottom: var(--space-16);
+        overflow-x: auto;
+      }
+      .section-nav a {
+        font-size: var(--text-sm);
+        color: var(--text-tertiary);
+        text-decoration: none;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-md);
+        white-space: nowrap;
+        transition: color var(--duration-fast) var(--ease-out);
+        letter-spacing: var(--tracking-wide);
+      }
+      .section-nav a:hover { color: var(--text-primary); }
+
+      /* --- Component Section ----------------------------------------------- */
+      .comp-section {
+        margin-bottom: var(--space-24);
+      }
+      .comp-section__heading {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-2);
+      }
+      .comp-section__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-8);
+        max-width: 520px;
+        line-height: var(--leading-relaxed);
+      }
+      .comp-section__divider {
+        border: none;
+        border-top: 1px solid var(--border-default);
+        margin-bottom: var(--space-16);
+      }
+
+      /* --- Subsection ------------------------------------------------------ */
+      .subsection {
+        margin-bottom: var(--space-12);
+      }
+      .subsection__label {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+      .spec-note {
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+        margin-top: var(--space-3);
+        letter-spacing: var(--tracking-wide);
+      }
+
+      /* --- Flex helpers ---------------------------------------------------- */
+      .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+      .row--start { align-items: flex-start; }
+      .row--lg { gap: var(--space-6); }
+      .stack { display: flex; flex-direction: column; gap: var(--space-3); }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+      .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6); }
+      @media (max-width: 720px) {
+        .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      }
+
+      /* =====================================================================
+         COMPONENT STYLES
+         ===================================================================== */
+
+      /* --- Buttons --------------------------------------------------------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        line-height: 1;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all var(--duration-fast) var(--ease-out);
+        position: relative;
+        overflow: hidden;
+      }
+      .btn:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .btn:active:not(:disabled) { transform: scale(var(--press-scale)); }
+      .btn:disabled, .btn[aria-disabled="true"] {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      /* Primary */
+      .btn--primary {
+        background: var(--color-accent-500);
+        color: var(--text-on-accent);
+        border-radius: var(--radius-pill);
+      }
+      .btn--primary:hover:not(:disabled) {
+        background: var(--color-accent-600);
+        transform: scale(var(--hover-scale));
+      }
+
+      /* Secondary */
+      .btn--secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+      }
+      .btn--secondary:hover:not(:disabled) {
+        border-color: var(--text-primary);
+        transform: scale(var(--hover-scale));
+      }
+
+      /* Ghost */
+      .btn--ghost {
+        background: transparent;
+        color: var(--text-secondary);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 10px 12px;
+      }
+      .btn--ghost:hover:not(:disabled) {
+        color: var(--text-primary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      /* Danger */
+      .btn--danger {
+        background: var(--color-danger);
+        color: var(--text-on-accent);
+        border-radius: var(--radius-md);
+      }
+      .btn--danger:hover:not(:disabled) {
+        filter: brightness(1.1);
+        transform: scale(var(--hover-scale));
+      }
+
+      /* Icon button */
+      .btn--icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+      }
+      .btn--icon:hover:not(:disabled) {
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+      .btn--icon svg { width: 16px; height: 16px; }
+
+      /* Loading state */
+      .btn--loading {
+        color: transparent !important;
+        pointer-events: none;
+      }
+      .btn--loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+      .btn--secondary.btn--loading::after {
+        border-color: var(--border-strong);
+        border-top-color: var(--text-primary);
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* --- Form Inputs ----------------------------------------------------- */
+      .input {
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        color: var(--text-primary);
+        background: var(--surface-primary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+        padding: 10px 14px;
+        width: 100%;
+        max-width: 320px;
+        transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+        outline: none;
+      }
+      .input::placeholder { color: var(--text-tertiary); }
+      .input:focus {
+        border-color: var(--color-accent-500);
+        box-shadow: 0 0 0 3px var(--color-accent-100);
+      }
+      [data-theme="dark"] .input:focus {
+        box-shadow: 0 0 0 3px var(--color-accent-900);
+      }
+      .input--error {
+        border-color: var(--color-danger);
+      }
+      .input--error:focus {
+        box-shadow: 0 0 0 3px rgba(196, 75, 63, 0.15);
+      }
+      .input:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: var(--surface-secondary);
+      }
+
+      .input-group { display: flex; flex-direction: column; gap: var(--space-1); max-width: 320px; }
+      .input-label {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wide);
+        color: var(--text-secondary);
+      }
+      .input-hint {
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+      }
+      .input-error-msg {
+        font-size: var(--text-xs);
+        color: var(--color-danger);
+      }
+
+      /* Select */
+      .select {
+        appearance: none;
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+        background: var(--surface-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23948e82' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+        padding: 10px 32px 10px 14px;
+        max-width: 320px;
+        width: 100%;
+        outline: none;
+        cursor: pointer;
+        transition: border-color var(--duration-fast) var(--ease-out);
+      }
+      .select:focus { border-color: var(--color-accent-500); box-shadow: 0 0 0 3px var(--color-accent-100); }
+      [data-theme="dark"] .select:focus { box-shadow: 0 0 0 3px var(--color-accent-900); }
+
+      /* Textarea */
+      textarea.input {
+        min-height: 100px;
+        resize: vertical;
+        line-height: var(--leading-normal);
+      }
+
+      /* Checkbox */
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .checkbox-row input[type="checkbox"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        background: var(--surface-primary);
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: all var(--duration-fast) var(--ease-out);
+        flex-shrink: 0;
+      }
+      .checkbox-row input[type="checkbox"]::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        background: var(--text-on-accent);
+        transform: scale(0);
+        transition: transform var(--duration-fast) var(--ease-out);
+      }
+      .checkbox-row input[type="checkbox"]:checked {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+      }
+      .checkbox-row input[type="checkbox"]:checked::after { transform: scale(1); }
+      .checkbox-row input[type="checkbox"]:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .checkbox-row input[type="checkbox"]:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      /* Radio */
+      .radio-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .radio-row input[type="radio"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--border-strong);
+        border-radius: 50%;
+        background: var(--surface-primary);
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: all var(--duration-fast) var(--ease-out);
+        flex-shrink: 0;
+      }
+      .radio-row input[type="radio"]::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-on-accent);
+        transform: scale(0);
+        transition: transform var(--duration-fast) var(--ease-out);
+      }
+      .radio-row input[type="radio"]:checked {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+      }
+      .radio-row input[type="radio"]:checked::after { transform: scale(1); }
+      .radio-row input[type="radio"]:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* Toggle */
+      .toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .toggle__track {
+        width: 40px;
+        height: 22px;
+        background: var(--border-strong);
+        border-radius: var(--radius-pill);
+        position: relative;
+        transition: background var(--duration-fast) var(--ease-out);
+        flex-shrink: 0;
+      }
+      .toggle__track::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 3px;
+        left: 3px;
+        background: var(--surface-primary);
+        border-radius: 50%;
+        transition: transform var(--duration-fast) var(--ease-out);
+        box-shadow: var(--shadow-xs);
+      }
+      .toggle input { display: none; }
+      .toggle input:checked + .toggle__track {
+        background: var(--color-accent-500);
+      }
+      .toggle input:checked + .toggle__track::after {
+        transform: translateX(18px);
+      }
+      .toggle input:focus-visible + .toggle__track {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* --- Cards ----------------------------------------------------------- */
+      .card-structural {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-none);
+        padding: var(--space-6);
+        background: var(--surface-primary);
+      }
+
+      .card-elevated {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .card-interactive {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+        background: var(--surface-elevated);
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+        transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+      }
+      .card-interactive:hover {
+        transform: scale(var(--hover-scale));
+        box-shadow: var(--shadow-md);
+      }
+
+      .card__eyebrow {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-2);
+      }
+      .card__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-2);
+      }
+      .card__body {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+      }
+      .card__footer {
+        margin-top: var(--space-4);
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+      }
+
+      /* --- Tabs ------------------------------------------------------------- */
+      .tab-bar {
+        display: flex;
+        gap: var(--space-6);
+        border-bottom: 1px solid var(--border-default);
+      }
+      .tab-bar__item {
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-3) 0;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: color var(--duration-fast) var(--ease-out);
+        letter-spacing: var(--tracking-wide);
+        cursor: pointer;
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        font-family: var(--font-body);
+      }
+      .tab-bar__item:hover { color: var(--text-primary); }
+      .tab-bar__item--active {
+        color: var(--text-primary);
+        font-weight: var(--weight-medium);
+        border-bottom-color: var(--color-accent-500);
+      }
+
+      /* --- Breadcrumbs ------------------------------------------------------ */
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+        letter-spacing: var(--tracking-wide);
+      }
+      .breadcrumbs a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .breadcrumbs a:hover { color: var(--text-primary); }
+      .breadcrumbs__sep { color: var(--text-tertiary); user-select: none; }
+      .breadcrumbs__current { color: var(--text-primary); }
+
+      /* --- Badges & Tags --------------------------------------------------- */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: 11px;
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: var(--radius-pill);
+        line-height: 1.4;
+      }
+      .badge--default { background: var(--surface-secondary); color: var(--text-secondary); }
+      .badge--accent { background: var(--color-accent-100); color: var(--color-accent-700); }
+      [data-theme="dark"] .badge--accent { background: var(--color-accent-900); color: var(--color-accent-300); }
+      .badge--success { background: rgba(58, 154, 107, 0.12); color: var(--color-success); }
+      .badge--warning { background: rgba(196, 138, 44, 0.12); color: var(--color-warning); }
+      .badge--danger { background: rgba(196, 75, 63, 0.12); color: var(--color-danger); }
+      .badge--info { background: rgba(74, 127, 181, 0.12); color: var(--color-info); }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-regular);
+        padding: 4px 12px;
+        border-radius: var(--radius-pill);
+        background: var(--surface-secondary);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-default);
+        cursor: default;
+      }
+      .tag__remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 1;
+        padding: 0;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .tag__remove:hover { color: var(--text-primary); }
+
+      /* --- Alerts ---------------------------------------------------------- */
+      .alert {
+        display: flex;
+        gap: var(--space-3);
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+        border: 1px solid;
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+      }
+      .alert__icon {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+      }
+      .alert__content { flex: 1; }
+      .alert__title {
+        font-weight: var(--weight-medium);
+        margin-bottom: var(--space-1);
+      }
+      .alert--info {
+        background: rgba(74, 127, 181, 0.06);
+        border-color: rgba(74, 127, 181, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--info .alert__icon { color: var(--color-info); }
+      .alert--success {
+        background: rgba(58, 154, 107, 0.06);
+        border-color: rgba(58, 154, 107, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--success .alert__icon { color: var(--color-success); }
+      .alert--warning {
+        background: rgba(196, 138, 44, 0.06);
+        border-color: rgba(196, 138, 44, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--warning .alert__icon { color: var(--color-warning); }
+      .alert--danger {
+        background: rgba(196, 75, 63, 0.06);
+        border-color: rgba(196, 75, 63, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--danger .alert__icon { color: var(--color-danger); }
+
+      /* --- Table ----------------------------------------------------------- */
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-none);
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+      }
+      .table th {
+        text-align: left;
+        font-weight: var(--weight-medium);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-wider);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--border-default);
+        background: var(--surface-secondary);
+        white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+      }
+      .table th:hover { color: var(--text-secondary); }
+      .table th .sort-icon {
+        display: inline-block;
+        margin-left: var(--space-1);
+        opacity: 0.4;
+        font-size: 10px;
+      }
+      .table th.sorted .sort-icon { opacity: 1; color: var(--text-accent); }
+      .table td {
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--text-primary);
+        vertical-align: middle;
+      }
+      .table tbody tr {
+        transition: background var(--duration-fast) var(--ease-out);
+      }
+      .table tbody tr:hover {
+        background: var(--surface-secondary);
+      }
+      .table tbody tr:last-child td { border-bottom: none; }
+      .table .cell-mono {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+      }
+
+      /* --- Modal ----------------------------------------------------------- */
+      .modal-demo {
+        position: relative;
+        background: var(--surface-primary);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-xl);
+        max-width: 480px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .modal__backdrop {
+        background: rgba(17, 16, 16, 0.4);
+        backdrop-filter: blur(6px);
+        padding: var(--space-10);
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      [data-theme="dark"] .modal__backdrop {
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .modal__header {
+        padding: var(--space-6) var(--space-6) var(--space-4);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .modal__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+      }
+      .modal__close {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        border-radius: var(--radius-sm);
+        font-size: 16px;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .modal__close:hover { color: var(--text-primary); }
+      .modal__body {
+        padding: 0 var(--space-6) var(--space-4);
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+      }
+      .modal__footer {
+        padding: var(--space-4) var(--space-6) var(--space-6);
+        display: flex;
+        gap: var(--space-3);
+        justify-content: flex-end;
+      }
+
+      /* --- Drawer ---------------------------------------------------------- */
+      .drawer-demo {
+        display: flex;
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        height: 260px;
+      }
+      .drawer-demo__main {
+        flex: 1;
+        padding: var(--space-6);
+        background: var(--surface-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--text-sm);
+        color: var(--text-tertiary);
+      }
+      .drawer-demo__panel {
+        width: 280px;
+        background: var(--surface-elevated);
+        border-left: 1px solid var(--border-default);
+        padding: var(--space-6);
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+      }
+      .drawer__title {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+      }
+      .drawer__body {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+      }
+
+      /* --- Empty State ------------------------------------------------------ */
+      .empty-state {
+        text-align: center;
+        padding: var(--space-16) var(--space-6);
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .empty-state__illustration {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
+        background: var(--surface-secondary);
+        border: 1px solid var(--border-default);
+        margin: 0 auto var(--space-6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: 24px;
+      }
+      .empty-state__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+        margin-bottom: var(--space-2);
+      }
+      .empty-state__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+        line-height: var(--leading-relaxed);
+      }
+
+      /* --- Skeleton / Loading ----------------------------------------------- */
+      .skeleton {
+        background: var(--surface-secondary);
+        border-radius: var(--radius-md);
+        position: relative;
+        overflow: hidden;
+      }
+      .skeleton::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        animation: shimmer 1.8s ease-in-out infinite;
+      }
+      [data-theme="dark"] .skeleton::after {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      }
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      .skeleton--text { height: 14px; width: 100%; }
+      .skeleton--text-short { height: 14px; width: 60%; }
+      .skeleton--heading { height: 22px; width: 45%; }
+      .skeleton--avatar { width: 36px; height: 36px; border-radius: 50%; }
+      .skeleton--block { height: 80px; width: 100%; }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-default);
+        border-top-color: var(--color-accent-500);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+      }
+      .spinner--sm { width: 14px; height: 14px; border-width: 1.5px; }
+      .spinner--lg { width: 28px; height: 28px; border-width: 2.5px; }
+
+      /* --- Code Block ------------------------------------------------------ */
+      .code-block {
+        background: var(--color-gray-900);
+        color: var(--color-gray-200);
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        line-height: var(--leading-relaxed);
+        padding: var(--space-5);
+        border-radius: var(--radius-none);
+        overflow-x: auto;
+        border: 1px solid rgba(255,255,255,0.06);
+      }
+      [data-theme="dark"] .code-block {
+        background: #0d0d0d;
+        border-color: rgba(255,255,255,0.04);
+      }
+      .code-block .comment { color: var(--color-gray-500); }
+      .code-block .keyword { color: var(--color-accent-300); }
+      .code-block .string { color: #7ec699; }
+      .code-block .number { color: #d19a66; }
+      .code-block .fn { color: #e5c07b; }
+
+      /* --- Tooltip --------------------------------------------------------- */
+      .tooltip-demo {
+        position: relative;
+        display: inline-flex;
+      }
+      .tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface-inverse);
+        color: var(--text-inverse);
+        font-size: 12px;
+        font-weight: var(--weight-regular);
+        padding: 6px 10px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: var(--tracking-wide);
+      }
+      .tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: var(--surface-inverse);
+      }
+
+      .popover-demo {
+        position: relative;
+        display: inline-flex;
+      }
+      .popover {
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface-elevated);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        padding: var(--space-4);
+        width: 220px;
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+      }
+      .popover__title {
+        font-weight: var(--weight-medium);
+        color: var(--text-primary);
+        margin-bottom: var(--space-1);
+        font-size: var(--text-xs);
+      }
+
+      /* --- Utilities ------------------------------------------------------- */
+      .demo-surface {
+        background: var(--surface-secondary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-lg);
+        padding: var(--space-8);
+      }
+      .vis-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+      /* responsive */
+      @media (max-width: 640px) {
+        .hero__title { font-size: var(--text-3xl); }
+        .shell { padding: var(--space-8) var(--space-4) var(--space-16); }
+        .topbar__inner { gap: var(--space-4); }
+        .topnav { display: none; }
+        .drawer-demo { flex-direction: column; height: auto; }
+        .drawer-demo__panel { width: 100%; border-left: none; border-top: 1px solid var(--border-default); }
+      }
+    </style>
+  </head>
+
+  <body data-page="components">
+
+    <!-- ================================================================
+         TOP BAR
+         ================================================================ -->
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand-lockup" href="index.html" aria-label="Theorem Design System home">
+          <span class="brand-mark">Theorem</span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="components.html" aria-current="page">Components</a>
+          <a href="guidelines.html">Guidelines</a>
+          <a href="application.html">Application</a>
+        </nav>
+        <div class="topbar__actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>Dark mode</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         MAIN CONTENT
+         ================================================================ -->
+    <main class="shell">
+
+      <!-- Hero -->
+      <section class="hero">
+        <span class="hero__kicker">Component reference</span>
+        <h1 class="hero__title">Every component, every state, built to spec.</h1>
+        <p class="hero__lead">Live examples with interactive states. Each element follows the token architecture precisely, so what you see here is what ships.</p>
+      </section>
+
+      <!-- Section Nav -->
+      <nav class="section-nav" aria-label="Component sections">
+        <a href="#buttons">Buttons</a>
+        <a href="#forms">Forms</a>
+        <a href="#cards">Cards</a>
+        <a href="#navigation">Navigation</a>
+        <a href="#badges">Badges &amp; Tags</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#tables">Tables</a>
+        <a href="#modals">Modals &amp; Drawers</a>
+        <a href="#empty">Empty States</a>
+        <a href="#loading">Loading</a>
+        <a href="#code">Code Blocks</a>
+        <a href="#tooltips">Tooltips</a>
+      </nav>
+
+      <!-- =============================================================
+           1. BUTTONS
+           ============================================================= -->
+      <section class="comp-section" id="buttons">
+        <h2 class="comp-section__heading">Buttons</h2>
+        <p class="comp-section__desc">Priority hierarchy through shape, fill, and weight. Primary actions use the pill signature; secondary and ghost recede intentionally.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Priority ladder</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button">Deploy workflow</button>
+            <button class="btn btn--secondary" type="button">Configure agent</button>
+            <button class="btn btn--ghost" type="button">View logs</button>
+            <button class="btn btn--danger" type="button">Terminate run</button>
+            <button class="btn btn--icon" type="button" aria-label="Settings">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2m0 10v2m-5-7H1m14 0h-2M3.05 3.05l1.41 1.41m7.08 7.08l1.41 1.41M3.05 12.95l1.41-1.41m7.08-7.08l1.41-1.41"/></svg>
+            </button>
+          </div>
+          <p class="spec-note">Primary: pill, accent fill, weight 450. Secondary: 6px radius, 1px border. Ghost: text only, underline on hover. Danger: 6px radius, danger fill. Icon: square, 6px radius.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Hover state (scale 1.015)</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="transform: scale(1.015);">Deploy workflow</button>
+            <button class="btn btn--secondary" type="button" style="transform: scale(1.015);">Configure agent</button>
+          </div>
+          <p class="spec-note">Barely perceptible scale shift on hover. 160ms transition with custom cubic-bezier(0.22, 0.61, 0.36, 1).</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Focus visible</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">Deploy workflow</button>
+            <button class="btn btn--secondary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">Configure agent</button>
+          </div>
+          <p class="spec-note">2px accent ring with 2px offset. Visible on keyboard navigation only.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Active (pressed)</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="transform: scale(0.98);">Deploy workflow</button>
+            <button class="btn btn--secondary" type="button" style="transform: scale(0.98);">Configure agent</button>
+          </div>
+          <p class="spec-note">Scale 0.98 on press — subtle, tactile feedback.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Disabled</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" disabled>Deploy workflow</button>
+            <button class="btn btn--secondary" type="button" disabled>Configure agent</button>
+            <button class="btn btn--ghost" type="button" disabled>View logs</button>
+            <button class="btn btn--danger" type="button" disabled>Terminate run</button>
+          </div>
+          <p class="spec-note">Opacity 0.4, pointer-events: none, cursor: not-allowed.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Loading</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary btn--loading" type="button" aria-busy="true">Deploying...</button>
+            <button class="btn btn--secondary btn--loading" type="button" aria-busy="true">Configuring...</button>
+          </div>
+          <p class="spec-note">Text hidden, centered spinner. Pointer events disabled during loading.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           2. FORM INPUTS
+           ============================================================= -->
+      <section class="comp-section" id="forms">
+        <h2 class="comp-section__heading">Form inputs</h2>
+        <p class="comp-section__desc">Consistent 6px radius, subtle borders, accent-colored focus rings. Every control follows the same visual grammar.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Text inputs</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="wf-name">Workflow name</label>
+              <input class="input" type="text" id="wf-name" placeholder="e.g., Customer onboarding">
+              <span class="input-hint">Used as the display name across the platform.</span>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="wf-name-filled">Workflow name (filled)</label>
+              <input class="input" type="text" id="wf-name-filled" value="Customer onboarding pipeline">
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="wf-name-error">Workflow name (error)</label>
+              <input class="input input--error" type="text" id="wf-name-error" value="   ">
+              <span class="input-error-msg">Workflow name cannot be blank.</span>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="wf-name-disabled">Workflow name (disabled)</label>
+              <input class="input" type="text" id="wf-name-disabled" value="System workflow" disabled>
+            </div>
+          </div>
+          <p class="spec-note">6px radius, 1px border. Focus: accent ring (3px box-shadow). Error: danger border color.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Select</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="agent-type">Agent type</label>
+              <select class="select" id="agent-type">
+                <option value="">Select agent type...</option>
+                <option>Classifier</option>
+                <option>Summarizer</option>
+                <option>Retriever</option>
+                <option>Orchestrator</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="agent-type-filled">Agent type (filled)</label>
+              <select class="select" id="agent-type-filled">
+                <option selected>Orchestrator</option>
+                <option>Classifier</option>
+                <option>Summarizer</option>
+                <option>Retriever</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Textarea</span>
+          <div class="input-group" style="max-width: 480px;">
+            <label class="input-label" for="sys-prompt">System prompt</label>
+            <textarea class="input" id="sys-prompt" placeholder="Describe the agent's behavior and constraints..."></textarea>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Checkboxes &amp; Radios</span>
+          <div class="grid-2">
+            <div class="stack">
+              <label class="checkbox-row">
+                <input type="checkbox" checked>
+                <span>Enable automatic retries</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox">
+                <span>Log intermediate steps</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" disabled>
+                <span>Human-in-the-loop (requires Enterprise)</span>
+              </label>
+            </div>
+            <div class="stack">
+              <label class="radio-row">
+                <input type="radio" name="priority" checked>
+                <span>Standard priority</span>
+              </label>
+              <label class="radio-row">
+                <input type="radio" name="priority">
+                <span>High priority</span>
+              </label>
+              <label class="radio-row">
+                <input type="radio" name="priority">
+                <span>Critical (SLA-bound)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Toggle switches</span>
+          <div class="stack">
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle__track"></span>
+              <span>Agent auto-scaling</span>
+            </label>
+            <label class="toggle">
+              <input type="checkbox">
+              <span class="toggle__track"></span>
+              <span>Verbose logging</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           3. CARDS
+           ============================================================= -->
+      <section class="comp-section" id="cards">
+        <h2 class="comp-section__heading">Cards</h2>
+        <p class="comp-section__desc">Three tiers: structural (0 radius, layout), elevated (8px, content), and interactive (elevated + hover response).</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Structural card</span>
+          <div class="card-structural">
+            <div class="card__eyebrow">System metrics</div>
+            <div class="card__title">Agent pool utilization</div>
+            <p class="card__body">Current pool capacity is at 73%. No scaling events triggered in the last 24 hours. Average latency remains within SLA thresholds.</p>
+          </div>
+          <p class="spec-note">0 radius, border-subtle, no shadow. Used for layout sections and data containers.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Elevated card</span>
+          <div class="grid-2">
+            <div class="card-elevated">
+              <div class="card__eyebrow">Workflow</div>
+              <div class="card__title">Customer onboarding</div>
+              <p class="card__body">5-step pipeline with document extraction, entity resolution, and compliance verification. Last run completed in 3.2s.</p>
+              <div class="card__footer">
+                <span>Updated 2 hours ago</span>
+                <span class="badge badge--success">Active</span>
+              </div>
+            </div>
+            <div class="card-elevated">
+              <div class="card__eyebrow">Workflow</div>
+              <div class="card__title">Quarterly report synthesis</div>
+              <p class="card__body">Aggregates data from 12 sources, generates executive summary, and distributes to stakeholder channels.</p>
+              <div class="card__footer">
+                <span>Updated 5 days ago</span>
+                <span class="badge badge--warning">Paused</span>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">8px radius, shadow-sm, surface-elevated background. For standalone content items.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Interactive card (hover to test)</span>
+          <div class="grid-3">
+            <div class="card-interactive">
+              <div class="card__eyebrow">Agent</div>
+              <div class="card__title">Classifier v2</div>
+              <p class="card__body">Multi-label document classification with 94.7% accuracy on production traffic.</p>
+            </div>
+            <div class="card-interactive">
+              <div class="card__eyebrow">Agent</div>
+              <div class="card__title">Summarizer</div>
+              <p class="card__body">Extractive + abstractive summaries. Handles documents up to 120k tokens.</p>
+            </div>
+            <div class="card-interactive">
+              <div class="card__eyebrow">Agent</div>
+              <div class="card__title">Retriever</div>
+              <p class="card__body">Hybrid search across vector and keyword indices. Sub-200ms p95 latency.</p>
+            </div>
+          </div>
+          <p class="spec-note">Elevated base + scale(1.015) and shadow-md on hover. 160ms transition.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           4. NAVIGATION
+           ============================================================= -->
+      <section class="comp-section" id="navigation">
+        <h2 class="comp-section__heading">Navigation</h2>
+        <p class="comp-section__desc">Underline-based active indicators. No pill backgrounds for tabs. Breadcrumbs use separator arrows.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Top bar</span>
+          <div class="demo-surface">
+            <div style="display: flex; align-items: center; gap: var(--space-8);">
+              <span style="font-family: var(--font-display); font-size: var(--text-xl); letter-spacing: var(--tracking-tight);">Theorem</span>
+              <nav style="display: flex; gap: var(--space-6); font-size: var(--text-sm);">
+                <a href="#" style="color: var(--text-primary); text-decoration: none; font-weight: 450;">Workflows</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Agents</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Runs</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Settings</a>
+              </nav>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Tab bar</span>
+          <div class="tab-bar">
+            <button class="tab-bar__item tab-bar__item--active" type="button">Overview</button>
+            <button class="tab-bar__item" type="button">Runs</button>
+            <button class="tab-bar__item" type="button">Configuration</button>
+            <button class="tab-bar__item" type="button">Logs</button>
+            <button class="tab-bar__item" type="button">Versions</button>
+          </div>
+          <p class="spec-note">Underline active indicator (2px accent line), not a pill background. Weight 450 on active tab.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Breadcrumbs</span>
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="#">Workflows</a>
+            <span class="breadcrumbs__sep">/</span>
+            <a href="#">Customer onboarding</a>
+            <span class="breadcrumbs__sep">/</span>
+            <span class="breadcrumbs__current">Run #4,827</span>
+          </nav>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           5. BADGES & TAGS
+           ============================================================= -->
+      <section class="comp-section" id="badges">
+        <h2 class="comp-section__heading">Badges &amp; tags</h2>
+        <p class="comp-section__desc">Pill-shaped status indicators. Badges are read-only; tags are interactive and removable.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Badges</span>
+          <div class="row">
+            <span class="badge badge--default">Draft</span>
+            <span class="badge badge--accent">In review</span>
+            <span class="badge badge--success">Deployed</span>
+            <span class="badge badge--warning">Degraded</span>
+            <span class="badge badge--danger">Failed</span>
+            <span class="badge badge--info">Queued</span>
+          </div>
+          <p class="spec-note">Pill radius, 11px uppercase text, weight 450. Semantic background tints at ~12% opacity.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Tags (removable)</span>
+          <div class="row">
+            <span class="tag">production <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">team:platform <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">priority:high <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">v2.4.1 <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+          </div>
+          <p class="spec-note">Pill shape, 1px border, secondary background. Close button on hover shows primary text color.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           6. ALERTS
+           ============================================================= -->
+      <section class="comp-section" id="alerts">
+        <h2 class="comp-section__heading">Alerts</h2>
+        <p class="comp-section__desc">Background-tinted containers with icon + uniform border. No thick left-border pattern.</p>
+
+        <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+          <div class="alert alert--info">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M9 8.5V12.5"/><circle cx="9" cy="6" r="0.5" fill="currentColor" stroke="none"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Deployment scheduled</div>
+              Workflow "Customer onboarding" is queued for deployment to production at 14:00 UTC. No action required.
+            </div>
+          </div>
+
+          <div class="alert alert--success">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6 9.5L8 11.5L12 7"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Deployment complete</div>
+              All 3 agents deployed successfully. Health checks passing. Average response time: 142ms.
+            </div>
+          </div>
+
+          <div class="alert alert--warning">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 1.5L16.5 15H1.5L9 1.5z"/><path d="M9 7v3.5"/><circle cx="9" cy="13" r="0.5" fill="currentColor" stroke="none"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Elevated latency detected</div>
+              Classifier agent p95 latency has exceeded 500ms for the past 15 minutes. Consider scaling the agent pool.
+            </div>
+          </div>
+
+          <div class="alert alert--danger">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Pipeline failure</div>
+              Run #4,831 failed at step 3 (entity resolution). Error: upstream API returned 503. 2 retries exhausted.
+            </div>
+          </div>
+        </div>
+        <p class="spec-note" style="margin-top: var(--space-4);">Icon + tinted background + 1px uniform border. No left-border accent stripe.</p>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           7. TABLES
+           ============================================================= -->
+      <section class="comp-section" id="tables">
+        <h2 class="comp-section__heading">Tables</h2>
+        <p class="comp-section__desc">Compact density, sharp corners, subtle row borders. Sortable headers with hover highlight on rows.</p>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="sorted">Run ID <span class="sort-icon">&#9660;</span></th>
+                <th>Workflow <span class="sort-icon">&#9660;</span></th>
+                <th>Status <span class="sort-icon">&#9660;</span></th>
+                <th>Duration <span class="sort-icon">&#9660;</span></th>
+                <th>Agent <span class="sort-icon">&#9660;</span></th>
+                <th>Completed <span class="sort-icon">&#9660;</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cell-mono">#4,831</td>
+                <td>Customer onboarding</td>
+                <td><span class="badge badge--danger">Failed</span></td>
+                <td>12.4s</td>
+                <td>Orchestrator</td>
+                <td class="cell-mono">2 min ago</td>
+              </tr>
+              <tr>
+                <td class="cell-mono">#4,830</td>
+                <td>Quarterly report synthesis</td>
+                <td><span class="badge badge--success">Completed</span></td>
+                <td>48.2s</td>
+                <td>Summarizer</td>
+                <td class="cell-mono">8 min ago</td>
+              </tr>
+              <tr>
+                <td class="cell-mono">#4,829</td>
+                <td>Customer onboarding</td>
+                <td><span class="badge badge--success">Completed</span></td>
+                <td>3.1s</td>
+                <td>Orchestrator</td>
+                <td class="cell-mono">14 min ago</td>
+              </tr>
+              <tr>
+                <td class="cell-mono">#4,828</td>
+                <td>Document classification</td>
+                <td><span class="badge badge--success">Completed</span></td>
+                <td>1.8s</td>
+                <td>Classifier v2</td>
+                <td class="cell-mono">22 min ago</td>
+              </tr>
+              <tr>
+                <td class="cell-mono">#4,827</td>
+                <td>Customer onboarding</td>
+                <td><span class="badge badge--warning">Degraded</span></td>
+                <td>7.6s</td>
+                <td>Orchestrator</td>
+                <td class="cell-mono">31 min ago</td>
+              </tr>
+              <tr>
+                <td class="cell-mono">#4,826</td>
+                <td>Intake triage</td>
+                <td><span class="badge badge--info">Queued</span></td>
+                <td>&mdash;</td>
+                <td>Classifier v2</td>
+                <td class="cell-mono">&mdash;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="spec-note">0 radius on container. Header: weight 450, uppercase xs text. Hover row highlight via surface-secondary. Sortable columns with directional icon.</p>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           8. MODALS & DRAWERS
+           ============================================================= -->
+      <section class="comp-section" id="modals">
+        <h2 class="comp-section__heading">Modals &amp; drawers</h2>
+        <p class="comp-section__desc">Modal: 12px radius, centered, backdrop blur. Drawer: slides from right, 0 radius for structural integration.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Modal</span>
+          <div class="modal__backdrop">
+            <div class="modal-demo">
+              <div class="modal__header">
+                <span class="modal__title">Confirm deployment</span>
+                <button class="modal__close" type="button" aria-label="Close">&times;</button>
+              </div>
+              <div class="modal__body">
+                You are about to deploy the "Customer onboarding" workflow to production. This will replace the currently active version. All in-flight runs will complete before the switch.
+              </div>
+              <div class="modal__footer">
+                <button class="btn btn--secondary" type="button">Cancel</button>
+                <button class="btn btn--primary" type="button">Deploy to production</button>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">12px radius, shadow-xl. Backdrop: rgba overlay + backdrop-filter: blur(6px).</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Drawer (right panel)</span>
+          <div class="drawer-demo">
+            <div class="drawer-demo__main">Main content area</div>
+            <div class="drawer-demo__panel">
+              <div class="drawer__title">Run details</div>
+              <div class="drawer__body">
+                <p style="margin-bottom: var(--space-3);"><strong style="font-weight: 450;">Run #4,829</strong></p>
+                <p>Workflow: Customer onboarding</p>
+                <p>Duration: 3.1s</p>
+                <p>Steps completed: 5/5</p>
+                <p>Tokens used: 12,847</p>
+              </div>
+              <button class="btn btn--secondary" type="button" style="align-self: flex-start;">View full log</button>
+            </div>
+          </div>
+          <p class="spec-note">0 radius (structural). Slides from right, border-left separator. Content area remains visible.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           9. EMPTY STATES
+           ============================================================= -->
+      <section class="comp-section" id="empty">
+        <h2 class="comp-section__heading">Empty states</h2>
+        <p class="comp-section__desc">Illustration placeholder, serif heading, clear call to action. Guides users toward the next step.</p>
+
+        <div class="demo-surface">
+          <div class="empty-state">
+            <div class="empty-state__illustration">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="20" height="20" rx="2"/><path d="M4 10h20M10 10v14"/></svg>
+            </div>
+            <div class="empty-state__title">No workflows yet</div>
+            <p class="empty-state__desc">Workflows orchestrate your agents into multi-step pipelines. Create your first one to start processing data automatically.</p>
+            <button class="btn btn--primary" type="button">Create workflow</button>
+          </div>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           10. LOADING / SKELETON
+           ============================================================= -->
+      <section class="comp-section" id="loading">
+        <h2 class="comp-section__heading">Loading &amp; skeleton</h2>
+        <p class="comp-section__desc">Skeleton blocks with shimmer animation for content placeholders. Simple spinners for inline loading.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Skeleton blocks</span>
+          <div class="card-elevated" style="max-width: 400px;">
+            <div class="stack" style="gap: var(--space-3);">
+              <div style="display: flex; align-items: center; gap: var(--space-3);">
+                <div class="skeleton skeleton--avatar"></div>
+                <div class="stack" style="flex: 1; gap: var(--space-2);">
+                  <div class="skeleton skeleton--text-short"></div>
+                  <div class="skeleton skeleton--text" style="width: 40%;"></div>
+                </div>
+              </div>
+              <div class="skeleton skeleton--block"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text-short"></div>
+            </div>
+          </div>
+          <p class="spec-note">Subtle shimmer animation (1.8s ease-in-out). Background: surface-secondary with semi-transparent gradient overlay.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Spinners</span>
+          <div class="row row--lg">
+            <div class="spinner spinner--sm"></div>
+            <div class="spinner"></div>
+            <div class="spinner spinner--lg"></div>
+          </div>
+          <p class="spec-note">Simple ring spinner. Border-top colored with accent. 0.7s linear rotation.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           11. CODE BLOCKS
+           ============================================================= -->
+      <section class="comp-section" id="code">
+        <h2 class="comp-section__heading">Code blocks</h2>
+        <p class="comp-section__desc">JetBrains Mono, dark surface, sharp corners. Designed for configuration snippets and API examples.</p>
+
+        <pre class="code-block"><code><span class="comment">// Agent configuration — Theorem SDK</span>
+<span class="keyword">const</span> agent = <span class="keyword">await</span> theorem.<span class="fn">createAgent</span>({
+  name: <span class="string">"customer-classifier"</span>,
+  model: <span class="string">"theorem-4-turbo"</span>,
+  maxTokens: <span class="number">4096</span>,
+  tools: [<span class="string">"document_extract"</span>, <span class="string">"entity_resolve"</span>],
+  retries: <span class="number">3</span>,
+  timeout: <span class="number">30000</span>,
+});
+
+<span class="keyword">const</span> result = <span class="keyword">await</span> agent.<span class="fn">run</span>({
+  input: document,
+  context: { tenant: <span class="string">"acme-corp"</span> },
+});</code></pre>
+        <p class="spec-note">0 radius (structural), dark background (gray-900), 1px border at 6% white opacity. JetBrains Mono at text-xs.</p>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           12. TOOLTIPS & POPOVERS
+           ============================================================= -->
+      <section class="comp-section" id="tooltips">
+        <h2 class="comp-section__heading">Tooltips &amp; popovers</h2>
+        <p class="comp-section__desc">Minimal overlays with 6px radius and shadow-md. Tooltips are text-only; popovers can hold structured content.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Tooltip</span>
+          <div class="row" style="padding-top: var(--space-12);">
+            <div class="tooltip-demo">
+              <button class="btn btn--secondary" type="button">Hover target</button>
+              <div class="tooltip">Deploy workflow to production</div>
+            </div>
+            <div class="tooltip-demo">
+              <button class="btn btn--icon" type="button" aria-label="Info">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 7.5v3.5"/><circle cx="8" cy="5.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+              </button>
+              <div class="tooltip">View documentation</div>
+            </div>
+          </div>
+          <p class="spec-note">Inverse surface background, 6px radius, shadow-md. 12px text, positioned above with arrow.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Popover</span>
+          <div class="row" style="padding-top: 140px;">
+            <div class="popover-demo">
+              <button class="btn btn--secondary" type="button">Agent details</button>
+              <div class="popover">
+                <div class="popover__title">Classifier v2</div>
+                <p>Multi-label document classification. 94.7% accuracy. Last deployed 3 days ago. Processes ~2,400 documents/day.</p>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">6px radius, shadow-md, elevated surface. Structured content with title. 220px default width.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================================================================
+         SCRIPTS
+         ================================================================ -->
+    <script>
+      // Theme toggle
+      (function () {
+        const toggle = document.querySelector('[data-theme-toggle]');
+        const root = document.documentElement;
+
+        function setTheme(dark) {
+          root.setAttribute('data-theme', dark ? 'dark' : 'light');
+          toggle.textContent = dark ? 'Light mode' : 'Dark mode';
+          try { localStorage.setItem('theorem-theme', dark ? 'dark' : 'light'); } catch (e) {}
+        }
+
+        // Init from stored preference or system
+        const stored = localStorage.getItem('theorem-theme');
+        if (stored) {
+          setTheme(stored === 'dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          setTheme(true);
+        }
+
+        toggle.addEventListener('click', function () {
+          const isDark = root.getAttribute('data-theme') === 'dark';
+          setTheme(!isDark);
+        });
+      })();
+
+      // Active nav highlight
+      document.querySelectorAll('.topnav a').forEach(function (link) {
+        if (link.getAttribute('href') === 'components.html') {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    </script>
+
+  </body>
+</html>

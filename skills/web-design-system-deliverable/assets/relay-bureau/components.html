@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relay Bureau Design System — Components</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary">
+    <div class="site-nav-inner">
+      <a class="nav-brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-wordmark">
+          <strong>Relay Bureau</strong>
+          <span>Example design system deliverable</span>
+        </span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="components.html" aria-current="page">Components</a></li>
+        <li><a href="guidelines.html">Guidelines</a></li>
+        <li><a href="application.html">Application</a></li>
+      </ul>
+      <div class="nav-meta">inventory / states / accessibility hooks</div>
+    </div>
+  </nav>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Component inventory</span>
+          <h1 class="hero-title">Action hierarchy first. Decoration second.</h1>
+          <p class="hero-copy">
+            Relay Bureau uses shape, density, and tone to differentiate intent. Primary actions are pills. Secondary actions are rounded rectangles. Utility controls compress. Structural UI relies on rails and panels, not endless card stacks.
+          </p>
+        </div>
+        <aside class="panel">
+          <span class="kicker">Coverage</span>
+          <ul class="note-list">
+            <li>Buttons, chips, navigation, fields, tables, alerts, empty states, drawers, modal framing, skeletons.</li>
+            <li>State coverage shown: default, hover-equivalent emphasis, focus treatment, loading, disabled, error, success, empty, skeleton.</li>
+            <li>Accessibility notes assume keyboard-first use, clear labelling, and visible live-region feedback on async states.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Buttons and chips</span>
+          <h2 class="section-title">Shape carries action level.</h2>
+        </div>
+        <p class="section-copy">
+          The system avoids making every control a pill. Primary actions get the only full-pill treatment. Secondary and ghost controls stay structured; utility controls compress into compact rounded squares.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Action states</h3>
+          <div class="cluster" style="margin-bottom:1rem;">
+            <a class="btn btn-primary" href="#">Launch review</a>
+            <a class="btn btn-secondary" href="#">Assign owner</a>
+            <a class="btn btn-ghost" href="#">Quiet link</a>
+            <a class="btn btn-utility" href="#" aria-label="More actions">+</a>
+          </div>
+          <div class="cluster" style="margin-bottom:1rem;">
+            <a class="btn btn-primary is-loading" href="#">Publishing</a>
+            <a class="btn btn-secondary is-disabled" href="#">Disabled</a>
+            <a class="btn btn-secondary" href="#" style="box-shadow:0 0 0 0.25rem rgba(49,95,255,0.12); border-color:rgba(49,95,255,0.34);">Focus visible</a>
+          </div>
+          <p class="panel-note">Primary CTA labels are verb-first and 2-3 words. Secondary labels use nouns only when they open a chooser or record view.</p>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Filters and status chips</h3>
+          <div class="cluster" style="margin-bottom:1rem;">
+            <span class="chip is-selected">All runs</span>
+            <span class="chip">Needs review</span>
+            <span class="chip">Queued</span>
+            <span class="chip">Blocked</span>
+          </div>
+          <div class="cluster">
+            <span class="pill">Supervised</span>
+            <span class="pill" style="color:var(--rb-success); border-color:rgba(94,112,90,0.24);">Healthy</span>
+            <span class="pill" style="color:var(--rb-warning); border-color:rgba(199,168,82,0.28);">Review required</span>
+            <span class="pill" style="color:var(--rb-danger); border-color:rgba(186,100,52,0.3);">Escalated</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Navigation and command framing</span>
+          <h2 class="section-title">Navigation should read like a production board, not a landing page header.</h2>
+        </div>
+        <p class="section-copy">
+          Instrument’s chip navigation and Koto’s modular work surfaces were useful references here. The product shell uses horizontal command bars and vertical rail navigation rather than top-heavy card menus.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Command row</h3>
+          <div class="command-bar">
+            <div class="cluster">
+              <span class="chip is-selected">Program room</span>
+              <span class="chip">Signals</span>
+              <span class="chip">Artifacts</span>
+              <span class="chip">Owners</span>
+            </div>
+            <div class="cluster">
+              <span class="tag">Shift + K</span>
+              <a class="btn btn-secondary" href="#">Open command</a>
+            </div>
+          </div>
+          <p class="panel-note" style="margin-top:1rem;">Keyboard shortcuts appear as metadata, not novelty badges. Command rows should never consume more vertical space than their contained tasks.</p>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Sidebar list items</h3>
+          <div class="nav-stack">
+            <a class="nav-item is-active" href="#">
+              <strong class="list-title">Atlas launch</strong>
+              <small>04 active workstreams / review at 15:40</small>
+            </a>
+            <a class="nav-item" href="#">
+              <strong class="list-title">Pricing refresh</strong>
+              <small>Copy pass queued / needs legal route</small>
+            </a>
+            <a class="nav-item" href="#">
+              <strong class="list-title">Q2 narrative board</strong>
+              <small>Two signals unresolved</small>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Fields and form states</span>
+          <h2 class="section-title">Inputs stay quiet until they need to speak.</h2>
+        </div>
+        <p class="section-copy">
+          Default inputs sit on translucent light surfaces. Validation state uses border and helper copy together; color alone is never asked to carry meaning. Focus is visible but not fluorescent.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Field set</h3>
+          <div class="field-wrap" style="margin-bottom:1rem;">
+            <label class="field-label" for="brief-name">Brief title</label>
+            <input class="input" id="brief-name" type="text" value="Atlas / launch narrative">
+            <div class="field-help">Sentence case. Keep under 52 characters.</div>
+          </div>
+          <div class="field-wrap field-error" style="margin-bottom:1rem;">
+            <label class="field-label" for="owner-email">Decision owner</label>
+            <input class="input" id="owner-email" type="email" value="maya@relay">
+            <div class="field-help">Use a valid work email so the approval route can attach.</div>
+          </div>
+          <div class="field-wrap field-success">
+            <label class="field-label" for="outline">Working outline</label>
+            <textarea class="textarea" id="outline">Lead with the product shift, not the model details. Keep the proof close to the opening claim.</textarea>
+            <div class="field-help">Saved to working draft 2 minutes ago.</div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Selection controls</h3>
+          <div class="field-wrap" style="margin-bottom:1rem;">
+            <span class="field-label">Mode</span>
+            <div class="select-face">Supervised release</div>
+          </div>
+          <div class="field-wrap" style="margin-bottom:1rem;">
+            <span class="field-label">Audience</span>
+            <div class="cluster">
+              <span class="chip is-selected">Client</span>
+              <span class="chip">Internal</span>
+              <span class="chip">Board</span>
+            </div>
+          </div>
+          <div class="field-wrap">
+            <span class="field-label">Checkbox pattern</span>
+            <div class="cluster">
+              <span class="pill">✓ Summaries need approval</span>
+              <span class="pill">✓ Evidence attached</span>
+            </div>
+            <div class="field-help">Use sentence case for checkbox labels. Start with the object, not “I agree”.</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Tables and lists</span>
+          <h2 class="section-title">Data surfaces run compact. Summary surfaces breathe.</h2>
+        </div>
+        <p class="section-copy">
+          This is one of the main places the system diverges from portfolio theatrics. Dense work UI should feel almost journal-like: thin rules, tabular metadata, tight rows, and action affordances that don’t shout.
+        </p>
+      </div>
+
+      <article class="panel">
+        <table class="queue-table">
+          <thead>
+            <tr>
+              <th>Run</th>
+              <th>Owner</th>
+              <th>Status</th>
+              <th>Updated</th>
+              <th>Intent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-strong">atlas-042</span><div class="table-subtle">Narrative compression pass</div></td>
+              <td>Maya V.</td>
+              <td><span class="status is-good">Healthy</span></td>
+              <td>2m ago</td>
+              <td>Shorten landing-page opener by 18%</td>
+            </tr>
+            <tr>
+              <td><span class="table-strong">atlas-037</span><div class="table-subtle">Pricing proof revision</div></td>
+              <td>Jordan N.</td>
+              <td><span class="status is-warn">Review</span></td>
+              <td>14m ago</td>
+              <td>Evidence added, awaiting finance</td>
+            </tr>
+            <tr>
+              <td><span class="table-strong">atlas-021</span><div class="table-subtle">CTA language split test</div></td>
+              <td>Kei L.</td>
+              <td><span class="status is-danger">Blocked</span></td>
+              <td>29m ago</td>
+              <td>Legal redline unresolved</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Feedback patterns</span>
+          <h2 class="section-title">Alerts are flat, tinted, and direct. No thick left borders. Ever.</h2>
+        </div>
+        <p class="section-copy">
+          The skill explicitly calls out the “fat left strip on a rounded card” as an AI tell. Relay Bureau uses even borders, iconless tint, and compact copy blocks instead.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="panel">
+          <h3 class="panel-title">Status messages</h3>
+          <div class="state-grid">
+            <div class="alert info">
+              <strong>Evidence attached</strong>
+              <span class="panel-note">This summary now includes supporting excerpts and can enter review.</span>
+            </div>
+            <div class="alert success">
+              <strong>Approved for release</strong>
+              <span class="panel-note">The client-facing update can publish on the next synchronized pass.</span>
+            </div>
+            <div class="alert warning">
+              <strong>Review window closes in 18 minutes</strong>
+              <span class="panel-note">Hold back follow-on drafts until the decision route is complete.</span>
+            </div>
+            <div class="alert danger">
+              <strong>Language mismatch detected</strong>
+              <span class="panel-note">The subject line and hero statement are making different claims.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3 class="panel-title">Empty and loading states</h3>
+          <div class="empty-state" style="margin-bottom:1rem;">
+            <strong class="list-title">No unresolved signals</strong>
+            <p class="panel-note">This lane should collapse once the queue is quiet. Don’t fill it with motivational filler.</p>
+            <div class="cluster" style="margin-top:1rem;">
+              <a class="btn btn-primary" href="#">Open next brief</a>
+              <a class="btn btn-ghost" href="#">Review archive</a>
+            </div>
+          </div>
+          <div class="skeleton-block">
+            <div class="skeleton-line" style="width:72%;"></div>
+            <div class="skeleton-line" style="width:94%;"></div>
+            <div class="skeleton-line" style="width:66%;"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <span class="kicker">Overlays</span>
+          <h2 class="section-title">Drawers and modals behave like review surfaces, not marketing interruptions.</h2>
+        </div>
+        <p class="section-copy">
+          Use drawers for inspect-and-return flows. Use modals only when the decision truly blocks the next branch. Both patterns keep their typography compact and their actions blunt.
+        </p>
+      </div>
+
+      <div class="modal-stage">
+        <article class="modal-card">
+          <span class="kicker">Modal</span>
+          <h3 class="panel-title">Publish this client update?</h3>
+          <p class="panel-lead">This route will notify six subscribers, write the final summary, and close all pending review comments.</p>
+          <div class="cluster" style="margin-top:1rem;">
+            <a class="btn btn-primary" href="#">Publish update</a>
+            <a class="btn btn-secondary" href="#">Hold for edits</a>
+          </div>
+        </article>
+        <article class="drawer-card">
+          <span class="kicker">Drawer</span>
+          <h3 class="panel-title">Signal inspection</h3>
+          <p class="panel-lead">Mismatch appears between headline claim and supporting proof. Suggested action: tighten opener or add a stronger excerpt.</p>
+          <ul class="note-list" style="margin-top:1rem;">
+            <li>Keyboard: focus moves into drawer on open, returns to trigger on close.</li>
+            <li>ARIA: `role="dialog"` with labelled title and described-by body copy.</li>
+            <li>Live regions announce save and publish states.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p>Component documentation here is intentionally terse. The real proof is the system holding up under the application shell on the next page.</p>
+    </footer>
+  </main>
+</body>
+</html>
