@@ -1,0 +1,2042 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guidelines — Nerve Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* ---- Page Layout ---- */
+    .page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Navigation ---- */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      border-bottom: var(--border-thin) solid var(--nav-border);
+      backdrop-filter: blur(12px);
+    }
+    .nav-inner {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: var(--space-3) var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-2);
+      color: var(--color-fg-strong);
+      text-decoration: none;
+    }
+    .nav-brand svg {
+      width: 24px;
+      height: 24px;
+      color: var(--color-accent-brand);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+    }
+    .nav-links a {
+      display: block;
+      padding: var(--space-1-5) var(--space-3);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--nav-item-fg);
+      text-decoration: none;
+      border-radius: var(--radius-interactive);
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard),
+                  background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .nav-links a:hover {
+      color: var(--nav-item-fg-hover);
+      background: var(--button-ghost-bg-hover);
+    }
+    .nav-links a[aria-current="page"] {
+      color: var(--nav-item-fg-active);
+      background: var(--nav-item-bg-active);
+    }
+    .theme-toggle {
+      background: transparent;
+      border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-interactive);
+      padding: var(--space-1-5);
+      color: var(--color-fg-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard),
+                  border-color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .theme-toggle:hover {
+      color: var(--color-fg-strong);
+      border-color: var(--color-border-strong);
+    }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+
+    /* ---- Main Content ---- */
+    .main-content {
+      flex: 1;
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: var(--space-9) var(--space-5) var(--space-12);
+      width: 100%;
+    }
+
+    /* ---- Page Header ---- */
+    .page-header {
+      margin-bottom: var(--space-10);
+    }
+    .page-header__label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-accent-brand-fg);
+      margin-bottom: var(--space-3);
+    }
+    .page-header__title {
+      font-size: var(--text-5);
+      font-weight: var(--weight-bold);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-tight);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-4);
+    }
+    .page-header__desc {
+      font-size: var(--text-2);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+      max-width: var(--content-medium);
+    }
+
+    /* ---- Sections ---- */
+    .guideline-section {
+      margin-bottom: var(--space-12);
+    }
+    .section-anchor {
+      scroll-margin-top: 5rem;
+    }
+    .section-title {
+      font-size: var(--text-4);
+      font-weight: var(--weight-bold);
+      line-height: var(--leading-snug);
+      letter-spacing: var(--tracking-tight);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-2);
+      padding-bottom: var(--space-3);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .section-intro {
+      font-size: var(--text-1);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+      margin-bottom: var(--space-6);
+      max-width: var(--content-medium);
+    }
+
+    /* ---- Subsections ---- */
+    .subsection {
+      margin-bottom: var(--space-8);
+    }
+    .subsection-title {
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-3);
+    }
+    .subsection-text {
+      font-size: var(--text-1);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+      margin-bottom: var(--space-4);
+      max-width: var(--content-medium);
+    }
+
+    /* ---- Principle Cards ---- */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--space-5);
+      margin-bottom: var(--space-6);
+    }
+    .principle-card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      padding: var(--space-5);
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .principle-card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .principle-card__number {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-accent-brand-fg);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+    .principle-card__name {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-2);
+    }
+    .principle-card__desc {
+      font-size: var(--text-0);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+    }
+
+    /* ---- Do/Don't Cards ---- */
+    .do-dont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    @media (max-width: 48rem) {
+      .do-dont-grid { grid-template-columns: 1fr; }
+    }
+    .do-card, .dont-card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--color-border-subtle);
+      border-radius: var(--radius-structural);
+      padding: var(--space-4);
+    }
+    .do-card__header, .dont-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-0);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      margin-bottom: var(--space-3);
+    }
+    .do-card__header {
+      color: var(--color-success-fg);
+    }
+    .dont-card__header {
+      color: var(--color-danger-fg);
+    }
+    .do-card__header svg, .dont-card__header svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .do-card__body, .dont-card__body {
+      font-size: var(--text-0);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+    }
+    .do-card__body code, .dont-card__body code {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      background: var(--color-bg-soft);
+      padding: var(--space-0-5) var(--space-1);
+      border-radius: var(--radius-1);
+    }
+
+    /* ---- Specimen / Example Cards ---- */
+    .specimen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    .specimen {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      padding: var(--space-4);
+    }
+    .specimen__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+    .specimen__value {
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-1);
+    }
+    .specimen__meta {
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      font-family: var(--font-mono);
+    }
+
+    /* ---- Color Swatches ---- */
+    .swatch-row {
+      display: flex;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-4);
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      align-items: center;
+    }
+    .swatch__block {
+      width: 64px;
+      height: 48px;
+      border-radius: var(--radius-structural);
+      border: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .swatch__name {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    /* ---- Code Blocks ---- */
+    pre {
+      background: var(--color-bg-sunken);
+      border: var(--border-thin) solid var(--color-border-subtle);
+      border-radius: var(--radius-structural);
+      padding: var(--space-4);
+      overflow-x: auto;
+      margin-bottom: var(--space-4);
+    }
+    pre code {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      line-height: var(--leading-loose);
+      color: var(--color-fg-default);
+    }
+    code.inline {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      background: var(--color-bg-soft);
+      padding: var(--space-0-5) var(--space-1);
+      border-radius: var(--radius-1);
+      color: var(--color-accent-secondary-fg);
+    }
+
+    /* ---- Info Callouts ---- */
+    .callout {
+      background: var(--color-accent-brand-subtle);
+      border: var(--border-thin) solid var(--color-border-subtle);
+      border-radius: var(--radius-structural);
+      padding: var(--space-4);
+      margin-bottom: var(--space-5);
+      display: flex;
+      gap: var(--space-3);
+      align-items: flex-start;
+    }
+    .callout svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-accent-brand-fg);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .callout p {
+      font-size: var(--text-0);
+      line-height: var(--leading-body);
+      color: var(--color-fg-muted);
+    }
+    .callout--info {
+      background: var(--color-info-subtle);
+    }
+    .callout--info svg {
+      color: var(--color-info-fg);
+    }
+    .callout--warning {
+      background: var(--color-warning-subtle);
+    }
+    .callout--warning svg {
+      color: var(--color-warning-fg);
+    }
+
+    /* ---- Tables ---- */
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--space-5);
+      font-size: var(--text-0);
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    .spec-table th {
+      background: var(--table-header-bg);
+      color: var(--table-header-fg);
+      font-weight: var(--weight-medium);
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-00);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      border-bottom: var(--border-thin) solid var(--color-border-default);
+    }
+    .spec-table td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--table-row-border);
+      color: var(--color-fg-default);
+    }
+    .spec-table tr:hover td {
+      background: var(--table-row-hover);
+    }
+    .spec-table code {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-accent-secondary-fg);
+    }
+
+    /* ---- Tag / Badge ---- */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-0-5) var(--space-2);
+      border-radius: var(--radius-badge);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-wide);
+    }
+    .tag--proposal {
+      background: var(--color-info-subtle);
+      color: var(--color-info-fg);
+    }
+    .tag--experimental {
+      background: var(--color-warning-subtle);
+      color: var(--color-warning-fg);
+    }
+    .tag--stable {
+      background: var(--color-success-subtle);
+      color: var(--color-success-fg);
+    }
+    .tag--deprecated {
+      background: var(--color-danger-subtle);
+      color: var(--color-danger-fg);
+    }
+
+    /* ---- Lifecycle Track ---- */
+    .lifecycle-track {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+      flex-wrap: wrap;
+    }
+    .lifecycle-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--color-fg-muted);
+    }
+    .lifecycle-arrow {
+      color: var(--color-fg-subtle);
+      font-size: var(--text-1);
+    }
+
+    /* ---- Typography Specimens ---- */
+    .type-specimen {
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+    }
+    .type-specimen__sample {
+      margin-bottom: var(--space-2);
+    }
+    .type-specimen__details {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    /* ---- Density Demos ---- */
+    .density-demo {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+    @media (max-width: 48rem) {
+      .density-demo { grid-template-columns: 1fr; }
+    }
+    .density-card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      overflow: hidden;
+    }
+    .density-card__header {
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-bg-soft);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-fg-subtle);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .density-card__body {
+      font-size: var(--text-0);
+      color: var(--color-fg-muted);
+    }
+    .density-row {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .density-row:last-child { border-bottom: none; }
+    .density-card--relaxed .density-row {
+      padding: var(--space-4) var(--space-5);
+    }
+    .density-card--compact .density-row {
+      padding: var(--space-1) var(--space-2);
+      font-size: var(--text-00);
+    }
+
+    /* ---- Grid Demo ---- */
+    .grid-demo {
+      display: grid;
+      gap: var(--space-2);
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-structural);
+    }
+    .grid-demo--12 { grid-template-columns: repeat(12, 1fr); }
+    .grid-demo--8 { grid-template-columns: repeat(8, 1fr); }
+    .grid-demo--4 { grid-template-columns: repeat(4, 1fr); }
+    .grid-col {
+      height: 32px;
+      background: var(--color-accent-brand-subtle);
+      border: var(--border-thin) solid var(--color-accent-brand);
+      border-radius: var(--radius-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-accent-brand-fg);
+    }
+
+    /* ---- Motion Demo ---- */
+    .motion-scale {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: var(--space-2) var(--space-4);
+      align-items: center;
+      margin-bottom: var(--space-5);
+      font-size: var(--text-0);
+    }
+    .motion-bar-track {
+      height: 6px;
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+    .motion-bar {
+      height: 100%;
+      background: var(--color-accent-brand);
+      border-radius: var(--radius-full);
+    }
+    .motion-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+    .motion-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-muted);
+      text-align: right;
+    }
+
+    /* ---- Glossary ---- */
+    .glossary-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+    .glossary-item {
+      padding: var(--space-3);
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+    }
+    .glossary-item__term {
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      font-size: var(--text-0);
+      margin-bottom: var(--space-1);
+    }
+    .glossary-item__def {
+      font-size: var(--text-00);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 48rem) {
+      .main-content {
+        padding: var(--space-6) var(--space-4) var(--space-8);
+      }
+      .nav-inner {
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+      .nav-links {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+      }
+      .principle-grid {
+        grid-template-columns: 1fr;
+      }
+      .specimen-grid {
+        grid-template-columns: 1fr;
+      }
+      .grid-demo--12, .grid-demo--8 {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- ============ NAVIGATION ============ -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="index.html" class="nav-brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Nerve
+        </a>
+        <ul class="nav-links">
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="components.html">Components</a></li>
+          <li><a href="guidelines.html" aria-current="page">Guidelines</a></li>
+          <li><a href="application.html">Application</a></li>
+        </ul>
+        <button class="theme-toggle" aria-label="Toggle theme" onclick="toggleTheme()">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <main class="main-content">
+
+      <!-- ============ PAGE HEADER ============ -->
+      <header class="page-header">
+        <span class="page-header__label">Guidelines</span>
+        <h1 class="page-header__title">Design Guidelines</h1>
+        <p class="page-header__desc">The rules, patterns, and conventions that keep Nerve consistent across every surface. This is the reference guide for engineers and designers working within the system.</p>
+      </header>
+
+
+      <!-- ================================================================
+           1. DESIGN PRINCIPLES
+           ================================================================ -->
+      <section class="guideline-section" id="design-principles">
+        <h2 class="section-title section-anchor">Design Principles</h2>
+        <p class="section-intro">Four tenets govern every design decision in Nerve. They are ranked; when principles conflict, the higher-ranked principle wins.</p>
+
+        <div class="principle-grid">
+          <div class="principle-card">
+            <div class="principle-card__number">Principle 01</div>
+            <div class="principle-card__name">Decisive over decorative</div>
+            <p class="principle-card__desc">Every element earns its place through utility. Ornamentation is stripped unless it improves comprehension or reinforces hierarchy. If a visual is purely decorative, remove it.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-card__number">Principle 02</div>
+            <div class="principle-card__name">Density is a feature</div>
+            <p class="principle-card__desc">Operators monitor many agents at once. Embrace information density. Whitespace serves structure, not decoration. Let users see more, scroll less.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-card__number">Principle 03</div>
+            <div class="principle-card__name">Alive, not animated</div>
+            <p class="principle-card__desc">Motion conveys state, not personality. Pulses mean live data. Transitions confirm actions. Nothing moves without reason. If you remove the animation and lose information, keep it; otherwise, cut it.</p>
+          </div>
+          <div class="principle-card">
+            <div class="principle-card__number">Principle 04</div>
+            <div class="principle-card__name">Dark is default</div>
+            <p class="principle-card__desc">Operators work in low-light, extended sessions. The dark theme is the canonical design surface. Light mode is a supported alternative, never the starting point.</p>
+          </div>
+        </div>
+
+        <!-- Do/Don't for Principles -->
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use a single accent color to draw attention to the primary action on screen. Let data density speak for itself with clean alignment and subtle separators.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Add gradients, drop shadows, or decorative illustrations to "make it feel premium." Nerve's premium quality comes from precision and clarity, not embellishment.</div>
+          </div>
+        </div>
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use a pulsing indicator to show that a data stream is live. Use a brief scale transition when a card is selected to confirm the interaction.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Add bouncing, spinning, or looping animations to entertain users. Motion without informational value is noise that fatigues operators during long sessions.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           2. LAYOUT & COMPOSITION
+           ================================================================ -->
+      <section class="guideline-section" id="layout-composition">
+        <h2 class="section-title section-anchor">Layout &amp; Composition</h2>
+        <p class="section-intro">Nerve uses a fluid grid with fixed column counts. All layout containers reference token-based content widths to maintain consistent measure across pages.</p>
+
+        <!-- Grid System -->
+        <div class="subsection">
+          <h3 class="subsection-title">Grid System</h3>
+          <p class="subsection-text">The grid snaps to 4, 8, or 12 columns depending on viewport and content complexity. Gutters use <code class="inline">--grid-gutter</code> which fluidly scales from 1rem to 2.5rem.</p>
+
+          <div class="grid-demo grid-demo--12">
+            <div class="grid-col">1</div><div class="grid-col">2</div><div class="grid-col">3</div>
+            <div class="grid-col">4</div><div class="grid-col">5</div><div class="grid-col">6</div>
+            <div class="grid-col">7</div><div class="grid-col">8</div><div class="grid-col">9</div>
+            <div class="grid-col">10</div><div class="grid-col">11</div><div class="grid-col">12</div>
+          </div>
+          <div class="grid-demo grid-demo--8">
+            <div class="grid-col">1</div><div class="grid-col">2</div><div class="grid-col">3</div><div class="grid-col">4</div>
+            <div class="grid-col">5</div><div class="grid-col">6</div><div class="grid-col">7</div><div class="grid-col">8</div>
+          </div>
+          <div class="grid-demo grid-demo--4">
+            <div class="grid-col">1</div><div class="grid-col">2</div><div class="grid-col">3</div><div class="grid-col">4</div>
+          </div>
+
+          <pre><code>/* 12-column grid */
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--grid-gutter);
+}
+
+/* Content width containers */
+.container-narrow { max-width: var(--content-narrow); }  /* 42rem — forms, articles */
+.container-medium { max-width: var(--content-medium); }  /* 56rem — detail views */
+.container-wide   { max-width: var(--content-wide); }    /* 76rem — dashboards */
+.container-max    { max-width: var(--content-max); }     /* 90rem — full-width */</code></pre>
+        </div>
+
+        <!-- Content Width Containers -->
+        <div class="subsection">
+          <h3 class="subsection-title">Content Width Containers</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Container</th><th>Token</th><th>Width</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Narrow</td><td><code>--content-narrow</code></td><td>42rem (672px)</td><td>Forms, settings pages, article content</td></tr>
+              <tr><td>Medium</td><td><code>--content-medium</code></td><td>56rem (896px)</td><td>Detail views, documentation</td></tr>
+              <tr><td>Wide</td><td><code>--content-wide</code></td><td>76rem (1216px)</td><td>Dashboards, list views</td></tr>
+              <tr><td>Max</td><td><code>--content-max</code></td><td>90rem (1440px)</td><td>Full-width layouts, marketing</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Page Layout Patterns -->
+        <div class="subsection">
+          <h3 class="subsection-title">Page Layout Patterns</h3>
+          <p class="subsection-text">Three canonical layouts cover nearly every page in the platform.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Pattern</th><th>Structure</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Dashboard</td><td>Sidebar (240px fixed) + Main (fluid)</td><td>Primary navigation context: agent overview, monitoring, orchestration hub</td></tr>
+              <tr><td>Detail View</td><td>List panel (320px) + Detail split (fluid)</td><td>Agent detail, log viewer, configuration editor</td></tr>
+              <tr><td>Full-width</td><td>Single column, max-width container</td><td>Marketing pages, onboarding flows, documentation</td></tr>
+            </tbody>
+          </table>
+          <pre><code>/* Dashboard layout */
+.layout-dashboard {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* Detail view — list + detail split */
+.layout-detail {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+/* Full-width marketing */
+.layout-fullwidth {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--grid-gutter);
+}</code></pre>
+        </div>
+
+        <!-- Density Tiers -->
+        <div class="subsection">
+          <h3 class="subsection-title">Density Tiers</h3>
+          <p class="subsection-text">Three density modes control spacing and font sizing across the application. Each tier serves a different cognitive context.</p>
+
+          <div class="density-demo">
+            <div class="density-card density-card--relaxed">
+              <div class="density-card__header">Relaxed</div>
+              <div class="density-card__body">
+                <div class="density-row">Agent Fleet Overview</div>
+                <div class="density-row">12 active workflows</div>
+                <div class="density-row">Last sync: 4m ago</div>
+              </div>
+            </div>
+            <div class="density-card">
+              <div class="density-card__header">Standard</div>
+              <div class="density-card__body">
+                <div class="density-row">Agent Fleet Overview</div>
+                <div class="density-row">12 active workflows</div>
+                <div class="density-row">Last sync: 4m ago</div>
+              </div>
+            </div>
+            <div class="density-card density-card--compact">
+              <div class="density-card__header">Compact</div>
+              <div class="density-card__body">
+                <div class="density-row">Agent Fleet Overview</div>
+                <div class="density-row">12 active workflows</div>
+                <div class="density-row">Last sync: 4m ago</div>
+              </div>
+            </div>
+          </div>
+
+          <table class="spec-table">
+            <thead>
+              <tr><th>Tier</th><th>Row Height</th><th>Font Size</th><th>Context</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Relaxed</td><td>48-56px</td><td><code>--text-1</code> / <code>--text-2</code></td><td>Marketing pages, onboarding, empty states</td></tr>
+              <tr><td>Standard</td><td>36-44px</td><td><code>--text-0</code> / <code>--text-1</code></td><td>Dashboards, forms, general UI</td></tr>
+              <tr><td>Compact</td><td>28-32px</td><td><code>--text-00</code> / <code>--text-0</code></td><td>Data tables, toolbars, tree views, log output</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Do/Don't for Layout -->
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use compact density for data-heavy surfaces like agent log tables and monitoring dashboards. Maximize visible rows to reduce scrolling during incident response.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Apply relaxed density to operational screens. Excess whitespace in a monitoring dashboard forces scrolling and hides critical information below the fold.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           3. TYPOGRAPHY USAGE
+           ================================================================ -->
+      <section class="guideline-section" id="typography-usage">
+        <h2 class="section-title section-anchor">Typography Usage</h2>
+        <p class="section-intro">Nerve uses a three-font system: Space Grotesk for display and headings, Inter for body and UI text, and JetBrains Mono for code and data.</p>
+
+        <!-- Hierarchy Specimens -->
+        <div class="subsection">
+          <h3 class="subsection-title">Type Hierarchy</h3>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-6); font-weight: var(--weight-bold); line-height: var(--leading-none); letter-spacing: var(--tracking-tighter); color: var(--color-fg-strong);">Control without constraint</div>
+            <div class="type-specimen__details">
+              <span>Hero Display</span>
+              <span>--text-6</span>
+              <span>--font-display</span>
+              <span>--weight-bold</span>
+              <span>--leading-none</span>
+              <span>--tracking-tighter</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-5); font-weight: var(--weight-bold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); color: var(--color-fg-strong);">Agent Orchestration Dashboard</div>
+            <div class="type-specimen__details">
+              <span>Page Title</span>
+              <span>--text-5</span>
+              <span>--font-display</span>
+              <span>--weight-bold</span>
+              <span>--leading-tight</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-4); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--color-fg-strong);">Workflow Configuration</div>
+            <div class="type-specimen__details">
+              <span>Section Heading</span>
+              <span>--text-4</span>
+              <span>--font-display</span>
+              <span>--weight-semibold</span>
+              <span>--leading-snug</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-3); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--color-fg-strong);">Execution Parameters</div>
+            <div class="type-specimen__details">
+              <span>Subsection Heading</span>
+              <span>--text-3</span>
+              <span>--font-display</span>
+              <span>--weight-semibold</span>
+              <span>--leading-snug</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-2); line-height: var(--leading-body); color: var(--color-fg-muted);">Nerve orchestrates autonomous agents with precision control. Each workflow defines execution boundaries, fallback protocols, and escalation triggers.</div>
+            <div class="type-specimen__details">
+              <span>Lead Paragraph</span>
+              <span>--text-2</span>
+              <span>--font-body</span>
+              <span>--weight-regular</span>
+              <span>--leading-body</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-1); line-height: var(--leading-body); color: var(--color-fg-default);">Agents execute tasks within defined guardrails. Monitor throughput and error rates in real time from the fleet dashboard.</div>
+            <div class="type-specimen__details">
+              <span>Body</span>
+              <span>--text-1</span>
+              <span>--font-body</span>
+              <span>--weight-regular</span>
+              <span>--leading-body</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-0); line-height: var(--leading-body); color: var(--color-fg-muted);">Last updated 3 minutes ago</div>
+            <div class="type-specimen__details">
+              <span>Small Text</span>
+              <span>--text-0</span>
+              <span>--font-body</span>
+              <span>--weight-regular</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-00); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-fg-subtle);">Status Label</div>
+            <div class="type-specimen__details">
+              <span>Label</span>
+              <span>--text-00</span>
+              <span>--weight-semibold</span>
+              <span>--tracking-label</span>
+              <span>uppercase</span>
+            </div>
+          </div>
+
+          <div class="type-specimen">
+            <div class="type-specimen__sample" style="font-family: var(--font-mono); font-size: var(--text-0); line-height: var(--leading-body); color: var(--color-accent-secondary-fg);">const agent = nerve.deploy({ model: "gpt-4o" });</div>
+            <div class="type-specimen__details">
+              <span>Code</span>
+              <span>--text-0</span>
+              <span>--font-mono</span>
+              <span>--weight-regular</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pairing Rules -->
+        <div class="subsection">
+          <h3 class="subsection-title">Font Pairing Rules</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Context</th><th>Font</th><th>Token</th><th>Rationale</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Headings, page titles, hero text</td><td>Space Grotesk</td><td><code>--font-display</code></td><td>Geometric structure signals authority and precision</td></tr>
+              <tr><td>Body copy, UI labels, form text</td><td>Inter</td><td><code>--font-body</code></td><td>Optimized for screen readability at small sizes</td></tr>
+              <tr><td>Code, data values, token names</td><td>JetBrains Mono</td><td><code>--font-mono</code></td><td>Distinguishes literals; tabular figures align in columns</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Numeric Typography -->
+        <div class="subsection">
+          <h3 class="subsection-title">Numeric Typography</h3>
+          <p class="subsection-text">Use the right numeric style for the context. Data tables and dashboards need tabular lining figures for column alignment. Body text uses proportional oldstyle for natural reading flow.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Style</th><th>CSS</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Lining tabular</td><td><code>font-variant-numeric: lining-nums tabular-nums</code></td><td>Data tables, counters, metrics, dashboards</td></tr>
+              <tr><td>Oldstyle proportional</td><td><code>font-variant-numeric: oldstyle-nums proportional-nums</code></td><td>Body text, prose, marketing copy</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Measure Guidance -->
+        <div class="subsection">
+          <h3 class="subsection-title">Measure &amp; Line Length</h3>
+          <p class="subsection-text">Ideal line length is 55-75 characters for body text. Use content containers to enforce measure. The <code class="inline">--content-narrow</code> (42rem) container targets ~65 characters at body size.</p>
+          <pre><code>/* Enforce readable measure */
+.prose {
+  max-width: var(--content-narrow);  /* ~65ch at --text-1 */
+  line-height: var(--leading-body);
+}
+
+/* Wide measure for dashboards */
+.dashboard-text {
+  max-width: var(--content-medium);  /* acceptable for short-form UI copy */
+}</code></pre>
+        </div>
+
+        <!-- Do/Don't for Typography -->
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use Space Grotesk for headings and Inter for body. Use tabular lining figures (<code>lining-nums tabular-nums</code>) in data tables so columns align vertically.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Use the display font (Space Grotesk) for body text or long paragraphs. Its geometric shapes cause reading fatigue at body sizes. Never use more than 3 heading levels on a single page.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           4. COLOR USAGE
+           ================================================================ -->
+      <section class="guideline-section" id="color-usage">
+        <h2 class="section-title section-anchor">Color Usage</h2>
+        <p class="section-intro">Always use semantic tokens, never primitive color values. Semantic tokens adapt across themes automatically and ensure accessible contrast ratios.</p>
+
+        <!-- Background Hierarchy -->
+        <div class="subsection">
+          <h3 class="subsection-title">Background Hierarchy</h3>
+          <p class="subsection-text">Backgrounds layer from deepest to most prominent. Use this hierarchy to create visual depth without shadows.</p>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-sunken);"></div>
+              <span class="swatch__name">sunken</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-canvas);"></div>
+              <span class="swatch__name">canvas</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-soft);"></div>
+              <span class="swatch__name">soft</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-surface);"></div>
+              <span class="swatch__name">surface</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-elevated);"></div>
+              <span class="swatch__name">elevated</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__block" style="background: var(--color-bg-overlay);"></div>
+              <span class="swatch__name">overlay</span>
+            </div>
+          </div>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Token</th><th>Layer</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--color-bg-sunken</code></td><td>Deepest</td><td>Code blocks, inset panels, navigation backgrounds</td></tr>
+              <tr><td><code>--color-bg-canvas</code></td><td>Base</td><td>Page body, root background</td></tr>
+              <tr><td><code>--color-bg-soft</code></td><td>Subtle lift</td><td>Table headers, input backgrounds, hover states</td></tr>
+              <tr><td><code>--color-bg-surface</code></td><td>Content</td><td>Cards, panels, content containers</td></tr>
+              <tr><td><code>--color-bg-elevated</code></td><td>Prominent</td><td>Modals, dropdowns, popovers, tooltips</td></tr>
+              <tr><td><code>--color-bg-overlay</code></td><td>Scrim</td><td>Behind modals, backdrop blur layers</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Accent Usage -->
+        <div class="subsection">
+          <h3 class="subsection-title">Accent Colors</h3>
+          <p class="subsection-text">Nerve uses two accent families. Brand violet is the primary interactive color. Secondary cyan signals agent-active and secondary actions.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Role</th><th>Tokens</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Brand (Violet)</td><td><code>--color-accent-brand</code>, <code>-hover</code>, <code>-pressed</code>, <code>-subtle</code>, <code>-fg</code></td><td>Primary buttons, links, focus rings, selected state</td></tr>
+              <tr><td>Secondary (Cyan)</td><td><code>--color-accent-secondary</code>, <code>-hover</code>, <code>-subtle</code>, <code>-fg</code></td><td>Agent-active indicators, secondary actions, live data highlights</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout--info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <p>Use <code class="inline">--color-accent-brand</code> for the single most important action on screen. If two violet buttons compete, demote one to secondary or ghost.</p>
+          </div>
+        </div>
+
+        <!-- Feedback Colors -->
+        <div class="subsection">
+          <h3 class="subsection-title">Feedback Colors</h3>
+          <p class="subsection-text">Each feedback color has four variants: base (backgrounds/fills), subtle (tinted backgrounds), fg (text/icons), and strong (darker backgrounds).</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Intent</th><th>Base Token</th><th>Icon/Text</th><th>Background</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Success</td><td><code>--color-success</code></td><td><code>--color-success-fg</code></td><td><code>--color-success-subtle</code></td><td>Completed actions, healthy agents, passing checks</td></tr>
+              <tr><td>Warning</td><td><code>--color-warning</code></td><td><code>--color-warning-fg</code></td><td><code>--color-warning-subtle</code></td><td>Rate limits, degraded performance, expiring tokens</td></tr>
+              <tr><td>Danger</td><td><code>--color-danger</code></td><td><code>--color-danger-fg</code></td><td><code>--color-danger-subtle</code></td><td>Errors, failed agents, destructive actions</td></tr>
+              <tr><td>Info</td><td><code>--color-info</code></td><td><code>--color-info-fg</code></td><td><code>--color-info-subtle</code></td><td>Tips, changelog, non-critical notices</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Accessibility Contrast -->
+        <div class="subsection">
+          <h3 class="subsection-title">Color Accessibility</h3>
+          <p class="subsection-text">All foreground/background pairings must meet WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text). Body text targets AAA (7:1).</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Pairing</th><th>Ratio</th><th>Level</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--color-fg-strong</code> on <code>--color-bg-canvas</code></td><td>17.1:1</td><td>AAA</td></tr>
+              <tr><td><code>--color-fg-default</code> on <code>--color-bg-canvas</code></td><td>14.5:1</td><td>AAA</td></tr>
+              <tr><td><code>--color-fg-muted</code> on <code>--color-bg-canvas</code></td><td>9.2:1</td><td>AAA</td></tr>
+              <tr><td><code>--color-fg-subtle</code> on <code>--color-bg-canvas</code></td><td>5.0:1</td><td>AA</td></tr>
+              <tr><td><code>--color-fg-on-accent</code> on <code>--color-accent-brand</code></td><td>5.7:1</td><td>AA</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Do/Don't for Color -->
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use semantic tokens like <code>--color-success-fg</code> for status text. Pair feedback colors with icons and labels so color is never the sole indicator.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Use primitive tokens like <code>--red-500</code> directly in components. Never rely on color alone to convey status; always pair with an icon or text label.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           5. MOTION USAGE
+           ================================================================ -->
+      <section class="guideline-section" id="motion-usage">
+        <h2 class="section-title section-anchor">Motion Usage</h2>
+        <p class="section-intro">Motion in Nerve is informational, not decorative. Every animation conveys a state change, confirms an interaction, or maintains spatial context during navigation.</p>
+
+        <!-- Duration Scale -->
+        <div class="subsection">
+          <h3 class="subsection-title">Duration Scale</h3>
+          <div class="motion-scale">
+            <span class="motion-label">--motion-duration-micro</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 10%;"></div></div>
+            <span class="motion-value">50ms</span>
+
+            <span class="motion-label">--motion-duration-fast</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 20%;"></div></div>
+            <span class="motion-value">100ms</span>
+
+            <span class="motion-label">--motion-duration-base</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 30%;"></div></div>
+            <span class="motion-value">150ms</span>
+
+            <span class="motion-label">--motion-duration-moderate</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 48%;"></div></div>
+            <span class="motion-value">240ms</span>
+
+            <span class="motion-label">--motion-duration-slow</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 72%;"></div></div>
+            <span class="motion-value">360ms</span>
+
+            <span class="motion-label">--motion-duration-dramatic</span>
+            <div class="motion-bar-track"><div class="motion-bar" style="width: 100%;"></div></div>
+            <span class="motion-value">500ms</span>
+          </div>
+
+          <table class="spec-table">
+            <thead>
+              <tr><th>Token</th><th>Duration</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--motion-duration-micro</code></td><td>50ms</td><td>Color shifts, opacity changes on hover</td></tr>
+              <tr><td><code>--motion-duration-fast</code></td><td>100ms</td><td>Button state changes, icon swaps, focus ring</td></tr>
+              <tr><td><code>--motion-duration-base</code></td><td>150ms</td><td>Tooltip show/hide, dropdown open, checkbox toggle</td></tr>
+              <tr><td><code>--motion-duration-moderate</code></td><td>240ms</td><td>Card expansion, panel slide, tab switch</td></tr>
+              <tr><td><code>--motion-duration-slow</code></td><td>360ms</td><td>Modal entrance, page transitions, stagger sequences</td></tr>
+              <tr><td><code>--motion-duration-dramatic</code></td><td>500ms</td><td>Full-page reveals, hero animations, onboarding</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Easing Library -->
+        <div class="subsection">
+          <h3 class="subsection-title">Easing Library</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Token</th><th>Curve</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>--motion-ease-standard</code></td><td><code>cubic-bezier(0.16, 0.7, 0.3, 1)</code></td><td>Default for most transitions; natural deceleration</td></tr>
+              <tr><td><code>--motion-ease-emphasis</code></td><td><code>cubic-bezier(0.12, 1, 0.2, 1)</code></td><td>Entrances that need presence: modals, notifications</td></tr>
+              <tr><td><code>--motion-ease-decelerate</code></td><td><code>cubic-bezier(0, 0, 0.15, 1)</code></td><td>Elements entering the viewport; slide-in panels</td></tr>
+              <tr><td><code>--motion-ease-accelerate</code></td><td><code>cubic-bezier(0.5, 0, 1, 1)</code></td><td>Elements leaving the viewport; dismissals</td></tr>
+              <tr><td><code>--motion-ease-spring</code></td><td><code>cubic-bezier(0.34, 1.4, 0.64, 1)</code></td><td>Micro-interactions with bounce: toggle switches, badges</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Choreography Patterns -->
+        <div class="subsection">
+          <h3 class="subsection-title">Choreography Patterns</h3>
+
+          <p class="subsection-text">Use stagger delays to sequence related elements entering the screen. The base stagger delay is <code class="inline">--motion-stagger-delay</code> (50ms).</p>
+
+          <pre><code>/* Stagger entrance — list items entering sequentially */
+.agent-list-item {
+  animation: stagger-enter var(--motion-duration-slow) var(--motion-ease-emphasis) both;
+}
+.agent-list-item:nth-child(1) { animation-delay: calc(var(--motion-stagger-delay) * 0); }
+.agent-list-item:nth-child(2) { animation-delay: calc(var(--motion-stagger-delay) * 1); }
+.agent-list-item:nth-child(3) { animation-delay: calc(var(--motion-stagger-delay) * 2); }
+.agent-list-item:nth-child(4) { animation-delay: calc(var(--motion-stagger-delay) * 3); }
+
+/* Tab switch — crossfade panels */
+.tab-panel {
+  animation: fade-in var(--motion-duration-moderate) var(--motion-ease-standard);
+}
+
+/* Cascade reveal — dashboard widgets */
+.widget {
+  animation: slide-up var(--motion-duration-moderate) var(--motion-ease-emphasis) both;
+  animation-delay: calc(var(--motion-stagger-delay) * var(--widget-index));
+}</code></pre>
+        </div>
+
+        <!-- Interaction Signatures -->
+        <div class="subsection">
+          <h3 class="subsection-title">Interaction Signatures</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Interaction</th><th>Effect</th><th>Duration / Easing</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Hover</td><td>Subtle lift: <code>translateY(-1px)</code> + shadow increase</td><td><code>--motion-duration-fast</code> / <code>--motion-ease-standard</code></td></tr>
+              <tr><td>Press</td><td>Compress: <code>scale(0.98)</code></td><td><code>--motion-duration-micro</code> / <code>--motion-ease-standard</code></td></tr>
+              <tr><td>Focus</td><td>Instant ring: <code>2px solid --color-focus-ring</code></td><td><code>--motion-duration-micro</code> / none (instant)</td></tr>
+              <tr><td>Scroll</td><td>Intersection observer fade-in at 10% threshold</td><td><code>--motion-duration-moderate</code> / <code>--motion-ease-decelerate</code></td></tr>
+            </tbody>
+          </table>
+          <pre><code>/* Hover lift */
+.card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-elevated);
+  transition: transform var(--motion-duration-fast) var(--motion-ease-standard),
+              box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+/* Press compress */
+.button:active {
+  transform: scale(0.98);
+  transition: transform var(--motion-duration-micro) var(--motion-ease-standard);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}</code></pre>
+        </div>
+
+        <!-- Loading Patterns -->
+        <div class="subsection">
+          <h3 class="subsection-title">Loading Patterns</h3>
+          <pre><code>/* Shimmer skeleton — for content placeholders */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-sheen) 50%,
+    var(--skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-structural);
+}
+
+/* Pulse indicator — for live status dots */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  animation: pulse-live 2s ease-in-out infinite;
+}</code></pre>
+        </div>
+
+        <!-- Reduced Motion -->
+        <div class="subsection">
+          <h3 class="subsection-title">Reduced Motion</h3>
+          <p class="subsection-text">Reduced motion is a parallel design track, not an afterthought. When <code class="inline">prefers-reduced-motion: reduce</code> is active, all duration tokens resolve to 0ms. Design reduced-motion states that convey the same information through instant state changes rather than transitions.</p>
+
+          <div class="callout callout--warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <p>Never disable animation entirely for reduced-motion users. Replace it. A shimmer skeleton becomes a static skeleton with a visible loading label. A stagger entrance becomes an instant render. The information must still be conveyed.</p>
+          </div>
+
+          <pre><code>/* Reduced motion: replace shimmer with static + label */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: var(--skeleton-base);
+  }
+  .skeleton::after {
+    content: 'Loading...';
+    font-size: var(--text-00);
+    color: var(--color-fg-subtle);
+  }
+}</code></pre>
+        </div>
+
+        <!-- Do/Don't for Motion -->
+        <div class="do-dont-grid">
+          <div class="do-card">
+            <div class="do-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Do
+            </div>
+            <div class="do-card__body">Use <code>--motion-duration-fast</code> for hover states. Use stagger delays to reveal dashboard widgets sequentially so users can track the content appearing.</div>
+          </div>
+          <div class="dont-card">
+            <div class="dont-card__header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Don't
+            </div>
+            <div class="dont-card__body">Use <code>--motion-duration-dramatic</code> for routine interactions. Long durations on common actions (button clicks, tab switches) feel sluggish and block the user.</div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           6. VOICE & TONE GUIDE
+           ================================================================ -->
+      <section class="guideline-section" id="voice-tone">
+        <h2 class="section-title section-anchor">Voice &amp; Tone Guide</h2>
+        <p class="section-intro">Nerve speaks with precision and restraint. The voice is consistent; the tone adapts to context. In an error, be direct and helpful. In onboarding, be encouraging without being casual.</p>
+
+        <!-- Voice Attributes -->
+        <div class="subsection">
+          <h3 class="subsection-title">Voice Attributes</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Attribute</th><th>Example</th><th>Anti-Pattern</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Direct but not blunt</td>
+                <td>"Your API key expired. Generate a new one in Settings."</td>
+                <td>"Key expired." (too blunt, no actionable next step)</td>
+              </tr>
+              <tr>
+                <td>Technical but not exclusionary</td>
+                <td>"The agent's context window exceeded 128k tokens."</td>
+                <td>"CTX_OVERFLOW_ERR in LLM subsystem." (jargon without context)</td>
+              </tr>
+              <tr>
+                <td>Restrained but not cold</td>
+                <td>"All 12 agents completed successfully."</td>
+                <td>"Awesome! All your agents totally nailed it!" (too casual)</td>
+              </tr>
+              <tr>
+                <td>Urgent but not alarmist</td>
+                <td>"3 agents failed. Review errors to resume the workflow."</td>
+                <td>"CRITICAL FAILURE! Agents are down!" (panic-inducing)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Messaging Hierarchy -->
+        <div class="subsection">
+          <h3 class="subsection-title">Messaging Hierarchy</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Level</th><th>Max Length</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Tagline</td><td>5-8 words</td><td>"Control without constraint."</td></tr>
+              <tr><td>Headline</td><td>8-12 words</td><td>"Orchestrate autonomous agents with precision control"</td></tr>
+              <tr><td>Subhead</td><td>15-25 words</td><td>"Define execution boundaries, set fallback protocols, and monitor agent fleets in real time."</td></tr>
+              <tr><td>Body</td><td>2-4 sentences</td><td>Feature descriptions, onboarding instructions</td></tr>
+              <tr><td>Microcopy</td><td>3-10 words</td><td>Button labels, tooltips, form hints</td></tr>
+              <tr><td>Legal</td><td>As needed</td><td>Terms of service, compliance notices</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- CTA Conventions -->
+        <div class="subsection">
+          <h3 class="subsection-title">CTA Conventions</h3>
+          <div class="do-dont-grid">
+            <div class="do-card">
+              <div class="do-card__header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Do
+              </div>
+              <div class="do-card__body">Use verb + noun: "Deploy Agent," "Create Workflow," "Export Logs." Be specific about what happens when the user clicks. For destructive actions: "Delete Agent" not "Remove."</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card__header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Don't
+              </div>
+              <div class="dont-card__body">Use vague labels: "Submit," "OK," "Click Here," "Go." Never use "Learn More" without specifying what the user will learn. Avoid exclamation marks in CTAs.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Copy Templates -->
+        <div class="subsection">
+          <h3 class="subsection-title">Error Copy Templates</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Pattern</th><th>Template</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Validation</td><td>[Field] [constraint]. [Fix].</td><td>"Workflow name must be 3-64 characters. Remove special characters."</td></tr>
+              <tr><td>Permission</td><td>You don't have permission to [action]. [Resolution].</td><td>"You don't have permission to delete this agent. Contact your workspace admin."</td></tr>
+              <tr><td>System</td><td>[What happened]. [What to do]. [Reference].</td><td>"The deployment service is unavailable. Try again in a few minutes. Status: status.nerve.io"</td></tr>
+              <tr><td>Not found</td><td>[Resource] not found. [Guidance].</td><td>"Agent 'alpha-7' not found. It may have been deleted or you may not have access."</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State Templates -->
+        <div class="subsection">
+          <h3 class="subsection-title">Empty State Copy Templates</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Context</th><th>Headline</th><th>Body</th><th>CTA</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>No agents</td><td>"No agents yet"</td><td>"Deploy your first agent to start orchestrating tasks."</td><td>"Deploy Agent"</td></tr>
+              <tr><td>No results</td><td>"No results found"</td><td>"Adjust your filters or search terms."</td><td>"Clear Filters"</td></tr>
+              <tr><td>No logs</td><td>"No logs recorded"</td><td>"Logs appear here once an agent starts executing."</td><td>None (passive)</td></tr>
+              <tr><td>Empty workspace</td><td>"Welcome to Nerve"</td><td>"Create a workspace to begin managing your agent fleet."</td><td>"Create Workspace"</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Content Rules Per Component -->
+        <div class="subsection">
+          <h3 class="subsection-title">Content Rules Per Component</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Component</th><th>Rule</th><th>Max Length</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Buttons</td><td>Verb + noun. Sentence case. No periods.</td><td>3 words</td></tr>
+              <tr><td>Badges</td><td>Single word or short phrase. All caps for status.</td><td>2 words</td></tr>
+              <tr><td>Alerts</td><td>One sentence summary + optional action link.</td><td>2 sentences</td></tr>
+              <tr><td>Tooltips</td><td>Clarify, don't instruct. No periods for fragments.</td><td>15 words</td></tr>
+              <tr><td>Modals</td><td>Title: verb phrase. Body: consequence + confirmation.</td><td>3 sentences</td></tr>
+              <tr><td>Form labels</td><td>Noun phrase. Sentence case. No colons.</td><td>4 words</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Brand Vocabulary -->
+        <div class="subsection">
+          <h3 class="subsection-title">Brand Vocabulary</h3>
+          <div class="glossary-list">
+            <div class="glossary-item">
+              <div class="glossary-item__term">Agent</div>
+              <div class="glossary-item__def">An autonomous unit that executes tasks within defined guardrails. Never "bot" or "AI assistant."</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Workflow</div>
+              <div class="glossary-item__def">A sequence of tasks orchestrated across one or more agents. Never "pipeline" or "flow."</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Deploy</div>
+              <div class="glossary-item__def">To activate an agent. Never "launch" or "start." Deploy implies configuration is complete.</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Guardrail</div>
+              <div class="glossary-item__def">Execution boundary that constrains agent behavior. Never "limit" or "restriction."</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Fleet</div>
+              <div class="glossary-item__def">A collection of agents managed together. Never "pool" or "group."</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Orchestrate</div>
+              <div class="glossary-item__def">To coordinate agent execution. The core verb of the platform. Never "manage" or "run."</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Escalation</div>
+              <div class="glossary-item__def">When an agent transfers control to a human operator. Never "handoff" or "fallback" (fallback is for automated retry).</div>
+            </div>
+            <div class="glossary-item">
+              <div class="glossary-item__term">Nerve</div>
+              <div class="glossary-item__def">The platform. Always capitalized. Never "NERVE" or "nerve" in copy. Acceptable as a code reference in lowercase.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           7. ACCESSIBILITY
+           ================================================================ -->
+      <section class="guideline-section" id="accessibility">
+        <h2 class="section-title section-anchor">Accessibility</h2>
+        <p class="section-intro">Nerve targets WCAG 2.2 AA compliance as a minimum. Body text targets AAA. Accessibility is a design constraint, not a retrofit.</p>
+
+        <!-- Contrast Requirements -->
+        <div class="subsection">
+          <h3 class="subsection-title">Contrast Requirements</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Element</th><th>Minimum Ratio</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Body text (under 18px)</td><td>4.5:1 (AA)</td><td>7:1 (AAA)</td></tr>
+              <tr><td>Large text (18px+ bold, 24px+ regular)</td><td>3:1 (AA)</td><td>4.5:1 (AAA)</td></tr>
+              <tr><td>UI components (borders, icons)</td><td>3:1</td><td>3:1</td></tr>
+              <tr><td>Focus indicators</td><td>3:1 against adjacent colors</td><td>3:1</td></tr>
+              <tr><td>Disabled elements</td><td>No minimum (but must be identifiable)</td><td>N/A</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ARIA Pattern Summary -->
+        <div class="subsection">
+          <h3 class="subsection-title">ARIA Pattern Summary</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Component Type</th><th>ARIA Role</th><th>Key Attributes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Button</td><td><code>button</code></td><td><code>aria-pressed</code> (toggle), <code>aria-expanded</code> (menu trigger)</td></tr>
+              <tr><td>Modal</td><td><code>dialog</code></td><td><code>aria-modal="true"</code>, <code>aria-labelledby</code>, focus trap</td></tr>
+              <tr><td>Tabs</td><td><code>tablist</code>, <code>tab</code>, <code>tabpanel</code></td><td><code>aria-selected</code>, <code>aria-controls</code></td></tr>
+              <tr><td>Alert</td><td><code>alert</code> or <code>status</code></td><td><code>role="alert"</code> for urgent, <code>role="status"</code> for passive</td></tr>
+              <tr><td>Tooltip</td><td><code>tooltip</code></td><td><code>aria-describedby</code> on trigger</td></tr>
+              <tr><td>Navigation</td><td><code>navigation</code></td><td><code>aria-label</code> to distinguish multiple navs</td></tr>
+              <tr><td>Data table</td><td><code>table</code></td><td><code>aria-sort</code> on sortable headers, <code>aria-label</code> for table purpose</td></tr>
+              <tr><td>Combobox</td><td><code>combobox</code></td><td><code>aria-expanded</code>, <code>aria-activedescendant</code>, <code>aria-autocomplete</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Keyboard Navigation -->
+        <div class="subsection">
+          <h3 class="subsection-title">Keyboard Navigation Map</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Key</th><th>Context</th><th>Behavior</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Tab</code></td><td>Global</td><td>Move focus to next interactive element</td></tr>
+              <tr><td><code>Shift+Tab</code></td><td>Global</td><td>Move focus to previous interactive element</td></tr>
+              <tr><td><code>Enter</code> / <code>Space</code></td><td>Button, Link</td><td>Activate the focused element</td></tr>
+              <tr><td><code>Escape</code></td><td>Modal, Dropdown</td><td>Close the overlay, return focus to trigger</td></tr>
+              <tr><td><code>Arrow Up/Down</code></td><td>Menu, Select, Tabs</td><td>Navigate between items</td></tr>
+              <tr><td><code>Arrow Left/Right</code></td><td>Tabs, Horizontal nav</td><td>Navigate between tabs</td></tr>
+              <tr><td><code>Home</code> / <code>End</code></td><td>List, Menu</td><td>Jump to first/last item</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Screen Reader Expectations -->
+        <div class="subsection">
+          <h3 class="subsection-title">Screen Reader Expectations</h3>
+          <p class="subsection-text">Every interactive element must have an accessible name. Dynamic content changes must be announced via live regions.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Scenario</th><th>Implementation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Icon-only button</td><td><code>aria-label="Delete agent"</code> on the button element</td></tr>
+              <tr><td>Status change</td><td><code>aria-live="polite"</code> region updated with new status text</td></tr>
+              <tr><td>Error message</td><td><code>role="alert"</code> for immediate announcement; link <code>aria-describedby</code> to error from input</td></tr>
+              <tr><td>Loading state</td><td><code>aria-busy="true"</code> on container; announce completion via live region</td></tr>
+              <tr><td>Toast notification</td><td><code>role="status"</code> with <code>aria-live="polite"</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Color Independence -->
+        <div class="subsection">
+          <h3 class="subsection-title">Color Independence</h3>
+          <p class="subsection-text">Never rely on color alone to convey information. Every color-coded element must also use an icon, label, pattern, or position to communicate its meaning.</p>
+          <div class="do-dont-grid">
+            <div class="do-card">
+              <div class="do-card__header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Do
+              </div>
+              <div class="do-card__body">Show status as a colored badge with an icon and label: a green checkmark with "Healthy" text. The icon + text convey meaning even without color perception.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card__header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                Don't
+              </div>
+              <div class="dont-card__body">Use a green or red dot as the only indicator of agent health. Color-blind users cannot distinguish red from green dots without an accompanying label.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Focus Management -->
+        <div class="subsection">
+          <h3 class="subsection-title">Focus Management Rules</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Event</th><th>Focus Behavior</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Modal opens</td><td>Focus moves to first focusable element inside modal; trapped until closed</td></tr>
+              <tr><td>Modal closes</td><td>Focus returns to the element that triggered the modal</td></tr>
+              <tr><td>Dropdown opens</td><td>Focus moves to first item; Arrow keys navigate items</td></tr>
+              <tr><td>Toast appears</td><td>Focus stays where it is; toast announced via live region</td></tr>
+              <tr><td>Page navigation</td><td>Focus moves to main content heading (<code>h1</code>)</td></tr>
+              <tr><td>Item deleted</td><td>Focus moves to the next item in the list, or the previous if last</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           8. RESPONSIVE STRATEGY
+           ================================================================ -->
+      <section class="guideline-section" id="responsive-strategy">
+        <h2 class="section-title section-anchor">Responsive Strategy</h2>
+        <p class="section-intro">Nerve adapts across four breakpoint tiers. The breakpoints are content-driven, using rem units to respect user font-size preferences.</p>
+
+        <!-- Breakpoint Tiers -->
+        <div class="subsection">
+          <h3 class="subsection-title">Breakpoint Tiers</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Tier</th><th>Min Width</th><th>Columns</th><th>Target Devices</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Compact</td><td>0</td><td>4</td><td>Phones, small tablets in portrait</td></tr>
+              <tr><td>Medium</td><td>48rem (768px)</td><td>8</td><td>Tablets, small laptops</td></tr>
+              <tr><td>Expanded</td><td>64rem (1024px)</td><td>12</td><td>Laptops, desktops</td></tr>
+              <tr><td>Wide</td><td>90rem (1440px)</td><td>12</td><td>Large monitors, ultra-wide</td></tr>
+            </tbody>
+          </table>
+          <pre><code>/* Breakpoint usage */
+/* Compact: default styles (mobile-first) */
+
+@media (min-width: 48rem)  { /* Medium */ }
+@media (min-width: 64rem)  { /* Expanded */ }
+@media (min-width: 90rem)  { /* Wide */ }</code></pre>
+        </div>
+
+        <!-- Component Adaptation -->
+        <div class="subsection">
+          <h3 class="subsection-title">Component Adaptation Patterns</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Component</th><th>Compact</th><th>Medium</th><th>Expanded+</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Navigation</td><td>Bottom tab bar or hamburger</td><td>Collapsed sidebar (icons only)</td><td>Full sidebar with labels</td></tr>
+              <tr><td>Data table</td><td>Card list (stacked)</td><td>Horizontal scroll with pinned columns</td><td>Full table layout</td></tr>
+              <tr><td>Dashboard grid</td><td>Single column stack</td><td>2-column grid</td><td>3-4 column grid</td></tr>
+              <tr><td>Modal</td><td>Full-screen sheet</td><td>Centered dialog (480px)</td><td>Centered dialog (560px)</td></tr>
+              <tr><td>Detail view</td><td>Full screen, back button</td><td>Slide-over panel</td><td>Side-by-side split</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Touch Targets -->
+        <div class="subsection">
+          <h3 class="subsection-title">Touch Target Rules</h3>
+          <p class="subsection-text">All interactive elements must have a minimum touch target of 44x44px on compact and medium tiers. On expanded+ tiers, the minimum is 32x32px for density. Use padding or transparent borders to reach the minimum without inflating visual size.</p>
+          <pre><code>/* Touch target minimum — use padding to hit 44px */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Desktop density — 32px minimum */
+@media (min-width: 64rem) {
+  .touch-target {
+    min-height: 32px;
+    min-width: 32px;
+  }
+}</code></pre>
+        </div>
+
+        <!-- Container Queries -->
+        <div class="subsection">
+          <h3 class="subsection-title">Container Query Candidates</h3>
+          <p class="subsection-text">Components that appear in multiple layout contexts should use container queries instead of viewport media queries.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Component</th><th>Rationale</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Agent card</td><td>Appears in full-width list and sidebar panel at different sizes</td></tr>
+              <tr><td>Metric widget</td><td>Dashboard grid cells vary from 1/4 to full width</td></tr>
+              <tr><td>Log entry</td><td>Displayed in detail panel (narrow) and full-page view (wide)</td></tr>
+              <tr><td>Action toolbar</td><td>Inline in cards and as standalone header bar</td></tr>
+            </tbody>
+          </table>
+          <pre><code>/* Container query setup */
+.widget-container {
+  container-type: inline-size;
+  container-name: widget;
+}
+
+@container widget (min-width: 400px) {
+  .metric-widget {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+}
+
+@container widget (max-width: 399px) {
+  .metric-widget {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}</code></pre>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           9. ICONOGRAPHY USAGE
+           ================================================================ -->
+      <section class="guideline-section" id="iconography">
+        <h2 class="section-title section-anchor">Iconography Usage</h2>
+        <p class="section-intro">Nerve uses the Lucide icon library exclusively. All icons use a consistent stroke style at 1.5px weight for visual harmony with the type system.</p>
+
+        <!-- Size Tiers -->
+        <div class="subsection">
+          <h3 class="subsection-title">Size Tiers</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Size</th><th>Pixels</th><th>Usage</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Small</td><td>16px</td><td>Inline with text, badges, compact UI, table cells</td></tr>
+              <tr><td>Default</td><td>20px</td><td>Buttons, form elements, navigation items</td></tr>
+              <tr><td>Large</td><td>24px</td><td>Page headers, empty states, feature highlights</td></tr>
+            </tbody>
+          </table>
+          <pre><code>/* Icon sizing */
+.icon-sm  { width: 16px; height: 16px; }
+.icon-md  { width: 20px; height: 20px; }
+.icon-lg  { width: 24px; height: 24px; }
+
+/* Default color — inherits from parent */
+.icon {
+  color: currentColor;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}</code></pre>
+        </div>
+
+        <!-- Color Rules -->
+        <div class="subsection">
+          <h3 class="subsection-title">Color Rules</h3>
+          <p class="subsection-text">Icons use <code class="inline">currentColor</code> by default, inheriting from the parent text color. Override only for semantic meaning (status icons) or interactive states.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Context</th><th>Color</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Default (in text)</td><td><code>currentColor</code></td></tr>
+              <tr><td>Muted / secondary</td><td><code>--color-fg-subtle</code></td></tr>
+              <tr><td>Success status</td><td><code>--color-success-fg</code></td></tr>
+              <tr><td>Warning status</td><td><code>--color-warning-fg</code></td></tr>
+              <tr><td>Danger / error</td><td><code>--color-danger-fg</code></td></tr>
+              <tr><td>Interactive hover</td><td><code>--color-fg-strong</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Usage Modes -->
+        <div class="subsection">
+          <h3 class="subsection-title">Usage Modes</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Mode</th><th>Description</th><th>Accessibility</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Labeled</td><td>Icon paired with visible text label</td><td>Icon is decorative; use <code>aria-hidden="true"</code></td></tr>
+              <tr><td>Standalone</td><td>Icon without visible text (e.g., icon button)</td><td>Requires <code>aria-label</code> on interactive element</td></tr>
+              <tr><td>Decorative</td><td>Purely visual; does not convey information</td><td><code>aria-hidden="true"</code>, no <code>alt</code> text</td></tr>
+              <tr><td>Interactive</td><td>Icon that triggers an action</td><td>Must be inside a <code>&lt;button&gt;</code> with <code>aria-label</code>; 44px touch target</td></tr>
+            </tbody>
+          </table>
+          <pre><code>&lt;!-- Labeled: icon is decorative --&gt;
+&lt;button&gt;
+  &lt;svg aria-hidden="true" class="icon-md"&gt;...&lt;/svg&gt;
+  Deploy Agent
+&lt;/button&gt;
+
+&lt;!-- Standalone: icon needs label --&gt;
+&lt;button aria-label="Delete agent"&gt;
+  &lt;svg aria-hidden="true" class="icon-md"&gt;...&lt;/svg&gt;
+&lt;/button&gt;
+
+&lt;!-- Decorative: hidden from AT --&gt;
+&lt;span aria-hidden="true"&gt;
+  &lt;svg class="icon-sm"&gt;...&lt;/svg&gt;
+&lt;/span&gt;</code></pre>
+        </div>
+      </section>
+
+
+      <!-- ================================================================
+           10. GOVERNANCE
+           ================================================================ -->
+      <section class="guideline-section" id="governance">
+        <h2 class="section-title section-anchor">Governance</h2>
+        <p class="section-intro">The design system evolves through a structured lifecycle. Every component, token, and pattern follows a maturity track with clear entry and exit criteria.</p>
+
+        <!-- Component Maturity Lifecycle -->
+        <div class="subsection">
+          <h3 class="subsection-title">Component Maturity Lifecycle</h3>
+
+          <div class="lifecycle-track">
+            <div class="lifecycle-step"><span class="tag tag--proposal">Proposal</span></div>
+            <span class="lifecycle-arrow">&rarr;</span>
+            <div class="lifecycle-step"><span class="tag tag--experimental">Experimental</span></div>
+            <span class="lifecycle-arrow">&rarr;</span>
+            <div class="lifecycle-step"><span class="tag tag--stable">Stable</span></div>
+            <span class="lifecycle-arrow">&rarr;</span>
+            <div class="lifecycle-step"><span class="tag tag--deprecated">Deprecated</span></div>
+          </div>
+
+          <table class="spec-table">
+            <thead>
+              <tr><th>Stage</th><th>Criteria</th><th>Rules</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tag tag--proposal">Proposal</span></td>
+                <td>Design spec + use case documentation submitted</td>
+                <td>Cannot be used in production. Available in a feature branch only. API is not guaranteed.</td>
+              </tr>
+              <tr>
+                <td><span class="tag tag--experimental">Experimental</span></td>
+                <td>Reviewed by design system team, approved for testing</td>
+                <td>Can be used in production behind a feature flag. API may change. Must include migration notes.</td>
+              </tr>
+              <tr>
+                <td><span class="tag tag--stable">Stable</span></td>
+                <td>Tested in 2+ production surfaces, accessibility audited, docs complete</td>
+                <td>Breaking changes require a major version bump. Deprecation requires 2 minor version notice.</td>
+              </tr>
+              <tr>
+                <td><span class="tag tag--deprecated">Deprecated</span></td>
+                <td>Replacement identified and documented</td>
+                <td>Console warning emitted. Removed after 2 minor versions. Migration guide required.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Extension Rules -->
+        <div class="subsection">
+          <h3 class="subsection-title">Extension Rules</h3>
+          <p class="subsection-text">Teams may extend the design system under these constraints.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Action</th><th>Allowed</th><th>Condition</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Add new component tokens</td><td>Yes</td><td>Must reference existing semantic tokens. No primitive values.</td></tr>
+              <tr><td>Override semantic tokens</td><td>No</td><td>Submit a proposal to change the token at the system level.</td></tr>
+              <tr><td>Add new primitive colors</td><td>No</td><td>The palette is closed. Request additions through governance.</td></tr>
+              <tr><td>Create one-off components</td><td>Yes</td><td>Must use system tokens and follow accessibility guidelines. Must submit as proposal if reused.</td></tr>
+              <tr><td>Modify spacing scale</td><td>No</td><td>Use existing spacing tokens. Combine with <code>calc()</code> if needed.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Token Modification Rules -->
+        <div class="subsection">
+          <h3 class="subsection-title">Token Modification Rules</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Change Type</th><th>Version Impact</th><th>Process</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Add new token</td><td>Minor</td><td>PR to design-system repo + design review</td></tr>
+              <tr><td>Rename token</td><td>Major</td><td>Deprecate old name for 2 versions, alias to new name</td></tr>
+              <tr><td>Change token value</td><td>Patch (non-breaking) / Major (breaking)</td><td>Visual regression test required</td></tr>
+              <tr><td>Remove token</td><td>Major</td><td>2-version deprecation notice + migration guide</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Versioning Strategy -->
+        <div class="subsection">
+          <h3 class="subsection-title">Versioning Strategy</h3>
+          <p class="subsection-text">The token package follows semantic versioning (semver). Components are versioned independently but reference a compatible token range.</p>
+          <pre><code>/* Token package versioning */
+@nerve/tokens@2.4.1
+  ^major: breaking token changes (renames, removals)
+  ^minor: new tokens added
+  ^patch: value adjustments (non-breaking)
+
+/* Component package references */
+@nerve/components@3.1.0
+  peerDependency: "@nerve/tokens": "^2.0.0"</code></pre>
+        </div>
+
+        <!-- Deprecation Protocol -->
+        <div class="subsection">
+          <h3 class="subsection-title">Deprecation Protocol</h3>
+          <p class="subsection-text">Deprecation is a 3-step process spread across at least 2 minor versions.</p>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Step</th><th>Version</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1. Announce</td><td>v2.5.0</td><td>Mark as deprecated in docs. Add <code>/** @deprecated */</code> JSDoc. Emit console warning in dev mode.</td></tr>
+              <tr><td>2. Alias</td><td>v2.6.0</td><td>Old name aliases to new name. Migration codemod published. Warning persists.</td></tr>
+              <tr><td>3. Remove</td><td>v3.0.0</td><td>Old name removed. Major version bump. Breaking change logged in CHANGELOG.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Contribution Guidelines -->
+        <div class="subsection">
+          <h3 class="subsection-title">Contribution Guidelines</h3>
+          <table class="spec-table">
+            <thead>
+              <tr><th>Step</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1. Identify need</td><td>Document the use case, affected surfaces, and why existing components or tokens are insufficient.</td></tr>
+              <tr><td>2. Submit proposal</td><td>Open a GitHub issue using the component-proposal template. Include design specs, usage examples, and accessibility notes.</td></tr>
+              <tr><td>3. Design review</td><td>Present to the design system team during weekly office hours. Get approval or revision requests.</td></tr>
+              <tr><td>4. Build</td><td>Implement using system tokens. Include unit tests, visual regression tests, and accessibility tests (axe-core).</td></tr>
+              <tr><td>5. Documentation</td><td>Write usage guidelines, API reference, and Do/Don't examples. Add to the design system site.</td></tr>
+              <tr><td>6. Release</td><td>Merge to main. Tagged as Experimental. Promote to Stable after 2+ production deployments.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer style="border-top: var(--border-thin) solid var(--color-border-subtle); padding: var(--space-5); text-align: center;">
+      <p style="font-size: var(--text-00); color: var(--color-fg-subtle);">Nerve Design System &middot; Control without constraint.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('nerve-theme', next);
+    }
+
+    // Restore saved theme
+    const saved = localStorage.getItem('nerve-theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+/* === AETHER OS: TOKEN ARCHITECTURE === */
+
+:root {
+  /* --- 1. PRIMITIVES --- */
+  --p-ink-950: #050505;
+  --p-ink-900: #0A0A0A;
+  --p-ink-800: #141414;
+  --p-ink-700: #1F1F1F;
+  --p-paper-50: #F9F9F9;
+  --p-paper-100: #F0F0F0;
+  --p-paper-200: #E0E0E0;
+  --p-neon-500: #00FF9C;
+  --p-neon-600: #00E68A;
+  --p-neon-400: #33FFAF;
+
+  /* Typography */
+  --p-font-agency: 'Instrument Serif', serif;
+  --p-font-precision: 'Inter Tight', sans-serif;
+  --p-font-state: 'Fragment Mono', monospace;
+
+  /* Fluid Scale (clamp) */
+  --p-text-xs: 0.75rem;
+  --p-text-sm: 0.875rem;
+  --p-text-base: 1rem;
+  --p-text-lg: 1.125rem;
+  --p-text-xl: 1.25rem;
+  --p-text-display: clamp(2.5rem, 5vw, 4.5rem);
+  --p-text-hero: clamp(3.5rem, 8vw, 7rem);
+
+  /* Spacing */
+  --p-space-1: 0.25rem;
+  --p-space-2: 0.5rem;
+  --p-space-4: 1rem;
+  --p-space-6: 1.5rem;
+  --p-space-8: 2rem;
+  --p-space-12: 3rem;
+
+  /* Motion */
+  --p-duration-kinetic: 200ms;
+  --p-duration-snappy: 150ms;
+  --p-ease-elastic: cubic-bezier(0.19, 1, 0.22, 1);
+
+  /* --- 2. SEMANTIC TOKENS --- */
+  --color-bg-canvas: var(--p-ink-950);
+  --color-bg-surface: var(--p-ink-900);
+  --color-bg-elevated: var(--p-ink-800);
+  --color-bg-overlay: rgba(5, 5, 5, 0.8);
+
+  --color-fg-primary: var(--p-paper-50);
+  --color-fg-secondary: var(--p-paper-200);
+  --color-fg-accent: var(--p-neon-500);
+  --color-fg-on-accent: var(--p-ink-950);
+
+  --color-border-subtle: var(--p-ink-700);
+  --color-border-strong: var(--p-paper-200);
+  --color-border-accent: var(--p-neon-500);
+
+  /* Status */
+  --color-status-thinking: var(--p-neon-500);
+  --color-status-error: #FF3B30;
+  --color-status-warn: #FFCC00;
+
+  /* Radius */
+  --radius-sharp: 2px;
+  --radius-interactive: 4px;
+  --radius-container: 8px;
+
+  /* Shadows (Kinetic Glow) */
+  --shadow-glow: 0 0 20px rgba(0, 255, 156, 0.15);
+  --shadow-elevated: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  /* --- 3. COMPONENT TOKENS --- */
+  --btn-height: 2.5rem;
+  --nav-height: 4rem;
+  --sidebar-width: 280px;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --p-duration-kinetic: 0ms;
+    --p-duration-snappy: 0ms;
+  }
+}

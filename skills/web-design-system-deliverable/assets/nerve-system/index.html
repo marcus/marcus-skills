@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nerve Design System — Overview</title>
+  <meta name="description" content="Nerve Design System: Control without constraint. A dark-first design system for agent orchestration.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* ---- Grid-dot canvas background ---- */
+    body {
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, var(--color-fg-muted) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      opacity: 0.04;
+      animation: grid-pulse 8s ease-in-out infinite;
+    }
+
+    /* ---- Layout ---- */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding-inline: var(--grid-gutter);
+    }
+
+    .container--narrow {
+      max-width: var(--content-medium);
+    }
+
+    section {
+      padding-block: var(--space-12);
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      border-bottom: var(--border-thin) solid var(--nav-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.5rem;
+    }
+
+    .nav__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--color-fg-strong);
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-2);
+      letter-spacing: var(--tracking-tight);
+      text-decoration: none;
+    }
+
+    .nav__brand-mark {
+      width: 24px;
+      height: 24px;
+      background: var(--color-accent-brand);
+      border-radius: var(--radius-2);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-glow-accent);
+    }
+
+    .nav__brand-mark svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--color-fg-on-accent);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+    }
+
+    .nav__link {
+      display: inline-flex;
+      align-items: center;
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--nav-item-fg);
+      text-decoration: none;
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard),
+                  background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .nav__link:hover {
+      color: var(--nav-item-fg-hover);
+      background: var(--button-ghost-bg-hover);
+    }
+
+    .nav__link[aria-current="page"] {
+      color: var(--nav-item-fg-active);
+      background: var(--nav-item-bg-active);
+    }
+
+    .nav__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-interactive);
+      background: transparent;
+      color: var(--color-fg-muted);
+      cursor: pointer;
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard),
+                  border-color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .theme-toggle:hover {
+      color: var(--color-fg-strong);
+      border-color: var(--color-border-strong);
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .theme-toggle .icon-moon { display: none; }
+    [data-theme="light"] .theme-toggle .icon-sun { display: none; }
+    [data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+    /* ---- Hero ---- */
+    .hero {
+      padding-block: var(--space-12) var(--space-11);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      color: var(--color-accent-brand-fg);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+    }
+
+    .hero__eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--color-accent-brand);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-glow-accent);
+      animation: pulse-live 2s ease-in-out infinite;
+    }
+
+    .hero__title {
+      font-size: var(--text-6);
+      font-weight: var(--weight-bold);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-tighter);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-5);
+      position: relative;
+    }
+
+    .hero__title span {
+      background: linear-gradient(135deg, var(--violet-400), var(--cyan-400));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero__subtitle {
+      font-size: var(--text-3);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-snug);
+      max-width: 36em;
+      margin-inline: auto;
+      margin-bottom: var(--space-6);
+    }
+
+    .hero__meta {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-6);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .hero__meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1-5);
+    }
+
+    .hero__meta-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-secondary);
+    }
+
+    /* ---- Section headings ---- */
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-accent-brand-fg);
+      margin-bottom: var(--space-3);
+    }
+
+    .section-title {
+      font-size: var(--text-5);
+      font-weight: var(--weight-bold);
+      line-height: var(--leading-tight);
+      letter-spacing: var(--tracking-tight);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-4);
+    }
+
+    .section-desc {
+      font-size: var(--text-2);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+      max-width: 48em;
+    }
+
+    .section-header {
+      margin-bottom: var(--space-9);
+    }
+
+    /* ---- Cards & Panels ---- */
+    .card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      padding: var(--space-5);
+      transition: border-color var(--motion-duration-base) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-base) var(--motion-ease-standard);
+    }
+
+    .card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-fg-subtle);
+      margin-bottom: var(--space-3);
+    }
+
+    .card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-snug);
+    }
+
+    .card__text {
+      font-size: var(--text-1);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+    }
+
+    /* ---- Grid layouts ---- */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    @media (min-width: 640px) {
+      .grid-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: repeat(2, 1fr); }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ---- Divider ---- */
+    .divider {
+      border: none;
+      height: var(--border-thin);
+      background: var(--color-border-subtle);
+      margin-block: var(--space-9);
+    }
+
+    /* ---- Brand Strategy ---- */
+    .personality-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      font-size: var(--text-0);
+    }
+
+    .personality-bar__label {
+      width: 5em;
+      text-align: right;
+      color: var(--color-fg-subtle);
+      font-weight: var(--weight-medium);
+      flex-shrink: 0;
+    }
+
+    .personality-bar__track {
+      flex: 1;
+      height: 6px;
+      background: var(--color-bg-elevated);
+      border-radius: var(--radius-full);
+      position: relative;
+      max-width: 16rem;
+    }
+
+    .personality-bar__fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--color-accent-brand);
+      border-radius: var(--radius-full);
+    }
+
+    .personality-bar__end {
+      width: 5em;
+      color: var(--color-fg-subtle);
+      font-weight: var(--weight-medium);
+      flex-shrink: 0;
+    }
+
+    /* ---- Principle cards ---- */
+    .principle {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+
+    .principle__number {
+      font-family: var(--font-display);
+      font-size: var(--text-4);
+      font-weight: var(--weight-bold);
+      color: var(--color-accent-brand);
+      line-height: var(--leading-none);
+      flex-shrink: 0;
+      min-width: 2rem;
+    }
+
+    .principle__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-1);
+    }
+
+    .principle__desc {
+      font-size: var(--text-1);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+    }
+
+    /* ---- Visual Direction ---- */
+    .direction-chosen {
+      background: var(--color-accent-brand-subtle);
+      border: var(--border-thin) solid var(--color-accent-brand);
+      border-radius: var(--radius-structural);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+      position: relative;
+    }
+
+    .direction-chosen__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1-5);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--color-fg-on-accent);
+      background: var(--color-accent-brand);
+      padding: var(--space-0-5) var(--space-3);
+      border-radius: var(--radius-badge);
+      margin-bottom: var(--space-4);
+    }
+
+    .direction-chosen__title {
+      font-family: var(--font-display);
+      font-size: var(--text-4);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-3);
+    }
+
+    .direction-chosen__desc {
+      font-size: var(--text-2);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+      max-width: 52em;
+    }
+
+    .direction-rejected {
+      opacity: 0.6;
+      position: relative;
+    }
+
+    .direction-rejected::after {
+      content: 'REJECTED';
+      position: absolute;
+      top: var(--space-4);
+      right: var(--space-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-label);
+      color: var(--color-danger-fg);
+      background: var(--color-danger-subtle);
+      padding: var(--space-0-5) var(--space-2);
+      border-radius: var(--radius-badge);
+    }
+
+    /* ---- Voice attributes ---- */
+    .voice-attr {
+      padding: var(--space-5);
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+    }
+
+    .voice-attr__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-2);
+    }
+
+    .voice-attr__desc {
+      font-size: var(--text-1);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+      margin-bottom: var(--space-3);
+    }
+
+    .voice-attr__anti {
+      font-size: var(--text-0);
+      color: var(--color-danger-fg);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-danger-subtle);
+      border-radius: var(--radius-2);
+    }
+
+    .voice-attr__anti strong {
+      font-weight: var(--weight-semibold);
+      color: var(--color-danger-fg);
+    }
+
+    /* ---- Color swatches ---- */
+    .swatch-group {
+      margin-bottom: var(--space-6);
+    }
+
+    .swatch-group__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-3);
+    }
+
+    .swatch-row {
+      display: flex;
+      gap: var(--space-1);
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-1);
+      min-width: 4rem;
+    }
+
+    .swatch__color {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: var(--radius-2);
+      border: var(--border-thin) solid var(--color-border-subtle);
+    }
+
+    .swatch__name {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .swatch__hex {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      color: var(--color-fg-disabled);
+    }
+
+    /* ---- Feedback color cards ---- */
+    .feedback-colors {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      gap: var(--space-3);
+    }
+
+    .feedback-swatch {
+      padding: var(--space-4);
+      border-radius: var(--radius-structural);
+      text-align: center;
+    }
+
+    .feedback-swatch__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      margin-bottom: var(--space-1);
+    }
+
+    .feedback-swatch__value {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      opacity: 0.7;
+    }
+
+    /* ---- Typography specimens ---- */
+    .type-specimen {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      padding: var(--space-4) 0;
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+
+    .type-specimen:last-child {
+      border-bottom: none;
+    }
+
+    .type-specimen__meta {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .type-specimen__sample {
+      color: var(--color-fg-strong);
+    }
+
+    /* ---- Spacing scale ---- */
+    .spacing-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .spacing-item__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      width: 5rem;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .spacing-item__bar {
+      height: 8px;
+      background: var(--color-accent-brand-subtle);
+      border-radius: var(--radius-1);
+      border: var(--border-thin) solid var(--color-accent-brand);
+    }
+
+    .spacing-item__value {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-disabled);
+      flex-shrink: 0;
+    }
+
+    /* ---- Radius hierarchy ---- */
+    .radius-demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-5);
+      align-items: end;
+    }
+
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .radius-item__shape {
+      width: 4rem;
+      height: 4rem;
+      border: var(--border-medium) solid var(--color-accent-brand);
+      background: var(--color-accent-brand-subtle);
+    }
+
+    .radius-item__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      text-align: center;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .radius-item__use {
+      font-size: 0.625rem;
+      color: var(--color-fg-disabled);
+      text-align: center;
+    }
+
+    /* ---- Motion overview ---- */
+    .motion-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-0);
+    }
+
+    .motion-table th {
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--table-header-fg);
+      background: var(--table-header-bg);
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--table-row-border);
+    }
+
+    .motion-table td {
+      padding: var(--space-2) var(--space-3);
+      color: var(--color-fg-muted);
+      border-bottom: var(--border-thin) solid var(--table-row-border);
+    }
+
+    .motion-table td:first-child {
+      font-family: var(--font-mono);
+      color: var(--color-fg-strong);
+      font-size: var(--text-00);
+    }
+
+    .motion-table tr:hover td {
+      background: var(--table-row-hover);
+    }
+
+    /* ---- Visual Assets ---- */
+    .asset-card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      overflow: hidden;
+    }
+
+    .asset-card__preview {
+      height: 10rem;
+      background: var(--color-bg-sunken);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .asset-card__body {
+      padding: var(--space-4);
+    }
+
+    .asset-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-1-5);
+    }
+
+    .asset-card__desc {
+      font-size: var(--text-0);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+    }
+
+    /* ---- Photography preview ---- */
+    .preview-photo {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--void-950) 0%, var(--void-800) 50%, var(--violet-950) 100%);
+      position: relative;
+    }
+
+    .preview-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(124, 58, 237, 0.03) 3px,
+        rgba(124, 58, 237, 0.03) 4px
+      );
+    }
+
+    /* ---- Illustration preview ---- */
+    .preview-illustration {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+    }
+
+    .preview-illustration svg {
+      width: 80px;
+      height: 80px;
+      stroke: var(--color-fg-subtle);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .preview-illustration svg .accent {
+      stroke: var(--color-accent-brand);
+    }
+
+    /* ---- Icon preview ---- */
+    .preview-icons {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .preview-icons svg {
+      stroke: var(--color-fg-muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ---- Graphic device preview ---- */
+    .preview-device {
+      width: 100%;
+      height: 100%;
+      background: var(--void-950);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .preview-device::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      transform: translate(-50%, -50%);
+      border: 1.5px solid var(--color-accent-brand);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .preview-device::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      transform: translate(-50%, -50%);
+      border: 1.5px solid var(--cyan-400);
+      opacity: 0.3;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      padding: var(--space-8) 0;
+      border-top: var(--border-thin) solid var(--color-border-subtle);
+      margin-top: var(--space-9);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+
+    .footer__brand {
+      font-family: var(--font-display);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      font-size: var(--text-1);
+    }
+
+    .footer__meta {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: var(--space-4);
+      list-style: none;
+    }
+
+    .footer__link {
+      font-size: var(--text-0);
+      color: var(--color-fg-muted);
+      text-decoration: none;
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .footer__link:hover {
+      color: var(--color-fg-strong);
+    }
+
+    /* ---- Utilities ---- */
+    .mt-6 { margin-top: var(--space-6); }
+    .mt-8 { margin-top: var(--space-8); }
+    .mb-4 { margin-bottom: var(--space-4); }
+    .mb-6 { margin-bottom: var(--space-6); }
+    .text-subtle { color: var(--color-fg-subtle); }
+    .text-muted { color: var(--color-fg-muted); }
+    .font-mono { font-family: var(--font-mono); }
+    .font-display { font-family: var(--font-display); }
+
+    /* ---- Responsive nav ---- */
+    @media (max-width: 639px) {
+      .nav__links {
+        display: none;
+      }
+      .hero__meta {
+        flex-direction: column;
+        gap: var(--space-2);
+      }
+      .personality-bar {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* ---- Subsection title ---- */
+    .subsection-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      margin-bottom: var(--space-4);
+      margin-top: var(--space-8);
+    }
+
+    .subsection-title:first-child {
+      margin-top: 0;
+    }
+
+    /* ---- Positioning statement ---- */
+    .positioning {
+      font-size: var(--text-3);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+      padding: var(--space-5);
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-structural);
+    }
+
+    .positioning strong {
+      color: var(--color-fg-strong);
+      font-weight: var(--weight-semibold);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- ============ NAVIGATION ============ -->
+    <nav class="nav" aria-label="Primary navigation">
+      <div class="container nav__inner">
+        <a href="index.html" class="nav__brand" aria-label="Nerve Design System home">
+          <span class="nav__brand-mark">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M8 2 L8 14 M4 6 L8 2 L12 6"/>
+            </svg>
+          </span>
+          Nerve
+        </a>
+        <ul class="nav__links" role="list">
+          <li><a href="index.html" class="nav__link" aria-current="page">Overview</a></li>
+          <li><a href="components.html" class="nav__link">Components</a></li>
+          <li><a href="guidelines.html" class="nav__link">Guidelines</a></li>
+          <li><a href="application.html" class="nav__link">Application</a></li>
+        </ul>
+        <div class="nav__actions">
+          <button class="theme-toggle" aria-label="Toggle color theme" type="button">
+            <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container">
+        <p class="hero__eyebrow" aria-hidden="true">Design System v1.0</p>
+        <h1 id="hero-title" class="hero__title">
+          Control without<br><span>constraint.</span>
+        </h1>
+        <p class="hero__subtitle">
+          The design language for Nerve — an agent orchestration platform where
+          operators command autonomous systems with precision, clarity, and confidence.
+        </p>
+        <div class="hero__meta" aria-label="System metadata">
+          <span class="hero__meta-item"><span class="dot" aria-hidden="true"></span> Dark-first</span>
+          <span class="hero__meta-item"><span class="dot" aria-hidden="true"></span> Token-driven</span>
+          <span class="hero__meta-item"><span class="dot" aria-hidden="true"></span> Density-optimized</span>
+          <span class="hero__meta-item"><span class="dot" aria-hidden="true"></span> Motion-aware</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BRAND STRATEGY ============ -->
+    <section aria-labelledby="brand-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-label">01 — Brand Strategy</p>
+          <h2 id="brand-title" class="section-title">Built for operators,<br>not spectators.</h2>
+          <p class="section-desc">
+            Nerve exists for the people who run autonomous agent fleets at scale.
+            Every brand decision traces back to one question: does this help the operator act faster?
+          </p>
+        </header>
+
+        <!-- Positioning -->
+        <h3 class="subsection-title">Positioning</h3>
+        <div class="positioning mb-6">
+          For <strong>engineering and operations teams</strong> who deploy and manage autonomous AI agents,
+          <strong>Nerve</strong> is the orchestration platform that provides <strong>real-time visibility and decisive control</strong>
+          over agent fleets — without sacrificing the autonomy that makes agents valuable.
+          Unlike monitoring-only tools or rigid workflow builders,
+          Nerve treats <strong>density as a feature</strong> and <strong>dark mode as a default</strong>,
+          respecting the operator's expertise while surfacing what matters.
+        </div>
+
+        <!-- Personality Spectrum -->
+        <h3 class="subsection-title">Personality Spectrum</h3>
+        <div class="mb-6">
+          <div class="personality-bar">
+            <span class="personality-bar__label">Formal</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 30%"></div></div>
+            <span class="personality-bar__end">Casual</span>
+          </div>
+          <div class="personality-bar">
+            <span class="personality-bar__label">Premium</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 100%"></div></div>
+            <span class="personality-bar__end">Accessible</span>
+          </div>
+          <div class="personality-bar">
+            <span class="personality-bar__label">Bold</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 80%"></div></div>
+            <span class="personality-bar__end">Restrained</span>
+          </div>
+          <div class="personality-bar">
+            <span class="personality-bar__label">Warm</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 30%"></div></div>
+            <span class="personality-bar__end">Cool</span>
+          </div>
+          <div class="personality-bar">
+            <span class="personality-bar__label">Playful</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 20%"></div></div>
+            <span class="personality-bar__end">Serious</span>
+          </div>
+          <div class="personality-bar">
+            <span class="personality-bar__label">Classic</span>
+            <div class="personality-bar__track"><div class="personality-bar__fill" style="width: 80%"></div></div>
+            <span class="personality-bar__end">Modern</span>
+          </div>
+        </div>
+
+        <!-- Design Principles -->
+        <h3 class="subsection-title">Design Principles</h3>
+        <div class="grid-2">
+          <div class="card">
+            <div class="principle">
+              <span class="principle__number">01</span>
+              <div>
+                <p class="principle__title">Decisive over decorative</p>
+                <p class="principle__desc">Every element earns its pixels. If it doesn't accelerate understanding, it doesn't ship.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="principle">
+              <span class="principle__number">02</span>
+              <div>
+                <p class="principle__title">Density is a feature</p>
+                <p class="principle__desc">Information-rich interfaces respect the operator's expertise. Don't hide complexity, organize it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="principle">
+              <span class="principle__number">03</span>
+              <div>
+                <p class="principle__title">Alive, not animated</p>
+                <p class="principle__desc">Motion signals system state, not visual flair. A pulse means something is running. A transition means something changed.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="principle">
+              <span class="principle__number">04</span>
+              <div>
+                <p class="principle__title">Dark is default</p>
+                <p class="principle__desc">Dark interfaces reduce cognitive load during extended sessions. Light mode exists as an accessibility option, not an afterthought.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider container">
+
+    <!-- ============ VISUAL DIRECTION ============ -->
+    <section aria-labelledby="direction-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-label">02 — Visual Direction</p>
+          <h2 id="direction-title" class="section-title">Neural Precision.</h2>
+          <p class="section-desc">
+            One direction chosen from three candidates. The visual language positions Nerve as mission control
+            for autonomous systems — not a dashboard, not an admin panel. A command interface.
+          </p>
+        </header>
+
+        <!-- Chosen Direction -->
+        <div class="direction-chosen">
+          <span class="direction-chosen__badge">Selected Direction</span>
+          <h3 class="direction-chosen__title">Neural Precision</h3>
+          <p class="direction-chosen__desc">
+            Deep void canvas, electric violet accent, sharp geometry, monospace data displays, subtle grid-pattern texture.
+            The interface feels like a mission control center for autonomous systems. Every surface recedes.
+            Every data point advances. The dark canvas isn't aesthetic — it's functional negative space that lets
+            status indicators, agent logs, and metric visualizations command attention without competition.
+          </p>
+        </div>
+
+        <!-- Rejected Directions -->
+        <div class="grid-2">
+          <div class="card direction-rejected">
+            <p class="card__label">Alternative A</p>
+            <h4 class="card__title">Warm Autonomy</h4>
+            <p class="card__text">
+              Warmer palette built on amber and gold, rounded shapes, organic motion curves.
+              The direction suggested trust and approachability — qualities that undercut the precision
+              positioning Nerve requires. Too friendly for a tool that controls autonomous systems.
+            </p>
+          </div>
+          <div class="card direction-rejected">
+            <p class="card__label">Alternative B</p>
+            <h4 class="card__title">Glass Lattice</h4>
+            <p class="card__text">
+              Translucent surfaces, glassmorphism, neon accent palette. Visually striking in screenshots
+              but trend-dependent and proven to cause readability degradation in extended-use sessions.
+              Form over function — the opposite of Nerve's thesis.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider container">
+
+    <!-- ============ VOICE & TONE ============ -->
+    <section aria-labelledby="voice-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-label">03 — Voice &amp; Tone</p>
+          <h2 id="voice-title" class="section-title">Say less.<br>Mean more.</h2>
+          <p class="section-desc">
+            Nerve's voice is the written equivalent of a senior engineer during an incident:
+            clear, composed, and economical with words. Every message earns its screen space.
+          </p>
+        </header>
+
+        <div class="grid-2">
+          <div class="voice-attr">
+            <h3 class="voice-attr__title">Direct but not blunt</h3>
+            <p class="voice-attr__desc">
+              State outcomes clearly. Skip hedging language. Keep the human in the loop
+              without burying the lead in qualifications.
+            </p>
+            <p class="voice-attr__anti">
+              <strong>Anti-pattern:</strong> "It might be worth considering that the agent could potentially be experiencing an issue."
+            </p>
+          </div>
+          <div class="voice-attr">
+            <h3 class="voice-attr__title">Technical but not exclusionary</h3>
+            <p class="voice-attr__desc">
+              Use precise terminology. Define it once, then trust the reader.
+              Don't over-explain concepts your audience uses daily.
+            </p>
+            <p class="voice-attr__anti">
+              <strong>Anti-pattern:</strong> "A 'timeout' is when a computer program takes too long to respond."
+            </p>
+          </div>
+          <div class="voice-attr">
+            <h3 class="voice-attr__title">Restrained but not cold</h3>
+            <p class="voice-attr__desc">
+              Confidence without exclamation points. Warmth without performance.
+              The system acknowledges the human behind the screen without being performative.
+            </p>
+            <p class="voice-attr__anti">
+              <strong>Anti-pattern:</strong> "Great news!!! Your deployment was super successful! 🎉"
+            </p>
+          </div>
+          <div class="voice-attr">
+            <h3 class="voice-attr__title">Urgent but not alarmist</h3>
+            <p class="voice-attr__desc">
+              Agent errors need immediate attention, not panic.
+              Severity maps to visual weight and specificity, not to volume or drama.
+            </p>
+            <p class="voice-attr__anti">
+              <strong>Anti-pattern:</strong> "CRITICAL WARNING: IMMEDIATE ACTION REQUIRED OR EVERYTHING WILL BREAK!!!"
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider container">
+
+    <!-- ============ FOUNDATION ============ -->
+    <section aria-labelledby="foundation-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-label">04 — Foundation</p>
+          <h2 id="foundation-title" class="section-title">Token architecture.</h2>
+          <p class="section-desc">
+            Every visual decision flows through a three-tier token system: primitives, semantic tokens,
+            and component tokens. Nothing is hard-coded. Everything adapts.
+          </p>
+        </header>
+
+        <!-- ---- Color System ---- -->
+        <h3 class="subsection-title">Color System</h3>
+
+        <div class="swatch-group">
+          <h4 class="card__label">Void Neutrals</h4>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-950)"></div>
+              <span class="swatch__name">950</span>
+              <span class="swatch__hex">#050507</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-900)"></div>
+              <span class="swatch__name">900</span>
+              <span class="swatch__hex">#0A0A0C</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-850)"></div>
+              <span class="swatch__name">850</span>
+              <span class="swatch__hex">#0F0F13</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-800)"></div>
+              <span class="swatch__name">800</span>
+              <span class="swatch__hex">#141418</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-750)"></div>
+              <span class="swatch__name">750</span>
+              <span class="swatch__hex">#1A1A20</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-700)"></div>
+              <span class="swatch__name">700</span>
+              <span class="swatch__hex">#1F1F27</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-600)"></div>
+              <span class="swatch__name">600</span>
+              <span class="swatch__hex">#2A2A35</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-500)"></div>
+              <span class="swatch__name">500</span>
+              <span class="swatch__hex">#3D3D4E</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-400)"></div>
+              <span class="swatch__name">400</span>
+              <span class="swatch__hex">#52526B</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-300)"></div>
+              <span class="swatch__name">300</span>
+              <span class="swatch__hex">#71717A</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-200)"></div>
+              <span class="swatch__name">200</span>
+              <span class="swatch__hex">#A1A1AA</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-100)"></div>
+              <span class="swatch__name">100</span>
+              <span class="swatch__hex">#D4D4D8</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-50)"></div>
+              <span class="swatch__name">50</span>
+              <span class="swatch__hex">#F4F4F5</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--void-25)"></div>
+              <span class="swatch__name">25</span>
+              <span class="swatch__hex">#FAFAFA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h4 class="card__label">Violet — Primary Brand</h4>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-950)"></div>
+              <span class="swatch__name">950</span>
+              <span class="swatch__hex">#2E1065</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-900)"></div>
+              <span class="swatch__name">900</span>
+              <span class="swatch__hex">#3B0764</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-800)"></div>
+              <span class="swatch__name">800</span>
+              <span class="swatch__hex">#4C1D95</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-700)"></div>
+              <span class="swatch__name">700</span>
+              <span class="swatch__hex">#5B21B6</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-600)"></div>
+              <span class="swatch__name">600</span>
+              <span class="swatch__hex">#7C3AED</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-500)"></div>
+              <span class="swatch__name">500</span>
+              <span class="swatch__hex">#8B5CF6</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-400)"></div>
+              <span class="swatch__name">400</span>
+              <span class="swatch__hex">#A78BFA</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-300)"></div>
+              <span class="swatch__name">300</span>
+              <span class="swatch__hex">#C4B5FD</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-200)"></div>
+              <span class="swatch__name">200</span>
+              <span class="swatch__hex">#DDD6FE</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--violet-100)"></div>
+              <span class="swatch__name">100</span>
+              <span class="swatch__hex">#EDE9FE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h4 class="card__label">Cyan — Secondary / Agent-Active</h4>
+          <div class="swatch-row">
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-900)"></div>
+              <span class="swatch__name">900</span>
+              <span class="swatch__hex">#064E3B</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-800)"></div>
+              <span class="swatch__name">800</span>
+              <span class="swatch__hex">#065F46</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-700)"></div>
+              <span class="swatch__name">700</span>
+              <span class="swatch__hex">#0E7490</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-600)"></div>
+              <span class="swatch__name">600</span>
+              <span class="swatch__hex">#0891B2</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-500)"></div>
+              <span class="swatch__name">500</span>
+              <span class="swatch__hex">#06B6D4</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-400)"></div>
+              <span class="swatch__name">400</span>
+              <span class="swatch__hex">#22D3EE</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-300)"></div>
+              <span class="swatch__name">300</span>
+              <span class="swatch__hex">#67E8F9</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-200)"></div>
+              <span class="swatch__name">200</span>
+              <span class="swatch__hex">#A5F3FC</span>
+            </div>
+            <div class="swatch">
+              <div class="swatch__color" style="background: var(--cyan-100)"></div>
+              <span class="swatch__name">100</span>
+              <span class="swatch__hex">#CFFAFE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swatch-group">
+          <h4 class="card__label">Feedback Colors</h4>
+          <div class="feedback-colors">
+            <div class="feedback-swatch" style="background: var(--color-success-subtle); border: var(--border-thin) solid var(--color-success);">
+              <p class="feedback-swatch__label" style="color: var(--color-success-fg);">Success</p>
+              <p class="feedback-swatch__value" style="color: var(--color-success-fg);">green-500 #10B981</p>
+            </div>
+            <div class="feedback-swatch" style="background: var(--color-warning-subtle); border: var(--border-thin) solid var(--color-warning);">
+              <p class="feedback-swatch__label" style="color: var(--color-warning-fg);">Warning</p>
+              <p class="feedback-swatch__value" style="color: var(--color-warning-fg);">amber-500 #F59E0B</p>
+            </div>
+            <div class="feedback-swatch" style="background: var(--color-danger-subtle); border: var(--border-thin) solid var(--color-danger);">
+              <p class="feedback-swatch__label" style="color: var(--color-danger-fg);">Danger</p>
+              <p class="feedback-swatch__value" style="color: var(--color-danger-fg);">red-500 #EF4444</p>
+            </div>
+            <div class="feedback-swatch" style="background: var(--color-info-subtle); border: var(--border-thin) solid var(--color-info);">
+              <p class="feedback-swatch__label" style="color: var(--color-info-fg);">Info</p>
+              <p class="feedback-swatch__value" style="color: var(--color-info-fg);">blue-500 #3B82F6</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ---- Typography ---- -->
+        <h3 class="subsection-title">Typography</h3>
+
+        <div class="grid-3 mb-6">
+          <div class="card">
+            <p class="card__label">Display</p>
+            <h4 class="card__title" style="font-family: var(--font-display);">Space Grotesk</h4>
+            <p class="card__text">Geometric authority with distinctive character. Used for headings, hero text, and high-impact labels.</p>
+          </div>
+          <div class="card">
+            <p class="card__label">Body</p>
+            <h4 class="card__title" style="font-family: var(--font-body);">Inter</h4>
+            <p class="card__text">Precision instrument for interface text. Optimized for screen rendering at small sizes with tabular figures.</p>
+          </div>
+          <div class="card">
+            <p class="card__label">Mono</p>
+            <h4 class="card__title" style="font-family: var(--font-mono);">JetBrains Mono</h4>
+            <p class="card__text">Agent logs, code blocks, terminal output. Designed for extended reading of structured data.</p>
+          </div>
+        </div>
+
+        <h4 class="card__label mt-6">Type Scale</h4>
+        <div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-6</span>
+              <span>clamp(2.75rem, 1.75rem + 3.3vw, 5rem)</span>
+              <span>Hero display</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-6); font-weight: var(--weight-bold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tighter);">
+              Control without constraint
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-5</span>
+              <span>clamp(1.75rem, 1.35rem + 1.3vw, 2.25rem)</span>
+              <span>Page titles</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-5); font-weight: var(--weight-bold); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight);">
+              Agent orchestration at scale
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-4</span>
+              <span>clamp(1.375rem, 1.15rem + 0.75vw, 1.625rem)</span>
+              <span>Section heads</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-4); font-weight: var(--weight-semibold); line-height: var(--leading-snug);">
+              Deploy, monitor, intervene
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-3</span>
+              <span>clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem)</span>
+              <span>Subheadings</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-display); font-size: var(--text-3); font-weight: var(--weight-semibold); line-height: var(--leading-snug);">
+              Real-time fleet visibility across environments
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-2</span>
+              <span>1.0625rem / 17px</span>
+              <span>Lead paragraphs</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-2); line-height: var(--leading-body);">
+              Operators need interfaces that respect their expertise. Nerve delivers information-dense layouts that surface state changes, error conditions, and performance metrics without burying them in navigation.
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-1</span>
+              <span>0.9375rem / 15px</span>
+              <span>Body baseline</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-1); line-height: var(--leading-body);">
+              Each agent reports status through a structured event stream. The orchestration layer aggregates these events into actionable views — timeline, grid, or topology — depending on the operator's current task context.
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-0</span>
+              <span>0.8125rem / 13px</span>
+              <span>Secondary labels</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-body); font-size: var(--text-0); line-height: var(--leading-body); color: var(--color-fg-muted);">
+              Last synced 4 seconds ago. 12 agents active across 3 environments. 0 errors in the last 24 hours.
+            </p>
+          </div>
+          <div class="type-specimen">
+            <div class="type-specimen__meta">
+              <span>text-00</span>
+              <span>0.6875rem / 11px</span>
+              <span>Micro labels</span>
+            </div>
+            <p class="type-specimen__sample" style="font-family: var(--font-mono); font-size: var(--text-00); line-height: var(--leading-body); letter-spacing: var(--tracking-wide); color: var(--color-fg-subtle);">
+              agent-07f3 &middot; env:production &middot; uptime:14d 6h 32m &middot; mem:247MB &middot; status:healthy
+            </p>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ---- Spacing ---- -->
+        <h3 class="subsection-title">Spacing Scale</h3>
+        <p class="section-desc mb-6">4px base unit. Consistent spatial rhythm across all components and layouts.</p>
+
+        <div class="spacing-scale">
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-1</span>
+            <div class="spacing-item__bar" style="width: var(--space-1);"></div>
+            <span class="spacing-item__value">4px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-2</span>
+            <div class="spacing-item__bar" style="width: var(--space-2);"></div>
+            <span class="spacing-item__value">8px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-3</span>
+            <div class="spacing-item__bar" style="width: var(--space-3);"></div>
+            <span class="spacing-item__value">12px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-4</span>
+            <div class="spacing-item__bar" style="width: var(--space-4);"></div>
+            <span class="spacing-item__value">16px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-5</span>
+            <div class="spacing-item__bar" style="width: var(--space-5);"></div>
+            <span class="spacing-item__value">24px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-6</span>
+            <div class="spacing-item__bar" style="width: var(--space-6);"></div>
+            <span class="spacing-item__value">32px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-7</span>
+            <div class="spacing-item__bar" style="width: var(--space-7);"></div>
+            <span class="spacing-item__value">40px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-8</span>
+            <div class="spacing-item__bar" style="width: var(--space-8);"></div>
+            <span class="spacing-item__value">48px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-9</span>
+            <div class="spacing-item__bar" style="width: var(--space-9);"></div>
+            <span class="spacing-item__value">64px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-10</span>
+            <div class="spacing-item__bar" style="width: var(--space-10);"></div>
+            <span class="spacing-item__value">80px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-11</span>
+            <div class="spacing-item__bar" style="width: var(--space-11);"></div>
+            <span class="spacing-item__value">96px</span>
+          </div>
+          <div class="spacing-item">
+            <span class="spacing-item__label">space-12</span>
+            <div class="spacing-item__bar" style="width: var(--space-12);"></div>
+            <span class="spacing-item__value">128px</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ---- Radius ---- -->
+        <h3 class="subsection-title">Radius Hierarchy</h3>
+        <p class="section-desc mb-6">Sharp by default. Radius increases with interactive priority. Data displays use zero radius.</p>
+
+        <div class="radius-demo">
+          <div class="radius-item">
+            <div class="radius-item__shape" style="border-radius: var(--radius-data);"></div>
+            <span class="radius-item__label">data</span>
+            <span class="radius-item__use">0px — tables</span>
+          </div>
+          <div class="radius-item">
+            <div class="radius-item__shape" style="border-radius: var(--radius-structural);"></div>
+            <span class="radius-item__label">structural</span>
+            <span class="radius-item__use">2px — panels</span>
+          </div>
+          <div class="radius-item">
+            <div class="radius-item__shape" style="border-radius: var(--radius-interactive);"></div>
+            <span class="radius-item__label">interactive</span>
+            <span class="radius-item__use">6px — buttons</span>
+          </div>
+          <div class="radius-item">
+            <div class="radius-item__shape" style="border-radius: var(--radius-signature);"></div>
+            <span class="radius-item__label">signature</span>
+            <span class="radius-item__use">8px — primary CTA</span>
+          </div>
+          <div class="radius-item">
+            <div class="radius-item__shape" style="border-radius: var(--radius-badge);"></div>
+            <span class="radius-item__label">badge</span>
+            <span class="radius-item__use">pill — status</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <!-- ---- Motion ---- -->
+        <h3 class="subsection-title">Motion System</h3>
+        <p class="section-desc mb-6">
+          Motion is state communication, not decoration. Duration scales with the scope of change.
+          All motion respects <code>prefers-reduced-motion</code>.
+        </p>
+
+        <div style="overflow-x: auto;">
+          <table class="motion-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">Token</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Use Case</th>
+                <th scope="col">Easing</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>micro</td>
+                <td>50ms</td>
+                <td>Color shifts, opacity toggles</td>
+                <td>standard</td>
+              </tr>
+              <tr>
+                <td>fast</td>
+                <td>100ms</td>
+                <td>Hover states, focus rings, icon swaps</td>
+                <td>standard</td>
+              </tr>
+              <tr>
+                <td>base</td>
+                <td>150ms</td>
+                <td>Button press, tooltip show, dropdown open</td>
+                <td>standard</td>
+              </tr>
+              <tr>
+                <td>moderate</td>
+                <td>240ms</td>
+                <td>Panel slide, card expand, tab switch</td>
+                <td>emphasis</td>
+              </tr>
+              <tr>
+                <td>slow</td>
+                <td>360ms</td>
+                <td>Modal enter, page section transition</td>
+                <td>decelerate</td>
+              </tr>
+              <tr>
+                <td>dramatic</td>
+                <td>500ms</td>
+                <td>Hero entrance, onboarding sequence</td>
+                <td>spring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid-2 mt-6">
+          <div class="card">
+            <p class="card__label">Easing Curves</p>
+            <h4 class="card__title">Five purpose-built curves</h4>
+            <p class="card__text">
+              <code>standard</code> for general transitions.
+              <code>emphasis</code> for attention-drawing state changes.
+              <code>decelerate</code> for entrances.
+              <code>accelerate</code> for exits.
+              <code>spring</code> for playful, high-energy moments used sparingly.
+            </p>
+          </div>
+          <div class="card">
+            <p class="card__label">Stagger</p>
+            <h4 class="card__title">50ms stagger delay</h4>
+            <p class="card__text">
+              Lists, grids, and sequential elements use a 50ms stagger between items
+              to create a cascade effect that communicates data loading order
+              without blocking perceived performance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider container">
+
+    <!-- ============ VISUAL ASSETS ============ -->
+    <section aria-labelledby="assets-title">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-label">05 — Visual Assets</p>
+          <h2 id="assets-title" class="section-title">The visual toolkit.</h2>
+          <p class="section-desc">
+            Photography, illustration, iconography, and graphic devices — each calibrated
+            to reinforce the Neural Precision direction without competing for attention.
+          </p>
+        </header>
+
+        <div class="grid-2">
+          <!-- Photography -->
+          <div class="asset-card">
+            <div class="asset-card__preview">
+              <div class="preview-photo" role="img" aria-label="Photography direction: dark architectural interior with violet color grading"></div>
+            </div>
+            <div class="asset-card__body">
+              <h3 class="asset-card__title">Photography</h3>
+              <p class="asset-card__desc">
+                Abstract environments, dark architectural interiors with controlled lighting,
+                macro textures of materials — metal, carbon fiber, glass. Desaturated with violet
+                color grading in shadows. No people in primary imagery. The product is the protagonist.
+              </p>
+            </div>
+          </div>
+
+          <!-- Illustration -->
+          <div class="asset-card">
+            <div class="asset-card__preview">
+              <div class="preview-illustration" role="img" aria-label="Illustration style: geometric line art with violet accent">
+                <svg viewBox="0 0 80 80" aria-hidden="true">
+                  <circle cx="40" cy="40" r="30"/>
+                  <circle cx="40" cy="40" r="16" class="accent"/>
+                  <line x1="40" y1="10" x2="40" y2="24"/>
+                  <line x1="40" y1="56" x2="40" y2="70"/>
+                  <line x1="10" y1="40" x2="24" y2="40"/>
+                  <line x1="56" y1="40" x2="70" y2="40"/>
+                  <circle cx="40" cy="40" r="4" class="accent"/>
+                </svg>
+              </div>
+            </div>
+            <div class="asset-card__body">
+              <h3 class="asset-card__title">Illustration</h3>
+              <p class="asset-card__desc">
+                Geometric line art, 1.5px stroke, monochrome with violet accent. Minimal detail,
+                built from circles and straight lines. Used for conceptual diagrams,
+                empty states, and explanatory content.
+              </p>
+            </div>
+          </div>
+
+          <!-- Iconography -->
+          <div class="asset-card">
+            <div class="asset-card__preview">
+              <div class="preview-icons" role="img" aria-label="Iconography: Lucide icons at three sizes">
+                <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="9" y1="3" x2="9" y2="21"/>
+                </svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                  <path d="M2 17l10 5 10-5"/>
+                  <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                  <polyline points="16 18 22 12 16 6"/>
+                  <polyline points="8 6 2 12 8 18"/>
+                </svg>
+              </div>
+            </div>
+            <div class="asset-card__body">
+              <h3 class="asset-card__title">Iconography</h3>
+              <p class="asset-card__desc">
+                Lucide icon set. Stroke style, rounded caps, 1.5px stroke weight, inherits
+                <code>currentColor</code>. Three sizes: 16px for dense UI, 20px default, 24px for feature callouts.
+              </p>
+            </div>
+          </div>
+
+          <!-- Graphic Devices -->
+          <div class="asset-card">
+            <div class="asset-card__preview">
+              <div class="preview-device" role="img" aria-label="Graphic device: geometric circles forming a precision target pattern"></div>
+            </div>
+            <div class="asset-card__body">
+              <h3 class="asset-card__title">Graphic Devices</h3>
+              <p class="asset-card__desc">
+                Grid-dot patterns, concentric geometry, and intersecting lines used as background
+                textures and section dividers. Always at low opacity. These suggest coordinate space,
+                precision, and the underlying structure of agent topology maps.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer" role="contentinfo">
+      <div class="container footer__inner">
+        <div>
+          <p class="footer__brand">Nerve Design System</p>
+          <p class="footer__meta">v1.0 — Control without constraint.</p>
+        </div>
+        <ul class="footer__links" role="list">
+          <li><a href="index.html" class="footer__link">Overview</a></li>
+          <li><a href="components.html" class="footer__link">Components</a></li>
+          <li><a href="guidelines.html" class="footer__link">Guidelines</a></li>
+          <li><a href="application.html" class="footer__link">Application</a></li>
+        </ul>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Theme toggle script -->
+  <script>
+    (function() {
+      const toggle = document.querySelector('.theme-toggle');
+      const html = document.documentElement;
+
+      // Check for saved preference
+      const saved = localStorage.getItem('nerve-theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+      }
+
+      toggle.addEventListener('click', function() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('nerve-theme', next);
+      });
+    })();
+  </script>
+</body>
+</html>

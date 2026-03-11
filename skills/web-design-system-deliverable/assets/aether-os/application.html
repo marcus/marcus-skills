@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commander Dashboard — Aether OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .sidebar-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; color: var(--color-fg-secondary); text-decoration: none; font-size: var(--p-text-sm); border-bottom: 1px solid var(--p-ink-900); }
+    .sidebar-item:hover { color: var(--color-fg-accent); }
+    .sidebar-item.active { color: var(--color-fg-accent); font-weight: 600; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { padding: 1.5rem; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-interactive); }
+    .memory-stream { display: flex; flex-direction: column; gap: 1.5rem; }
+    .memory-item { padding-left: 1rem; border-left: 2px solid var(--p-ink-700); }
+    .memory-item:hover { border-left-color: var(--color-fg-accent); }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    
+    <!-- LEFT SIDEBAR: FLEET -->
+    <aside class="sidebar">
+      <div class="text-mono text-accent" style="margin-bottom: 3rem; font-weight: 600; letter-spacing: 0.2em;">AETHER_FLEET</div>
+      
+      <nav style="flex: 1;">
+        <a href="#" class="sidebar-item active">COMMAND_CENTER</a>
+        <a href="#" class="sidebar-item">AGENT_CLUSTER_ALPHA</a>
+        <a href="#" class="sidebar-item">STRATEGY_ENGINE</a>
+        <a href="#" class="sidebar-item">MEMORY_GRAPH</a>
+        <a href="#" class="sidebar-item">SYSTEM_OVERRIDE</a>
+      </nav>
+
+      <div class="card" style="padding: 1rem; margin-top: auto;">
+        <div class="text-mono" style="font-size: 10px; margin-bottom: 0.5rem;">FLEET_HEALTH</div>
+        <div style="height: 4px; background: var(--p-ink-700); border-radius: 2px;">
+          <div style="width: 92%; height: 100%; background: var(--color-fg-accent); border-radius: 2px;"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER: ACTIVE COMMAND -->
+    <main class="main-content">
+      <header style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+        <div>
+          <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 0.5rem;">ACTIVE_SESSION / ALPHA_9</div>
+          <h1 class="text-hero">Synthesizing Market Volatility</h1>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn btn-secondary">Sync</button>
+          <button class="btn btn-primary">Override</button>
+        </div>
+      </header>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 0.5rem;">TOKENS_SEC</div>
+          <div class="text-display" style="font-size: 2rem;">1,240<span class="text-accent" style="font-size: 1rem; margin-left: 0.5rem;">↑</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 0.5rem;">INFERENCE_LATENCY</div>
+          <div class="text-display" style="font-size: 2rem;">142ms</div>
+        </div>
+        <div class="stat-card">
+          <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 0.5rem;">AGENCY_LEVEL</div>
+          <div class="text-display" style="font-size: 2rem;">FULL</div>
+        </div>
+      </div>
+
+      <div class="card card-command" style="margin-bottom: 3rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+          <h2 class="text-display" style="font-size: 1.5rem;">Current Goal: Identify arbitrage opportunities in crypto-equity vectors.</h2>
+          <div class="aether-pulse"></div>
+        </div>
+        <p class="text-secondary" style="margin-bottom: 2rem;">Executing multi-step validation across decentralized exchange liquidity pools. High confidence threshold reached for 3 paths.</p>
+        <div style="display: flex; gap: 1rem;">
+          <div class="badge-state">VALIDATING_VECTOR_A</div>
+          <div class="badge-state">RE-CALCULATING_B</div>
+        </div>
+      </div>
+
+      <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 1rem;">EXECUTION_LOGS</div>
+      <div class="log-stream" style="max-height: 400px;">
+        <div class="log-entry"><span class="log-time">14:35:01</span> <span class="log-status-exec">[OK]</span> <span class="log-msg">Liquidity scan complete. Found $4.2M depth.</span></div>
+        <div class="log-entry"><span class="log-time">14:35:05</span> <span class="log-status-exec">[THINK]</span> <span class="log-msg">Simulating slippage for $500k entry.</span></div>
+        <div class="log-entry"><span class="log-time">14:35:10</span> <span class="log-status-exec">[WARN]</span> <span class="log-msg" style="color: var(--color-status-warn);">Gas optimization required for path_gamma.</span></div>
+        <div class="log-entry"><span class="log-time">14:35:15</span> <span class="log-status-exec">[EXEC]</span> <span class="log-msg">Routing via L2 bridge for 40% efficiency gain.</span></div>
+      </div>
+    </main>
+
+    <!-- RIGHT: MEMORY & CONTEXT -->
+    <aside style="width: 320px; border-left: 1px solid var(--color-border-subtle); padding: 40px;">
+      <div class="text-mono text-accent" style="margin-bottom: 2rem; font-weight: 600; letter-spacing: 0.2em;">MEMORY_STREAM</div>
+      
+      <div class="memory-stream">
+        <div class="memory-item">
+          <div class="text-mono" style="font-size: 10px; color: var(--p-ink-700);">LONG_TERM</div>
+          <div class="text-mono" style="margin-top: 0.5rem; font-size: 12px;">Historical volatility correlation with BTC halving cycles.</div>
+        </div>
+        <div class="memory-item">
+          <div class="text-mono" style="font-size: 10px; color: var(--p-ink-700);">CONTEXT_INJECT</div>
+          <div class="text-mono" style="margin-top: 0.5rem; font-size: 12px;">Recent Fed rate announcement [Mar 09].</div>
+        </div>
+        <div class="memory-item">
+          <div class="text-mono" style="font-size: 10px; color: var(--p-ink-700);">AGENT_KNOWLEDGE</div>
+          <div class="text-mono" style="margin-top: 0.5rem; font-size: 12px;">User prefers low-risk routing for capital > $1M.</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 4rem;">
+        <div class="text-mono text-secondary" style="font-size: 10px; margin-bottom: 1rem;">AGENT_DNA</div>
+        <div class="card" style="padding: 1rem; background: var(--p-ink-900);">
+          <div class="text-mono" style="font-size: 11px;">MODEL: AETHER_V4_ULTRA</div>
+          <div class="text-mono" style="font-size: 11px; margin-top: 0.25rem;">TEMP: 0.2 [DETERMINISTIC]</div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+</body>
+</html>

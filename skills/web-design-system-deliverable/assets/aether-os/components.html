@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether OS — Components</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .component-group { margin-bottom: 6rem; }
+    .component-label { font-family: var(--p-font-state); font-size: 10px; color: var(--color-fg-accent); margin-bottom: 2rem; letter-spacing: 0.2em; border-bottom: 1px solid var(--color-border-subtle); padding-bottom: 0.5rem; }
+    .component-showcase { display: flex; gap: 3rem; align-items: flex-start; flex-wrap: wrap; }
+    .showcase-item { display: flex; flex-direction: column; gap: 1rem; }
+    .item-label { font-size: 11px; color: var(--p-ink-700); text-transform: uppercase; letter-spacing: 0.1em; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--color-fg-secondary); text-decoration: none; font-size: var(--p-text-sm); text-transform: uppercase; letter-spacing: 0.1em; }
+    .nav-links a:hover { color: var(--color-fg-accent); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-top">
+    <div class="text-mono" style="font-weight: 600; letter-spacing: 0.2em;">AETHER OS</div>
+    <div class="nav-links">
+      <a href="index.html">Overview</a>
+      <a href="components.html" style="color: var(--color-fg-accent);">Components</a>
+      <a href="application.html">Application</a>
+    </div>
+    <div><a href="tokens.json" class="btn btn-secondary" style="height: 2rem; font-size: 10px;">View Tokens</a></div>
+  </nav>
+
+  <main style="max-width: 1200px; margin: 0 auto; padding: 100px 20px;">
+    
+    <header style="margin-bottom: 6rem;">
+      <h1 class="text-display">Component Inventory</h1>
+      <p class="text-secondary" style="margin-top: 1rem;">Full state coverage for high-agency operations.</p>
+    </header>
+
+    <!-- BUTTONS -->
+    <section class="component-group">
+      <div class="component-label">01 / ACTIONS</div>
+      <div class="component-showcase">
+        <div class="showcase-item">
+          <div class="item-label">Primary / Default</div>
+          <button class="btn btn-primary">Execute Strategy</button>
+        </div>
+        <div class="showcase-item">
+          <div class="item-label">Secondary / Outline</div>
+          <button class="btn btn-secondary">Override Command</button>
+        </div>
+        <div class="showcase-item">
+          <div class="item-label">Small / Utility</div>
+          <button class="btn btn-secondary" style="height: 2rem; padding: 0 1rem; font-size: 10px;">Sync</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARDS -->
+    <section class="component-group">
+      <div class="component-label">02 / CONTAINMENT</div>
+      <div class="component-showcase">
+        <div class="showcase-item" style="width: 400px;">
+          <div class="item-label">Command Card / Pulse Enabled</div>
+          <div class="card card-command">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+              <div class="text-mono" style="font-weight: 600;">AGENT_ALPHA</div>
+              <div class="aether-pulse"></div>
+            </div>
+            <div class="text-display" style="font-size: 1.5rem; margin-bottom: 1rem;">Synthesizing market vectors for Q3...</div>
+            <div style="display: flex; gap: 0.5rem;">
+              <div class="badge-state">EXECUTING</div>
+              <div class="badge-state">GPU_PRIORITY</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BADGES & PULSE -->
+    <section class="component-group">
+      <div class="component-label">03 / FEEDBACK</div>
+      <div class="component-showcase">
+        <div class="showcase-item">
+          <div class="item-label">State Badges</div>
+          <div style="display: flex; gap: 1rem;">
+            <div class="badge-state"><span style="color: var(--color-fg-accent);">●</span> THINKING</div>
+            <div class="badge-state" style="border-color: var(--color-status-error);">ERROR</div>
+            <div class="badge-state" style="opacity: 0.5;">IDLE</div>
+          </div>
+        </div>
+        <div class="showcase-item">
+          <div class="item-label">The Aether Pulse</div>
+          <div style="padding: 20px;">
+            <div class="aether-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="component-group">
+      <div class="component-label">04 / DATA DENSITY</div>
+      <div class="component-showcase">
+        <div class="showcase-item" style="flex: 1;">
+          <div class="item-label">High-Density Log Stream</div>
+          <div class="log-stream">
+            <div class="log-entry"><span class="log-time">14:30:01</span> <span class="log-status-exec">[EXEC]</span> <span class="log-msg">Initializing sub-agent fleet...</span></div>
+            <div class="log-entry"><span class="log-time">14:30:02</span> <span class="log-status-exec">[OK]</span> <span class="log-msg">Connection established to endpoint_delta</span></div>
+            <div class="log-entry"><span class="log-time">14:30:05</span> <span class="log-status-exec">[THINK]</span> <span class="log-msg">Analyzing input parameters for anomaly detection</span></div>
+            <div class="log-entry"><span class="log-time">14:30:08</span> <span class="log-status-exec">[WARN]</span> <span class="log-msg" style="color: var(--color-status-warn);">Latency spike detected in region us-east-1</span></div>
+            <div class="log-entry"><span class="log-time">14:30:12</span> <span class="log-status-exec">[EXEC]</span> <span class="log-msg">Rerouting traffic through secondary mesh</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="padding: 100px 20px; border-top: 1px solid var(--color-border-subtle); text-align: center;">
+    <div class="text-mono" style="font-size: 10px; color: var(--p-ink-700); letter-spacing: 0.5em;">AETHER OS / DELIVERABLE v1.0</div>
+  </footer>
+
+</body>
+</html>

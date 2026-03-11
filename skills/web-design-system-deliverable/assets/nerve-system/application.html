@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Proof — Nerve Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* ============================================================
+       APPLICATION PROOF — Agent Operations Dashboard
+       Every surface uses system tokens. Zero hard-coded values.
+       ============================================================ */
+
+    /* --- Annotation Banner --- */
+    .annotation-bar {
+      background: var(--color-info-subtle);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      padding: var(--space-2) var(--space-5);
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-info-fg);
+      letter-spacing: var(--tracking-wide);
+      line-height: var(--leading-body);
+    }
+
+    .annotation-bar strong {
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+    }
+
+    /* --- Design System Navigation --- */
+    .ds-nav {
+      background: var(--nav-bg);
+      border-bottom: var(--border-thin) solid var(--nav-border);
+      padding: 0 var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .ds-nav-brand {
+      font-family: var(--font-display);
+      font-size: var(--text-1);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tight);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .ds-nav-brand .nerve-mark {
+      width: 20px;
+      height: 20px;
+      background: var(--color-accent-brand);
+      border-radius: var(--radius-2);
+      display: inline-block;
+    }
+
+    .ds-nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      list-style: none;
+    }
+
+    .ds-nav-links a {
+      font-family: var(--font-body);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--nav-item-fg);
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard),
+                  background var(--motion-duration-fast) var(--motion-ease-standard);
+      text-decoration: none;
+    }
+
+    .ds-nav-links a:hover {
+      color: var(--nav-item-fg-hover);
+      background: var(--button-ghost-bg-hover);
+    }
+
+    .ds-nav-links a.active {
+      color: var(--nav-item-fg-active);
+      background: var(--nav-item-bg-active);
+    }
+
+    .ds-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .theme-toggle {
+      background: var(--button-ghost-bg);
+      border: var(--border-thin) solid var(--color-border-default);
+      color: var(--color-fg-muted);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-interactive);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .theme-toggle:hover {
+      background: var(--button-ghost-bg-hover);
+      color: var(--color-fg-strong);
+    }
+
+    /* --- Canvas Background with Grid Dots --- */
+    .app-canvas {
+      min-height: 100vh;
+      background-color: var(--color-bg-canvas);
+      position: relative;
+    }
+
+    .app-canvas::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, var(--color-fg-muted) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      opacity: 0.04;
+      animation: grid-pulse 8s ease-in-out infinite;
+    }
+
+    /* --- Dashboard Shell --- */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: calc(100vh - 3rem - 2.5rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --- Product Sidebar --- */
+    .sidebar {
+      grid-row: 1 / -1;
+      background: var(--color-bg-surface);
+      border-right: var(--border-thin) solid var(--color-border-subtle);
+      display: flex;
+      flex-direction: column;
+      padding: var(--space-4) 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 0 var(--space-4) var(--space-4);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      margin-bottom: var(--space-3);
+    }
+
+    .sidebar-logo {
+      font-family: var(--font-display);
+      font-size: var(--text-2);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tight);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .sidebar-logo .logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-3);
+      background: linear-gradient(135deg, var(--color-accent-brand), var(--color-accent-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sidebar-logo .logo-icon svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: var(--color-fg-on-accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .sidebar-section-label {
+      font-family: var(--font-body);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      padding: var(--space-3) var(--space-4) var(--space-1-5);
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      flex: 1;
+    }
+
+    .sidebar-nav li a {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--nav-item-fg);
+      text-decoration: none;
+      border-radius: 0;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+      margin: 0 var(--space-2);
+      border-radius: var(--radius-interactive);
+    }
+
+    .sidebar-nav li a:hover {
+      color: var(--nav-item-fg-hover);
+      background: var(--button-ghost-bg-hover);
+    }
+
+    .sidebar-nav li a.active {
+      color: var(--nav-item-fg-active);
+      background: var(--nav-item-bg-active);
+    }
+
+    .sidebar-nav li a .nav-icon {
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav li a.active .nav-icon {
+      opacity: 1;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: var(--space-3) var(--space-4);
+      border-top: var(--border-thin) solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-brand-subtle);
+      color: var(--color-accent-brand-fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      flex-shrink: 0;
+    }
+
+    .user-info {
+      overflow: hidden;
+    }
+
+    .user-name {
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      color: var(--color-fg-strong);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-role {
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    /* --- Top Bar --- */
+    .topbar {
+      background: var(--color-bg-surface);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      padding: 0 var(--space-5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.5rem;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .topbar-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .search-trigger {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      background: var(--input-bg);
+      border: var(--border-thin) solid var(--input-border);
+      border-radius: var(--radius-interactive);
+      padding: var(--space-1-5) var(--space-3);
+      color: var(--input-placeholder);
+      font-family: var(--font-body);
+      font-size: var(--text-0);
+      cursor: pointer;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+      min-width: 240px;
+    }
+
+    .search-trigger:hover {
+      background: var(--input-bg-hover);
+      border-color: var(--color-border-strong);
+    }
+
+    .search-trigger .search-icon {
+      width: 14px;
+      height: 14px;
+      opacity: 0.5;
+    }
+
+    .search-trigger kbd {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      background: var(--color-bg-elevated);
+      border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-1);
+      padding: var(--space-0-5) var(--space-1);
+      margin-left: auto;
+      color: var(--color-fg-subtle);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .icon-btn {
+      background: var(--button-ghost-bg);
+      border: none;
+      color: var(--button-ghost-fg);
+      padding: var(--space-2);
+      border-radius: var(--radius-interactive);
+      cursor: pointer;
+      position: relative;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-btn:hover {
+      background: var(--button-ghost-bg-hover);
+      color: var(--button-ghost-fg-hover);
+    }
+
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 16px;
+      height: 16px;
+      background: var(--color-danger);
+      color: var(--color-fg-on-accent);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: var(--weight-bold);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    /* --- Main Content Area --- */
+    .main-content {
+      padding: var(--space-5);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* --- Metric Cards --- */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .metric-card {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      padding: var(--space-4);
+      box-shadow: var(--card-shadow);
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+      animation: stagger-enter var(--motion-duration-moderate) var(--motion-ease-emphasis) both;
+    }
+
+    .metric-card:nth-child(1) { animation-delay: 0ms; }
+    .metric-card:nth-child(2) { animation-delay: var(--motion-stagger-delay); }
+    .metric-card:nth-child(3) { animation-delay: calc(var(--motion-stagger-delay) * 2); }
+    .metric-card:nth-child(4) { animation-delay: calc(var(--motion-stagger-delay) * 3); }
+
+    .metric-card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .metric-label {
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: var(--text-5);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tighter);
+      line-height: var(--leading-tight);
+      font-variant-numeric: tabular-nums lining-nums;
+      margin-bottom: var(--space-2);
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-secondary);
+      display: inline-block;
+      animation: pulse-live 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-0-5) var(--space-2);
+      border-radius: var(--radius-badge);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      line-height: var(--leading-snug);
+    }
+
+    .badge-success {
+      background: var(--color-success-subtle);
+      color: var(--color-success-fg);
+    }
+
+    .badge-info {
+      background: var(--color-info-subtle);
+      color: var(--color-info-fg);
+    }
+
+    .badge-warning {
+      background: var(--color-warning-subtle);
+      color: var(--color-warning-fg);
+    }
+
+    .badge-danger {
+      background: var(--color-danger-subtle);
+      color: var(--color-danger-fg);
+    }
+
+    .trend-arrow {
+      font-size: var(--text-00);
+    }
+
+    /* --- Agent Fleet Table --- */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .section-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .btn-secondary {
+      background: var(--button-secondary-bg);
+      border: var(--border-thin) solid var(--button-secondary-border);
+      color: var(--button-secondary-fg);
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      font-family: var(--font-body);
+      font-size: var(--text-0);
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .btn-secondary:hover {
+      background: var(--button-secondary-bg-hover);
+    }
+
+    .table-container {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      overflow: hidden;
+      margin-bottom: var(--space-5);
+      box-shadow: var(--card-shadow);
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .data-table th {
+      background: var(--table-header-bg);
+      color: var(--table-header-fg);
+      font-family: var(--font-body);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      text-align: left;
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--color-border-default);
+      white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
+      transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .data-table th:hover {
+      color: var(--color-fg-muted);
+    }
+
+    .data-table th .sort-indicator {
+      display: inline-block;
+      margin-left: var(--space-1);
+      opacity: 0;
+      transition: opacity var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .data-table th.sorted .sort-indicator {
+      opacity: 1;
+    }
+
+    .data-table td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--table-row-border);
+      font-size: var(--text-0);
+      color: var(--color-fg-default);
+      white-space: nowrap;
+      border-radius: var(--radius-data);
+    }
+
+    .data-table tbody tr {
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .data-table tbody tr:hover {
+      background: var(--table-row-hover);
+    }
+
+    .data-table tbody tr.selected {
+      background: var(--table-row-selected);
+    }
+
+    .data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .agent-name {
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+    }
+
+    .agent-type {
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    .status-cell {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      flex-shrink: 0;
+    }
+
+    .status-dot.running {
+      background: var(--color-accent-secondary);
+      animation: pulse-live 2s ease-in-out infinite;
+    }
+
+    .status-dot.idle {
+      background: var(--color-fg-subtle);
+    }
+
+    .status-dot.error {
+      background: var(--color-danger);
+    }
+
+    .status-dot.paused {
+      background: var(--color-warning);
+    }
+
+    .status-label {
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+    }
+
+    .status-label.running { color: var(--color-accent-secondary-fg); }
+    .status-label.idle { color: var(--color-fg-subtle); }
+    .status-label.error { color: var(--color-danger-fg); }
+    .status-label.paused { color: var(--color-warning-fg); }
+
+    .numeric-cell {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .muted-cell {
+      color: var(--color-fg-subtle);
+      font-size: var(--text-00);
+    }
+
+    .actions-cell {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .btn-ghost {
+      background: var(--button-ghost-bg);
+      border: none;
+      color: var(--button-ghost-fg);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--radius-interactive);
+      font-family: var(--font-body);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+      white-space: nowrap;
+    }
+
+    .btn-ghost:hover {
+      background: var(--button-ghost-bg-hover);
+      color: var(--button-ghost-fg-hover);
+    }
+
+    .btn-ghost.danger {
+      color: var(--color-danger-fg);
+    }
+
+    .btn-ghost.danger:hover {
+      background: var(--color-danger-subtle);
+    }
+
+    /* --- Split Panel --- */
+    .split-panel {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    /* --- Activity Feed --- */
+    .activity-panel {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: var(--text-1);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+    }
+
+    .panel-body {
+      padding: 0;
+    }
+
+    .feed-list {
+      list-style: none;
+    }
+
+    .feed-item {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .feed-item:last-child {
+      border-bottom: none;
+    }
+
+    .feed-item:hover {
+      background: var(--table-row-hover);
+    }
+
+    .feed-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-1);
+    }
+
+    .feed-agent {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+    }
+
+    .feed-time {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    .feed-detail {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-muted);
+      line-height: var(--leading-body);
+    }
+
+    .feed-item.error .feed-detail {
+      color: var(--color-danger-fg);
+    }
+
+    .feed-item.warning .feed-detail {
+      color: var(--color-warning-fg);
+    }
+
+    .feed-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: var(--radius-full);
+      display: inline-block;
+      margin-right: var(--space-1-5);
+      vertical-align: middle;
+    }
+
+    .feed-dot.ok { background: var(--color-success); }
+    .feed-dot.error { background: var(--color-danger); }
+    .feed-dot.warning { background: var(--color-warning); }
+    .feed-dot.info { background: var(--color-info); }
+
+    /* --- Agent Detail Panel --- */
+    .detail-panel {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-header {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+
+    .detail-agent-name {
+      font-family: var(--font-mono);
+      font-size: var(--text-2);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .detail-agent-type {
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      margin-top: var(--space-0-5);
+    }
+
+    .detail-body {
+      padding: var(--space-4);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .detail-label {
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .detail-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-0);
+      color: var(--color-fg-strong);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+    }
+
+    .config-item {
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-2);
+      padding: var(--space-2);
+    }
+
+    .config-item .detail-label {
+      font-size: var(--text-00);
+      margin-bottom: var(--space-0-5);
+    }
+
+    .config-item .detail-value {
+      font-size: var(--text-00);
+    }
+
+    /* --- Mini Bar Chart --- */
+    .mini-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 48px;
+      padding: var(--space-2) 0;
+    }
+
+    .mini-chart-bar {
+      flex: 1;
+      background: var(--color-accent-brand-subtle);
+      border-radius: var(--radius-1) var(--radius-1) 0 0;
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+      min-width: 0;
+    }
+
+    .mini-chart-bar:hover {
+      background: var(--color-accent-brand);
+    }
+
+    .mini-chart-bar.highlight {
+      background: var(--color-accent-brand);
+    }
+
+    .mini-chart-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+      text-align: center;
+      margin-top: var(--space-1);
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: var(--space-2);
+      margin-top: auto;
+      padding-top: var(--space-3);
+      border-top: var(--border-thin) solid var(--color-border-subtle);
+    }
+
+    .btn-primary-sm {
+      background: var(--button-primary-bg);
+      border: none;
+      color: var(--button-primary-fg);
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      font-family: var(--font-body);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .btn-primary-sm:hover {
+      background: var(--button-primary-bg-hover);
+      box-shadow: var(--button-primary-shadow);
+    }
+
+    .btn-secondary-sm {
+      background: var(--button-secondary-bg);
+      border: var(--border-thin) solid var(--button-secondary-border);
+      color: var(--button-secondary-fg);
+      padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      font-family: var(--font-body);
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      cursor: pointer;
+      transition: all var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+
+    .btn-secondary-sm:hover {
+      background: var(--button-secondary-bg-hover);
+    }
+
+    /* --- System Health --- */
+    .health-section {
+      background: var(--card-bg);
+      border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural);
+      box-shadow: var(--card-shadow);
+      padding: var(--space-4);
+    }
+
+    .health-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-4);
+    }
+
+    .health-title {
+      font-family: var(--font-display);
+      font-size: var(--text-1);
+      font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong);
+    }
+
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .health-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .health-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .health-item-label {
+      font-size: var(--text-00);
+      font-weight: var(--weight-medium);
+      color: var(--color-fg-subtle);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+
+    .health-item-value {
+      font-family: var(--font-mono);
+      font-size: var(--text-0);
+      font-weight: var(--weight-semibold);
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+
+    .health-bar-track {
+      width: 100%;
+      height: 6px;
+      background: var(--color-bg-soft);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .health-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      transition: width var(--motion-duration-moderate) var(--motion-ease-standard);
+    }
+
+    .health-bar-fill.violet { background: var(--dataviz-1); }
+    .health-bar-fill.amber { background: var(--dataviz-4); }
+    .health-bar-fill.green { background: var(--dataviz-3); }
+    .health-bar-fill.red { background: var(--dataviz-5); }
+
+    .health-threshold {
+      font-family: var(--font-mono);
+      font-size: var(--text-00);
+      color: var(--color-fg-subtle);
+    }
+
+    .health-threshold.warn {
+      color: var(--color-warning-fg);
+    }
+
+    .health-threshold.critical {
+      color: var(--color-danger-fg);
+    }
+
+    /* --- Responsive: Compact --- */
+    @media (max-width: 768px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .sidebar.open {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 240px;
+        z-index: 200;
+        box-shadow: var(--shadow-float);
+      }
+
+      .metrics-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .split-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .health-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-trigger {
+        min-width: auto;
+      }
+
+      .search-trigger span {
+        display: none;
+      }
+
+      .ds-nav {
+        padding: 0 var(--space-3);
+      }
+
+      .ds-nav-links {
+        gap: 0;
+      }
+
+      .ds-nav-links a {
+        padding: var(--space-1) var(--space-2);
+        font-size: var(--text-00);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .metrics-row {
+        grid-template-columns: 1fr;
+      }
+
+      .health-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-title {
+        display: none;
+      }
+
+      .annotation-bar {
+        font-size: 10px;
+        padding: var(--space-1) var(--space-2);
+      }
+    }
+
+    /* --- Utility: pulse status for detail panel --- */
+    .pulse-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: var(--color-accent-secondary);
+      animation: pulse-live 2s ease-in-out infinite;
+      box-shadow: var(--shadow-glow-cyan);
+    }
+
+    /* --- Scrollable table wrapper --- */
+    .table-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    /* --- SVG icon helper --- */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- ============================================================
+       ANNOTATION BANNER
+       ============================================================ -->
+  <div class="annotation-bar">
+    <strong>Application Proof</strong> — This dashboard demonstrates the Nerve design system in a production context. Every surface uses system tokens.
+  </div>
+
+  <!-- ============================================================
+       DESIGN SYSTEM NAVIGATION
+       ============================================================ -->
+  <nav class="ds-nav">
+    <div class="ds-nav-brand">
+      <span class="nerve-mark"></span>
+      Nerve
+    </div>
+    <ul class="ds-nav-links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="components.html">Components</a></li>
+      <li><a href="guidelines.html">Guidelines</a></li>
+      <li><a href="application.html" class="active">Application</a></li>
+    </ul>
+    <div class="ds-nav-actions">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <span>Theme</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       APPLICATION CANVAS
+       ============================================================ -->
+  <div class="app-canvas">
+    <div class="dashboard">
+
+      <!-- ========================================================
+           PRODUCT SIDEBAR
+           ======================================================== -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            Nerve
+          </div>
+        </div>
+
+        <span class="sidebar-section-label">Platform</span>
+        <ul class="sidebar-nav">
+          <li>
+            <a href="#" class="active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+              </svg>
+              Overview
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+              </svg>
+              Agents
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+              Deployments
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+              Logs
+            </a>
+          </li>
+        </ul>
+
+        <span class="sidebar-section-label">System</span>
+        <ul class="sidebar-nav">
+          <li>
+            <a href="#">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+              </svg>
+              Settings
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-avatar">MV</div>
+          <div class="user-info">
+            <div class="user-name">Marcus V.</div>
+            <div class="user-role">Operator</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ========================================================
+           TOP BAR
+           ======================================================== -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 class="topbar-title">Agent Operations</h1>
+          <button class="search-trigger" aria-label="Open search">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Search agents, tasks, logs...</span>
+            <kbd>&#8984;K</kbd>
+          </button>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+            <span class="notif-badge">3</span>
+          </button>
+          <button class="icon-btn" aria-label="Help">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ========================================================
+           MAIN CONTENT
+           ======================================================== -->
+      <main class="main-content">
+
+        <!-- ======================================================
+             SECTION 1: SUMMARY METRICS
+             ====================================================== -->
+        <div class="metrics-row">
+
+          <!-- Active Agents -->
+          <div class="metric-card">
+            <div class="metric-label">
+              Active Agents
+              <span class="live-dot"></span>
+            </div>
+            <div class="metric-value">47</div>
+            <span class="badge badge-info">Live</span>
+          </div>
+
+          <!-- Tasks Today -->
+          <div class="metric-card">
+            <div class="metric-label">Tasks Today</div>
+            <div class="metric-value">12,847</div>
+            <span class="badge badge-success">+18% <span class="trend-arrow">&uarr;</span></span>
+          </div>
+
+          <!-- Avg Response -->
+          <div class="metric-card">
+            <div class="metric-label">Avg Response</div>
+            <div class="metric-value">142<span style="font-size: var(--text-0); color: var(--color-fg-subtle); font-weight: var(--weight-regular); margin-left: var(--space-1);">ms</span></div>
+            <span class="badge badge-success"><span class="trend-arrow">&darr;</span> 23ms</span>
+          </div>
+
+          <!-- Success Rate -->
+          <div class="metric-card">
+            <div class="metric-label">Success Rate</div>
+            <div class="metric-value">99.2<span style="font-size: var(--text-0); color: var(--color-fg-subtle); font-weight: var(--weight-regular);">%</span></div>
+            <span class="badge badge-success">Healthy</span>
+          </div>
+
+        </div>
+
+        <!-- ======================================================
+             SECTION 2: AGENT FLEET TABLE
+             ====================================================== -->
+        <div class="section-header">
+          <h2 class="section-title">Agent Fleet</h2>
+          <div class="section-actions">
+            <button class="btn-secondary">+ Deploy Agent</button>
+            <button class="btn-ghost">Export</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Agent Name</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th class="sorted">Tasks (24h) <span class="sort-indicator">&darr;</span></th>
+                  <th>Avg Latency</th>
+                  <th>Last Active</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Row 1 — Selected -->
+                <tr class="selected">
+                  <td><span class="agent-name">Sentinel-&alpha;</span></td>
+                  <td><span class="agent-type">Monitoring</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot running"></span>
+                      <span class="status-label running">Running</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">3,241</td>
+                  <td class="numeric-cell">89ms</td>
+                  <td class="muted-cell">2s ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Pause</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 2 -->
+                <tr>
+                  <td><span class="agent-name">Curator-7</span></td>
+                  <td><span class="agent-type">Data Processing</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot running"></span>
+                      <span class="status-label running">Running</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">2,108</td>
+                  <td class="numeric-cell">234ms</td>
+                  <td class="muted-cell">5s ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Pause</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 3 -->
+                <tr>
+                  <td><span class="agent-name">Dispatcher-main</span></td>
+                  <td><span class="agent-type">Routing</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot running"></span>
+                      <span class="status-label running">Running</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">4,502</td>
+                  <td class="numeric-cell">12ms</td>
+                  <td class="muted-cell">1s ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Pause</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 4 -->
+                <tr>
+                  <td><span class="agent-name">Analyst-beta</span></td>
+                  <td><span class="agent-type">Analytics</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot idle"></span>
+                      <span class="status-label idle">Idle</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">891</td>
+                  <td class="numeric-cell">312ms</td>
+                  <td class="muted-cell">4m ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Start</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 5 -->
+                <tr>
+                  <td><span class="agent-name">Guardian-prod</span></td>
+                  <td><span class="agent-type">Security</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot running"></span>
+                      <span class="status-label running">Running</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">1,205</td>
+                  <td class="numeric-cell">67ms</td>
+                  <td class="muted-cell">3s ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Pause</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 6 — Error -->
+                <tr>
+                  <td><span class="agent-name">Scribe-v2</span></td>
+                  <td><span class="agent-type">Documentation</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot error"></span>
+                      <span class="status-label error">Error</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">43</td>
+                  <td class="muted-cell">&mdash;</td>
+                  <td class="muted-cell">12m ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost danger">Restart</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 7 -->
+                <tr>
+                  <td><span class="agent-name">Proxy-east</span></td>
+                  <td><span class="agent-type">Load Balancing</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot running"></span>
+                      <span class="status-label running">Running</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">857</td>
+                  <td class="numeric-cell">8ms</td>
+                  <td class="muted-cell">1s ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Pause</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+                <!-- Row 8 — Paused -->
+                <tr>
+                  <td><span class="agent-name">Forecast-q2</span></td>
+                  <td><span class="agent-type">Prediction</span></td>
+                  <td>
+                    <div class="status-cell">
+                      <span class="status-dot paused"></span>
+                      <span class="status-label paused">Paused</span>
+                    </div>
+                  </td>
+                  <td class="numeric-cell">0</td>
+                  <td class="muted-cell">&mdash;</td>
+                  <td class="muted-cell">2h ago</td>
+                  <td>
+                    <div class="actions-cell">
+                      <button class="btn-ghost">Resume</button>
+                      <button class="btn-ghost">Logs</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ======================================================
+             SECTION 3: SPLIT PANEL — Activity Feed + Agent Detail
+             ====================================================== -->
+        <div class="split-panel">
+
+          <!-- Activity Feed (60%) -->
+          <div class="activity-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">Activity Feed</h3>
+              <button class="btn-ghost">View All</button>
+            </div>
+            <div class="panel-body">
+              <ul class="feed-list">
+                <li class="feed-item">
+                  <div class="feed-item-header">
+                    <span class="feed-agent"><span class="feed-dot ok"></span>Sentinel-&alpha;</span>
+                    <span class="feed-time">2s ago</span>
+                  </div>
+                  <div class="feed-detail">completed batch scan &mdash; 847 endpoints checked, 0 threats</div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-item-header">
+                    <span class="feed-agent"><span class="feed-dot ok"></span>Curator-7</span>
+                    <span class="feed-time">18s ago</span>
+                  </div>
+                  <div class="feed-detail">processed dataset <code>ds-2024-q1</code> &mdash; 12.4GB indexed</div>
+                </li>
+                <li class="feed-item error">
+                  <div class="feed-item-header">
+                    <span class="feed-agent"><span class="feed-dot error"></span>Scribe-v2</span>
+                    <span class="feed-time">12m ago</span>
+                  </div>
+                  <div class="feed-detail">failed: timeout connecting to documentation API</div>
+                </li>
+                <li class="feed-item warning">
+                  <div class="feed-item-header">
+                    <span class="feed-agent"><span class="feed-dot warning"></span>Forecast-q2</span>
+                    <span class="feed-time">2h ago</span>
+                  </div>
+                  <div class="feed-detail">paused by operator <code>marcus@nerve.dev</code></div>
+                </li>
+                <li class="feed-item">
+                  <div class="feed-item-header">
+                    <span class="feed-agent"><span class="feed-dot info"></span>Guardian-prod</span>
+                    <span class="feed-time">3h ago</span>
+                  </div>
+                  <div class="feed-detail">blocked 3 unauthorized API requests from <code>192.168.1.47</code></div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Agent Detail Panel (40%) — Sentinel-alpha selected -->
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div class="detail-agent-name">
+                <span class="pulse-indicator"></span>
+                Sentinel-&alpha;
+              </div>
+              <div class="detail-agent-type">Monitoring Agent</div>
+            </div>
+            <div class="detail-body">
+
+              <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value" style="color: var(--color-accent-secondary-fg);">Running</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Uptime</span>
+                <span class="detail-value">14d 7h 23m</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Tasks (24h)</span>
+                <span class="detail-value">3,241</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Avg Latency</span>
+                <span class="detail-value">89ms</span>
+              </div>
+
+              <div>
+                <span class="detail-label" style="display: block; margin-bottom: var(--space-2);">Configuration</span>
+                <div class="config-grid">
+                  <div class="config-item">
+                    <div class="detail-label">Model</div>
+                    <div class="detail-value">claude-3.5</div>
+                  </div>
+                  <div class="config-item">
+                    <div class="detail-label">Version</div>
+                    <div class="detail-value">v4.2.1</div>
+                  </div>
+                  <div class="config-item">
+                    <div class="detail-label">Permissions</div>
+                    <div class="detail-value">read-only</div>
+                  </div>
+                  <div class="config-item">
+                    <div class="detail-label">Region</div>
+                    <div class="detail-value">us-east-1</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini Bar Chart — 24h task volume -->
+              <div>
+                <span class="detail-label" style="display: block; margin-bottom: var(--space-1);">Task Volume (24h)</span>
+                <div class="mini-chart">
+                  <div class="mini-chart-bar" style="height: 25%;"></div>
+                  <div class="mini-chart-bar" style="height: 15%;"></div>
+                  <div class="mini-chart-bar" style="height: 10%;"></div>
+                  <div class="mini-chart-bar" style="height: 8%;"></div>
+                  <div class="mini-chart-bar" style="height: 12%;"></div>
+                  <div class="mini-chart-bar" style="height: 20%;"></div>
+                  <div class="mini-chart-bar" style="height: 35%;"></div>
+                  <div class="mini-chart-bar" style="height: 55%;"></div>
+                  <div class="mini-chart-bar" style="height: 70%;"></div>
+                  <div class="mini-chart-bar" style="height: 85%;"></div>
+                  <div class="mini-chart-bar" style="height: 90%;"></div>
+                  <div class="mini-chart-bar" style="height: 78%;"></div>
+                  <div class="mini-chart-bar" style="height: 92%;"></div>
+                  <div class="mini-chart-bar" style="height: 100%;"></div>
+                  <div class="mini-chart-bar" style="height: 88%;"></div>
+                  <div class="mini-chart-bar highlight" style="height: 95%;"></div>
+                  <div class="mini-chart-bar" style="height: 80%;"></div>
+                  <div class="mini-chart-bar" style="height: 72%;"></div>
+                  <div class="mini-chart-bar" style="height: 65%;"></div>
+                  <div class="mini-chart-bar" style="height: 58%;"></div>
+                  <div class="mini-chart-bar" style="height: 50%;"></div>
+                  <div class="mini-chart-bar" style="height: 45%;"></div>
+                  <div class="mini-chart-bar" style="height: 60%;"></div>
+                  <div class="mini-chart-bar" style="height: 68%;"></div>
+                </div>
+                <div class="mini-chart-label">00:00 &mdash; 23:00</div>
+              </div>
+
+              <div class="detail-actions">
+                <button class="btn-primary-sm">Pause</button>
+                <button class="btn-secondary-sm">Restart</button>
+                <button class="btn-secondary-sm">View Logs</button>
+                <button class="btn-ghost" style="font-size: var(--text-00);">Edit Config</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ======================================================
+             SECTION 4: SYSTEM HEALTH
+             ====================================================== -->
+        <div class="health-section">
+          <div class="health-header">
+            <h3 class="health-title">System Health</h3>
+            <span class="badge badge-success">All Systems Nominal</span>
+          </div>
+          <div class="health-grid">
+
+            <!-- CPU -->
+            <div class="health-item">
+              <div class="health-item-header">
+                <span class="health-item-label">CPU</span>
+                <span class="health-item-value" style="color: var(--dataviz-1);">34%</span>
+              </div>
+              <div class="health-bar-track">
+                <div class="health-bar-fill violet" style="width: 34%;"></div>
+              </div>
+              <span class="health-threshold">Threshold: 80%</span>
+            </div>
+
+            <!-- Memory -->
+            <div class="health-item">
+              <div class="health-item-header">
+                <span class="health-item-label">Memory</span>
+                <span class="health-item-value" style="color: var(--dataviz-4);">61%</span>
+              </div>
+              <div class="health-bar-track">
+                <div class="health-bar-fill amber" style="width: 61%;"></div>
+              </div>
+              <span class="health-threshold warn">Nearing threshold (70%)</span>
+            </div>
+
+            <!-- Network -->
+            <div class="health-item">
+              <div class="health-item-header">
+                <span class="health-item-label">Network</span>
+                <span class="health-item-value" style="color: var(--dataviz-3);">12%</span>
+              </div>
+              <div class="health-bar-track">
+                <div class="health-bar-fill green" style="width: 12%;"></div>
+              </div>
+              <span class="health-threshold">Threshold: 85%</span>
+            </div>
+
+            <!-- Storage -->
+            <div class="health-item">
+              <div class="health-item-header">
+                <span class="health-item-label">Storage</span>
+                <span class="health-item-value" style="color: var(--dataviz-5);">78%</span>
+              </div>
+              <div class="health-bar-track">
+                <div class="health-bar-fill red" style="width: 78%;"></div>
+              </div>
+              <span class="health-threshold critical">Warning: exceeds 75% threshold</span>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script>
+    /* Theme Toggle */
+    function toggleTheme() {
+      const root = document.documentElement;
+      const current = root.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem('nerve-theme', next);
+    }
+
+    /* Restore saved theme */
+    (function() {
+      const saved = localStorage.getItem('nerve-theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    })();
+
+    /* Table row selection */
+    document.querySelectorAll('.data-table tbody tr').forEach(function(row) {
+      row.addEventListener('click', function() {
+        document.querySelectorAll('.data-table tbody tr').forEach(function(r) {
+          r.classList.remove('selected');
+        });
+        this.classList.add('selected');
+      });
+    });
+
+    /* Column sort indicator toggle (visual only) */
+    document.querySelectorAll('.data-table th').forEach(function(th) {
+      th.addEventListener('click', function() {
+        document.querySelectorAll('.data-table th').forEach(function(h) {
+          h.classList.remove('sorted');
+        });
+        this.classList.add('sorted');
+        var indicator = this.querySelector('.sort-indicator');
+        if (!indicator) {
+          var span = document.createElement('span');
+          span.className = 'sort-indicator';
+          span.innerHTML = '&darr;';
+          this.appendChild(span);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

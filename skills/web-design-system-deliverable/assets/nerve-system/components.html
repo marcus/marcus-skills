@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Components — Nerve Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* ---- Layout ---- */
+    .site-nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-5);
+      background: var(--nav-bg);
+      border-bottom: var(--border-thin) solid var(--nav-border);
+      backdrop-filter: blur(12px);
+    }
+    .site-nav .logo {
+      font-family: var(--font-display);
+      font-size: var(--text-3);
+      font-weight: var(--weight-bold);
+      color: var(--color-fg-strong);
+      letter-spacing: var(--tracking-tight);
+    }
+    .site-nav .logo span { color: var(--color-accent-brand-fg); }
+    .nav-links { display: flex; gap: var(--space-1); list-style: none; }
+    .nav-links a {
+      display: block; padding: var(--space-1-5) var(--space-3);
+      border-radius: var(--radius-interactive);
+      font-size: var(--text-0); font-weight: var(--weight-medium);
+      color: var(--nav-item-fg);
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard),
+                  color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .nav-links a:hover { color: var(--nav-item-fg-hover); background: var(--button-ghost-bg-hover); }
+    .nav-links a[aria-current="page"] {
+      color: var(--nav-item-fg-active);
+      background: var(--nav-item-bg-active);
+    }
+    .theme-toggle {
+      background: var(--button-ghost-bg); border: var(--border-thin) solid var(--color-border-default);
+      color: var(--color-fg-muted); border-radius: var(--radius-interactive);
+      padding: var(--space-1-5) var(--space-2); cursor: pointer;
+      font-family: var(--font-body); font-size: var(--text-0);
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .theme-toggle:hover { background: var(--button-ghost-bg-hover); color: var(--color-fg-strong); }
+
+    .page-wrap {
+      max-width: var(--content-wide);
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-5) var(--space-12);
+    }
+    .page-header { margin-bottom: var(--space-9); }
+    .page-header h1 {
+      font-size: var(--text-5); font-weight: var(--weight-bold);
+      letter-spacing: var(--tracking-tight); line-height: var(--leading-tight);
+      margin-bottom: var(--space-3);
+    }
+    .page-header p {
+      font-size: var(--text-2); color: var(--color-fg-muted);
+      max-width: var(--content-medium); line-height: var(--leading-body);
+    }
+
+    /* ---- Component Sections ---- */
+    .comp-section {
+      margin-bottom: var(--space-10);
+      padding-bottom: var(--space-8);
+      border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .comp-section:last-child { border-bottom: none; }
+    .comp-section h2 {
+      font-size: var(--text-4); font-weight: var(--weight-semibold);
+      letter-spacing: var(--tracking-tight); margin-bottom: var(--space-1);
+    }
+    .comp-section > .section-desc {
+      font-size: var(--text-1); color: var(--color-fg-muted);
+      margin-bottom: var(--space-6); max-width: var(--content-medium);
+    }
+    .subsection { margin-bottom: var(--space-6); }
+    .subsection h3 {
+      font-size: var(--text-3); font-weight: var(--weight-medium);
+      margin-bottom: var(--space-1); color: var(--color-fg-strong);
+    }
+    .subsection-desc {
+      font-size: var(--text-0); color: var(--color-fg-subtle);
+      margin-bottom: var(--space-4);
+    }
+    .annotation {
+      display: inline-block; font-size: var(--text-00); font-family: var(--font-mono);
+      color: var(--color-fg-subtle); background: var(--color-bg-soft);
+      padding: var(--space-0-5) var(--space-1-5); border-radius: var(--radius-2);
+      margin-bottom: var(--space-3); letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+    .state-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .state-col {
+      display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-1);
+    }
+    .state-label {
+      font-size: var(--text-00); color: var(--color-fg-subtle);
+      font-family: var(--font-mono); text-transform: uppercase;
+      letter-spacing: var(--tracking-label);
+    }
+    .showcase {
+      background: var(--color-bg-soft);
+      border: var(--border-thin) solid var(--color-border-subtle);
+      border-radius: var(--radius-structural);
+      padding: var(--space-5);
+      margin-bottom: var(--space-3);
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+      font-family: var(--font-body); font-weight: var(--weight-medium);
+      border: var(--border-thin) solid transparent;
+      cursor: pointer; white-space: nowrap;
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard),
+                  color var(--motion-duration-fast) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+                  border-color var(--motion-duration-fast) var(--motion-ease-standard),
+                  opacity var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--color-focus-ring); outline-offset: 2px;
+    }
+    /* Sizes */
+    .btn-sm { height: 32px; padding: 0 var(--space-3); font-size: var(--text-0); border-radius: var(--radius-interactive); }
+    .btn-md { height: 40px; padding: 0 var(--space-4); font-size: var(--text-1); border-radius: var(--radius-interactive); }
+    .btn-lg { height: 48px; padding: 0 var(--space-5); font-size: var(--text-1); border-radius: var(--radius-signature); }
+
+    /* Primary */
+    .btn-primary {
+      background: var(--button-primary-bg); color: var(--button-primary-fg);
+      border-radius: var(--radius-signature);
+    }
+    .btn-primary:hover { background: var(--button-primary-bg-hover); box-shadow: var(--button-primary-shadow); }
+    .btn-primary:active, .btn-primary.is-active { background: var(--button-primary-bg-active); box-shadow: none; }
+    .btn-primary:disabled, .btn-primary.is-disabled {
+      opacity: 0.4; cursor: not-allowed; box-shadow: none;
+    }
+    .btn-primary.is-loading { opacity: 0.7; cursor: wait; }
+
+    /* Secondary */
+    .btn-secondary {
+      background: var(--button-secondary-bg); color: var(--button-secondary-fg);
+      border-color: var(--button-secondary-border); border-radius: var(--radius-interactive);
+    }
+    .btn-secondary:hover { background: var(--button-secondary-bg-hover); }
+    .btn-secondary:active, .btn-secondary.is-active { background: var(--color-accent-brand-subtle); }
+    .btn-secondary:disabled, .btn-secondary.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Ghost */
+    .btn-ghost {
+      background: var(--button-ghost-bg); color: var(--button-ghost-fg);
+      border-radius: var(--radius-interactive);
+    }
+    .btn-ghost:hover { background: var(--button-ghost-bg-hover); color: var(--button-ghost-fg-hover); }
+    .btn-ghost:active { background: rgba(255,255,255,0.1); }
+    .btn-ghost:disabled, .btn-ghost.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Danger */
+    .btn-danger {
+      background: var(--button-danger-bg); color: var(--button-danger-fg);
+      border-radius: var(--radius-interactive);
+    }
+    .btn-danger:hover { background: var(--button-danger-bg-hover); }
+    .btn-danger:active { background: var(--red-700); }
+    .btn-danger:disabled, .btn-danger.is-disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Icon button */
+    .btn-icon { padding: 0; aspect-ratio: 1; }
+    .btn-icon.btn-sm { width: 32px; }
+    .btn-icon.btn-md { width: 40px; }
+    .btn-icon.btn-lg { width: 48px; }
+
+    /* Button group */
+    .btn-group { display: inline-flex; }
+    .btn-group .btn { border-radius: 0; }
+    .btn-group .btn:first-child { border-radius: var(--radius-interactive) 0 0 var(--radius-interactive); }
+    .btn-group .btn:last-child { border-radius: 0 var(--radius-interactive) var(--radius-interactive) 0; }
+    .btn-group .btn + .btn { margin-left: -1px; }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid transparent; border-top-color: currentColor;
+      border-radius: var(--radius-full);
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---- Badges ---- */
+    .badge {
+      display: inline-flex; align-items: center; gap: var(--space-1);
+      padding: var(--space-0-5) var(--space-2);
+      border-radius: var(--radius-badge); font-size: var(--text-00);
+      font-weight: var(--weight-medium); letter-spacing: var(--tracking-wide);
+      white-space: nowrap; line-height: var(--leading-snug);
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: var(--radius-full);
+      flex-shrink: 0;
+    }
+    .badge-active { background: var(--color-accent-secondary-subtle); color: var(--color-accent-secondary-fg); }
+    .badge-active .badge-dot { background: var(--color-accent-secondary); }
+    .badge-idle { background: var(--badge-default-bg); color: var(--badge-default-fg); }
+    .badge-idle .badge-dot { background: var(--color-fg-subtle); }
+    .badge-error { background: var(--color-danger-subtle); color: var(--color-danger-fg); }
+    .badge-error .badge-dot { background: var(--color-danger); }
+    .badge-warning { background: var(--color-warning-subtle); color: var(--color-warning-fg); }
+    .badge-warning .badge-dot { background: var(--color-warning); }
+    .badge-success { background: var(--color-success-subtle); color: var(--color-success-fg); }
+    .badge-success .badge-dot { background: var(--color-success); }
+    .badge-category {
+      background: var(--color-accent-brand-subtle); color: var(--color-accent-brand-fg);
+      text-transform: uppercase; letter-spacing: var(--tracking-label);
+    }
+
+    /* ---- Form Controls ---- */
+    .form-group { display: flex; flex-direction: column; gap: var(--space-1); max-width: 360px; }
+    .form-label {
+      font-size: var(--text-0); font-weight: var(--weight-medium);
+      color: var(--color-fg-default);
+    }
+    .form-helper {
+      font-size: var(--text-00); color: var(--color-fg-subtle);
+    }
+    .form-error-msg {
+      font-size: var(--text-00); color: var(--color-danger-fg);
+      display: flex; align-items: center; gap: var(--space-1);
+    }
+    .input {
+      height: 40px; padding: 0 var(--space-3);
+      background: var(--input-bg); border: var(--border-thin) solid var(--input-border);
+      border-radius: var(--radius-interactive); color: var(--input-fg);
+      font-family: var(--font-body); font-size: var(--text-1);
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard),
+                  background var(--motion-duration-fast) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .input::placeholder { color: var(--input-placeholder); }
+    .input:hover { background: var(--input-bg-hover); }
+    .input:focus { border-color: var(--input-border-focus); outline: none; box-shadow: 0 0 0 3px var(--color-accent-brand-subtle); }
+    .input.is-error { border-color: var(--input-border-error); }
+    .input.is-error:focus { box-shadow: 0 0 0 3px var(--color-danger-subtle); }
+    .input:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .textarea {
+      padding: var(--space-2) var(--space-3); min-height: 100px; resize: vertical;
+      background: var(--input-bg); border: var(--border-thin) solid var(--input-border);
+      border-radius: var(--radius-interactive); color: var(--input-fg);
+      font-family: var(--font-body); font-size: var(--text-1);
+      line-height: var(--leading-body);
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .textarea:focus { border-color: var(--input-border-focus); outline: none; box-shadow: 0 0 0 3px var(--color-accent-brand-subtle); }
+
+    .select-wrap { position: relative; }
+    .select {
+      appearance: none; width: 100%; height: 40px;
+      padding: 0 var(--space-7) 0 var(--space-3);
+      background: var(--input-bg); border: var(--border-thin) solid var(--input-border);
+      border-radius: var(--radius-interactive); color: var(--input-fg);
+      font-family: var(--font-body); font-size: var(--text-1); cursor: pointer;
+    }
+    .select:focus { border-color: var(--input-border-focus); outline: none; box-shadow: 0 0 0 3px var(--color-accent-brand-subtle); }
+    .select-wrap::after {
+      content: "\25BE"; position: absolute; right: var(--space-3);
+      top: 50%; transform: translateY(-50%); color: var(--color-fg-subtle);
+      pointer-events: none;
+    }
+
+    /* Checkbox */
+    .checkbox-wrap {
+      display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer;
+    }
+    .checkbox {
+      appearance: none; width: 18px; height: 18px;
+      border: var(--border-medium) solid var(--color-border-strong);
+      border-radius: var(--radius-2); background: var(--input-bg);
+      cursor: pointer; position: relative;
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard),
+                  border-color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .checkbox:checked {
+      background: var(--color-accent-brand); border-color: var(--color-accent-brand);
+    }
+    .checkbox:checked::after {
+      content: "\2713"; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-fg-on-accent); font-size: 12px; font-weight: var(--weight-bold);
+    }
+    .checkbox:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+
+    /* Toggle */
+    .toggle-wrap { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+    .toggle {
+      appearance: none; width: 44px; height: 24px;
+      background: var(--void-600); border: none;
+      border-radius: var(--radius-full); cursor: pointer; position: relative;
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .toggle::after {
+      content: ""; position: absolute; top: 3px; left: 3px;
+      width: 18px; height: 18px; border-radius: var(--radius-full);
+      background: var(--color-fg-on-accent);
+      transition: transform var(--motion-duration-fast) var(--motion-ease-spring);
+    }
+    .toggle:checked { background: var(--color-accent-brand); }
+    .toggle:checked::after { transform: translateX(20px); }
+    .toggle.is-live:checked { background: var(--color-accent-secondary); }
+    .toggle.is-live:checked::after { animation: pulse-live 2s ease-in-out infinite; }
+
+    /* Radio */
+    .radio-wrap { display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer; }
+    .radio {
+      appearance: none; width: 18px; height: 18px;
+      border: var(--border-medium) solid var(--color-border-strong);
+      border-radius: var(--radius-full); background: var(--input-bg);
+      cursor: pointer; position: relative;
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .radio:checked { border-color: var(--color-accent-brand); }
+    .radio:checked::after {
+      content: ""; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px; height: 8px; border-radius: var(--radius-full);
+      background: var(--color-accent-brand);
+    }
+
+    /* Search input */
+    .search-wrap { position: relative; }
+    .search-wrap .search-icon {
+      position: absolute; left: var(--space-3); top: 50%;
+      transform: translateY(-50%); color: var(--color-fg-subtle);
+      pointer-events: none; font-size: var(--text-0);
+    }
+    .search-wrap .input { padding-left: var(--space-7); width: 100%; }
+
+    /* ---- Cards ---- */
+    .card {
+      background: var(--card-bg); border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural); padding: var(--space-4);
+      box-shadow: var(--card-shadow);
+    }
+    .card-interactive {
+      cursor: pointer;
+      transition: border-color var(--motion-duration-fast) var(--motion-ease-standard),
+                  box-shadow var(--motion-duration-fast) var(--motion-ease-standard),
+                  transform var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .card-interactive:hover {
+      border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover);
+      transform: translateY(-2px);
+    }
+    .card-agent { display: flex; flex-direction: column; gap: var(--space-3); }
+    .card-agent-header { display: flex; align-items: center; justify-content: space-between; }
+    .card-agent-name { font-weight: var(--weight-semibold); color: var(--color-fg-strong); }
+    .card-agent-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+    .card-agent-metric-label { font-size: var(--text-00); color: var(--color-fg-subtle); }
+    .card-agent-metric-value { font-size: var(--text-2); font-weight: var(--weight-semibold); color: var(--color-fg-strong); font-family: var(--font-display); }
+    .card-metric {
+      text-align: center; padding: var(--space-5);
+    }
+    .card-metric-value {
+      font-size: var(--text-5); font-weight: var(--weight-bold); font-family: var(--font-display);
+      color: var(--color-fg-strong); line-height: var(--leading-none);
+    }
+    .card-metric-label {
+      font-size: var(--text-0); color: var(--color-fg-muted); margin-top: var(--space-1);
+    }
+    .card-metric-trend {
+      font-size: var(--text-00); margin-top: var(--space-1); font-weight: var(--weight-medium);
+    }
+    .trend-up { color: var(--color-success-fg); }
+    .trend-down { color: var(--color-danger-fg); }
+
+    /* ---- Navigation Components ---- */
+    .tab-bar {
+      display: flex; gap: var(--space-0); border-bottom: var(--border-thin) solid var(--color-border-subtle);
+    }
+    .tab-item {
+      padding: var(--space-2) var(--space-4); font-size: var(--text-0); font-weight: var(--weight-medium);
+      color: var(--nav-item-fg); border-bottom: 2px solid transparent;
+      background: none; border-top: none; border-left: none; border-right: none;
+      cursor: pointer; transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .tab-item:hover { color: var(--nav-item-fg-hover); }
+    .tab-item.is-active {
+      color: var(--nav-item-fg-active); border-bottom-color: var(--color-accent-brand);
+    }
+    .sidebar-nav { display: flex; flex-direction: column; gap: var(--space-0-5); width: 220px; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: var(--space-2);
+      padding: var(--space-2) var(--space-3); border-radius: var(--radius-interactive);
+      font-size: var(--text-0); color: var(--nav-item-fg); cursor: pointer;
+      border: none; background: none; width: 100%; text-align: left;
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard),
+                  color var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .sidebar-item:hover { background: var(--button-ghost-bg-hover); color: var(--nav-item-fg-hover); }
+    .sidebar-item.is-active { background: var(--nav-item-bg-active); color: var(--nav-item-fg-active); }
+
+    .breadcrumbs {
+      display: flex; align-items: center; gap: var(--space-1);
+      font-size: var(--text-0); color: var(--color-fg-subtle);
+    }
+    .breadcrumbs a { color: var(--color-fg-muted); }
+    .breadcrumbs a:hover { color: var(--color-fg-strong); }
+    .breadcrumbs .sep { color: var(--color-fg-subtle); }
+    .breadcrumbs .current { color: var(--color-fg-strong); font-weight: var(--weight-medium); }
+
+    .pagination { display: flex; align-items: center; gap: var(--space-1); }
+    .page-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: var(--radius-interactive);
+      font-size: var(--text-0); font-weight: var(--weight-medium);
+      color: var(--color-fg-muted); background: none; border: var(--border-thin) solid transparent;
+      cursor: pointer; font-family: var(--font-body);
+      transition: background var(--motion-duration-fast) var(--motion-ease-standard);
+    }
+    .page-btn:hover { background: var(--button-ghost-bg-hover); color: var(--color-fg-strong); }
+    .page-btn.is-active {
+      background: var(--color-accent-brand); color: var(--color-fg-on-accent);
+    }
+    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ---- Data Display ---- */
+    .data-table { width: 100%; border-collapse: collapse; font-size: var(--text-0); }
+    .data-table th {
+      text-align: left; padding: var(--space-2) var(--space-3);
+      background: var(--table-header-bg); color: var(--table-header-fg);
+      font-weight: var(--weight-semibold); font-size: var(--text-00);
+      text-transform: uppercase; letter-spacing: var(--tracking-label);
+      border-bottom: var(--border-thin) solid var(--color-border-default);
+      white-space: nowrap; cursor: pointer; user-select: none;
+    }
+    .data-table th .sort-icon { color: var(--color-fg-subtle); margin-left: var(--space-1); font-size: 10px; }
+    .data-table td {
+      padding: var(--space-2) var(--space-3);
+      border-bottom: var(--border-thin) solid var(--table-row-border);
+      color: var(--color-fg-default);
+    }
+    .data-table tr:hover td { background: var(--table-row-hover); }
+    .data-table tr.is-selected td { background: var(--table-row-selected); }
+    .data-table.compact td, .data-table.compact th { padding: var(--space-1) var(--space-2); }
+
+    .kv-list { display: flex; flex-direction: column; gap: var(--space-2); }
+    .kv-row { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-1) 0; border-bottom: var(--border-thin) solid var(--color-border-subtle); }
+    .kv-key { font-size: var(--text-0); color: var(--color-fg-muted); }
+    .kv-value { font-size: var(--text-0); color: var(--color-fg-strong); font-weight: var(--weight-medium); font-family: var(--font-mono); }
+
+    .stat-display { display: inline-flex; flex-direction: column; }
+    .stat-value { font-size: var(--text-5); font-weight: var(--weight-bold); font-family: var(--font-display); color: var(--color-fg-strong); line-height: var(--leading-none); }
+    .stat-label { font-size: var(--text-0); color: var(--color-fg-muted); margin-top: var(--space-1); }
+
+    .progress-bar { height: 8px; background: var(--color-bg-soft); border-radius: var(--radius-full); overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: var(--radius-full); transition: width var(--motion-duration-moderate) var(--motion-ease-standard); }
+    .progress-fill.fill-brand { background: var(--color-accent-brand); }
+    .progress-fill.fill-success { background: var(--color-success); }
+    .progress-fill.fill-danger { background: var(--color-danger); }
+    .progress-fill.fill-warning { background: var(--color-warning); }
+
+    .code-block {
+      background: var(--color-bg-sunken); border: var(--border-thin) solid var(--color-border-subtle);
+      border-radius: var(--radius-structural); padding: var(--space-4);
+      font-family: var(--font-mono); font-size: var(--text-0); line-height: var(--leading-body);
+      overflow-x: auto; color: var(--color-fg-default);
+    }
+    .code-block .kw { color: var(--violet-400); }
+    .code-block .str { color: var(--green-400); }
+    .code-block .cm { color: var(--color-fg-subtle); }
+    .code-block .fn { color: var(--cyan-400); }
+    .code-block .num { color: var(--amber-400); }
+
+    /* ---- Feedback ---- */
+    .alert {
+      display: flex; align-items: flex-start; gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-interactive);
+      border: var(--alert-border-width) solid transparent;
+      font-size: var(--text-0);
+    }
+    .alert-icon { flex-shrink: 0; font-size: var(--text-2); line-height: 1; }
+    .alert-content { flex: 1; }
+    .alert-title { font-weight: var(--weight-semibold); margin-bottom: var(--space-0-5); }
+    .alert-info { background: var(--color-info-subtle); color: var(--color-info-fg); border-color: rgba(59,130,246,0.2); }
+    .alert-success { background: var(--color-success-subtle); color: var(--color-success-fg); border-color: rgba(16,185,129,0.2); }
+    .alert-warning { background: var(--color-warning-subtle); color: var(--color-warning-fg); border-color: rgba(245,158,11,0.2); }
+    .alert-danger { background: var(--color-danger-subtle); color: var(--color-danger-fg); border-color: rgba(239,68,68,0.2); }
+
+    .toast {
+      display: inline-flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-bg-elevated); border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-interactive); box-shadow: var(--shadow-float);
+      font-size: var(--text-0); color: var(--color-fg-default);
+    }
+    .toast-close {
+      background: none; border: none; color: var(--color-fg-subtle); cursor: pointer;
+      padding: var(--space-1); font-size: var(--text-1);
+    }
+
+    .empty-state {
+      text-align: center; padding: var(--space-9) var(--space-5);
+    }
+    .empty-state-icon {
+      font-size: var(--text-6); color: var(--color-fg-subtle); margin-bottom: var(--space-4);
+      opacity: 0.4;
+    }
+    .empty-state-title {
+      font-size: var(--text-3); font-weight: var(--weight-semibold);
+      color: var(--color-fg-strong); margin-bottom: var(--space-2);
+    }
+    .empty-state-desc {
+      font-size: var(--text-1); color: var(--color-fg-muted);
+      max-width: 360px; margin: 0 auto var(--space-4);
+    }
+
+    .validation-msg {
+      display: flex; align-items: center; gap: var(--space-1);
+      font-size: var(--text-00); margin-top: var(--space-1);
+    }
+    .validation-msg.is-error { color: var(--color-danger-fg); }
+    .validation-msg.is-success { color: var(--color-success-fg); }
+
+    /* ---- Overlays ---- */
+    .modal-demo {
+      position: relative; width: 100%; max-width: 520px;
+      background: var(--modal-bg); border: var(--border-thin) solid var(--modal-border);
+      border-radius: var(--radius-signature); box-shadow: var(--modal-shadow);
+      padding: var(--space-5);
+    }
+    .modal-backdrop-demo {
+      background: var(--modal-backdrop); border-radius: var(--radius-structural);
+      padding: var(--space-8); display: flex; justify-content: center; align-items: center;
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: var(--space-4);
+    }
+    .modal-title { font-size: var(--text-3); font-weight: var(--weight-semibold); color: var(--color-fg-strong); }
+    .modal-close {
+      background: none; border: none; color: var(--color-fg-subtle);
+      cursor: pointer; font-size: var(--text-2); padding: var(--space-1);
+    }
+    .modal-body { margin-bottom: var(--space-5); color: var(--color-fg-muted); font-size: var(--text-1); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: var(--space-2); }
+
+    .drawer-demo {
+      width: 320px; height: 400px; background: var(--modal-bg);
+      border-left: var(--border-thin) solid var(--modal-border);
+      padding: var(--space-5); margin-left: auto;
+    }
+
+    .tooltip-demo {
+      position: relative; display: inline-block;
+    }
+    .tooltip-bubble {
+      position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      padding: var(--space-1-5) var(--space-3); background: var(--color-bg-inverse);
+      color: var(--color-fg-inverse); border-radius: var(--radius-interactive);
+      font-size: var(--text-00); white-space: nowrap; box-shadow: var(--shadow-elevated);
+    }
+    .tooltip-bubble::after {
+      content: ""; position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%); border: 5px solid transparent;
+      border-top-color: var(--color-bg-inverse);
+    }
+
+    .dropdown-menu {
+      width: 220px; background: var(--color-bg-elevated);
+      border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-interactive); box-shadow: var(--shadow-float);
+      padding: var(--space-1); overflow: hidden;
+    }
+    .dropdown-item {
+      display: flex; align-items: center; gap: var(--space-2);
+      width: 100%; padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-2); font-size: var(--text-0);
+      color: var(--color-fg-default); background: none; border: none;
+      cursor: pointer; text-align: left; font-family: var(--font-body);
+      transition: background var(--motion-duration-micro) var(--motion-ease-standard);
+    }
+    .dropdown-item:hover { background: var(--color-accent-brand-subtle); color: var(--color-fg-strong); }
+    .dropdown-item.is-danger { color: var(--color-danger-fg); }
+    .dropdown-item.is-danger:hover { background: var(--color-danger-subtle); }
+    .dropdown-sep { height: 1px; background: var(--color-border-subtle); margin: var(--space-1) 0; }
+
+    .cmd-palette {
+      width: 100%; max-width: 560px; background: var(--color-bg-elevated);
+      border: var(--border-thin) solid var(--color-border-default);
+      border-radius: var(--radius-signature); box-shadow: var(--shadow-float);
+      overflow: hidden;
+    }
+    .cmd-input {
+      width: 100%; height: 52px; padding: 0 var(--space-4);
+      background: transparent; border: none; border-bottom: var(--border-thin) solid var(--color-border-subtle);
+      color: var(--input-fg); font-family: var(--font-body); font-size: var(--text-2);
+    }
+    .cmd-input::placeholder { color: var(--input-placeholder); }
+    .cmd-input:focus { outline: none; }
+    .cmd-results { padding: var(--space-2); max-height: 280px; overflow-y: auto; }
+    .cmd-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-2) var(--space-3); border-radius: var(--radius-2);
+      font-size: var(--text-0); color: var(--color-fg-default); cursor: pointer;
+      transition: background var(--motion-duration-micro) var(--motion-ease-standard);
+    }
+    .cmd-item:hover, .cmd-item.is-highlighted { background: var(--color-accent-brand-subtle); }
+    .cmd-item-label { display: flex; align-items: center; gap: var(--space-2); }
+    .cmd-item-shortcut {
+      font-size: var(--text-00); font-family: var(--font-mono); color: var(--color-fg-subtle);
+      background: var(--color-bg-soft); padding: var(--space-0-5) var(--space-1);
+      border-radius: var(--radius-2);
+    }
+    .cmd-group-label {
+      font-size: var(--text-00); color: var(--color-fg-subtle);
+      text-transform: uppercase; letter-spacing: var(--tracking-label);
+      padding: var(--space-2) var(--space-3) var(--space-1);
+      font-weight: var(--weight-semibold);
+    }
+
+    /* ---- Skeletons ---- */
+    .skeleton {
+      background: linear-gradient(90deg, var(--skeleton-base) 25%, var(--skeleton-sheen) 50%, var(--skeleton-base) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease-in-out infinite;
+      border-radius: var(--radius-2);
+    }
+    .skeleton-text { height: 14px; margin-bottom: var(--space-2); border-radius: var(--radius-2); }
+    .skeleton-text.w-full { width: 100%; }
+    .skeleton-text.w-3-4 { width: 75%; }
+    .skeleton-text.w-1-2 { width: 50%; }
+    .skeleton-text.w-1-4 { width: 25%; }
+    .skeleton-avatar { width: 40px; height: 40px; border-radius: var(--radius-full); }
+    .skeleton-card {
+      background: var(--card-bg); border: var(--border-thin) solid var(--card-border);
+      border-radius: var(--radius-structural); padding: var(--space-4);
+    }
+    .skeleton-btn { height: 40px; width: 120px; border-radius: var(--radius-interactive); }
+
+    /* ---- Utilities ---- */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .state-row { flex-direction: column; align-items: flex-start; }
+    }
+    .flex-col { display: flex; flex-direction: column; }
+    .gap-2 { gap: var(--space-2); }
+    .gap-3 { gap: var(--space-3); }
+    .gap-4 { gap: var(--space-4); }
+    .mt-2 { margin-top: var(--space-2); }
+    .mt-4 { margin-top: var(--space-4); }
+    .mb-3 { margin-bottom: var(--space-3); }
+    .mb-4 { margin-bottom: var(--space-4); }
+    .text-mono { font-family: var(--font-mono); }
+    .text-muted { color: var(--color-fg-muted); }
+  </style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<nav class="site-nav" role="navigation" aria-label="Primary">
+  <div style="display:flex;align-items:center;gap:var(--space-5)">
+    <div class="logo">Nerve<span>.</span></div>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="components.html" aria-current="page">Components</a></li>
+      <li><a href="guidelines.html">Guidelines</a></li>
+      <li><a href="application.html">Application</a></li>
+    </ul>
+  </div>
+  <button class="theme-toggle" aria-label="Toggle theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'">
+    Theme
+  </button>
+</nav>
+
+<main class="page-wrap">
+
+  <!-- ============ PAGE HEADER ============ -->
+  <header class="page-header">
+    <h1>Component Library</h1>
+    <p>Production-ready components for the Nerve agent orchestration platform. Every component is documented with full state coverage, accessibility patterns, and content rules.</p>
+  </header>
+
+
+  <!-- ============================================================
+       BUTTONS
+       ============================================================ -->
+  <section class="comp-section" id="buttons">
+    <h2>Buttons</h2>
+    <p class="section-desc">Buttons trigger actions. Use primary for the single most important action in a view, secondary for supporting actions, ghost for tertiary options, and danger for destructive operations.</p>
+
+    <!-- Primary -->
+    <div class="subsection">
+      <h3>Primary Button</h3>
+      <p class="subsection-desc">The highest-emphasis button. Violet background, white text, signature radius (8px), glow shadow on hover.</p>
+      <span class="annotation">Content: sentence case, max 3 words, verb-first</span>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Default</span>
+            <button class="btn btn-md btn-primary">Deploy agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Hover</span>
+            <button class="btn btn-md btn-primary" style="background:var(--button-primary-bg-hover);box-shadow:var(--button-primary-shadow)">Deploy agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Active</span>
+            <button class="btn btn-md btn-primary is-active">Deploy agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Focus</span>
+            <button class="btn btn-md btn-primary" style="outline:2px solid var(--color-focus-ring);outline-offset:2px">Deploy agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Disabled</span>
+            <button class="btn btn-md btn-primary is-disabled" disabled aria-disabled="true">Deploy agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Loading</span>
+            <button class="btn btn-md btn-primary is-loading" aria-busy="true"><span class="spinner"></span> Deploying</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary -->
+    <div class="subsection">
+      <h3>Secondary Button</h3>
+      <p class="subsection-desc">Transparent background, violet border, brand-fg text. Interactive radius (6px).</p>
+      <span class="annotation">Content: sentence case, max 3 words</span>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Default</span>
+            <button class="btn btn-md btn-secondary">Configure</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Hover</span>
+            <button class="btn btn-md btn-secondary" style="background:var(--button-secondary-bg-hover)">Configure</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Active</span>
+            <button class="btn btn-md btn-secondary is-active">Configure</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Disabled</span>
+            <button class="btn btn-md btn-secondary is-disabled" disabled>Configure</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Loading</span>
+            <button class="btn btn-md btn-secondary" aria-busy="true"><span class="spinner"></span> Saving</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ghost -->
+    <div class="subsection">
+      <h3>Ghost Button</h3>
+      <p class="subsection-desc">Transparent background, muted text. Subtle hover background. Use for tertiary or inline actions.</p>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Default</span>
+            <button class="btn btn-md btn-ghost">Cancel</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Hover</span>
+            <button class="btn btn-md btn-ghost" style="background:var(--button-ghost-bg-hover);color:var(--button-ghost-fg-hover)">Cancel</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Disabled</span>
+            <button class="btn btn-md btn-ghost is-disabled" disabled>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Danger -->
+    <div class="subsection">
+      <h3>Danger Button</h3>
+      <p class="subsection-desc">Red background, white text. Reserved for destructive actions that cannot be undone.</p>
+      <span class="annotation">Content: always include the object being affected ("Delete agent", not just "Delete")</span>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Default</span>
+            <button class="btn btn-md btn-danger">Delete agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Hover</span>
+            <button class="btn btn-md btn-danger" style="background:var(--button-danger-bg-hover)">Delete agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Active</span>
+            <button class="btn btn-md btn-danger" style="background:var(--red-700)">Delete agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Disabled</span>
+            <button class="btn btn-md btn-danger is-disabled" disabled>Delete agent</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="subsection">
+      <h3>Button Sizes</h3>
+      <p class="subsection-desc">Three sizes: sm (32px), md (40px), lg (48px). Default to md for most contexts.</p>
+      <div class="showcase">
+        <div class="state-row" style="align-items:flex-end">
+          <div class="state-col">
+            <span class="state-label">Small — 32px</span>
+            <button class="btn btn-sm btn-primary">Run task</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Medium — 40px</span>
+            <button class="btn btn-md btn-primary">Run task</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Large — 48px</span>
+            <button class="btn btn-lg btn-primary">Run task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icon buttons -->
+    <div class="subsection">
+      <h3>Icon Buttons</h3>
+      <p class="subsection-desc">Square buttons for icon-only actions. Always include an aria-label for accessibility.</p>
+      <span class="annotation">Aria: aria-label required on icon-only buttons</span>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Icon only</span>
+            <button class="btn btn-md btn-ghost btn-icon" aria-label="Settings">&#9881;</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Icon only (secondary)</span>
+            <button class="btn btn-md btn-secondary btn-icon" aria-label="Refresh">&#8635;</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Icon + text</span>
+            <button class="btn btn-md btn-primary">&#9654; Start agent</button>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Text + icon</span>
+            <button class="btn btn-md btn-secondary">Export &#8599;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button group -->
+    <div class="subsection">
+      <h3>Button Group</h3>
+      <p class="subsection-desc">Group related actions into a single visual unit. Use for view toggles, segmented controls.</p>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="btn-group" role="group" aria-label="View mode">
+            <button class="btn btn-md btn-secondary is-active">List</button>
+            <button class="btn btn-md btn-secondary">Grid</button>
+            <button class="btn btn-md btn-secondary">Timeline</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       BADGES
+       ============================================================ -->
+  <section class="comp-section" id="badges">
+    <h2>Badges</h2>
+    <p class="section-desc">Badges communicate status, categories, and counts. Pill-shaped with full radius. Status badges use semantic colors for instant recognition.</p>
+
+    <div class="subsection">
+      <h3>Status Badges</h3>
+      <p class="subsection-desc">Indicate the operational state of agents, tasks, and system components.</p>
+      <span class="annotation">Content: single word or two-word phrase, sentence case</span>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">Active (cyan)</span>
+            <span class="badge badge-active"><span class="badge-dot"></span> Running</span>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Idle (muted)</span>
+            <span class="badge badge-idle"><span class="badge-dot"></span> Idle</span>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Error (red)</span>
+            <span class="badge badge-error"><span class="badge-dot"></span> Error</span>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Warning (amber)</span>
+            <span class="badge badge-warning"><span class="badge-dot"></span> Paused</span>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Success (green)</span>
+            <span class="badge badge-success"><span class="badge-dot"></span> Deployed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Without Dot Indicator</h3>
+      <div class="showcase">
+        <div class="state-row">
+          <span class="badge badge-active">Running</span>
+          <span class="badge badge-idle">Idle</span>
+          <span class="badge badge-error">Error</span>
+          <span class="badge badge-warning">Paused</span>
+          <span class="badge badge-success">Deployed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <h3>Category Badges</h3>
+      <p class="subsection-desc">Classify agents, tasks, or resources by type.</p>
+      <div class="showcase">
+        <div class="state-row">
+          <span class="badge badge-category">Orchestrator</span>
+          <span class="badge badge-category">Retrieval</span>
+          <span class="badge badge-category">Classifier</span>
+          <span class="badge badge-category">Monitor</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FORM CONTROLS
+       ============================================================ -->
+  <section class="comp-section" id="form-controls">
+    <h2>Form Controls</h2>
+    <p class="section-desc">Input elements for capturing user data. All controls share consistent sizing, border treatment, and focus ring behavior.</p>
+
+    <!-- Text input -->
+    <div class="subsection">
+      <h3>Text Input</h3>
+      <p class="subsection-desc">Standard single-line input. Supports label, helper text, error state, and disabled.</p>
+      <span class="annotation">Aria: pair label with for/id; use aria-describedby for helper and error text</span>
+      <div class="showcase">
+        <div class="grid-2">
+          <!-- Default -->
+          <div class="form-group">
+            <label class="form-label" for="agent-name-default">Agent name</label>
+            <input class="input" id="agent-name-default" type="text" placeholder="e.g. Sentinel-v2">
+            <span class="form-helper">Alphanumeric and hyphens only. Max 64 characters.</span>
+          </div>
+          <!-- Filled -->
+          <div class="form-group">
+            <label class="form-label" for="agent-name-filled">Agent name</label>
+            <input class="input" id="agent-name-filled" type="text" value="Sentinel-v2">
+            <span class="form-helper">Alphanumeric and hyphens only. Max 64 characters.</span>
+          </div>
+          <!-- Error -->
+          <div class="form-group">
+            <label class="form-label" for="agent-name-error">Agent name</label>
+            <input class="input is-error" id="agent-name-error" type="text" value="Sentinel v2!" aria-invalid="true" aria-describedby="error-agent-name">
+            <span class="form-error-msg" id="error-agent-name">&#9888; Name contains invalid characters</span>
+          </div>
+          <!-- Disabled -->
+          <div class="form-group">
+            <label class="form-label" for="agent-name-disabled">Agent name</label>
+            <input class="input" id="agent-name-disabled" type="text" value="Sentinel-v2" disabled aria-disabled="true">
+            <span class="form-helper">Cannot edit while agent is running.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Textarea -->
+    <div class="subsection">
+      <h3>Textarea</h3>
+      <p class="subsection-desc">Multi-line text input for descriptions, prompts, and configuration.</p>
+      <div class="showcase">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="sys-prompt">System prompt</label>
+            <textarea class="textarea" id="sys-prompt" placeholder="Define the agent's behavior and constraints..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="sys-prompt-filled">System prompt</label>
+            <textarea class="textarea" id="sys-prompt-filled">You are Sentinel, a monitoring agent responsible for tracking system health metrics across all production services. Alert when any metric exceeds defined thresholds.</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Select -->
+    <div class="subsection">
+      <h3>Select</h3>
+      <div class="showcase">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="agent-type">Agent type</label>
+            <div class="select-wrap">
+              <select class="select" id="agent-type">
+                <option value="">Select type...</option>
+                <option>Orchestrator</option>
+                <option>Retrieval</option>
+                <option>Classifier</option>
+                <option>Monitor</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="agent-type-sel">Agent type</label>
+            <div class="select-wrap">
+              <select class="select" id="agent-type-sel">
+                <option>Monitor</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checkbox -->
+    <div class="subsection">
+      <h3>Checkbox</h3>
+      <div class="showcase">
+        <div class="flex-col gap-3">
+          <label class="checkbox-wrap">
+            <input type="checkbox" class="checkbox"> <span>Enable auto-scaling</span>
+          </label>
+          <label class="checkbox-wrap">
+            <input type="checkbox" class="checkbox" checked> <span>Log all agent decisions</span>
+          </label>
+          <label class="checkbox-wrap" style="opacity:0.4;cursor:not-allowed">
+            <input type="checkbox" class="checkbox" disabled> <span>Enable experimental features</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle switch -->
+    <div class="subsection">
+      <h3>Toggle Switch</h3>
+      <p class="subsection-desc">Binary on/off control. The "live" variant adds a pulse animation for active agents.</p>
+      <div class="showcase">
+        <div class="flex-col gap-3">
+          <label class="toggle-wrap">
+            <input type="checkbox" class="toggle"> <span>Agent active</span>
+          </label>
+          <label class="toggle-wrap">
+            <input type="checkbox" class="toggle" checked> <span>Agent active</span>
+          </label>
+          <label class="toggle-wrap">
+            <input type="checkbox" class="toggle is-live" checked> <span>Sentinel — live</span>
+            <!-- aria: role="switch" aria-checked="true" for toggle -->
+          </label>
+          <label class="toggle-wrap" style="opacity:0.4;cursor:not-allowed">
+            <input type="checkbox" class="toggle" disabled> <span>Agent active (locked)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Radio group -->
+    <div class="subsection">
+      <h3>Radio Group</h3>
+      <span class="annotation">Aria: use role="radiogroup" with aria-label</span>
+      <div class="showcase">
+        <div class="flex-col gap-3" role="radiogroup" aria-label="Execution mode">
+          <label class="radio-wrap">
+            <input type="radio" name="exec-mode" class="radio" checked> <span>Sequential</span>
+          </label>
+          <label class="radio-wrap">
+            <input type="radio" name="exec-mode" class="radio"> <span>Parallel</span>
+          </label>
+          <label class="radio-wrap">
+            <input type="radio" name="exec-mode" class="radio"> <span>Event-driven</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search input -->
+    <div class="subsection">
+      <h3>Search Input</h3>
+      <div class="showcase">
+        <div class="form-group" style="max-width:400px">
+          <label class="form-label" for="search-agents">Search agents</label>
+          <div class="search-wrap">
+            <span class="search-icon">&#128269;</span>
+            <input class="input" id="search-agents" type="search" placeholder="Filter by name, status, or tag...">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       CARDS
+       ============================================================ -->
+  <section class="comp-section" id="cards">
+    <h2>Cards</h2>
+    <p class="section-desc">Cards group related content and actions. Surface background, subtle border, structural radius (2px). Interactive cards gain hover lift and border change.</p>
+
+    <!-- Default card -->
+    <div class="subsection">
+      <h3>Default Card</h3>
+      <div class="showcase">
+        <div class="grid-2">
+          <div class="card">
+            <h4 style="font-size:var(--text-2);font-weight:var(--weight-semibold);color:var(--color-fg-strong);margin-bottom:var(--space-2)">Agent Configuration</h4>
+            <p style="font-size:var(--text-0);color:var(--color-fg-muted)">Define the behavior, constraints, and resource allocation for this agent instance.</p>
+          </div>
+          <div class="card" style="opacity:0.5">
+            <h4 style="font-size:var(--text-2);font-weight:var(--weight-semibold);color:var(--color-fg-strong);margin-bottom:var(--space-2)">Card (disabled state)</h4>
+            <p style="font-size:var(--text-0);color:var(--color-fg-muted)">This section is locked while the agent is deploying.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive card -->
+    <div class="subsection">
+      <h3>Interactive Card</h3>
+      <p class="subsection-desc">Hover lifts the card 2px and strengthens the border. Cursor becomes pointer.</p>
+      <div class="showcase">
+        <div class="grid-3">
+          <div class="card card-interactive" tabindex="0" role="button">
+            <h4 style="font-size:var(--text-1);font-weight:var(--weight-semibold);color:var(--color-fg-strong);margin-bottom:var(--space-1)">Orchestration</h4>
+            <p style="font-size:var(--text-0);color:var(--color-fg-muted)">Multi-agent coordination and task routing</p>
+          </div>
+          <div class="card card-interactive" tabindex="0" role="button">
+            <h4 style="font-size:var(--text-1);font-weight:var(--weight-semibold);color:var(--color-fg-strong);margin-bottom:var(--space-1)">Monitoring</h4>
+            <p style="font-size:var(--text-0);color:var(--color-fg-muted)">Health checks, alerting, and metrics</p>
+          </div>
+          <div class="card card-interactive" tabindex="0" role="button">
+            <h4 style="font-size:var(--text-1);font-weight:var(--weight-semibold);color:var(--color-fg-strong);margin-bottom:var(--space-1)">Retrieval</h4>
+            <p style="font-size:var(--text-0);color:var(--color-fg-muted)">Knowledge base search and context assembly</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent card -->
+    <div class="subsection">
+      <h3>Agent Card</h3>
+      <p class="subsection-desc">Displays an agent's name, status, and key performance metrics in a compact layout.</p>
+      <div class="showcase">
+        <div class="grid-2">
+          <div class="card card-agent">
+            <div class="card-agent-header">
+              <span class="card-agent-name">Sentinel</span>
+              <span class="badge badge-active"><span class="badge-dot"></span> Running</span>
+            </div>
+            <div class="card-agent-metrics">
+              <div><div class="card-agent-metric-label">Tasks completed</div><div class="card-agent-metric-value">1,284</div></div>
+              <div><div class="card-agent-metric-label">Avg response</div><div class="card-agent-metric-value">142ms</div></div>
+              <div><div class="card-agent-metric-label">Success rate</div><div class="card-agent-metric-value">99.7%</div></div>
+              <div><div class="card-agent-metric-label">Uptime</div><div class="card-agent-metric-value">14d 6h</div></div>
+            </div>
+          </div>
+          <div class="card card-agent">
+            <div class="card-agent-header">
+              <span class="card-agent-name">Curator</span>
+              <span class="badge badge-error"><span class="badge-dot"></span> Error</span>
+            </div>
+            <div class="card-agent-metrics">
+              <div><div class="card-agent-metric-label">Tasks completed</div><div class="card-agent-metric-value">847</div></div>
+              <div><div class="card-agent-metric-label">Avg response</div><div class="card-agent-metric-value">--</div></div>
+              <div><div class="card-agent-metric-label">Success rate</div><div class="card-agent-metric-value">94.2%</div></div>
+              <div><div class="card-agent-metric-label">Uptime</div><div class="card-agent-metric-value">0d 0h</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metric card -->
+    <div class="subsection">
+      <h3>Metric Card</h3>
+      <p class="subsection-desc">Single KPI display. Use for dashboards and overview panels.</p>
+      <div class="showcase">
+        <div class="grid-4">
+          <div class="card card-metric">
+            <div class="card-metric-value">5,847</div>
+            <div class="card-metric-label">Tasks completed</div>
+            <div class="card-metric-trend trend-up">+12.3% vs last week</div>
+          </div>
+          <div class="card card-metric">
+            <div class="card-metric-value">142ms</div>
+            <div class="card-metric-label">Avg response time</div>
+            <div class="card-metric-trend trend-down">+8ms vs last week</div>
+          </div>
+          <div class="card card-metric">
+            <div class="card-metric-value">99.7%</div>
+            <div class="card-metric-label">Success rate</div>
+            <div class="card-metric-trend trend-up">+0.2% vs last week</div>
+          </div>
+          <div class="card card-metric">
+            <div class="card-metric-value">23</div>
+            <div class="card-metric-label">Active agents</div>
+            <div class="card-metric-trend" style="color:var(--color-fg-subtle)">No change</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       NAVIGATION COMPONENTS
+       ============================================================ -->
+  <section class="comp-section" id="navigation">
+    <h2>Navigation</h2>
+    <p class="section-desc">Navigation components for wayfinding within the application. Consistent hover and active state treatment across all patterns.</p>
+
+    <!-- Tab bar -->
+    <div class="subsection">
+      <h3>Tab Bar</h3>
+      <p class="subsection-desc">Horizontal tabs with bottom active indicator. Use for switching between views within a single context.</p>
+      <span class="annotation">Aria: role="tablist", role="tab", aria-selected on active</span>
+      <div class="showcase">
+        <div class="tab-bar" role="tablist">
+          <button class="tab-item is-active" role="tab" aria-selected="true">Overview</button>
+          <button class="tab-item" role="tab" aria-selected="false">Configuration</button>
+          <button class="tab-item" role="tab" aria-selected="false">Logs</button>
+          <button class="tab-item" role="tab" aria-selected="false">Metrics</button>
+          <button class="tab-item" role="tab" aria-selected="false" disabled style="opacity:0.4">Experiments</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="subsection">
+      <h3>Sidebar Navigation</h3>
+      <span class="annotation">Aria: role="navigation", aria-label="Sidebar"</span>
+      <div class="showcase">
+        <nav class="sidebar-nav" aria-label="Sidebar demo">
+          <button class="sidebar-item is-active">&#9632; Dashboard</button>
+          <button class="sidebar-item">&#9654; Agents</button>
+          <button class="sidebar-item">&#9830; Tasks</button>
+          <button class="sidebar-item">&#9733; Metrics</button>
+          <button class="sidebar-item">&#9881; Settings</button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="subsection">
+      <h3>Breadcrumbs</h3>
+      <span class="annotation">Aria: nav with aria-label="Breadcrumb", current page uses aria-current="page"</span>
+      <div class="showcase">
+        <nav class="breadcrumbs" aria-label="Breadcrumb demo">
+          <a href="#">Platform</a>
+          <span class="sep">/</span>
+          <a href="#">Agents</a>
+          <span class="sep">/</span>
+          <a href="#">Sentinel</a>
+          <span class="sep">/</span>
+          <span class="current" aria-current="page">Configuration</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="subsection">
+      <h3>Pagination</h3>
+      <div class="showcase">
+        <div class="pagination" role="navigation" aria-label="Pagination">
+          <button class="page-btn" disabled aria-label="Previous page">&lsaquo;</button>
+          <button class="page-btn is-active" aria-current="page">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <button class="page-btn" style="cursor:default;color:var(--color-fg-subtle)">...</button>
+          <button class="page-btn">12</button>
+          <button class="page-btn" aria-label="Next page">&rsaquo;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       DATA DISPLAY
+       ============================================================ -->
+  <section class="comp-section" id="data-display">
+    <h2>Data Display</h2>
+    <p class="section-desc">Components for presenting structured data: tables, key-value pairs, statistics, progress indicators, and code blocks.</p>
+
+    <!-- Data table -->
+    <div class="subsection">
+      <h3>Data Table</h3>
+      <p class="subsection-desc">Sortable columns, row hover, selected row state. Use compact density for data-heavy views.</p>
+      <span class="annotation">Aria: use scope="col" on th, aria-sort for sortable columns</span>
+      <div class="showcase" style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col" aria-sort="ascending">Agent <span class="sort-icon">&#9650;</span></th>
+              <th scope="col">Status</th>
+              <th scope="col">Tasks <span class="sort-icon">&#9662;</span></th>
+              <th scope="col">Avg response <span class="sort-icon">&#9662;</span></th>
+              <th scope="col">Success rate</th>
+              <th scope="col">Uptime</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="is-selected">
+              <td style="font-weight:var(--weight-medium);color:var(--color-fg-strong)">Sentinel</td>
+              <td><span class="badge badge-active"><span class="badge-dot"></span> Running</span></td>
+              <td>1,284</td>
+              <td style="font-family:var(--font-mono)">142ms</td>
+              <td>99.7%</td>
+              <td>14d 6h</td>
+            </tr>
+            <tr>
+              <td style="font-weight:var(--weight-medium);color:var(--color-fg-strong)">Curator</td>
+              <td><span class="badge badge-error"><span class="badge-dot"></span> Error</span></td>
+              <td>847</td>
+              <td style="font-family:var(--font-mono)">--</td>
+              <td>94.2%</td>
+              <td>0d 0h</td>
+            </tr>
+            <tr>
+              <td style="font-weight:var(--weight-medium);color:var(--color-fg-strong)">Dispatcher</td>
+              <td><span class="badge badge-active"><span class="badge-dot"></span> Running</span></td>
+              <td>3,401</td>
+              <td style="font-family:var(--font-mono)">89ms</td>
+              <td>99.9%</td>
+              <td>28d 14h</td>
+            </tr>
+            <tr>
+              <td style="font-weight:var(--weight-medium);color:var(--color-fg-strong)">Analyst</td>
+              <td><span class="badge badge-warning"><span class="badge-dot"></span> Paused</span></td>
+              <td>612</td>
+              <td style="font-family:var(--font-mono)">310ms</td>
+              <td>97.8%</td>
+              <td>7d 2h</td>
+            </tr>
+            <tr>
+              <td style="font-weight:var(--weight-medium);color:var(--color-fg-strong)">Guardian</td>
+              <td><span class="badge badge-idle"><span class="badge-dot"></span> Idle</span></td>
+              <td>2,156</td>
+              <td style="font-family:var(--font-mono)">67ms</td>
+              <td>99.4%</td>
+              <td>42d 8h</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Compact table -->
+    <div class="subsection">
+      <h3>Compact Data Table</h3>
+      <div class="showcase" style="overflow-x:auto">
+        <table class="data-table compact">
+          <thead>
+            <tr>
+              <th scope="col">Task ID</th>
+              <th scope="col">Agent</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="font-family:var(--font-mono);font-size:var(--text-00)">tsk_8f2a</td><td>Sentinel</td><td style="font-family:var(--font-mono)">42ms</td><td><span class="badge badge-success">Complete</span></td></tr>
+            <tr><td style="font-family:var(--font-mono);font-size:var(--text-00)">tsk_9b3c</td><td>Dispatcher</td><td style="font-family:var(--font-mono)">118ms</td><td><span class="badge badge-active">Running</span></td></tr>
+            <tr><td style="font-family:var(--font-mono);font-size:var(--text-00)">tsk_a4d1</td><td>Curator</td><td style="font-family:var(--font-mono)">--</td><td><span class="badge badge-error">Failed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Key-value list -->
+    <div class="subsection">
+      <h3>Key-Value List</h3>
+      <div class="showcase">
+        <div class="kv-list" style="max-width:400px">
+          <div class="kv-row"><span class="kv-key">Agent ID</span><span class="kv-value">agt_sentinel_v2</span></div>
+          <div class="kv-row"><span class="kv-key">Model</span><span class="kv-value">claude-3.5-sonnet</span></div>
+          <div class="kv-row"><span class="kv-key">Max tokens</span><span class="kv-value">4096</span></div>
+          <div class="kv-row"><span class="kv-key">Temperature</span><span class="kv-value">0.2</span></div>
+          <div class="kv-row"><span class="kv-key">Created</span><span class="kv-value">2026-02-14</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat display -->
+    <div class="subsection">
+      <h3>Stat / Metric Display</h3>
+      <div class="showcase">
+        <div class="state-row" style="gap:var(--space-8)">
+          <div class="stat-display">
+            <span class="stat-value">99.7%</span>
+            <span class="stat-label">Success rate</span>
+          </div>
+          <div class="stat-display">
+            <span class="stat-value" style="color:var(--color-accent-secondary-fg)">142ms</span>
+            <span class="stat-label">Avg response</span>
+          </div>
+          <div class="stat-display">
+            <span class="stat-value" style="color:var(--color-accent-brand-fg)">5,847</span>
+            <span class="stat-label">Tasks completed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="subsection">
+      <h3>Progress Bar</h3>
+      <div class="showcase">
+        <div class="flex-col gap-4" style="max-width:480px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+              <span style="font-size:var(--text-0);color:var(--color-fg-muted)">Deployment progress</span>
+              <span style="font-size:var(--text-0);color:var(--color-fg-strong);font-family:var(--font-mono)">78%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill fill-brand" style="width:78%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+              <span style="font-size:var(--text-0);color:var(--color-fg-muted)">Success rate</span>
+              <span style="font-size:var(--text-0);color:var(--color-fg-strong);font-family:var(--font-mono)">99.7%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill fill-success" style="width:99.7%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+              <span style="font-size:var(--text-0);color:var(--color-fg-muted)">Error rate</span>
+              <span style="font-size:var(--text-0);color:var(--color-fg-strong);font-family:var(--font-mono)">5.8%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill fill-danger" style="width:5.8%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+              <span style="font-size:var(--text-0);color:var(--color-fg-muted)">Memory usage</span>
+              <span style="font-size:var(--text-0);color:var(--color-fg-strong);font-family:var(--font-mono)">72%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill fill-warning" style="width:72%"></div></div>
+          </div>
+          <!-- Empty state -->
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-1)">
+              <span style="font-size:var(--text-0);color:var(--color-fg-muted)">Queue (empty)</span>
+              <span style="font-size:var(--text-0);color:var(--color-fg-strong);font-family:var(--font-mono)">0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill fill-brand" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code block -->
+    <div class="subsection">
+      <h3>Code Block</h3>
+      <p class="subsection-desc">Monospace font, syntax highlighting using token colors. Use for API examples, configuration, and log output.</p>
+      <div class="showcase">
+        <pre class="code-block"><code><span class="cm">// Agent configuration — Sentinel v2</span>
+<span class="kw">const</span> config = {
+  <span class="str">"agent_id"</span>: <span class="str">"agt_sentinel_v2"</span>,
+  <span class="str">"model"</span>: <span class="str">"claude-3.5-sonnet"</span>,
+  <span class="str">"max_tokens"</span>: <span class="num">4096</span>,
+  <span class="str">"temperature"</span>: <span class="num">0.2</span>,
+  <span class="str">"tools"</span>: [<span class="str">"search"</span>, <span class="str">"analyze"</span>, <span class="str">"alert"</span>]
+};
+
+<span class="kw">await</span> <span class="fn">nerve.deploy</span>(config);</code></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       FEEDBACK
+       ============================================================ -->
+  <section class="comp-section" id="feedback">
+    <h2>Feedback</h2>
+    <p class="section-desc">Components that communicate system status, validation results, and guide users through empty or error states. Alerts use background tint and icon treatment.</p>
+
+    <!-- Alerts -->
+    <div class="subsection">
+      <h3>Alert Variants</h3>
+      <p class="subsection-desc">Background tint + icon. No thick left-border callouts.</p>
+      <span class="annotation">Aria: role="alert" for urgent messages, role="status" for informational</span>
+      <div class="showcase">
+        <div class="flex-col gap-3">
+          <div class="alert alert-info" role="status">
+            <span class="alert-icon">&#8505;</span>
+            <div class="alert-content">
+              <div class="alert-title">Agent update available</div>
+              <div>Sentinel v2.1 includes improved context window management and 12% faster inference.</div>
+            </div>
+          </div>
+          <div class="alert alert-success" role="status">
+            <span class="alert-icon">&#10003;</span>
+            <div class="alert-content">
+              <div class="alert-title">Deployment successful</div>
+              <div>Dispatcher is now running in production. All health checks passed.</div>
+            </div>
+          </div>
+          <div class="alert alert-warning" role="alert">
+            <span class="alert-icon">&#9888;</span>
+            <div class="alert-content">
+              <div class="alert-title">High memory usage</div>
+              <div>Analyst is using 89% of allocated memory. Consider scaling or optimizing prompts.</div>
+            </div>
+          </div>
+          <div class="alert alert-danger" role="alert">
+            <span class="alert-icon">&#10007;</span>
+            <div class="alert-content">
+              <div class="alert-title">Agent failure</div>
+              <div>Curator encountered an unrecoverable error. Last successful task: tsk_7e4b at 14:23 UTC.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="subsection">
+      <h3>Toast Notification</h3>
+      <p class="subsection-desc">Transient notifications that appear and auto-dismiss. Position at top-right of viewport.</p>
+      <div class="showcase">
+        <div class="flex-col gap-3" style="align-items:flex-start">
+          <div class="toast" role="status" aria-live="polite">
+            <span style="color:var(--color-success-fg)">&#10003;</span>
+            <span>Agent Sentinel deployed successfully</span>
+            <button class="toast-close" aria-label="Dismiss">&times;</button>
+          </div>
+          <div class="toast" role="alert" aria-live="assertive">
+            <span style="color:var(--color-danger-fg)">&#10007;</span>
+            <span>Failed to connect to Curator</span>
+            <button class="toast-close" aria-label="Dismiss">&times;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="subsection">
+      <h3>Empty State</h3>
+      <p class="subsection-desc">Shown when a view has no data. Includes illustration placeholder, descriptive message, and CTA button.</p>
+      <div class="showcase">
+        <div class="empty-state">
+          <div class="empty-state-icon">&#9673;</div>
+          <div class="empty-state-title">No agents deployed</div>
+          <div class="empty-state-desc">Deploy your first agent to begin orchestrating tasks. Agents can be configured with custom prompts, tools, and resource limits.</div>
+          <button class="btn btn-md btn-primary">Deploy first agent</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inline validation -->
+    <div class="subsection">
+      <h3>Inline Validation Messages</h3>
+      <div class="showcase">
+        <div class="flex-col gap-4" style="max-width:360px">
+          <div class="form-group">
+            <label class="form-label" for="val-error">Agent name</label>
+            <input class="input is-error" id="val-error" type="text" value="My Agent!" aria-invalid="true">
+            <div class="validation-msg is-error">&#9888; Special characters are not allowed</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="val-success">Agent name</label>
+            <input class="input" id="val-success" type="text" value="sentinel-v2" style="border-color:var(--color-success)">
+            <div class="validation-msg is-success">&#10003; Name is available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       OVERLAYS
+       ============================================================ -->
+  <section class="comp-section" id="overlays">
+    <h2>Overlays</h2>
+    <p class="section-desc">Layered UI surfaces: modals, drawers, tooltips, dropdowns, and the command palette. All use elevated backgrounds with float shadows.</p>
+
+    <!-- Modal -->
+    <div class="subsection">
+      <h3>Modal Dialog</h3>
+      <p class="subsection-desc">Centered overlay with backdrop. Traps focus while open. Close on Escape or backdrop click.</p>
+      <span class="annotation">Aria: role="dialog", aria-modal="true", aria-labelledby for title</span>
+      <div class="showcase">
+        <div class="modal-backdrop-demo">
+          <div class="modal-demo" role="dialog" aria-modal="true" aria-labelledby="modal-title-demo">
+            <div class="modal-header">
+              <h4 class="modal-title" id="modal-title-demo">Delete agent</h4>
+              <button class="modal-close" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete <strong style="color:var(--color-fg-strong)">Curator</strong>? This action cannot be undone. All associated tasks and logs will be permanently removed.
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-md btn-ghost">Cancel</button>
+              <button class="btn btn-md btn-danger">Delete agent</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Drawer -->
+    <div class="subsection">
+      <h3>Drawer Panel</h3>
+      <p class="subsection-desc">Slides in from the right edge. Use for detail views, configuration panels, and activity logs.</p>
+      <div class="showcase" style="display:flex;justify-content:flex-end;background:var(--color-bg-soft);border-radius:var(--radius-structural);overflow:hidden;min-height:400px">
+        <div class="drawer-demo">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-4)">
+            <h4 style="font-size:var(--text-3);font-weight:var(--weight-semibold);color:var(--color-fg-strong)">Agent details</h4>
+            <button class="modal-close" aria-label="Close drawer">&times;</button>
+          </div>
+          <div class="kv-list">
+            <div class="kv-row"><span class="kv-key">Name</span><span class="kv-value">Sentinel</span></div>
+            <div class="kv-row"><span class="kv-key">Status</span><span class="badge badge-active" style="font-size:var(--text-00)"><span class="badge-dot"></span> Running</span></div>
+            <div class="kv-row"><span class="kv-key">Model</span><span class="kv-value">claude-3.5</span></div>
+            <div class="kv-row"><span class="kv-key">Tasks</span><span class="kv-value">1,284</span></div>
+          </div>
+          <div style="margin-top:var(--space-5);display:flex;gap:var(--space-2)">
+            <button class="btn btn-sm btn-secondary">Configure</button>
+            <button class="btn btn-sm btn-ghost">View logs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="subsection">
+      <h3>Tooltip</h3>
+      <p class="subsection-desc">Small contextual hint on hover/focus. Keep content under 80 characters.</p>
+      <span class="annotation">Content: sentence case, no period, max 80 chars</span>
+      <div class="showcase">
+        <div class="state-row" style="gap:var(--space-8)">
+          <div class="tooltip-demo">
+            <div class="tooltip-bubble">View agent configuration</div>
+            <button class="btn btn-md btn-ghost btn-icon" aria-label="Settings">&#9881;</button>
+          </div>
+          <div class="tooltip-demo">
+            <div class="tooltip-bubble">Refresh metrics data</div>
+            <button class="btn btn-md btn-secondary btn-icon" aria-label="Refresh">&#8635;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dropdown menu -->
+    <div class="subsection">
+      <h3>Popover / Dropdown Menu</h3>
+      <div class="showcase">
+        <div class="state-row" style="align-items:flex-start;gap:var(--space-6)">
+          <div>
+            <p class="state-label mb-3">Standard</p>
+            <div class="dropdown-menu">
+              <button class="dropdown-item">&#9881; Configure agent</button>
+              <button class="dropdown-item">&#9654; Start agent</button>
+              <button class="dropdown-item">&#9208; Pause agent</button>
+              <div class="dropdown-sep"></div>
+              <button class="dropdown-item">&#8599; Export logs</button>
+              <button class="dropdown-item">&#128203; Duplicate</button>
+              <div class="dropdown-sep"></div>
+              <button class="dropdown-item is-danger">&#128465; Delete agent</button>
+            </div>
+          </div>
+          <div>
+            <p class="state-label mb-3">With highlighted item</p>
+            <div class="dropdown-menu">
+              <button class="dropdown-item" style="background:var(--color-accent-brand-subtle);color:var(--color-fg-strong)">&#9881; Configure agent</button>
+              <button class="dropdown-item">&#9654; Start agent</button>
+              <button class="dropdown-item">&#9208; Pause agent</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Command palette -->
+    <div class="subsection">
+      <h3>Command Palette</h3>
+      <p class="subsection-desc">Signature pattern for Nerve. Keyboard-first navigation with search input and grouped results. Open with Cmd+K.</p>
+      <span class="annotation">Aria: role="combobox" on input, role="listbox" on results, aria-activedescendant for highlighted item</span>
+      <div class="showcase">
+        <div style="display:flex;justify-content:center">
+          <div class="cmd-palette" role="dialog" aria-label="Command palette">
+            <input class="cmd-input" type="text" placeholder="Search commands, agents, tasks..." role="combobox" aria-expanded="true" aria-haspopup="listbox" aria-autocomplete="list">
+            <div class="cmd-results" role="listbox">
+              <div class="cmd-group-label">Agents</div>
+              <div class="cmd-item is-highlighted" role="option" aria-selected="true">
+                <span class="cmd-item-label">&#9654; Deploy Sentinel</span>
+                <span class="cmd-item-shortcut">Ctrl+D</span>
+              </div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#9208; Pause Dispatcher</span>
+                <span class="cmd-item-shortcut">Ctrl+P</span>
+              </div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#9881; Configure Analyst</span>
+                <span class="cmd-item-shortcut">Ctrl+,</span>
+              </div>
+              <div class="cmd-group-label">Tasks</div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#8635; Retry failed tasks</span>
+                <span class="cmd-item-shortcut">Ctrl+R</span>
+              </div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#8599; Export task history</span>
+                <span class="cmd-item-shortcut">Ctrl+E</span>
+              </div>
+              <div class="cmd-group-label">Navigation</div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#9632; Go to Dashboard</span>
+                <span class="cmd-item-shortcut">G D</span>
+              </div>
+              <div class="cmd-item" role="option">
+                <span class="cmd-item-label">&#9733; Go to Metrics</span>
+                <span class="cmd-item-shortcut">G M</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SKELETON LOADING
+       ============================================================ -->
+  <section class="comp-section" id="skeletons">
+    <h2>Skeleton Loading</h2>
+    <p class="section-desc">Placeholder UI shown while content is loading. Uses shimmer animation with skeleton-base and skeleton-sheen tokens. Matches the layout of the content it replaces.</p>
+
+    <!-- Text skeleton -->
+    <div class="subsection">
+      <h3>Text Skeleton</h3>
+      <div class="showcase">
+        <div style="max-width:480px">
+          <div class="skeleton skeleton-text w-3-4"></div>
+          <div class="skeleton skeleton-text w-full"></div>
+          <div class="skeleton skeleton-text w-full"></div>
+          <div class="skeleton skeleton-text w-1-2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card skeleton -->
+    <div class="subsection">
+      <h3>Card Skeleton</h3>
+      <div class="showcase">
+        <div class="grid-2">
+          <div class="skeleton-card">
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+              <div class="skeleton skeleton-avatar"></div>
+              <div style="flex:1">
+                <div class="skeleton skeleton-text w-1-2"></div>
+                <div class="skeleton skeleton-text w-1-4" style="margin-bottom:0"></div>
+              </div>
+            </div>
+            <div class="skeleton skeleton-text w-full"></div>
+            <div class="skeleton skeleton-text w-3-4"></div>
+            <div style="display:flex;gap:var(--space-2);margin-top:var(--space-2)">
+              <div class="skeleton skeleton-btn"></div>
+              <div class="skeleton skeleton-btn" style="width:80px"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+              <div class="skeleton skeleton-avatar"></div>
+              <div style="flex:1">
+                <div class="skeleton skeleton-text w-1-2"></div>
+                <div class="skeleton skeleton-text w-1-4" style="margin-bottom:0"></div>
+              </div>
+            </div>
+            <div class="skeleton skeleton-text w-full"></div>
+            <div class="skeleton skeleton-text w-3-4"></div>
+            <div style="display:flex;gap:var(--space-2);margin-top:var(--space-2)">
+              <div class="skeleton skeleton-btn"></div>
+              <div class="skeleton skeleton-btn" style="width:80px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table row skeleton -->
+    <div class="subsection">
+      <h3>Table Row Skeleton</h3>
+      <div class="showcase" style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">Agent</th>
+              <th scope="col">Status</th>
+              <th scope="col">Tasks</th>
+              <th scope="col">Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="skeleton skeleton-text w-3-4" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton" style="width:64px;height:20px;border-radius:var(--radius-full)"></div></td>
+              <td><div class="skeleton skeleton-text w-1-2" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton skeleton-text w-1-4" style="margin:0;height:12px"></div></td>
+            </tr>
+            <tr>
+              <td><div class="skeleton skeleton-text w-1-2" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton" style="width:64px;height:20px;border-radius:var(--radius-full)"></div></td>
+              <td><div class="skeleton skeleton-text w-1-4" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton skeleton-text w-1-2" style="margin:0;height:12px"></div></td>
+            </tr>
+            <tr>
+              <td><div class="skeleton skeleton-text w-3-4" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton" style="width:64px;height:20px;border-radius:var(--radius-full)"></div></td>
+              <td><div class="skeleton skeleton-text w-3-4" style="margin:0;height:12px"></div></td>
+              <td><div class="skeleton skeleton-text w-1-4" style="margin:0;height:12px"></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Avatar skeleton -->
+    <div class="subsection">
+      <h3>Avatar Skeleton</h3>
+      <div class="showcase">
+        <div class="state-row">
+          <div class="state-col">
+            <span class="state-label">40px (default)</span>
+            <div class="skeleton skeleton-avatar"></div>
+          </div>
+          <div class="state-col">
+            <span class="state-label">32px (small)</span>
+            <div class="skeleton skeleton-avatar" style="width:32px;height:32px"></div>
+          </div>
+          <div class="state-col">
+            <span class="state-label">56px (large)</span>
+            <div class="skeleton skeleton-avatar" style="width:56px;height:56px"></div>
+          </div>
+          <div class="state-col">
+            <span class="state-label">Avatar + text</span>
+            <div style="display:flex;align-items:center;gap:var(--space-2)">
+              <div class="skeleton skeleton-avatar" style="width:32px;height:32px"></div>
+              <div>
+                <div class="skeleton skeleton-text" style="width:100px;height:12px;margin-bottom:var(--space-1)"></div>
+                <div class="skeleton skeleton-text" style="width:60px;height:10px;margin:0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer style="padding:var(--space-5);text-align:center;font-size:var(--text-00);color:var(--color-fg-subtle);border-top:var(--border-thin) solid var(--color-border-subtle)">
+  Nerve Design System &mdash; Control without constraint.
+</footer>
+
+</body>
+</html>

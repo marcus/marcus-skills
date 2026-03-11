@@ -1,0 +1,578 @@
+/* ============================================================
+   NERVE DESIGN SYSTEM — Token Architecture
+   Brand thesis: "Control without constraint."
+   Dark-first. High-agency. Decisive.
+   ============================================================ */
+
+/* ----- 1. PRIMITIVE TOKENS ----- */
+
+:root {
+  /* --- Color Primitives --- */
+
+  /* Neutrals — blue-black undertone */
+  --void-950:   #050507;
+  --void-900:   #0A0A0C;
+  --void-850:   #0F0F13;
+  --void-800:   #141418;
+  --void-750:   #1A1A20;
+  --void-700:   #1F1F27;
+  --void-600:   #2A2A35;
+  --void-500:   #3D3D4E;
+  --void-400:   #52526B;
+  --void-300:   #71717A;
+  --void-200:   #A1A1AA;
+  --void-100:   #D4D4D8;
+  --void-50:    #F4F4F5;
+  --void-25:    #FAFAFA;
+
+  /* Violet — primary brand accent */
+  --violet-950: #2E1065;
+  --violet-900: #3B0764;
+  --violet-800: #4C1D95;
+  --violet-700: #5B21B6;
+  --violet-600: #7C3AED;
+  --violet-500: #8B5CF6;
+  --violet-400: #A78BFA;
+  --violet-300: #C4B5FD;
+  --violet-200: #DDD6FE;
+  --violet-100: #EDE9FE;
+
+  /* Cyan — secondary / agent-active */
+  --cyan-900:   #064E3B;
+  --cyan-800:   #065F46;
+  --cyan-700:   #0E7490;
+  --cyan-600:   #0891B2;
+  --cyan-500:   #06B6D4;
+  --cyan-400:   #22D3EE;
+  --cyan-300:   #67E8F9;
+  --cyan-200:   #A5F3FC;
+  --cyan-100:   #CFFAFE;
+
+  /* Green — success */
+  --green-700:  #047857;
+  --green-600:  #059669;
+  --green-500:  #10B981;
+  --green-400:  #34D399;
+  --green-300:  #6EE7B7;
+  --green-200:  #A7F3D0;
+
+  /* Amber — warning */
+  --amber-700:  #B45309;
+  --amber-600:  #D97706;
+  --amber-500:  #F59E0B;
+  --amber-400:  #FBBF24;
+  --amber-300:  #FCD34D;
+  --amber-200:  #FDE68A;
+
+  /* Red — danger */
+  --red-800:    #991B1B;
+  --red-700:    #B91C1C;
+  --red-600:    #DC2626;
+  --red-500:    #EF4444;
+  --red-400:    #F87171;
+  --red-300:    #FCA5A5;
+  --red-200:    #FECACA;
+
+  /* Blue — info */
+  --blue-700:   #1D4ED8;
+  --blue-600:   #2563EB;
+  --blue-500:   #3B82F6;
+  --blue-400:   #60A5FA;
+  --blue-300:   #93C5FD;
+  --blue-200:   #BFDBFE;
+
+  /* --- Spacing Primitives (4px base) --- */
+  --space-0:  0;
+  --space-px: 1px;
+  --space-0-5: 0.125rem;  /* 2px */
+  --space-1:  0.25rem;    /* 4px */
+  --space-1-5: 0.375rem;  /* 6px */
+  --space-2:  0.5rem;     /* 8px */
+  --space-3:  0.75rem;    /* 12px */
+  --space-4:  1rem;       /* 16px */
+  --space-5:  1.5rem;     /* 24px */
+  --space-6:  2rem;       /* 32px */
+  --space-7:  2.5rem;     /* 40px */
+  --space-8:  3rem;       /* 48px */
+  --space-9:  4rem;       /* 64px */
+  --space-10: 5rem;       /* 80px */
+  --space-11: 6rem;       /* 96px */
+  --space-12: 8rem;       /* 128px */
+
+  /* --- Radius Primitives --- */
+  --radius-0:    0;
+  --radius-1:    2px;
+  --radius-2:    4px;
+  --radius-3:    6px;
+  --radius-4:    8px;
+  --radius-5:    12px;
+  --radius-full: 9999px;
+
+  /* --- Shadow Primitives --- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-3: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-4: 0 16px 48px rgba(0, 0, 0, 0.7);
+
+  /* --- Border Primitives --- */
+  --border-thin:   1px;
+  --border-medium: 2px;
+  --border-thick:  3px;
+
+  /* --- Typography Primitives --- */
+  --font-display: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', monospace;
+
+  /* Type scale — static steps */
+  --text-00: 0.6875rem;                                   /* 11px - micro labels */
+  --text-0:  0.8125rem;                                   /* 13px - secondary labels */
+  --text-1:  0.9375rem;                                   /* 15px - body baseline */
+  --text-2:  1.0625rem;                                   /* 17px - lead paragraphs */
+
+  /* Type scale — fluid steps */
+  --text-3:  clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem);   /* subheadings */
+  --text-4:  clamp(1.375rem, 1.15rem + 0.75vw, 1.625rem);    /* section heads */
+  --text-5:  clamp(1.75rem, 1.35rem + 1.3vw, 2.25rem);       /* page titles */
+  --text-6:  clamp(2.75rem, 1.75rem + 3.3vw, 5rem);          /* hero display */
+
+  /* Line heights */
+  --leading-none:  1;
+  --leading-tight: 1.1;
+  --leading-snug:  1.25;
+  --leading-body:  1.55;
+  --leading-loose: 1.75;
+
+  /* Letter spacing */
+  --tracking-tighter: -0.03em;
+  --tracking-tight:   -0.015em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.025em;
+  --tracking-wider:   0.05em;
+  --tracking-label:   0.08em;
+
+  /* Font weights */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* --- Content Widths --- */
+  --content-narrow: 42rem;    /* ~672px */
+  --content-medium: 56rem;    /* ~896px */
+  --content-wide:   76rem;    /* ~1216px */
+  --content-max:    90rem;    /* ~1440px */
+
+  /* --- Grid --- */
+  --grid-gutter: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+
+  /* --- Motion Primitives --- */
+  --motion-duration-micro:    50ms;
+  --motion-duration-fast:     100ms;
+  --motion-duration-base:     150ms;
+  --motion-duration-moderate: 240ms;
+  --motion-duration-slow:     360ms;
+  --motion-duration-dramatic: 500ms;
+
+  --motion-ease-standard:   cubic-bezier(0.16, 0.7, 0.3, 1);
+  --motion-ease-emphasis:   cubic-bezier(0.12, 1, 0.2, 1);
+  --motion-ease-decelerate: cubic-bezier(0, 0, 0.15, 1);
+  --motion-ease-accelerate: cubic-bezier(0.5, 0, 1, 1);
+  --motion-ease-spring:     cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --motion-stagger-delay: 50ms;
+}
+
+
+/* ----- 2. SEMANTIC TOKENS — DARK THEME (canonical) ----- */
+
+:root,
+[data-theme="dark"] {
+  /* Background */
+  --color-bg-canvas:    var(--void-900);
+  --color-bg-surface:   var(--void-800);
+  --color-bg-elevated:  var(--void-700);
+  --color-bg-sunken:    var(--void-950);
+  --color-bg-inverse:   var(--void-50);
+  --color-bg-overlay:   rgba(5, 5, 7, 0.8);
+  --color-bg-soft:      var(--void-850);
+
+  /* Foreground */
+  --color-fg-strong:    var(--void-50);
+  --color-fg-default:   var(--void-100);
+  --color-fg-muted:     var(--void-200);
+  --color-fg-subtle:    var(--void-300);
+  --color-fg-disabled:  var(--void-400);
+  --color-fg-inverse:   var(--void-900);
+  --color-fg-on-accent: #FFFFFF;
+
+  /* Borders */
+  --color-border-subtle:  rgba(255, 255, 255, 0.06);
+  --color-border-default: rgba(255, 255, 255, 0.1);
+  --color-border-strong:  rgba(255, 255, 255, 0.18);
+  --color-border-inverse: var(--void-800);
+
+  /* Accent — Brand (Violet) */
+  --color-accent-brand:      var(--violet-600);
+  --color-accent-brand-hover: var(--violet-500);
+  --color-accent-brand-pressed: var(--violet-700);
+  --color-accent-brand-subtle: rgba(124, 58, 237, 0.15);
+  --color-accent-brand-fg:   var(--violet-400);
+
+  /* Accent — Secondary (Cyan) */
+  --color-accent-secondary:       var(--cyan-500);
+  --color-accent-secondary-hover: var(--cyan-400);
+  --color-accent-secondary-subtle: rgba(6, 182, 212, 0.15);
+  --color-accent-secondary-fg:    var(--cyan-400);
+
+  /* Feedback */
+  --color-success:        var(--green-500);
+  --color-success-subtle: rgba(16, 185, 129, 0.12);
+  --color-success-fg:     var(--green-400);
+  --color-success-strong: var(--green-600);
+
+  --color-warning:        var(--amber-500);
+  --color-warning-subtle: rgba(245, 158, 11, 0.12);
+  --color-warning-fg:     var(--amber-400);
+  --color-warning-strong: var(--amber-600);
+
+  --color-danger:         var(--red-500);
+  --color-danger-subtle:  rgba(239, 68, 68, 0.12);
+  --color-danger-fg:      var(--red-400);
+  --color-danger-strong:  var(--red-600);
+
+  --color-info:           var(--blue-500);
+  --color-info-subtle:    rgba(59, 130, 246, 0.12);
+  --color-info-fg:        var(--blue-400);
+  --color-info-strong:    var(--blue-600);
+
+  /* Focus */
+  --color-focus-ring:        var(--violet-500);
+  --color-focus-ring-offset: var(--void-900);
+
+  /* Data Visualization */
+  --dataviz-1: var(--violet-500);
+  --dataviz-2: var(--cyan-400);
+  --dataviz-3: var(--green-400);
+  --dataviz-4: var(--amber-400);
+  --dataviz-5: var(--red-400);
+  --dataviz-6: var(--blue-400);
+  --dataviz-neutral:  var(--void-400);
+  --dataviz-emphasis: var(--violet-300);
+
+  /* Shadows (dark context) */
+  --shadow-soft:     0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --shadow-float:    0 12px 40px rgba(0, 0, 0, 0.7);
+  --shadow-glow-accent: 0 0 20px rgba(124, 58, 237, 0.3);
+  --shadow-glow-cyan:   0 0 20px rgba(6, 182, 212, 0.25);
+
+  /* Semantic radius */
+  --radius-structural:  var(--radius-1);   /* 2px — panels, cards */
+  --radius-interactive: var(--radius-3);   /* 6px — buttons, inputs */
+  --radius-signature:   var(--radius-4);   /* 8px — primary CTA */
+  --radius-data:        var(--radius-0);   /* 0px — table cells, dense UI */
+  --radius-badge:       var(--radius-full); /* pill — status badges */
+}
+
+
+/* ----- 3. LIGHT THEME ----- */
+
+[data-theme="light"] {
+  --color-bg-canvas:    #FAFAFA;
+  --color-bg-surface:   #FFFFFF;
+  --color-bg-elevated:  #FFFFFF;
+  --color-bg-sunken:    #F0F0F3;
+  --color-bg-inverse:   var(--void-900);
+  --color-bg-overlay:   rgba(250, 250, 250, 0.85);
+  --color-bg-soft:      #F4F4F6;
+
+  --color-fg-strong:    var(--void-900);
+  --color-fg-default:   var(--void-800);
+  --color-fg-muted:     var(--void-400);
+  --color-fg-subtle:    var(--void-300);
+  --color-fg-disabled:  var(--void-200);
+  --color-fg-inverse:   var(--void-50);
+  --color-fg-on-accent: #FFFFFF;
+
+  --color-border-subtle:  rgba(0, 0, 0, 0.06);
+  --color-border-default: rgba(0, 0, 0, 0.1);
+  --color-border-strong:  rgba(0, 0, 0, 0.18);
+  --color-border-inverse: var(--void-100);
+
+  --color-accent-brand:      var(--violet-600);
+  --color-accent-brand-hover: var(--violet-700);
+  --color-accent-brand-pressed: var(--violet-800);
+  --color-accent-brand-subtle: rgba(124, 58, 237, 0.08);
+  --color-accent-brand-fg:   var(--violet-700);
+
+  --color-accent-secondary:       var(--cyan-600);
+  --color-accent-secondary-hover: var(--cyan-700);
+  --color-accent-secondary-subtle: rgba(6, 182, 212, 0.08);
+  --color-accent-secondary-fg:    var(--cyan-700);
+
+  --color-success:        var(--green-600);
+  --color-success-subtle: rgba(5, 150, 105, 0.08);
+  --color-success-fg:     var(--green-700);
+  --color-success-strong: var(--green-700);
+
+  --color-warning:        var(--amber-600);
+  --color-warning-subtle: rgba(217, 119, 6, 0.08);
+  --color-warning-fg:     var(--amber-700);
+  --color-warning-strong: var(--amber-700);
+
+  --color-danger:         var(--red-600);
+  --color-danger-subtle:  rgba(220, 38, 38, 0.08);
+  --color-danger-fg:      var(--red-700);
+  --color-danger-strong:  var(--red-700);
+
+  --color-info:           var(--blue-600);
+  --color-info-subtle:    rgba(37, 99, 235, 0.08);
+  --color-info-fg:        var(--blue-700);
+  --color-info-strong:    var(--blue-700);
+
+  --color-focus-ring:        var(--violet-500);
+  --color-focus-ring-offset: #FFFFFF;
+
+  --dataviz-1: var(--violet-600);
+  --dataviz-2: var(--cyan-600);
+  --dataviz-3: var(--green-600);
+  --dataviz-4: var(--amber-600);
+  --dataviz-5: var(--red-600);
+  --dataviz-6: var(--blue-600);
+  --dataviz-neutral:  var(--void-300);
+  --dataviz-emphasis: var(--violet-700);
+
+  --shadow-soft:     0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-float:    0 12px 40px rgba(0, 0, 0, 0.12);
+  --shadow-glow-accent: 0 0 20px rgba(124, 58, 237, 0.12);
+  --shadow-glow-cyan:   0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+
+/* ----- 4. COMPONENT TOKENS ----- */
+
+:root {
+  /* Button — Primary */
+  --button-primary-bg:       var(--color-accent-brand);
+  --button-primary-bg-hover: var(--color-accent-brand-hover);
+  --button-primary-bg-active: var(--color-accent-brand-pressed);
+  --button-primary-fg:       var(--color-fg-on-accent);
+  --button-primary-shadow:   var(--shadow-glow-accent);
+
+  /* Button — Secondary */
+  --button-secondary-bg:       transparent;
+  --button-secondary-bg-hover: var(--color-accent-brand-subtle);
+  --button-secondary-fg:       var(--color-accent-brand-fg);
+  --button-secondary-border:   var(--color-border-strong);
+
+  /* Button — Ghost */
+  --button-ghost-bg:       transparent;
+  --button-ghost-bg-hover: rgba(255, 255, 255, 0.06);
+  --button-ghost-fg:       var(--color-fg-muted);
+  --button-ghost-fg-hover: var(--color-fg-strong);
+
+  /* Button — Danger */
+  --button-danger-bg:       var(--color-danger);
+  --button-danger-bg-hover: var(--color-danger-strong);
+  --button-danger-fg:       #FFFFFF;
+
+  /* Input */
+  --input-bg:           var(--color-bg-soft);
+  --input-bg-hover:     var(--color-bg-elevated);
+  --input-border:       var(--color-border-default);
+  --input-border-focus: var(--color-accent-brand);
+  --input-border-error: var(--color-danger);
+  --input-fg:           var(--color-fg-strong);
+  --input-placeholder:  var(--color-fg-subtle);
+
+  /* Navigation */
+  --nav-bg:             var(--color-bg-sunken);
+  --nav-item-fg:        var(--color-fg-muted);
+  --nav-item-fg-hover:  var(--color-fg-strong);
+  --nav-item-fg-active: var(--color-accent-brand-fg);
+  --nav-item-bg-active: var(--color-accent-brand-subtle);
+  --nav-border:         var(--color-border-subtle);
+
+  /* Card */
+  --card-bg:          var(--color-bg-surface);
+  --card-border:      var(--color-border-subtle);
+  --card-border-hover: var(--color-border-default);
+  --card-shadow:      var(--shadow-soft);
+  --card-shadow-hover: var(--shadow-elevated);
+
+  /* Table */
+  --table-header-bg:    var(--color-bg-soft);
+  --table-header-fg:    var(--color-fg-subtle);
+  --table-row-border:   var(--color-border-subtle);
+  --table-row-hover:    rgba(255, 255, 255, 0.03);
+  --table-row-selected: var(--color-accent-brand-subtle);
+
+  /* Badge */
+  --badge-default-bg:   var(--color-bg-elevated);
+  --badge-default-fg:   var(--color-fg-muted);
+
+  /* Modal */
+  --modal-bg:        var(--color-bg-elevated);
+  --modal-border:    var(--color-border-default);
+  --modal-shadow:    var(--shadow-float);
+  --modal-backdrop:  var(--color-bg-overlay);
+
+  /* Alert */
+  --alert-border-width: var(--border-thin);
+
+  /* Skeleton */
+  --skeleton-base:  var(--color-bg-soft);
+  --skeleton-sheen: var(--color-border-subtle);
+
+  /* Scrollbar */
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: var(--void-600);
+  --scrollbar-thumb-hover: var(--void-500);
+}
+
+
+/* ----- 5. REDUCED MOTION ----- */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-micro:    0ms;
+    --motion-duration-fast:     0ms;
+    --motion-duration-base:     0ms;
+    --motion-duration-moderate: 0ms;
+    --motion-duration-slow:     0ms;
+    --motion-duration-dramatic: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ----- 6. BASE RESET & TYPOGRAPHY ----- */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-1);
+  line-height: var(--leading-body);
+  color: var(--color-fg-default);
+  background: var(--color-bg-canvas);
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-kerning: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--color-fg-strong);
+  font-kerning: normal;
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+a {
+  color: var(--color-accent-brand-fg);
+  text-decoration: none;
+  transition: color var(--motion-duration-fast) var(--motion-ease-standard);
+}
+
+a:hover {
+  color: var(--color-accent-brand-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-accent-brand);
+  color: var(--color-fg-on-accent);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+
+/* ----- 7. ANIMATION KEYFRAMES ----- */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0; }
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+@keyframes stagger-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Nerve signature — subtle grid pulse on canvas */
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.03; }
+  50%      { opacity: 0.06; }
+}

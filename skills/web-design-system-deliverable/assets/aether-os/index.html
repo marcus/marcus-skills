@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aether OS — Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:wght@400;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .palette { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+    .swatch { width: 120px; text-align: center; }
+    .swatch-color { height: 80px; border-radius: var(--radius-interactive); margin-bottom: 0.5rem; border: 1px solid var(--color-border-subtle); }
+    .specimen { margin-bottom: 4rem; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { color: var(--color-fg-secondary); text-decoration: none; font-size: var(--p-text-sm); text-transform: uppercase; letter-spacing: 0.1em; }
+    .nav-links a:hover { color: var(--color-fg-accent); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav-top">
+    <div class="text-mono" style="font-weight: 600; letter-spacing: 0.2em;">AETHER OS</div>
+    <div class="nav-links">
+      <a href="index.html" style="color: var(--color-fg-accent);">Overview</a>
+      <a href="components.html">Components</a>
+      <a href="application.html">Application</a>
+    </div>
+    <div><a href="tokens.json" class="btn btn-secondary" style="height: 2rem; font-size: 10px;">View Tokens</a></div>
+  </nav>
+
+  <main style="max-width: 1000px; margin: 0 auto; padding: 100px 20px;">
+    
+    <section class="specimen">
+      <h1 class="text-hero">High-agency design for the autonomous age.</h1>
+      <p class="text-secondary" style="max-width: 600px; margin-top: 2rem; font-size: var(--p-text-lg);">
+        Aether OS is a kinetic framework designed for deep transparency and obsessive precision. Built for orchestrating intelligence at scale.
+      </p>
+      <div style="margin-top: 3rem;">
+        <a href="components.html" class="btn btn-primary">Explore Inventory</a>
+      </div>
+    </section>
+
+    <hr style="border: 0; border-top: 1px solid var(--color-border-subtle); margin: 80px 0;">
+
+    <section class="specimen">
+      <div class="text-mono text-accent" style="margin-bottom: 1rem;">01 / COLOR</div>
+      <h2 class="text-display">The Kinetic Palette</h2>
+      <div class="palette">
+        <div class="swatch">
+          <div class="swatch-color" style="background-color: var(--p-ink-950);"></div>
+          <div class="text-mono" style="font-size: 10px;">INK / 950</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background-color: var(--p-ink-700);"></div>
+          <div class="text-mono" style="font-size: 10px;">INK / 700</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background-color: var(--p-neon-500);"></div>
+          <div class="text-mono" style="font-size: 10px;">GHOST NEON</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background-color: var(--p-paper-50);"></div>
+          <div class="text-mono" style="font-size: 10px;">PAPER / 50</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="specimen">
+      <div class="text-mono text-accent" style="margin-bottom: 1rem;">02 / TYPE</div>
+      <h2 class="text-display">Voice & Precision</h2>
+      <div style="margin-top: 2rem;">
+        <div style="margin-bottom: 3rem;">
+          <div class="text-mono text-secondary" style="margin-bottom: 0.5rem;">Agency (Instrument Serif Italic)</div>
+          <div class="text-hero" style="font-size: 4rem;">The Execution path is absolute.</div>
+        </div>
+        <div style="margin-bottom: 3rem;">
+          <div class="text-mono text-secondary" style="margin-bottom: 0.5rem;">Precision (Inter Tight)</div>
+          <div style="font-size: 2rem; font-weight: 600;">System Overdrive: Enabled</div>
+        </div>
+        <div>
+          <div class="text-mono text-secondary" style="margin-bottom: 0.5rem;">State (Fragment Mono)</div>
+          <div class="text-mono" style="font-size: 1.25rem;">[2026-03-10T14:30:00Z] STRATEGY_SYNC_COMPLETE</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer style="padding: 100px 20px; border-top: 1px solid var(--color-border-subtle); text-align: center;">
+    <div class="text-mono" style="font-size: 10px; color: var(--p-ink-700); letter-spacing: 0.5em;">AETHER OS / DELIVERABLE v1.0</div>
+  </footer>
+
+</body>
+</html>
