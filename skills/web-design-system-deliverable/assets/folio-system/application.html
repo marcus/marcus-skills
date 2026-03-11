@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elena Vasquez — Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* =====================================================================
+       APPLICATION PROOF — Folio Design System
+       Photographer portfolio homepage for Elena Vasquez.
+       Demonstrates the design system in a real product context.
+       ===================================================================== */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--text-primary);
+      background: var(--surface-primary);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    /* --- Design System Nav Bar ------------------------------------------- */
+
+    .ds-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+      height: 48px;
+      border-bottom: 1px solid var(--border-default);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      background: var(--surface-primary);
+    }
+
+    .ds-nav-left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .ds-nav-brand {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      color: var(--text-primary);
+      letter-spacing: var(--tracking-tight);
+    }
+
+    .ds-nav-links {
+      display: flex;
+      gap: var(--space-6);
+    }
+
+    .ds-nav-links a {
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .ds-nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .ds-nav-links a[aria-current="page"] {
+      color: var(--text-primary);
+      font-weight: var(--weight-medium);
+    }
+
+    /* --- Site Header ----------------------------------------------------- */
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-5) var(--space-8);
+      background: var(--surface-primary);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+    }
+
+    .site-header-name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-light);
+      color: var(--text-primary);
+      letter-spacing: var(--tracking-snug);
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .site-nav a {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .site-nav a:hover {
+      color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-none);
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .theme-toggle svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    [data-theme="light"] .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun { display: none; }
+
+    /* --- Hero Section ---------------------------------------------------- */
+
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      min-height: 560px;
+      max-height: 900px;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(10,10,9,0.15) 0%, transparent 50%),
+        linear-gradient(215deg, rgba(10,10,9,0.2) 0%, transparent 40%),
+        linear-gradient(180deg,
+          #1a1816 0%,
+          #2a2520 15%,
+          #3a332a 30%,
+          #302820 50%,
+          #1f1c18 70%,
+          #14120f 100%
+        );
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: var(--space-16);
+      left: var(--space-8);
+      right: var(--space-8);
+      max-width: var(--max-width-wide);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-light);
+      line-height: var(--leading-none);
+      letter-spacing: var(--tracking-tight);
+      color: #e8e5df;
+      margin-bottom: var(--space-4);
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: rgba(232, 229, 223, 0.6);
+    }
+
+    /* --- Main Content Container ------------------------------------------ */
+
+    .page-content {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: 0 var(--space-8);
+    }
+
+    /* --- Stats Strip ----------------------------------------------------- */
+
+    .stats-strip {
+      display: flex;
+      align-items: center;
+      padding: var(--space-8) 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .stat-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      text-align: center;
+    }
+
+    .stat-item + .stat-item {
+      border-left: 1px solid var(--border-default);
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+    }
+
+    .stat-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+    }
+
+    /* --- Section Spacing ------------------------------------------------- */
+
+    .section {
+      padding-top: var(--space-32);
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-12);
+    }
+
+    .section-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-4);
+    }
+
+    /* --- Selected Work Grid ---------------------------------------------- */
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--space-5);
+    }
+
+    .work-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .work-card-image {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      transition: filter var(--duration-slow) var(--ease-out);
+    }
+
+    .work-card:hover .work-card-image {
+      filter: brightness(0.85);
+    }
+
+    .work-card:first-child {
+      grid-row: 1 / 3;
+    }
+
+    .work-card:first-child .work-card-image {
+      aspect-ratio: 2 / 3;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .work-card-info {
+      padding-top: var(--space-4);
+    }
+
+    .work-card-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .work-card-meta {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+    }
+
+    /* Image placeholder gradients — dark, atmospheric, photographic */
+    .photo-placeholder-1 {
+      background:
+        linear-gradient(160deg, rgba(42,38,32,0.5) 0%, transparent 60%),
+        linear-gradient(340deg, rgba(20,18,15,0.6) 0%, transparent 50%),
+        linear-gradient(180deg, #2a2620 0%, #3d342a 25%, #4a3e32 50%, #2a2420 75%, #18160f 100%);
+    }
+
+    .photo-placeholder-2 {
+      background:
+        linear-gradient(200deg, rgba(60,52,40,0.4) 0%, transparent 55%),
+        linear-gradient(180deg, #1c1a16 0%, #28241e 30%, #1a1816 60%, #121110 100%);
+    }
+
+    .photo-placeholder-3 {
+      background:
+        linear-gradient(170deg, rgba(50,44,36,0.3) 0%, transparent 50%),
+        linear-gradient(180deg, #24201c 0%, #38322a 40%, #28241e 70%, #141210 100%);
+    }
+
+    .photo-placeholder-4 {
+      background:
+        linear-gradient(145deg, rgba(35,30,24,0.5) 0%, transparent 50%),
+        linear-gradient(180deg, #201e1a 0%, #302a22 35%, #3a322a 55%, #1a1812 100%);
+    }
+
+    .photo-placeholder-portrait {
+      background:
+        linear-gradient(180deg, rgba(50,44,36,0.3) 0%, transparent 40%),
+        linear-gradient(200deg, rgba(30,26,20,0.5) 0%, transparent 60%),
+        linear-gradient(180deg, #2c2822 0%, #3a342c 20%, #44382e 40%, #362e26 60%, #221e18 80%, #14120e 100%);
+    }
+
+    /* --- Exhibitions ----------------------------------------------------- */
+
+    .exhibition-list {
+      list-style: none;
+    }
+
+    .exhibition-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--space-8);
+      padding: var(--space-5) 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .exhibition-item:first-child {
+      border-top: 1px solid var(--border-default);
+    }
+
+    .exhibition-title {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      flex-shrink: 0;
+    }
+
+    .exhibition-venue {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      flex: 1;
+      text-align: center;
+    }
+
+    .exhibition-date {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* --- About / Bio ----------------------------------------------------- */
+
+    .bio-layout {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    .bio-portrait {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+    }
+
+    .bio-text {
+      padding-top: var(--space-4);
+    }
+
+    .bio-text p {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-6);
+    }
+
+    .bio-text p:last-of-type {
+      margin-bottom: var(--space-8);
+    }
+
+    .bio-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-1);
+    }
+
+    .bio-value {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+    }
+
+    /* --- Publications Strip ---------------------------------------------- */
+
+    .publications-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      padding: var(--space-10) 0;
+    }
+
+    .pub-item {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      font-style: italic;
+      color: var(--text-secondary);
+      padding: 0 var(--space-8);
+    }
+
+    .pub-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border-strong);
+    }
+
+    /* --- Footer ---------------------------------------------------------- */
+
+    .site-footer {
+      border-top: 1px solid var(--border-default);
+      padding: var(--space-16) var(--space-8) var(--space-8);
+      max-width: var(--max-width-wide);
+      margin: var(--space-32) auto 0;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-16);
+    }
+
+    .footer-left {
+      max-width: 400px;
+    }
+
+    .footer-inquiry {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      font-style: italic;
+      color: var(--text-secondary);
+      line-height: var(--leading-normal);
+      margin-bottom: var(--space-6);
+    }
+
+    .footer-email {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--text-accent);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .footer-email:hover {
+      color: var(--color-accent-500);
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-rep-label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-1);
+    }
+
+    .footer-rep-value {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+    }
+
+    .footer-copyright {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Design System Navigation -->
+  <nav class="ds-nav">
+    <div class="ds-nav-left">
+      <a href="index.html" class="ds-nav-brand">Folio</a>
+      <div class="ds-nav-links">
+        <a href="index.html">Overview</a>
+        <a href="components.html">Components</a>
+        <a href="guidelines.html">Guidelines</a>
+        <a href="application.html" aria-current="page">Application</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <a href="#" class="site-header-name">Elena Vasquez</a>
+    <nav class="site-nav">
+      <a href="#">Work</a>
+      <a href="#">Exhibitions</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-image photo-placeholder-1"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">The Quiet Hour</h1>
+      <p class="hero-subtitle">Silver gelatin prints, 2024</p>
+    </div>
+  </section>
+
+  <div class="page-content">
+
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+      <div class="stat-item">
+        <div class="stat-value">47</div>
+        <div class="stat-label">Exhibitions</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">12</div>
+        <div class="stat-label">Monographs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">8</div>
+        <div class="stat-label">Awards</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Permanent Collections</div>
+      </div>
+    </div>
+
+    <!-- Selected Work -->
+    <section class="section">
+      <p class="section-label">Selected Work</p>
+      <div class="work-grid">
+        <div class="work-card">
+          <div class="work-card-image photo-placeholder-2"></div>
+          <div class="work-card-info">
+            <div class="work-card-title">Meridian Lines</div>
+            <div class="work-card-meta">Archival pigment prints, 2025</div>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-card-image photo-placeholder-3"></div>
+          <div class="work-card-info">
+            <div class="work-card-title">Borrowed Light</div>
+            <div class="work-card-meta">Silver gelatin, 2024</div>
+          </div>
+        </div>
+        <div class="work-card">
+          <div class="work-card-image photo-placeholder-4"></div>
+          <div class="work-card-info">
+            <div class="work-card-title">Salt and Iron</div>
+            <div class="work-card-meta">Platinum palladium, 2023</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Exhibitions -->
+    <section class="section">
+      <p class="section-label">Current & Upcoming</p>
+      <h2 class="section-heading">Exhibitions</h2>
+      <ul class="exhibition-list">
+        <li class="exhibition-item">
+          <span class="exhibition-title">Traces of Light</span>
+          <span class="exhibition-venue">Foam, Amsterdam</span>
+          <span class="exhibition-date">March 14 -- June 28, 2026</span>
+        </li>
+        <li class="exhibition-item">
+          <span class="exhibition-title">New Topographics Revisited</span>
+          <span class="exhibition-venue">Gagosian, New York</span>
+          <span class="exhibition-date">September 2026</span>
+        </li>
+        <li class="exhibition-item">
+          <span class="exhibition-title">Year One</span>
+          <span class="exhibition-venue">Group show, White Cube, London</span>
+          <span class="exhibition-date">November 2026</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- About -->
+    <section class="section">
+      <p class="section-label">About</p>
+      <div class="bio-layout">
+        <div class="bio-portrait photo-placeholder-portrait"></div>
+        <div class="bio-text">
+          <p>Elena Vasquez is a documentary and editorial photographer based between Mexico City and New York. Her work examines the intersection of private ritual and public space, drawing on the traditions of street photography while incorporating the deliberate pace and material attention of large-format practice.</p>
+          <p>Over the past two decades, her projects have taken her from the copper canyons of northern Mexico to the post-industrial landscapes of the American Midwest. She works primarily in black and white, favoring silver gelatin and platinum palladium processes for their tonal depth and archival permanence.</p>
+          <p>Her photographs are held in the permanent collections of the Museum of Modern Art, the Tate Modern, and the Centro de la Imagen, Mexico City.</p>
+          <div class="bio-label">Representation</div>
+          <div class="bio-value">Magnum Photos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="section">
+      <p class="section-label">Selected Publications</p>
+      <div class="publications-strip">
+        <span class="pub-item">The New York Times Magazine</span>
+        <span class="pub-divider"></span>
+        <span class="pub-item">Aperture</span>
+        <span class="pub-divider"></span>
+        <span class="pub-item">British Journal of Photography</span>
+        <span class="pub-divider"></span>
+        <span class="pub-item">TIME</span>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p class="footer-inquiry">For print inquiries and exhibition proposals</p>
+        <a href="mailto:studio@elenavasquez.com" class="footer-email">studio@elenavasquez.com</a>
+      </div>
+      <div class="footer-right">
+        <div class="footer-rep-label">Representation</div>
+        <div class="footer-rep-value">Magnum Photos</div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <span>Elena Vasquez, 2026. All rights reserved.</span>
+      <span>Built with the Folio Design System</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+/* ==========================================================================
+   FOLIO DESIGN SYSTEM — Token Architecture
+   A design system for high-end photography portfolios.
+   Photography is the protagonist. Everything else is subordinate.
+
+   Typography: Crimson Pro (display) + Instrument Sans (body/UI)
+   References: Gagosian, Magnum Photos, Fotografiska, Foam, David Zwirner
+   ========================================================================== */
+
+:root {
+  /* -----------------------------------------------------------------------
+     COLOR PRIMITIVES
+     Near-achromatic palette. Photography sites use black, white, and gray
+     so the images dominate. Warm undertone on the off-whites (Foam's
+     #F2EFE6 pattern). Cool neutrals avoided — they compete with images.
+     ----------------------------------------------------------------------- */
+
+  /* Neutrals — warm undertone on lights, near-black on darks */
+  --color-white: #f4f2ed;
+  --color-white-pure: #ffffff;
+  --color-gray-50: #eae7e0;
+  --color-gray-100: #dedad2;
+  --color-gray-200: #c8c3b9;
+  --color-gray-300: #a9a49a;
+  --color-gray-400: #8a857b;
+  --color-gray-500: #6b665e;
+  --color-gray-600: #504c46;
+  --color-gray-700: #383530;
+  --color-gray-800: #242220;
+  --color-gray-900: #141311;
+  --color-black: #0a0a09;
+
+  /* Accent — single color. Deep terracotta/sienna.
+     Traces to Foam's #C38133 and Aperture's #fa8d2a territory
+     but pulled darker and earthier to avoid looking "friendly."
+     Used only for: links, focus rings, active states. */
+  --color-accent-100: #f8ede2;
+  --color-accent-200: #ebd4be;
+  --color-accent-300: #d4ad85;
+  --color-accent-400: #bf8c5c;
+  --color-accent-500: #a06e3c;
+  --color-accent-600: #845830;
+  --color-accent-700: #664425;
+  --color-accent-800: #4a311b;
+  --color-accent-900: #2e1f11;
+
+  /* Functional — extremely muted. Never dominant on a page. */
+  --color-success: #4a8c6a;
+  --color-warning: #b08a3e;
+  --color-danger: #b04a40;
+  --color-info: #5a7fa0;
+
+  /* -----------------------------------------------------------------------
+     SEMANTIC COLOR ROLES — Light theme
+     Light mode: warm off-white canvas, near-black text.
+     Matches Gagosian/Foam pattern of warm whites with pure black text.
+     ----------------------------------------------------------------------- */
+  --surface-primary: var(--color-white);
+  --surface-secondary: var(--color-gray-50);
+  --surface-tertiary: var(--color-gray-100);
+  --surface-elevated: var(--color-white-pure);
+  --surface-inverse: var(--color-gray-900);
+  --surface-accent: var(--color-accent-100);
+
+  --text-primary: var(--color-gray-900);
+  --text-secondary: var(--color-gray-500);
+  --text-tertiary: var(--color-gray-400);
+  --text-inverse: var(--color-white);
+  --text-accent: var(--color-accent-600);
+  --text-on-accent: var(--color-white-pure);
+
+  /* Borders — opacity-based. Premium sites use fewer visible borders.
+     Gagosian and David Zwirner separate content with whitespace, not lines. */
+  --border-default: rgba(20, 19, 17, 0.08);
+  --border-subtle: rgba(20, 19, 17, 0.04);
+  --border-strong: rgba(20, 19, 17, 0.14);
+  --border-accent: var(--color-accent-300);
+
+  /* Shadows — warm-tinted ambient (not blue like Stripe — photography
+     sites lean warmer). Multi-layer per Collins pattern. */
+  --shadow-color: 180, 170, 155;
+  --shadow-xs: 0 1px 2px rgba(var(--shadow-color), 0.06);
+  --shadow-sm: 0 2px 8px rgba(var(--shadow-color), 0.07), 0 1px 2px rgba(var(--shadow-color), 0.05);
+  --shadow-md: 0 8px 24px rgba(var(--shadow-color), 0.08), 0 2px 6px rgba(var(--shadow-color), 0.05);
+  --shadow-lg: 0 20px 50px rgba(var(--shadow-color), 0.10), 0 8px 20px rgba(var(--shadow-color), 0.05);
+  --shadow-xl: 0 30px 60px rgba(var(--shadow-color), 0.12), 0 12px 28px rgba(var(--shadow-color), 0.06);
+
+  /* -----------------------------------------------------------------------
+     TYPOGRAPHY
+     Crimson Pro (display serif) + Instrument Sans (body/UI).
+     Crimson Pro: Tiempos Text stand-in. Sharp, warm editorial serif.
+     Instrument Sans: Founders Grotesk stand-in. Clean neo-grotesque.
+
+     Gallery pattern: light-weight serif at large scale for display,
+     medium-weight sans for labels in ALL-CAPS with wide tracking.
+     Weight 400 for headings. Light (300) for hero display.
+     ----------------------------------------------------------------------- */
+
+  --font-display: 'Crimson Pro', Georgia, ui-serif, serif;
+  --font-body: 'Instrument Sans', -apple-system, system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+
+  /* Type scale — compressed, editorial.
+     Gallery sites use modest body (16-18px) with large display (48-80px).
+     The jump between body and display is dramatic but the middle range
+     is flat — matching Pentagram's approach. */
+  --text-xs: 0.75rem;     /* 12px — metadata, EXIF, edition numbers */
+  --text-sm: 0.875rem;    /* 14px — labels, nav, captions */
+  --text-base: 1.0625rem; /* 17px — body */
+  --text-lg: 1.1875rem;   /* 19px — body large, pull quotes */
+  --text-xl: 1.375rem;    /* 22px — subheading */
+  --text-2xl: 1.75rem;    /* 28px — section heading */
+  --text-3xl: 2.5rem;     /* 40px — page heading */
+  --text-4xl: 3.5rem;     /* 56px — display */
+  --text-5xl: 4.5rem;     /* 72px — hero — gallery standard for artist names */
+
+  /* Line heights — dramatic variation.
+     Display text at 1.0 (lines nearly touching — editorial tension).
+     Body at 1.6 (generous reading measure). */
+  --leading-none: 1.0;
+  --leading-tight: 1.1;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+  --leading-loose: 1.75;
+
+  /* Letter spacing — size-dependent.
+     Gallery pattern: tight on display, wide on small labels.
+     ALL-CAPS labels get aggressive positive tracking (0.08-0.12em)
+     matching Gagosian/Fotografiska/White Cube observed patterns. */
+  --tracking-tight: -0.03em;
+  --tracking-snug: -0.015em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.01em;
+  --tracking-wider: 0.04em;
+  --tracking-widest: 0.1em;  /* ALL-CAPS labels — gallery signature */
+
+  /* Font weights — restrained.
+     Gallery convention: Light (300) for large display, Regular (400) for
+     headings and body, Medium (500) for ALL-CAPS labels only.
+     Bold reserved for rare emphasis. */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 550;
+
+  /* -----------------------------------------------------------------------
+     SPACING
+     4px base grid. Section spacing: 128px+ for marketing (generous —
+     Magnum's 16rem/256px at desktop). 96px for standard.
+     Photography sites use extreme vertical whitespace.
+     ----------------------------------------------------------------------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+  --space-40: 10rem;    /* 160px — hero-level breathing room */
+
+  /* -----------------------------------------------------------------------
+     LAYOUT
+     Photography portfolios are wider than typical SaaS.
+     Magnum uses cards up to 1200px+. Gagosian goes to 1816px.
+     ----------------------------------------------------------------------- */
+  --max-width-narrow: 640px;
+  --max-width-content: 960px;
+  --max-width-wide: 1200px;
+  --max-width-full: 1440px;
+  --max-width-bleed: 1680px;
+
+  --grid-gutter: var(--space-6);
+  --grid-columns: 12;
+
+  /* -----------------------------------------------------------------------
+     SHAPE
+     Sharp containers — matching Magnum (border-radius: 0 everywhere).
+     Gallery sites don't round their containers. The frame of a photograph
+     is always rectangular. The UI respects that geometry.
+     Moderate rounding only on interactive controls for usability.
+     ----------------------------------------------------------------------- */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-pill: 9999px;
+
+  /* -----------------------------------------------------------------------
+     MOTION
+     Restrained. No parallax, no scroll-jacking.
+     Magnum: 0.4s hover transitions. Fotografiska: 0.3s default.
+     Subtle hover feedback. Photography is static; the UI should be too.
+     ----------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.52, 0.01, 0.26, 1);
+  --ease-dramatic: cubic-bezier(0.59, 0.01, 0.28, 1);
+
+  --duration-instant: 60ms;
+  --duration-fast: 150ms;
+  --duration-normal: 280ms;
+  --duration-slow: 450ms;
+  --duration-slower: 700ms;
+
+  --stagger-delay: 60ms;
+
+  /* -----------------------------------------------------------------------
+     Z-INDEX
+     ----------------------------------------------------------------------- */
+  --z-base: 0;
+  --z-raised: 1;
+  --z-dropdown: 10;
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* =========================================================================
+   DARK THEME
+   Gallery pattern: near-black background (#0a0a09), warm white text.
+   Not pure #000000 — Gagosian uses #070606, we use #0a0a09.
+   Borders become rgba(255,255,255,0.05-0.06) — Linear pattern.
+   ========================================================================= */
+
+[data-theme="dark"] {
+  --surface-primary: var(--color-black);
+  --surface-secondary: #131210;
+  --surface-tertiary: #1b1a18;
+  --surface-elevated: #1b1a18;
+  --surface-inverse: var(--color-gray-50);
+  --surface-accent: var(--color-accent-900);
+
+  --text-primary: #e8e5df;
+  --text-secondary: var(--color-gray-400);
+  --text-tertiary: var(--color-gray-500);
+  --text-inverse: var(--color-gray-900);
+  --text-accent: var(--color-accent-300);
+  --text-on-accent: var(--color-white-pure);
+
+  --border-default: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --border-accent: var(--color-accent-600);
+
+  --shadow-color: 0, 0, 0;
+  --shadow-xs: 0 1px 2px rgba(var(--shadow-color), 0.20);
+  --shadow-sm: 0 2px 8px rgba(var(--shadow-color), 0.22), 0 1px 2px rgba(var(--shadow-color), 0.18);
+  --shadow-md: 0 8px 24px rgba(var(--shadow-color), 0.28), 0 2px 6px rgba(var(--shadow-color), 0.18);
+  --shadow-lg: 0 20px 50px rgba(var(--shadow-color), 0.32), 0 8px 20px rgba(var(--shadow-color), 0.20);
+  --shadow-xl: 0 30px 60px rgba(var(--shadow-color), 0.36), 0 12px 28px rgba(var(--shadow-color), 0.22);
+}

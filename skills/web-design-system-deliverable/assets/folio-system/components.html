@@ -1,0 +1,1925 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <title>Folio Design System — Components</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/tokens.css">
+    <style>
+      /* =======================================================================
+         FOLIO COMPONENTS PAGE — Inline Styles
+         All component styles self-contained for the design system deliverable.
+         Photography is the protagonist. Everything else is subordinate.
+         ======================================================================= */
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        font-weight: var(--weight-regular);
+        line-height: var(--leading-normal);
+        letter-spacing: var(--tracking-normal);
+        color: var(--text-primary);
+        background: var(--surface-primary);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      /* --- Top Bar --------------------------------------------------------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-nav);
+        border-bottom: 1px solid var(--border-default);
+        backdrop-filter: blur(12px);
+        background: rgba(244, 242, 237, 0.88);
+      }
+      [data-theme="dark"] .topbar {
+        background: rgba(10, 10, 9, 0.88);
+      }
+      .topbar__inner {
+        max-width: var(--max-width-full);
+        margin: 0 auto;
+        padding: var(--space-3) var(--space-6);
+        display: flex;
+        align-items: center;
+        gap: var(--space-8);
+      }
+      .brand-lockup {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-light);
+        letter-spacing: var(--tracking-tight);
+      }
+      .topnav {
+        display: flex;
+        gap: var(--space-1);
+        flex: 1;
+      }
+      .topnav a {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-2) var(--space-3);
+        transition: color var(--duration-fast) var(--ease-out);
+        position: relative;
+      }
+      .topnav a:hover { color: var(--text-primary); }
+      .topnav a[aria-current="page"] {
+        color: var(--text-primary);
+      }
+      .topnav a[aria-current="page"]::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: var(--space-3);
+        right: var(--space-3);
+        height: 2px;
+        background: var(--color-accent-500);
+      }
+      .topbar__actions { margin-left: auto; }
+
+      /* --- Theme Toggle ---------------------------------------------------- */
+      .theme-toggle {
+        appearance: none;
+        border: 1px solid var(--border-default);
+        background: var(--surface-secondary);
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-pill);
+        cursor: pointer;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .theme-toggle:hover {
+        border-color: var(--border-strong);
+        color: var(--text-primary);
+      }
+
+      /* --- Page Shell ------------------------------------------------------ */
+      .shell {
+        max-width: var(--max-width-wide);
+        margin: 0 auto;
+        padding: var(--space-12) var(--space-6) var(--space-32);
+      }
+
+      /* --- Hero ------------------------------------------------------------ */
+      .hero {
+        margin-bottom: var(--space-24);
+      }
+      .hero__kicker {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-accent);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+      .hero__title {
+        font-family: var(--font-display);
+        font-size: var(--text-4xl);
+        font-weight: var(--weight-light);
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-tight);
+        color: var(--text-primary);
+        max-width: 720px;
+        margin-bottom: var(--space-5);
+      }
+      .hero__lead {
+        font-size: var(--text-lg);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+        max-width: 560px;
+      }
+
+      /* --- Section Anchors ------------------------------------------------- */
+      .section-nav {
+        display: flex;
+        gap: var(--space-1);
+        padding-bottom: var(--space-8);
+        border-bottom: 1px solid var(--border-default);
+        margin-bottom: var(--space-16);
+        overflow-x: auto;
+      }
+      .section-nav a {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        text-decoration: none;
+        padding: var(--space-2) var(--space-3);
+        white-space: nowrap;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .section-nav a:hover { color: var(--text-primary); }
+
+      /* --- Component Section ----------------------------------------------- */
+      .comp-section {
+        margin-bottom: var(--space-24);
+      }
+      .comp-section__heading {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-2);
+      }
+      .comp-section__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-8);
+        max-width: 520px;
+        line-height: var(--leading-relaxed);
+      }
+      .comp-section__divider {
+        border: none;
+        border-top: 1px solid var(--border-default);
+        margin-bottom: var(--space-16);
+      }
+
+      /* --- Subsection ------------------------------------------------------ */
+      .subsection {
+        margin-bottom: var(--space-12);
+      }
+      .subsection__label {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-4);
+        display: block;
+      }
+      .spec-note {
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+        margin-top: var(--space-3);
+        letter-spacing: var(--tracking-wide);
+      }
+
+      /* --- Flex helpers ---------------------------------------------------- */
+      .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+      .row--start { align-items: flex-start; }
+      .row--lg { gap: var(--space-6); }
+      .stack { display: flex; flex-direction: column; gap: var(--space-3); }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+      .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-6); }
+      @media (max-width: 720px) {
+        .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      }
+
+      /* =====================================================================
+         COMPONENT STYLES
+         ===================================================================== */
+
+      /* --- Buttons --------------------------------------------------------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+        font-family: var(--font-body);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        line-height: 1;
+        padding: 12px 24px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all var(--duration-fast) var(--ease-out);
+        position: relative;
+        overflow: hidden;
+      }
+      .btn:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .btn:active:not(:disabled) { transform: scale(0.98); }
+      .btn:disabled, .btn[aria-disabled="true"] {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+
+      /* Primary — pill, accent fill */
+      .btn--primary {
+        background: var(--color-accent-500);
+        color: var(--text-on-accent);
+        border-radius: var(--radius-pill);
+      }
+      .btn--primary:hover:not(:disabled) {
+        background: var(--color-accent-600);
+      }
+
+      /* Secondary — 4px radius, border only */
+      .btn--secondary {
+        background: transparent;
+        color: var(--text-primary);
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-md);
+      }
+      .btn--secondary:hover:not(:disabled) {
+        border-color: var(--text-primary);
+      }
+
+      /* Ghost — text only, underline on hover */
+      .btn--ghost {
+        background: transparent;
+        color: var(--text-secondary);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: 12px 14px;
+      }
+      .btn--ghost:hover:not(:disabled) {
+        color: var(--text-primary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      /* Danger — 4px radius, danger fill */
+      .btn--danger {
+        background: var(--color-danger);
+        color: var(--text-on-accent);
+        border-radius: var(--radius-md);
+      }
+      .btn--danger:hover:not(:disabled) {
+        filter: brightness(1.1);
+      }
+
+      /* Sizes */
+      .btn--sm { font-size: 11px; padding: 8px 16px; }
+      .btn--lg { font-size: var(--text-sm); padding: 16px 32px; }
+
+      /* Loading state */
+      .btn--loading {
+        color: transparent !important;
+        pointer-events: none;
+      }
+      .btn--loading::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: var(--color-white-pure);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+      .btn--secondary.btn--loading::after {
+        border-color: var(--border-strong);
+        border-top-color: var(--text-primary);
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+
+      /* --- Form Inputs ----------------------------------------------------- */
+      .input {
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        color: var(--text-primary);
+        background: var(--surface-primary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+        padding: 10px 14px;
+        width: 100%;
+        max-width: 320px;
+        transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+        outline: none;
+      }
+      .input::placeholder { color: var(--text-tertiary); }
+      .input:focus {
+        border-color: var(--color-accent-500);
+        box-shadow: 0 0 0 3px var(--color-accent-100);
+      }
+      [data-theme="dark"] .input:focus {
+        box-shadow: 0 0 0 3px var(--color-accent-900);
+      }
+      .input--error {
+        border-color: var(--color-danger);
+      }
+      .input--error:focus {
+        box-shadow: 0 0 0 3px rgba(176, 74, 64, 0.15);
+      }
+      .input:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: var(--surface-secondary);
+      }
+
+      .input-group { display: flex; flex-direction: column; gap: var(--space-1); max-width: 320px; }
+      .input-label {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+      .input-hint {
+        font-size: var(--text-xs);
+        color: var(--text-tertiary);
+      }
+      .input-error-msg {
+        font-size: var(--text-xs);
+        color: var(--color-danger);
+      }
+
+      /* Select */
+      .select {
+        appearance: none;
+        font-family: var(--font-body);
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+        background: var(--surface-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23a9a49a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-md);
+        padding: 10px 32px 10px 14px;
+        max-width: 320px;
+        width: 100%;
+        outline: none;
+        cursor: pointer;
+        transition: border-color var(--duration-fast) var(--ease-out);
+      }
+      .select:focus { border-color: var(--color-accent-500); box-shadow: 0 0 0 3px var(--color-accent-100); }
+      [data-theme="dark"] .select:focus { box-shadow: 0 0 0 3px var(--color-accent-900); }
+
+      /* Textarea */
+      textarea.input {
+        min-height: 100px;
+        resize: vertical;
+        line-height: var(--leading-normal);
+      }
+
+      /* Checkbox */
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .checkbox-row input[type="checkbox"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-sm);
+        background: var(--surface-primary);
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: all var(--duration-fast) var(--ease-out);
+        flex-shrink: 0;
+      }
+      .checkbox-row input[type="checkbox"]::after {
+        content: '';
+        width: 10px;
+        height: 10px;
+        clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        background: var(--text-on-accent);
+        transform: scale(0);
+        transition: transform var(--duration-fast) var(--ease-out);
+      }
+      .checkbox-row input[type="checkbox"]:checked {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+      }
+      .checkbox-row input[type="checkbox"]:checked::after { transform: scale(1); }
+      .checkbox-row input[type="checkbox"]:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+      .checkbox-row input[type="checkbox"]:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      /* Radio */
+      .radio-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: var(--text-sm);
+        color: var(--text-primary);
+      }
+      .radio-row input[type="radio"] {
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--border-strong);
+        border-radius: 50%;
+        background: var(--surface-primary);
+        cursor: pointer;
+        display: grid;
+        place-content: center;
+        transition: all var(--duration-fast) var(--ease-out);
+        flex-shrink: 0;
+      }
+      .radio-row input[type="radio"]::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-on-accent);
+        transform: scale(0);
+        transition: transform var(--duration-fast) var(--ease-out);
+      }
+      .radio-row input[type="radio"]:checked {
+        background: var(--color-accent-500);
+        border-color: var(--color-accent-500);
+      }
+      .radio-row input[type="radio"]:checked::after { transform: scale(1); }
+      .radio-row input[type="radio"]:focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+      }
+
+      /* --- Navigation Patterns ---------------------------------------------- */
+      .tab-bar {
+        display: flex;
+        gap: var(--space-6);
+        border-bottom: 1px solid var(--border-default);
+      }
+      .tab-bar__item {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        text-decoration: none;
+        padding: var(--space-3) 0;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        transition: color var(--duration-fast) var(--ease-out);
+        cursor: pointer;
+        background: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        font-family: var(--font-body);
+      }
+      .tab-bar__item:hover { color: var(--text-primary); }
+      .tab-bar__item--active {
+        color: var(--text-primary);
+        border-bottom-color: var(--color-accent-500);
+      }
+
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+      }
+      .breadcrumbs a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .breadcrumbs a:hover { color: var(--text-primary); }
+      .breadcrumbs__sep { color: var(--text-tertiary); user-select: none; }
+      .breadcrumbs__current { color: var(--text-primary); }
+
+      /* --- Cards ----------------------------------------------------------- */
+      /* Image card — photography portfolio card */
+      .card-image {
+        border: none;
+        border-radius: var(--radius-none);
+        background: var(--surface-primary);
+        overflow: hidden;
+        cursor: pointer;
+        transition: all var(--duration-slow) var(--ease-dramatic);
+      }
+      .card-image__media {
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        background: var(--surface-tertiary);
+        overflow: hidden;
+        position: relative;
+      }
+      .card-image__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: filter var(--duration-slow) var(--ease-dramatic);
+      }
+      .card-image:hover .card-image__media img {
+        filter: brightness(0.75);
+      }
+      /* Placeholder pattern for demo */
+      .card-image__placeholder {
+        width: 100%;
+        height: 100%;
+        background: var(--surface-tertiary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        transition: filter var(--duration-slow) var(--ease-dramatic);
+      }
+      .card-image:hover .card-image__placeholder {
+        filter: brightness(0.75);
+      }
+      .card-image__info {
+        padding: var(--space-4) 0 var(--space-2);
+      }
+      .card-image__title {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-1);
+      }
+      .card-image__meta {
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+      }
+
+      /* Text card — artist bio / exhibition info */
+      .card-text {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-none);
+        padding: var(--space-6);
+        background: var(--surface-primary);
+      }
+      .card-text__eyebrow {
+        font-size: var(--text-xs);
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        margin-bottom: var(--space-2);
+      }
+      .card-text__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-2);
+      }
+      .card-text__body {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        line-height: var(--leading-relaxed);
+      }
+      .card-text__footer {
+        margin-top: var(--space-4);
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+      }
+
+      /* Interactive card */
+      .card-interactive {
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--radius-none);
+        padding: var(--space-6);
+        background: var(--surface-primary);
+        cursor: pointer;
+        transition: box-shadow var(--duration-normal) var(--ease-out), border-color var(--duration-normal) var(--ease-out);
+      }
+      .card-interactive:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--border-strong);
+      }
+
+      /* --- Badges & Tags --------------------------------------------------- */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: 11px;
+        font-weight: var(--weight-medium);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        padding: 3px 10px;
+        border-radius: var(--radius-md);
+        line-height: 1.4;
+      }
+      .badge--default { background: var(--surface-secondary); color: var(--text-secondary); }
+      .badge--accent { background: var(--color-accent-100); color: var(--color-accent-700); }
+      [data-theme="dark"] .badge--accent { background: var(--color-accent-900); color: var(--color-accent-300); }
+      .badge--success { background: rgba(74, 140, 106, 0.12); color: var(--color-success); }
+      .badge--warning { background: rgba(176, 138, 62, 0.12); color: var(--color-warning); }
+      .badge--danger { background: rgba(176, 74, 64, 0.12); color: var(--color-danger); }
+      .badge--info { background: rgba(90, 127, 160, 0.12); color: var(--color-info); }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: var(--text-xs);
+        font-weight: var(--weight-regular);
+        padding: 4px 12px;
+        border-radius: var(--radius-md);
+        background: var(--surface-secondary);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-default);
+        cursor: default;
+      }
+      .tag__remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: transparent;
+        border: none;
+        color: var(--text-tertiary);
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 1;
+        padding: 0;
+        transition: color var(--duration-fast) var(--ease-out);
+      }
+      .tag__remove:hover { color: var(--text-primary); }
+
+      /* --- Alerts ---------------------------------------------------------- */
+      .alert {
+        display: flex;
+        gap: var(--space-3);
+        padding: var(--space-4);
+        border-radius: var(--radius-md);
+        border: 1px solid;
+        font-size: var(--text-sm);
+        line-height: var(--leading-relaxed);
+      }
+      .alert__icon {
+        flex-shrink: 0;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+      }
+      .alert__content { flex: 1; }
+      .alert__title {
+        font-weight: var(--weight-medium);
+        margin-bottom: var(--space-1);
+      }
+      .alert--info {
+        background: rgba(90, 127, 160, 0.06);
+        border-color: rgba(90, 127, 160, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--info .alert__icon { color: var(--color-info); }
+      .alert--success {
+        background: rgba(74, 140, 106, 0.06);
+        border-color: rgba(74, 140, 106, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--success .alert__icon { color: var(--color-success); }
+      .alert--warning {
+        background: rgba(176, 138, 62, 0.06);
+        border-color: rgba(176, 138, 62, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--warning .alert__icon { color: var(--color-warning); }
+      .alert--danger {
+        background: rgba(176, 74, 64, 0.06);
+        border-color: rgba(176, 74, 64, 0.2);
+        color: var(--text-primary);
+      }
+      .alert--danger .alert__icon { color: var(--color-danger); }
+
+      /* --- Table ----------------------------------------------------------- */
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-none);
+      }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--text-sm);
+      }
+      .table th {
+        text-align: left;
+        font-weight: var(--weight-medium);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--border-default);
+        background: var(--surface-secondary);
+        white-space: nowrap;
+      }
+      .table td {
+        padding: var(--space-3) var(--space-4);
+        border-bottom: 1px solid var(--border-subtle);
+        color: var(--text-primary);
+        vertical-align: middle;
+      }
+      .table tbody tr {
+        transition: background var(--duration-fast) var(--ease-out);
+      }
+      .table tbody tr:hover {
+        background: var(--surface-secondary);
+      }
+      .table tbody tr:last-child td { border-bottom: none; }
+      .table .cell-mono {
+        font-family: var(--font-mono);
+        font-size: var(--text-xs);
+        color: var(--text-secondary);
+      }
+
+      /* --- Image Gallery Patterns ------------------------------------------ */
+      .hero-image {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: var(--surface-tertiary);
+        border-radius: var(--radius-none);
+        overflow: hidden;
+        position: relative;
+      }
+      .hero-image__placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+      }
+      .hero-image__caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: var(--space-6) var(--space-6) var(--space-5);
+        background: linear-gradient(to top, rgba(10, 10, 9, 0.7), transparent);
+        color: var(--color-white);
+      }
+      .hero-image__caption-title {
+        font-family: var(--font-display);
+        font-size: var(--text-2xl);
+        font-weight: var(--weight-light);
+        letter-spacing: var(--tracking-tight);
+        line-height: var(--leading-snug);
+        margin-bottom: var(--space-1);
+      }
+      .hero-image__caption-meta {
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        opacity: 0.7;
+      }
+
+      /* Masonry grid */
+      .gallery-masonry {
+        columns: 3;
+        column-gap: var(--space-4);
+      }
+      .gallery-masonry__item {
+        break-inside: avoid;
+        margin-bottom: var(--space-4);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .gallery-masonry__item .gallery-placeholder {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--surface-tertiary);
+        color: var(--text-tertiary);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        transition: filter var(--duration-slow) var(--ease-dramatic);
+      }
+      .gallery-masonry__item:hover .gallery-placeholder {
+        filter: brightness(0.75);
+      }
+      .gallery-masonry__caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: var(--space-4);
+        background: linear-gradient(to top, rgba(10, 10, 9, 0.65), transparent);
+        color: var(--color-white);
+        opacity: 0;
+        transition: opacity var(--duration-normal) var(--ease-out);
+      }
+      .gallery-masonry__item:hover .gallery-masonry__caption {
+        opacity: 1;
+      }
+      .gallery-masonry__caption-title {
+        font-family: var(--font-display);
+        font-size: var(--text-sm);
+        font-weight: var(--weight-regular);
+        font-style: italic;
+      }
+      .gallery-masonry__caption-meta {
+        font-size: 11px;
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin-top: var(--space-1);
+      }
+
+      /* --- Modal / Lightbox ------------------------------------------------ */
+      .lightbox-demo {
+        position: relative;
+        background: var(--color-black);
+        border-radius: var(--radius-none);
+        overflow: hidden;
+        aspect-ratio: 16 / 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lightbox__image-area {
+        width: 70%;
+        aspect-ratio: 3 / 2;
+        background: var(--color-gray-800);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-gray-500);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+      }
+      .lightbox__close {
+        position: absolute;
+        top: var(--space-4);
+        right: var(--space-4);
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        border-radius: var(--radius-md);
+        font-size: 18px;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .lightbox__close:hover {
+        border-color: rgba(255,255,255,0.4);
+        color: rgba(255,255,255,1);
+      }
+      .lightbox__nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        border-radius: var(--radius-md);
+        font-size: 18px;
+        transition: all var(--duration-fast) var(--ease-out);
+      }
+      .lightbox__nav:hover {
+        border-color: rgba(255,255,255,0.4);
+        color: rgba(255,255,255,1);
+      }
+      .lightbox__nav--prev { left: var(--space-4); }
+      .lightbox__nav--next { right: var(--space-4); }
+      .lightbox__info {
+        position: absolute;
+        bottom: var(--space-5);
+        left: var(--space-5);
+        color: rgba(255,255,255,0.7);
+      }
+      .lightbox__info-title {
+        font-family: var(--font-display);
+        font-size: var(--text-lg);
+        font-weight: var(--weight-light);
+        font-style: italic;
+        color: rgba(255,255,255,0.9);
+        margin-bottom: var(--space-1);
+      }
+      .lightbox__info-meta {
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        opacity: 0.6;
+      }
+      .lightbox__counter {
+        position: absolute;
+        bottom: var(--space-5);
+        right: var(--space-5);
+        font-size: var(--text-xs);
+        letter-spacing: var(--tracking-widest);
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.5);
+      }
+
+      /* --- Empty State ------------------------------------------------------ */
+      .empty-state {
+        text-align: center;
+        padding: var(--space-16) var(--space-6);
+        max-width: 420px;
+        margin: 0 auto;
+      }
+      .empty-state__illustration {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-none);
+        background: var(--surface-secondary);
+        border: 1px solid var(--border-default);
+        margin: 0 auto var(--space-6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-tertiary);
+        font-size: 24px;
+      }
+      .empty-state__title {
+        font-family: var(--font-display);
+        font-size: var(--text-xl);
+        font-weight: var(--weight-regular);
+        letter-spacing: var(--tracking-snug);
+        margin-bottom: var(--space-2);
+      }
+      .empty-state__desc {
+        font-size: var(--text-sm);
+        color: var(--text-secondary);
+        margin-bottom: var(--space-6);
+        line-height: var(--leading-relaxed);
+      }
+
+      /* --- Skeleton / Loading ----------------------------------------------- */
+      .skeleton {
+        background: var(--surface-secondary);
+        border-radius: var(--radius-none);
+        position: relative;
+        overflow: hidden;
+      }
+      .skeleton::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        animation: shimmer 1.8s var(--ease-in-out) infinite;
+      }
+      [data-theme="dark"] .skeleton::after {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+      }
+      @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      .skeleton--text { height: 14px; width: 100%; border-radius: var(--radius-sm); }
+      .skeleton--text-short { height: 14px; width: 60%; border-radius: var(--radius-sm); }
+      .skeleton--heading { height: 22px; width: 45%; border-radius: var(--radius-sm); }
+      .skeleton--image { width: 100%; aspect-ratio: 3 / 4; }
+      .skeleton--image-wide { width: 100%; aspect-ratio: 16 / 9; }
+      .skeleton--block { height: 80px; width: 100%; }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-default);
+        border-top-color: var(--color-accent-500);
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: inline-block;
+      }
+      .spinner--sm { width: 14px; height: 14px; border-width: 1.5px; }
+      .spinner--lg { width: 28px; height: 28px; border-width: 2.5px; }
+
+      /* --- Utilities ------------------------------------------------------- */
+      .demo-surface {
+        background: var(--surface-secondary);
+        border: 1px solid var(--border-default);
+        border-radius: var(--radius-none);
+        padding: var(--space-8);
+      }
+      .vis-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+      /* responsive */
+      @media (max-width: 640px) {
+        .hero__title { font-size: var(--text-3xl); }
+        .shell { padding: var(--space-8) var(--space-4) var(--space-16); }
+        .topbar__inner { gap: var(--space-4); }
+        .topnav { display: none; }
+        .gallery-masonry { columns: 2; }
+      }
+    </style>
+  </head>
+
+  <body data-page="components">
+
+    <!-- ================================================================
+         TOP BAR
+         ================================================================ -->
+    <header class="topbar">
+      <div class="topbar__inner">
+        <a class="brand-lockup" href="index.html" aria-label="Folio Design System home">
+          <span class="brand-mark">Folio</span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="index.html">Overview</a>
+          <a href="components.html" aria-current="page">Components</a>
+          <a href="guidelines.html">Guidelines</a>
+          <a href="application.html">Application</a>
+        </nav>
+        <div class="topbar__actions">
+          <button class="theme-toggle" type="button" data-theme-toggle>Dark mode</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================================================================
+         MAIN CONTENT
+         ================================================================ -->
+    <main class="shell">
+
+      <!-- Hero -->
+      <section class="hero">
+        <span class="hero__kicker">Component Reference</span>
+        <h1 class="hero__title">Every component, every state, built for the gallery wall.</h1>
+        <p class="hero__lead">Live examples with interactive states. Each element uses the token architecture so what you see here is what ships in the portfolio.</p>
+      </section>
+
+      <!-- Section Nav -->
+      <nav class="section-nav" aria-label="Component sections">
+        <a href="#buttons">Buttons</a>
+        <a href="#forms">Forms</a>
+        <a href="#navigation">Navigation</a>
+        <a href="#cards">Cards</a>
+        <a href="#badges">Badges &amp; Tags</a>
+        <a href="#alerts">Alerts</a>
+        <a href="#tables">Tables</a>
+        <a href="#gallery">Gallery Patterns</a>
+        <a href="#lightbox">Lightbox</a>
+        <a href="#empty">Empty States</a>
+        <a href="#loading">Loading</a>
+      </nav>
+
+      <!-- =============================================================
+           1. BUTTONS
+           ============================================================= -->
+      <section class="comp-section" id="buttons">
+        <h2 class="comp-section__heading">Buttons</h2>
+        <p class="comp-section__desc">Priority hierarchy through shape, fill, and weight. Primary actions use the pill signature; secondary and ghost recede intentionally.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Priority Ladder</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button">View Exhibition</button>
+            <button class="btn btn--secondary" type="button">Download Catalogue</button>
+            <button class="btn btn--ghost" type="button">Artist Statement</button>
+            <button class="btn btn--danger" type="button">Cancel Reservation</button>
+          </div>
+          <p class="spec-note">Primary: pill, accent fill, weight 500, ALL-CAPS tracking. Secondary: 4px radius, 1px border. Ghost: text only, underline on hover. Danger: 4px radius, danger fill.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Sizes</span>
+          <div class="row row--lg" style="align-items: flex-end;">
+            <button class="btn btn--primary btn--sm" type="button">Small</button>
+            <button class="btn btn--primary" type="button">Medium</button>
+            <button class="btn btn--primary btn--lg" type="button">Large</button>
+          </div>
+          <div class="row row--lg" style="margin-top: var(--space-3); align-items: flex-end;">
+            <button class="btn btn--secondary btn--sm" type="button">Small</button>
+            <button class="btn btn--secondary" type="button">Medium</button>
+            <button class="btn btn--secondary btn--lg" type="button">Large</button>
+          </div>
+          <p class="spec-note">Small: 11px / 8px 16px. Medium: text-xs / 12px 24px. Large: text-sm / 16px 32px. ALL-CAPS with widest tracking at every size.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Hover State</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="background: var(--color-accent-600);">View Exhibition</button>
+            <button class="btn btn--secondary" type="button" style="border-color: var(--text-primary);">Download Catalogue</button>
+            <button class="btn btn--ghost" type="button" style="color: var(--text-primary); text-decoration: underline; text-underline-offset: 3px;">Artist Statement</button>
+          </div>
+          <p class="spec-note">Primary darkens to accent-600. Secondary border strengthens. Ghost gains underline. Transition: 150ms cubic-bezier(0.22, 0.61, 0.36, 1).</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Focus Visible</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">View Exhibition</button>
+            <button class="btn btn--secondary" type="button" style="outline: 2px solid var(--color-accent-500); outline-offset: 2px;">Download Catalogue</button>
+          </div>
+          <p class="spec-note">2px accent ring with 2px offset. Visible on keyboard navigation only.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Active (Pressed)</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" style="transform: scale(0.98);">View Exhibition</button>
+            <button class="btn btn--secondary" type="button" style="transform: scale(0.98);">Download Catalogue</button>
+          </div>
+          <p class="spec-note">Scale 0.98 on press. Subtle, tactile feedback.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Disabled</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary" type="button" disabled>View Exhibition</button>
+            <button class="btn btn--secondary" type="button" disabled>Download Catalogue</button>
+            <button class="btn btn--ghost" type="button" disabled>Artist Statement</button>
+            <button class="btn btn--danger" type="button" disabled>Cancel Reservation</button>
+          </div>
+          <p class="spec-note">Opacity 0.4, pointer-events: none, cursor: not-allowed.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Loading</span>
+          <div class="row row--lg">
+            <button class="btn btn--primary btn--loading" type="button" aria-busy="true">Reserving...</button>
+            <button class="btn btn--secondary btn--loading" type="button" aria-busy="true">Generating...</button>
+          </div>
+          <p class="spec-note">Text hidden, centered spinner. Pointer events disabled during loading.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           2. FORM INPUTS
+           ============================================================= -->
+      <section class="comp-section" id="forms">
+        <h2 class="comp-section__heading">Form Controls</h2>
+        <p class="comp-section__desc">Consistent 4px radius, subtle borders, accent-colored focus rings. ALL-CAPS labels with widest tracking follow the gallery convention.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Text Inputs</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="artist-name">Artist Name</label>
+              <input class="input" type="text" id="artist-name" placeholder="e.g., Elena Vasquez">
+              <span class="input-hint">As it appears on exhibition labels.</span>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="artist-filled">Artist Name (Filled)</label>
+              <input class="input" type="text" id="artist-filled" value="Elena Vasquez">
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="artist-error">Artist Name (Error)</label>
+              <input class="input input--error" type="text" id="artist-error" value="   ">
+              <span class="input-error-msg">Artist name cannot be blank.</span>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="artist-disabled">Artist Name (Disabled)</label>
+              <input class="input" type="text" id="artist-disabled" value="Estate of Henri Cartier-Bresson" disabled>
+            </div>
+          </div>
+          <p class="spec-note">4px radius, 1px border. Focus: accent ring (3px box-shadow). Error: danger border color. Labels: ALL-CAPS, widest tracking.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Select</span>
+          <div class="grid-2">
+            <div class="input-group">
+              <label class="input-label" for="print-medium">Print Medium</label>
+              <select class="select" id="print-medium">
+                <option value="">Select medium...</option>
+                <option>Archival pigment print</option>
+                <option>Silver gelatin</option>
+                <option>Platinum palladium</option>
+                <option>C-type print</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="print-medium-filled">Print Medium (Filled)</label>
+              <select class="select" id="print-medium-filled">
+                <option selected>Silver gelatin</option>
+                <option>Archival pigment print</option>
+                <option>Platinum palladium</option>
+                <option>C-type print</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Textarea</span>
+          <div class="input-group" style="max-width: 480px;">
+            <label class="input-label" for="artist-statement">Artist Statement</label>
+            <textarea class="input" id="artist-statement" placeholder="Describe the body of work, its context, and the artist's intention..."></textarea>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Checkboxes &amp; Radios</span>
+          <div class="grid-2">
+            <div class="stack">
+              <label class="checkbox-row">
+                <input type="checkbox" checked>
+                <span>Include artist statement</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox">
+                <span>Display EXIF data on hover</span>
+              </label>
+              <label class="checkbox-row">
+                <input type="checkbox" disabled>
+                <span>Enable print purchasing (requires gallery plan)</span>
+              </label>
+            </div>
+            <div class="stack">
+              <label class="radio-row">
+                <input type="radio" name="layout" checked>
+                <span>Grid layout</span>
+              </label>
+              <label class="radio-row">
+                <input type="radio" name="layout">
+                <span>Masonry layout</span>
+              </label>
+              <label class="radio-row">
+                <input type="radio" name="layout">
+                <span>Slideshow</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           3. NAVIGATION
+           ============================================================= -->
+      <section class="comp-section" id="navigation">
+        <h2 class="comp-section__heading">Navigation</h2>
+        <p class="comp-section__desc">Lightweight, uppercase, wide tracking. Active states use accent-color underlines, never background pills. The gallery standard.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Gallery Navigation</span>
+          <div class="demo-surface">
+            <div style="display: flex; align-items: center; gap: var(--space-8);">
+              <span style="font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--weight-light); letter-spacing: var(--tracking-tight);">Folio</span>
+              <nav style="display: flex; gap: var(--space-6); font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase;">
+                <a href="#" style="color: var(--text-primary); text-decoration: none; border-bottom: 2px solid var(--color-accent-500); padding-bottom: 2px;">Portfolio</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Exhibitions</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">About</a>
+                <a href="#" style="color: var(--text-secondary); text-decoration: none;">Contact</a>
+              </nav>
+            </div>
+          </div>
+          <p class="spec-note">ALL-CAPS xs text, widest tracking. Active: accent underline, not background pill. Brand: Crimson Pro display, weight 300.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Tab Bar</span>
+          <div class="tab-bar">
+            <button class="tab-bar__item tab-bar__item--active" type="button">All Work</button>
+            <button class="tab-bar__item" type="button">Street</button>
+            <button class="tab-bar__item" type="button">Portraiture</button>
+            <button class="tab-bar__item" type="button">Landscape</button>
+            <button class="tab-bar__item" type="button">Documentary</button>
+          </div>
+          <p class="spec-note">Underline active indicator (2px accent line), not a pill background. ALL-CAPS with widest tracking.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Breadcrumbs</span>
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="#">Portfolio</a>
+            <span class="breadcrumbs__sep">/</span>
+            <a href="#">Street Photography</a>
+            <span class="breadcrumbs__sep">/</span>
+            <span class="breadcrumbs__current">The Quiet Hour</span>
+          </nav>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           4. CARDS
+           ============================================================= -->
+      <section class="comp-section" id="cards">
+        <h2 class="comp-section__heading">Cards</h2>
+        <p class="comp-section__desc">Sharp corners throughout. Image cards are image-dominant (70%+ of card area). Text cards for exhibition info and artist bios. Hover uses the Magnum brightness filter pattern.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Image Cards (Portfolio)</span>
+          <div class="grid-3">
+            <div class="card-image">
+              <div class="card-image__media">
+                <div class="card-image__placeholder">3 : 4</div>
+              </div>
+              <div class="card-image__info">
+                <div class="card-image__title">The Quiet Hour</div>
+                <div class="card-image__meta">Elena Vasquez &middot; 12 prints</div>
+              </div>
+            </div>
+            <div class="card-image">
+              <div class="card-image__media">
+                <div class="card-image__placeholder">3 : 4</div>
+              </div>
+              <div class="card-image__info">
+                <div class="card-image__title">Traces of Light</div>
+                <div class="card-image__meta">Marcus Webb &middot; 8 prints</div>
+              </div>
+            </div>
+            <div class="card-image">
+              <div class="card-image__media">
+                <div class="card-image__placeholder">3 : 4</div>
+              </div>
+              <div class="card-image__info">
+                <div class="card-image__title">Aftermath</div>
+                <div class="card-image__meta">Yuki Tanaka &middot; 20 prints</div>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">0 radius on everything. Image takes 70%+ of card. Hover: filter brightness(0.75) on image (Magnum pattern). ALL-CAPS metadata. 450ms ease-dramatic transition.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Text Cards (Exhibition Info)</span>
+          <div class="grid-2">
+            <div class="card-text">
+              <div class="card-text__eyebrow">Exhibition</div>
+              <div class="card-text__title">Traces of Light</div>
+              <p class="card-text__body">A retrospective of street photography captured across twelve cities over five years. Silver gelatin prints presented salon-style in the main gallery space.</p>
+              <div class="card-text__footer">
+                <span>Foam Amsterdam</span>
+                <span class="badge badge--accent">Current</span>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="card-text__eyebrow">Exhibition</div>
+              <div class="card-text__title">The Quiet Hour</div>
+              <p class="card-text__body">Twelve silver gelatin prints exploring solitude in urban spaces. Shot between 4:00 and 5:00 AM in cities where silence becomes visible.</p>
+              <div class="card-text__footer">
+                <span>Fotografiska Stockholm</span>
+                <span class="badge badge--default">Upcoming</span>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">0 radius, border-subtle, no shadow. Eyebrow: ALL-CAPS, widest tracking. Title: Crimson Pro serif. Footer: separated by border-subtle.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Interactive Cards (Hover to Test)</span>
+          <div class="grid-3">
+            <div class="card-interactive">
+              <div class="card-text__eyebrow">Series</div>
+              <div class="card-text__title">Morning Commute</div>
+              <p class="card-text__body" style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">8 archival pigment prints. Observational study of daily rhythms in the Tokyo metro system.</p>
+            </div>
+            <div class="card-interactive">
+              <div class="card-text__eyebrow">Series</div>
+              <div class="card-text__title">Coastal Erosion</div>
+              <p class="card-text__body" style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">16 large-format landscape studies. Platinum palladium process on handmade Japanese washi.</p>
+            </div>
+            <div class="card-interactive">
+              <div class="card-text__eyebrow">Series</div>
+              <div class="card-text__title">Last Light</div>
+              <p class="card-text__body" style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed);">6 C-type prints, each 40 x 60 in. Exploring the threshold between day and night in desert landscapes.</p>
+            </div>
+          </div>
+          <p class="spec-note">0 radius. Hover: shadow-md and border-strong. 280ms transition with custom ease-out. No scale transform — shadow and border only.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           5. BADGES & TAGS
+           ============================================================= -->
+      <section class="comp-section" id="badges">
+        <h2 class="comp-section__heading">Badges &amp; Tags</h2>
+        <p class="comp-section__desc">Photography-contextual status indicators. 4px radius (not pill). Badges are read-only; tags are interactive and removable.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Badges</span>
+          <div class="row">
+            <span class="badge badge--default">Draft</span>
+            <span class="badge badge--accent">Exhibition</span>
+            <span class="badge badge--success">Published</span>
+            <span class="badge badge--warning">Edition Selling</span>
+            <span class="badge badge--danger">Sold Out</span>
+            <span class="badge badge--info">Featured</span>
+          </div>
+          <p class="spec-note">4px radius, 11px uppercase text, weight 500. Semantic background tints at ~12% opacity.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Photography Context Badges</span>
+          <div class="row">
+            <span class="badge badge--accent">Current Exhibition</span>
+            <span class="badge badge--default">Upcoming</span>
+            <span class="badge badge--success">On View</span>
+            <span class="badge badge--info">Featured Series</span>
+            <span class="badge badge--warning">Limited Edition</span>
+            <span class="badge badge--danger">Archive</span>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Tags (Removable)</span>
+          <div class="row">
+            <span class="tag">street photography <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">silver gelatin <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">edition of 15 <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+            <span class="tag">40 x 60 in <button class="tag__remove" aria-label="Remove tag">&times;</button></span>
+          </div>
+          <p class="spec-note">4px radius, 1px border, secondary background. Close button hover shows primary text color.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           6. ALERTS
+           ============================================================= -->
+      <section class="comp-section" id="alerts">
+        <h2 class="comp-section__heading">Alerts</h2>
+        <p class="comp-section__desc">Background-tinted containers with icon + uniform 1px border. No thick left-border pattern. Photography-contextual messaging.</p>
+
+        <div class="stack" style="gap: var(--space-4); max-width: 600px;">
+          <div class="alert alert--info">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M9 8.5V12.5"/><circle cx="9" cy="6" r="0.5" fill="currentColor" stroke="none"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Exhibition submission received</div>
+              Your portfolio for "Traces of Light" at Foam Amsterdam has been submitted. Review typically takes 5-7 business days.
+            </div>
+          </div>
+
+          <div class="alert alert--success">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6 9.5L8 11.5L12 7"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Print edition published</div>
+              "Untitled #7, 2024" is now available. Archival pigment print, edition of 15. Listed at $2,400 per print.
+            </div>
+          </div>
+
+          <div class="alert alert--warning">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 1.5L16.5 15H1.5L9 1.5z"/><path d="M9 7v3.5"/><circle cx="9" cy="13" r="0.5" fill="currentColor" stroke="none"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Edition running low</div>
+              "The Quiet Hour, Print III" has 2 of 12 editions remaining. Consider updating the availability status on your portfolio page.
+            </div>
+          </div>
+
+          <div class="alert alert--danger">
+            <svg class="alert__icon" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="7.5"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5"/></svg>
+            <div class="alert__content">
+              <div class="alert__title">Image upload failed</div>
+              "DSC_4827.tiff" exceeds the maximum file size of 200MB. Please compress or resize the file before uploading.
+            </div>
+          </div>
+        </div>
+        <p class="spec-note" style="margin-top: var(--space-4);">Icon + tinted background + 1px uniform border. No left-border accent stripe. 4px radius on all alerts.</p>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           7. TABLES
+           ============================================================= -->
+      <section class="comp-section" id="tables">
+        <h2 class="comp-section__heading">Tables</h2>
+        <p class="comp-section__desc">For exhibition schedules, print editions, and pricing. Sharp corners, compact density, uppercase headers.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Exhibition Schedule</span>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Exhibition</th>
+                  <th>Venue</th>
+                  <th>Dates</th>
+                  <th>Status</th>
+                  <th>Works</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Traces of Light</td>
+                  <td>Foam Amsterdam</td>
+                  <td class="cell-mono">Mar 14 &ndash; Jun 22, 2026</td>
+                  <td><span class="badge badge--success">On View</span></td>
+                  <td>24</td>
+                </tr>
+                <tr>
+                  <td>The Quiet Hour</td>
+                  <td>Fotografiska Stockholm</td>
+                  <td class="cell-mono">Jul 5 &ndash; Sep 30, 2026</td>
+                  <td><span class="badge badge--default">Upcoming</span></td>
+                  <td>12</td>
+                </tr>
+                <tr>
+                  <td>Aftermath</td>
+                  <td>Gagosian New York</td>
+                  <td class="cell-mono">Oct 1 &ndash; Dec 15, 2025</td>
+                  <td><span class="badge badge--danger">Archive</span></td>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <td>Morning Commute</td>
+                  <td>Gallery Koyanagi, Tokyo</td>
+                  <td class="cell-mono">Nov 8 &ndash; Jan 12, 2026</td>
+                  <td><span class="badge badge--danger">Archive</span></td>
+                  <td>8</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Print Editions &amp; Pricing</span>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Medium</th>
+                  <th>Size</th>
+                  <th>Edition</th>
+                  <th>Price</th>
+                  <th>Available</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family: var(--font-display); font-style: italic;">Untitled #7, 2024</td>
+                  <td>Archival pigment print</td>
+                  <td class="cell-mono">40 &times; 60 in</td>
+                  <td class="cell-mono">Ed. of 15</td>
+                  <td>$2,400</td>
+                  <td><span class="badge badge--success">8 remaining</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: var(--font-display); font-style: italic;">The Quiet Hour, III</td>
+                  <td>Silver gelatin</td>
+                  <td class="cell-mono">20 &times; 24 in</td>
+                  <td class="cell-mono">Ed. of 12</td>
+                  <td>$1,800</td>
+                  <td><span class="badge badge--warning">2 remaining</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: var(--font-display); font-style: italic;">Coastal Erosion, VII</td>
+                  <td>Platinum palladium</td>
+                  <td class="cell-mono">16 &times; 20 in</td>
+                  <td class="cell-mono">Ed. of 8</td>
+                  <td>$4,200</td>
+                  <td><span class="badge badge--danger">Sold out</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family: var(--font-display); font-style: italic;">Last Light, I</td>
+                  <td>C-type print</td>
+                  <td class="cell-mono">30 &times; 40 in</td>
+                  <td class="cell-mono">Ed. of 10</td>
+                  <td>$3,600</td>
+                  <td><span class="badge badge--success">10 remaining</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="spec-note">0 radius on container. Header: weight 500, ALL-CAPS xs text, widest tracking. Hover row highlight. Print titles in italic serif.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           8. IMAGE GALLERY PATTERNS
+           ============================================================= -->
+      <section class="comp-section" id="gallery">
+        <h2 class="comp-section__heading">Image Gallery Patterns</h2>
+        <p class="comp-section__desc">Three presentation modes: single hero, masonry grid, and captioned images. All use sharp geometry and restrained motion.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Single Hero Image</span>
+          <div class="hero-image">
+            <div class="hero-image__placeholder">16 : 9 &mdash; Full Width Hero</div>
+            <div class="hero-image__caption">
+              <div class="hero-image__caption-title">Traces of Light</div>
+              <div class="hero-image__caption-meta">Elena Vasquez &middot; Foam Amsterdam &middot; 2026</div>
+            </div>
+          </div>
+          <p class="spec-note">Full-width, 0 radius. Caption: gradient overlay from bottom (rgba black 0.7 to transparent). Title in Crimson Pro weight 300. Meta: ALL-CAPS xs.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Masonry Grid (Hover for Caption)</span>
+          <div class="gallery-masonry">
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 3/4;">3 : 4</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Untitled #3, 2024</div>
+                <div class="gallery-masonry__caption-meta">Silver gelatin &middot; 20 &times; 24 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 1/1;">1 : 1</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Morning, Shibuya</div>
+                <div class="gallery-masonry__caption-meta">Archival pigment &middot; 30 &times; 30 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 4/5;">4 : 5</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">The Quiet Hour, VII</div>
+                <div class="gallery-masonry__caption-meta">Silver gelatin &middot; 16 &times; 20 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 16/9;">16 : 9</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Coastal Erosion, II</div>
+                <div class="gallery-masonry__caption-meta">Platinum palladium &middot; 16 &times; 20 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 2/3;">2 : 3</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Last Light, I</div>
+                <div class="gallery-masonry__caption-meta">C-type print &middot; 30 &times; 40 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 5/4;">5 : 4</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Untitled #7, 2024</div>
+                <div class="gallery-masonry__caption-meta">Archival pigment &middot; 40 &times; 60 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 3/2;">3 : 2</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Aftermath, IX</div>
+                <div class="gallery-masonry__caption-meta">Archival pigment &middot; 24 &times; 36 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 4/3;">4 : 3</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Transit, Dawn</div>
+                <div class="gallery-masonry__caption-meta">Silver gelatin &middot; 20 &times; 24 in</div>
+              </div>
+            </div>
+            <div class="gallery-masonry__item">
+              <div class="gallery-placeholder" style="aspect-ratio: 1/1;">1 : 1</div>
+              <div class="gallery-masonry__caption">
+                <div class="gallery-masonry__caption-title">Self-Portrait, Studio</div>
+                <div class="gallery-masonry__caption-meta">Platinum palladium &middot; 8 &times; 8 in</div>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">CSS columns (3-col), column-gap: 16px. Hover: filter brightness(0.75) + caption overlay fades in. Caption: gradient overlay, italic serif title. 450ms ease-dramatic.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           9. MODAL / LIGHTBOX
+           ============================================================= -->
+      <section class="comp-section" id="lightbox">
+        <h2 class="comp-section__heading">Lightbox</h2>
+        <p class="comp-section__desc">Full-screen image viewer following photography convention. Dark background, minimal chrome, navigation arrows, image counter.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Lightbox Viewer</span>
+          <div class="lightbox-demo">
+            <div class="lightbox__image-area">3 : 2 &mdash; Image Area</div>
+            <button class="lightbox__close" type="button" aria-label="Close">&times;</button>
+            <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Previous">&lsaquo;</button>
+            <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Next">&rsaquo;</button>
+            <div class="lightbox__info">
+              <div class="lightbox__info-title">Untitled #7, 2024</div>
+              <div class="lightbox__info-meta">Elena Vasquez &middot; Archival pigment print &middot; 40 &times; 60 in &middot; Ed. of 15</div>
+            </div>
+            <div class="lightbox__counter">7 / 24</div>
+          </div>
+          <p class="spec-note">Full-screen black (color-black). Image centered at 70% width. Nav: 4px radius, semi-transparent borders. Info: italic serif title, ALL-CAPS meta. Counter bottom-right.</p>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           10. EMPTY STATES
+           ============================================================= -->
+      <section class="comp-section" id="empty">
+        <h2 class="comp-section__heading">Empty States</h2>
+        <p class="comp-section__desc">Serif heading, body text, single CTA. Photography-contextual messaging guides the user toward their next action.</p>
+
+        <div class="grid-2">
+          <div class="demo-surface">
+            <div class="empty-state">
+              <div class="empty-state__illustration">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="5" width="22" height="18" rx="0"/><circle cx="10" cy="12" r="2.5"/><path d="M3 20l6-5 4 3 5-6 7 8"/></svg>
+              </div>
+              <div class="empty-state__title">No exhibitions scheduled</div>
+              <p class="empty-state__desc">Exhibitions connect your work with galleries and collectors. Submit your portfolio to an open call or create a private showing for a gallery contact.</p>
+              <button class="btn btn--primary" type="button">Browse Open Calls</button>
+            </div>
+          </div>
+          <div class="demo-surface">
+            <div class="empty-state">
+              <div class="empty-state__illustration">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="4" width="20" height="20" rx="0"/><path d="M4 14h20M14 4v20"/></svg>
+              </div>
+              <div class="empty-state__title">No prints listed</div>
+              <p class="empty-state__desc">List your work as limited editions with pricing, dimensions, and medium details. Collectors can reserve prints directly through your portfolio.</p>
+              <button class="btn btn--primary" type="button">Create Edition</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <hr class="comp-section__divider">
+
+      <!-- =============================================================
+           11. LOADING / SKELETON
+           ============================================================= -->
+      <section class="comp-section" id="loading">
+        <h2 class="comp-section__heading">Loading &amp; Skeleton</h2>
+        <p class="comp-section__desc">Skeleton blocks with shimmer animation for content and image placeholders. Designed to match the sharp geometry of the system.</p>
+
+        <div class="subsection">
+          <span class="subsection__label">Image Card Skeleton</span>
+          <div class="grid-3">
+            <div>
+              <div class="skeleton skeleton--image"></div>
+              <div style="padding-top: var(--space-4);">
+                <div class="skeleton skeleton--heading" style="margin-bottom: var(--space-2);"></div>
+                <div class="skeleton skeleton--text-short"></div>
+              </div>
+            </div>
+            <div>
+              <div class="skeleton skeleton--image"></div>
+              <div style="padding-top: var(--space-4);">
+                <div class="skeleton skeleton--heading" style="margin-bottom: var(--space-2);"></div>
+                <div class="skeleton skeleton--text-short"></div>
+              </div>
+            </div>
+            <div>
+              <div class="skeleton skeleton--image"></div>
+              <div style="padding-top: var(--space-4);">
+                <div class="skeleton skeleton--heading" style="margin-bottom: var(--space-2);"></div>
+                <div class="skeleton skeleton--text-short"></div>
+              </div>
+            </div>
+          </div>
+          <p class="spec-note">0 radius on image skeleton. Shimmer animation: 1.8s ease-in-out. Matches the card layout dimensions.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Hero Image Skeleton</span>
+          <div class="skeleton skeleton--image-wide"></div>
+          <p class="spec-note">Full-width, 16:9 aspect ratio. Same shimmer pattern applied.</p>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Text Content Skeleton</span>
+          <div style="max-width: 400px; border: 1px solid var(--border-subtle); padding: var(--space-6);">
+            <div class="stack" style="gap: var(--space-3);">
+              <div class="skeleton skeleton--text-short" style="width: 30%;"></div>
+              <div class="skeleton skeleton--heading"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text-short"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <span class="subsection__label">Spinners</span>
+          <div class="row row--lg">
+            <div class="spinner spinner--sm"></div>
+            <div class="spinner"></div>
+            <div class="spinner spinner--lg"></div>
+          </div>
+          <p class="spec-note">Ring spinner. Border-top colored with accent-500. 0.7s linear rotation. Three sizes: 14px, 20px, 28px.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================================================================
+         SCRIPTS
+         ================================================================ -->
+    <script>
+      // Theme toggle
+      (function () {
+        const toggle = document.querySelector('[data-theme-toggle]');
+        const root = document.documentElement;
+
+        function setTheme(dark) {
+          root.setAttribute('data-theme', dark ? 'dark' : 'light');
+          toggle.textContent = dark ? 'Light mode' : 'Dark mode';
+          try { localStorage.setItem('folio-theme', dark ? 'dark' : 'light'); } catch (e) {}
+        }
+
+        // Init from stored preference or system
+        const stored = localStorage.getItem('folio-theme');
+        if (stored) {
+          setTheme(stored === 'dark');
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          setTheme(true);
+        }
+
+        toggle.addEventListener('click', function () {
+          const isDark = root.getAttribute('data-theme') === 'dark';
+          setTheme(!isDark);
+        });
+      })();
+
+      // Active nav highlight
+      document.querySelectorAll('.topnav a').forEach(function (link) {
+        if (link.getAttribute('href') === 'components.html') {
+          link.setAttribute('aria-current', 'page');
+        }
+      });
+    </script>
+
+  </body>
+</html>

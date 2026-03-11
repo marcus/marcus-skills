@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folio Design System — Guidelines</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* =====================================================================
+       FOLIO DESIGN SYSTEM — Guidelines Page
+       Usage rules, voice & tone, composition, accessibility.
+       ===================================================================== */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-normal);
+      color: var(--text-primary);
+      background-color: var(--surface-primary);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  color var(--duration-slow) var(--ease-smooth);
+    }
+
+    /* =====================================================================
+       NAVIGATION
+       ===================================================================== */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      background-color: var(--surface-primary);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .nav__inner {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav__link {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: var(--tracking-wide);
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .nav__link:hover { color: var(--text-primary); }
+    .nav__link--active { color: var(--text-primary); }
+
+    .nav__right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .theme-toggle {
+      appearance: none;
+      border: 1px solid var(--border-default);
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-wider);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    /* =====================================================================
+       LAYOUT
+       ===================================================================== */
+
+    .container {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+
+    .container--narrow {
+      max-width: var(--max-width-content);
+    }
+
+    .section {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border-default);
+    }
+
+    .section__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-8);
+    }
+
+    .section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .section__desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 600px;
+    }
+
+    /* =====================================================================
+       HERO
+       ===================================================================== */
+
+    .hero {
+      padding-top: var(--space-32);
+      padding-bottom: var(--space-24);
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-16);
+      align-items: end;
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-light);
+      letter-spacing: -0.035em;
+      line-height: var(--leading-none);
+      color: var(--text-primary);
+    }
+
+    .hero__subtitle {
+      display: inline-block;
+      margin-top: var(--space-4);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .hero__body {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 520px;
+    }
+
+    /* =====================================================================
+       BRAND STRATEGY
+       ===================================================================== */
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      margin-top: var(--space-10);
+    }
+
+    .strategy-item__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-3);
+    }
+
+    .strategy-item__value {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+    }
+
+    .strategy-item__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-top: var(--space-2);
+    }
+
+    /* Personality spectrum */
+    .spectrum {
+      margin-top: var(--space-10);
+    }
+
+    .spectrum__row {
+      display: grid;
+      grid-template-columns: 100px 1fr 100px;
+      gap: var(--space-4);
+      align-items: center;
+      padding: var(--space-3) 0;
+    }
+
+    .spectrum__row + .spectrum__row {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .spectrum__label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      text-align: right;
+    }
+
+    .spectrum__label--right {
+      text-align: left;
+    }
+
+    .spectrum__track {
+      height: 4px;
+      background: var(--surface-tertiary);
+      border-radius: var(--radius-pill);
+      position: relative;
+    }
+
+    .spectrum__marker {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      background: var(--text-accent);
+      border-radius: 50%;
+      border: 2px solid var(--surface-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* =====================================================================
+       VOICE & TONE
+       ===================================================================== */
+
+    .voice-attributes {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+      margin-top: var(--space-10);
+    }
+
+    .voice-attr {
+      padding: var(--space-6) 0;
+      border-top: 2px solid var(--border-strong);
+    }
+
+    .voice-attr__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .voice-attr__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-4);
+    }
+
+    .voice-attr__boundary {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      line-height: var(--leading-normal);
+    }
+
+    .voice-attr__boundary strong {
+      font-weight: var(--weight-medium);
+      color: var(--text-secondary);
+    }
+
+    /* CTA examples */
+    .cta-examples {
+      margin-top: var(--space-10);
+    }
+
+    .cta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      padding: var(--space-4) 0;
+    }
+
+    .cta-row + .cta-row {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .cta-do, .cta-dont {
+      font-size: var(--text-sm);
+      padding: var(--space-3) var(--space-4);
+    }
+
+    .cta-do {
+      background: rgba(74, 140, 106, 0.06);
+      border: 1px solid rgba(74, 140, 106, 0.15);
+      color: var(--text-primary);
+    }
+
+    .cta-dont {
+      background: rgba(176, 74, 64, 0.06);
+      border: 1px solid rgba(176, 74, 64, 0.15);
+      color: var(--text-secondary);
+      text-decoration: line-through;
+    }
+
+    .cta-label {
+      display: block;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-1);
+    }
+
+    .cta-do .cta-label { color: var(--color-success); }
+    .cta-dont .cta-label { color: var(--color-danger); }
+
+    /* =====================================================================
+       DO / DON'T PAIRS
+       ===================================================================== */
+
+    .dodont-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      margin-top: var(--space-10);
+    }
+
+    .dodont-pair {
+      display: contents;
+    }
+
+    .dodont {
+      padding: var(--space-6);
+      border: 1px solid var(--border-default);
+    }
+
+    .dodont--do {
+      border-top: 3px solid var(--color-success);
+    }
+
+    .dodont--dont {
+      border-top: 3px solid var(--color-danger);
+    }
+
+    .dodont__label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .dodont--do .dodont__label { color: var(--color-success); }
+    .dodont--dont .dodont__label { color: var(--color-danger); }
+
+    .dodont__preview {
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+      margin-bottom: var(--space-4);
+      background: var(--surface-secondary);
+    }
+
+    .dodont__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* Preview helpers */
+    .preview-heading--light {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+    }
+
+    .preview-heading--bold {
+      font-family: var(--font-body);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .preview-label--good {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+    }
+
+    .preview-label--bad {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-secondary);
+    }
+
+    .preview-card--sharp {
+      width: 200px;
+      height: 80px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-default);
+    }
+
+    .preview-card--rounded {
+      width: 200px;
+      height: 80px;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: 16px;
+    }
+
+    .preview-spacing--generous {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-10);
+      width: 100%;
+    }
+
+    .preview-spacing--tight {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      width: 100%;
+    }
+
+    .preview-block {
+      height: 16px;
+      background: var(--surface-tertiary);
+      width: 100%;
+    }
+
+    .preview-accent--warm {
+      width: 48px;
+      height: 48px;
+      background: var(--color-accent-500);
+      border-radius: 50%;
+    }
+
+    .preview-accent--purple {
+      width: 48px;
+      height: 48px;
+      background: #7c3aed;
+      border-radius: 50%;
+    }
+
+    .preview-image--fullbleed {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(135deg, #242220, #383530, #1b1a18);
+    }
+
+    .preview-image--small {
+      width: 60%;
+      height: 80px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #242220, #383530, #1b1a18);
+      border-radius: 12px;
+    }
+
+    .preview-alert--good {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      background: rgba(74, 140, 106, 0.06);
+      border: 1px solid rgba(74, 140, 106, 0.15);
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      width: 100%;
+    }
+
+    .preview-alert--bad {
+      padding: var(--space-3) var(--space-4);
+      background: rgba(74, 140, 106, 0.06);
+      border-left: 4px solid var(--color-success);
+      border-radius: 8px;
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      width: 100%;
+    }
+
+    /* =====================================================================
+       TYPOGRAPHY GUIDELINES
+       ===================================================================== */
+
+    .type-rule {
+      padding: var(--space-8) 0;
+    }
+
+    .type-rule + .type-rule {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .type-rule__grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-8);
+    }
+
+    .type-rule__label {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      padding-top: var(--space-1);
+    }
+
+    .type-rule__content {
+      /* container */
+    }
+
+    .type-rule__example {
+      margin-bottom: var(--space-4);
+    }
+
+    .type-rule__note {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* =====================================================================
+       COLOR USAGE
+       ===================================================================== */
+
+    .color-rules {
+      margin-top: var(--space-10);
+    }
+
+    .color-rule {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: var(--space-4);
+      padding: var(--space-6) 0;
+      align-items: start;
+    }
+
+    .color-rule + .color-rule {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .color-swatch {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border-default);
+    }
+
+    .color-rule__name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .color-rule__usage {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* =====================================================================
+       SPACING & LAYOUT
+       ===================================================================== */
+
+    .density-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-8);
+    }
+
+    .density-table th {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 2px solid var(--border-strong);
+    }
+
+    .density-table td {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .density-table td:first-child {
+      font-weight: var(--weight-medium);
+      color: var(--text-primary);
+    }
+
+    /* Layout pattern cards */
+    .layout-patterns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-8);
+    }
+
+    .layout-pattern {
+      border: 1px solid var(--border-default);
+      padding: var(--space-6);
+    }
+
+    .layout-pattern__preview {
+      height: 140px;
+      background: var(--surface-secondary);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .layout-pattern__name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .layout-pattern__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* Preview layout helpers */
+    .lp-fullbleed {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(160deg, #242220 0%, #383530 50%, #1b1a18 100%);
+    }
+
+    .lp-contained {
+      width: 70%;
+      height: 80%;
+      background: linear-gradient(160deg, #242220 0%, #383530 50%, #1b1a18 100%);
+    }
+
+    .lp-masonry {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      width: 90%;
+      height: 90%;
+    }
+
+    .lp-masonry > div {
+      background: linear-gradient(160deg, #242220, #383530);
+    }
+
+    .lp-masonry > div:first-child {
+      grid-row: span 2;
+    }
+
+    /* =====================================================================
+       IMAGE PRESENTATION
+       ===================================================================== */
+
+    .image-guidelines {
+      margin-top: var(--space-10);
+    }
+
+    .image-rule {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--space-8);
+      padding: var(--space-8) 0;
+      align-items: start;
+    }
+
+    .image-rule + .image-rule {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .image-rule__preview {
+      aspect-ratio: 4 / 3;
+      background: linear-gradient(160deg, #242220, #504c46, #1b1a18);
+      position: relative;
+    }
+
+    .image-rule__content {
+      /* container */
+    }
+
+    .image-rule__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .image-rule__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    .image-rule__specs {
+      margin-top: var(--space-4);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--text-tertiary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* =====================================================================
+       MOTION GUIDELINES
+       ===================================================================== */
+
+    .motion-principles {
+      margin-top: var(--space-10);
+    }
+
+    .motion-principle {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: var(--space-6);
+      padding: var(--space-8) 0;
+    }
+
+    .motion-principle + .motion-principle {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .motion-principle__number {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-none);
+      color: var(--text-tertiary);
+    }
+
+    .motion-principle__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .motion-principle__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    /* =====================================================================
+       ACCESSIBILITY
+       ===================================================================== */
+
+    .contrast-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-8);
+    }
+
+    .contrast-table th {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 2px solid var(--border-strong);
+    }
+
+    .contrast-table td {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .contrast-pass {
+      color: var(--color-success);
+      font-weight: var(--weight-medium);
+    }
+
+    .contrast-fail {
+      color: var(--color-danger);
+      font-weight: var(--weight-medium);
+    }
+
+    .a11y-rules {
+      margin-top: var(--space-10);
+    }
+
+    .a11y-rule {
+      padding: var(--space-6) 0;
+    }
+
+    .a11y-rule + .a11y-rule {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .a11y-rule__name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .a11y-rule__desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    .a11y-rule__code {
+      margin-top: var(--space-3);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      background: var(--surface-secondary);
+      padding: var(--space-3) var(--space-4);
+      overflow-x: auto;
+    }
+
+    /* =====================================================================
+       RESPONSIVE
+       ===================================================================== */
+
+    @media (max-width: 768px) {
+      .hero__grid { grid-template-columns: 1fr; gap: var(--space-8); }
+      .strategy-grid { grid-template-columns: 1fr; }
+      .voice-attributes { grid-template-columns: 1fr 1fr; }
+      .dodont-grid { grid-template-columns: 1fr; }
+      .type-rule__grid { grid-template-columns: 1fr; }
+      .image-rule { grid-template-columns: 1fr; }
+      .layout-patterns { grid-template-columns: 1fr; }
+      .cta-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================================================================
+       NAVIGATION
+       =================================================================== -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <div style="display: flex; align-items: center; gap: var(--space-8);">
+        <a href="index.html" class="nav__logo">Folio</a>
+        <ul class="nav__links">
+          <li><a href="index.html" class="nav__link">Overview</a></li>
+          <li><a href="components.html" class="nav__link">Components</a></li>
+          <li><a href="guidelines.html" class="nav__link nav__link--active">Guidelines</a></li>
+          <li><a href="application.html" class="nav__link">Application</a></li>
+        </ul>
+      </div>
+      <div class="nav__right">
+        <button class="theme-toggle" onclick="toggleTheme()">Dark mode</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===================================================================
+       HERO
+       =================================================================== -->
+  <header class="hero container">
+    <div class="hero__grid">
+      <div>
+        <h1 class="hero__title">Guidelines</h1>
+        <span class="hero__subtitle">Usage & Governance</span>
+      </div>
+      <div>
+        <p class="hero__body">
+          Rules for applying the Folio system consistently. Brand strategy, voice and tone, typography, color, spacing, image presentation, motion, composition, and accessibility — each section traces decisions back to the founding principle: the photograph speaks first.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =================================================================
+         01 — BRAND STRATEGY
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">01 — Brand Strategy</div>
+        <h2 class="section__heading">Positioning & Personality</h2>
+        <p class="section__desc">
+          Folio exists for photographers and galleries who present work at the highest level. The system creates an environment where images command undivided attention — where the interface disappears into the wall.
+        </p>
+
+        <div class="strategy-grid">
+          <div>
+            <div class="strategy-item__label">Positioning</div>
+            <div class="strategy-item__value">Premium / Aspirational</div>
+            <p class="strategy-item__desc">
+              For photographers and galleries who present work at the highest level, Folio is the design system that frames images with the same care as a museum wall — unlike template-based portfolio builders which prioritize features over presentation. We earn this through restraint, precision, and deference to the image.
+            </p>
+          </div>
+          <div>
+            <div class="strategy-item__label">Audience</div>
+            <div class="strategy-item__value">Represented Photographers</div>
+            <p class="strategy-item__desc">
+              Photographers represented by agencies (Magnum, VII, Panos), exhibiting at galleries (Gagosian, Foam, White Cube), and publishing through editorial channels (Aperture, British Journal of Photography). The audience expects the quality of a printed monograph translated to screen.
+            </p>
+          </div>
+          <div>
+            <div class="strategy-item__label">Competitors</div>
+            <div class="strategy-item__value">Template Builders</div>
+            <p class="strategy-item__desc">
+              Squarespace, Format, PhotoShelter. These serve photographers adequately but their templates are recognizable, their typographic systems are limited, and they treat the image as one element among many rather than as the protagonist.
+            </p>
+          </div>
+          <div>
+            <div class="strategy-item__label">Differentiator</div>
+            <div class="strategy-item__value">Gallery-Grade Restraint</div>
+            <p class="strategy-item__desc">
+              Where competitors add features, Folio removes them. The differentiator is subtraction: fewer colors, lighter weights, sharper geometry, more silence. The system is opinionated about what it will not do.
+            </p>
+          </div>
+        </div>
+
+        <!-- Personality spectrum -->
+        <div class="spectrum">
+          <div style="font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-6);">Personality Spectrum</div>
+
+          <div class="spectrum__row">
+            <span class="spectrum__label">Formal</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 80%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Casual</span>
+          </div>
+          <div class="spectrum__row">
+            <span class="spectrum__label">Premium</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 90%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Accessible</span>
+          </div>
+          <div class="spectrum__row">
+            <span class="spectrum__label">Restrained</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 85%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Bold</span>
+          </div>
+          <div class="spectrum__row">
+            <span class="spectrum__label">Warm</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 55%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Cool</span>
+          </div>
+          <div class="spectrum__row">
+            <span class="spectrum__label">Serious</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 80%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Playful</span>
+          </div>
+          <div class="spectrum__row">
+            <span class="spectrum__label">Classic</span>
+            <div class="spectrum__track"><div class="spectrum__marker" style="left: 55%;"></div></div>
+            <span class="spectrum__label spectrum__label--right">Modern</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         02 — VOICE & TONE
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">02 — Voice & Tone</div>
+        <h2 class="section__heading">How Folio Speaks</h2>
+        <p class="section__desc">
+          Voice is constant. Tone shifts by context. In all cases, the language is subordinate to the image — it frames, it does not narrate.
+        </p>
+
+        <div class="voice-attributes">
+          <div class="voice-attr">
+            <div class="voice-attr__name">Measured</div>
+            <p class="voice-attr__desc">Every word earns its place. Sentences are short. Adjectives are rare. Let the work speak.</p>
+            <p class="voice-attr__boundary"><strong>Not:</strong> Curt, cold, or withholding information the viewer needs.</p>
+          </div>
+          <div class="voice-attr">
+            <div class="voice-attr__name">Authoritative</div>
+            <p class="voice-attr__desc">Statements, not suggestions. "View Exhibition" not "You might enjoy this show." Confidence without arrogance.</p>
+            <p class="voice-attr__boundary"><strong>Not:</strong> Dismissive, elitist, or gatekeeping.</p>
+          </div>
+          <div class="voice-attr">
+            <div class="voice-attr__name">Understated</div>
+            <p class="voice-attr__desc">No exclamation marks. No superlatives. Restraint in language mirrors restraint in design.</p>
+            <p class="voice-attr__boundary"><strong>Not:</strong> Monotone or so understated that it feels detached.</p>
+          </div>
+          <div class="voice-attr">
+            <div class="voice-attr__name">Precise</div>
+            <p class="voice-attr__desc">"Silver gelatin print, 40 x 50 cm, edition of 15" — not "beautiful large print." Specificity replaces decoration.</p>
+            <p class="voice-attr__boundary"><strong>Not:</strong> Jargon-heavy or inaccessible to non-specialists.</p>
+          </div>
+        </div>
+
+        <!-- CTA conventions -->
+        <div class="cta-examples">
+          <div style="font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-6);">CTA Conventions</div>
+
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              View Exhibition
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Check out this amazing show!
+            </div>
+          </div>
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              Acquire Print
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Buy Now
+            </div>
+          </div>
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              View Series
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Explore our collection!
+            </div>
+          </div>
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              Submit Inquiry
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Get in Touch
+            </div>
+          </div>
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              This image could not be loaded. Refresh the page.
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Oops! Something went wrong. Please try again later.
+            </div>
+          </div>
+          <div class="cta-row">
+            <div class="cta-do">
+              <span class="cta-label">Use</span>
+              No exhibitions currently scheduled. New shows are announced quarterly.
+            </div>
+            <div class="cta-dont">
+              <span class="cta-label">Avoid</span>
+              Nothing here yet! Check back soon for exciting updates.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         03 — TYPOGRAPHY
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">03 — Typography</div>
+        <h2 class="section__heading">Type Rules</h2>
+        <p class="section__desc">
+          Crimson Pro carries display text. Instrument Sans carries body, UI, and labels. The pairing creates editorial tension — a serif that commands attention paired with a sans that recedes.
+        </p>
+
+        <div style="margin-top: var(--space-10);">
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">Display Serif</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-display); font-size: var(--text-4xl); font-weight: var(--weight-light); letter-spacing: -0.03em; line-height: var(--leading-none); color: var(--text-primary);">Traces of Light</span>
+                </div>
+                <p class="type-rule__note">Crimson Pro, weight 300, for hero titles and artist names. Negative tracking (-0.03em). Line-height 1.0. The light weight at large scale creates quiet authority — the gallery convention.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">Section Heading</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: var(--weight-regular); letter-spacing: var(--tracking-snug); line-height: var(--leading-snug); color: var(--text-primary);">Selected Exhibitions</span>
+                </div>
+                <p class="type-rule__note">Crimson Pro, weight 400. Negative tracking (-0.015em). Used for section titles, card headings, project names within body context.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">Body Text</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-body); font-size: var(--text-base); font-weight: var(--weight-regular); line-height: var(--leading-relaxed); color: var(--text-secondary);">Elena Vasquez's work examines the threshold between public and private space in post-industrial landscapes. Her photographs are held in the collections of the Museum of Modern Art, Tate Modern, and the National Gallery of Art.</span>
+                </div>
+                <p class="type-rule__note">Instrument Sans, weight 400, 17px. Line-height 1.6. Secondary color for body text — the content supports the image, it does not compete.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">ALL-CAPS Label</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-body); font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-tertiary);">Silver Gelatin Print &middot; 40 x 50 cm &middot; Edition of 15</span>
+                </div>
+                <p class="type-rule__note">Instrument Sans, weight 500, 12px, tracking 0.1em, uppercase. The gallery signature — used for metadata, section labels, navigation, medium descriptions, dates. This is the most distinctive typographic move in the system.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">Caption / Italic</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-display); font-size: var(--text-sm); font-weight: var(--weight-regular); font-style: italic; color: var(--text-secondary); line-height: var(--leading-relaxed);">Untitled #7, from the series The Quiet Hour, 2024</span>
+                </div>
+                <p class="type-rule__note">Crimson Pro italic, weight 400, 14px. For image captions, exhibition subtitles, pull quotes. The italic serif creates a distinct voice from the sans-serif body without requiring another weight or color.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="type-rule">
+            <div class="type-rule__grid">
+              <div class="type-rule__label">Monospace</div>
+              <div class="type-rule__content">
+                <div class="type-rule__example">
+                  <span style="font-family: var(--font-mono); font-size: var(--text-xs); font-weight: var(--weight-regular); color: var(--text-tertiary); letter-spacing: var(--tracking-wide);">2024-03-14 / INV-0847 / AP-ED15</span>
+                </div>
+                <p class="type-rule__note">JetBrains Mono, 12px. For technical metadata: dates, inventory numbers, edition identifiers, EXIF data. Creates a utilitarian, archival feel that separates administrative data from editorial content.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         04 — COLOR USAGE
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">04 — Color Usage</div>
+        <h2 class="section__heading">The Near-Achromatic Principle</h2>
+        <p class="section__desc">
+          Photography provides the color. The interface stays neutral. The warm off-white canvas and near-black text create a gallery wall — a surface that enhances the image rather than competing with it.
+        </p>
+
+        <div class="color-rules">
+          <div class="color-rule">
+            <div class="color-swatch" style="background: var(--color-accent-500);"></div>
+            <div>
+              <div class="color-rule__name">Accent: Terracotta</div>
+              <p class="color-rule__usage">Used only for: text links, focus rings, active navigation states, primary CTA fill. Never as decoration, background tint (except alerts), or border color on structural elements. The accent appears sparingly — if more than 5% of a page's surface area is accent-colored, reduce it.</p>
+            </div>
+          </div>
+          <div class="color-rule">
+            <div class="color-swatch" style="background: var(--color-white);"></div>
+            <div>
+              <div class="color-rule__name">Canvas: Warm Off-White</div>
+              <p class="color-rule__usage">The primary surface. Not pure #ffffff — the warm undertone (#f4f2ed) references archival paper and gallery walls. Pure white appears only on elevated surfaces (cards, modals) to create subtle depth without shadows.</p>
+            </div>
+          </div>
+          <div class="color-rule">
+            <div class="color-swatch" style="background: var(--color-gray-900);"></div>
+            <div>
+              <div class="color-rule__name">Text: Near-Black</div>
+              <p class="color-rule__usage">Primary text at #141311. Not pure black — the warm undertone matches the canvas. Secondary text at #6b665e for body content, tertiary at #8a857b for metadata and labels. The text hierarchy uses value (lightness) exclusively, never color.</p>
+            </div>
+          </div>
+          <div class="color-rule">
+            <div class="color-swatch" style="background: transparent; border: 1px solid var(--border-default); position: relative;"><div style="position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 4px, var(--surface-tertiary) 4px, var(--surface-tertiary) 5px);"></div></div>
+            <div>
+              <div class="color-rule__name">Borders: Opacity-Based</div>
+              <p class="color-rule__usage">Borders use rgba() at 4-14% opacity, never solid hex values. This allows them to adapt to any surface. Premium photography sites (Gagosian, David Zwirner) use whitespace instead of borders wherever possible — a border is a last resort.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-10); padding: var(--space-6); background: var(--surface-secondary); border: 1px solid var(--border-default);">
+          <div style="font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-tertiary); margin-bottom: var(--space-4);">Dark Mode Rationale</div>
+          <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: var(--leading-relaxed); max-width: 640px;">
+            Dark mode uses near-black (#0a0a09) — not pure #000000. The warm off-white text (#e8e5df) prevents the harshness of white-on-black. Photographs often display better against dark backgrounds (the spotlight effect), making dark mode the preferred viewing context for portfolio pages. However, Folio does not auto-enable dark mode — the viewer controls the experience.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         05 — SPACING & LAYOUT
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">05 — Spacing & Layout</div>
+        <h2 class="section__heading">Generous Silence</h2>
+        <p class="section__desc">
+          White space is the wall that gives the print room to breathe. Section spacing starts at 96px and scales to 160px for exhibition-level presentation. This is the single biggest differentiator between a gallery website and a template.
+        </p>
+
+        <!-- Density tiers -->
+        <table class="density-table">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th>Context</th>
+              <th>Section Spacing</th>
+              <th>Card Padding</th>
+              <th>Body Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Exhibition</td>
+              <td>Portfolio pages, hero sections, landing pages</td>
+              <td>160px</td>
+              <td>32px</td>
+              <td>19px</td>
+            </tr>
+            <tr>
+              <td>Standard</td>
+              <td>About pages, exhibition lists, publication credits</td>
+              <td>96px</td>
+              <td>24px</td>
+              <td>17px</td>
+            </tr>
+            <tr>
+              <td>Archive</td>
+              <td>Print inventory, edition tables, search results</td>
+              <td>64px</td>
+              <td>16px</td>
+              <td>14px</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Layout patterns -->
+        <div style="font-size: var(--text-xs); font-weight: var(--weight-medium); letter-spacing: var(--tracking-widest); text-transform: uppercase; color: var(--text-tertiary); margin-top: var(--space-16); margin-bottom: var(--space-6);">Photography Layout Patterns</div>
+
+        <div class="layout-patterns">
+          <div class="layout-pattern">
+            <div class="layout-pattern__preview">
+              <div class="lp-fullbleed"></div>
+            </div>
+            <div class="layout-pattern__name">Full-Bleed</div>
+            <p class="layout-pattern__desc">Image spans the full viewport width. No margins, no padding. Used for hero images, featured work, and immersive viewing. The image IS the section.</p>
+          </div>
+          <div class="layout-pattern">
+            <div class="layout-pattern__preview">
+              <div class="lp-contained"></div>
+            </div>
+            <div class="layout-pattern__name">Contained</div>
+            <p class="layout-pattern__desc">Image sits within the content column with generous margins. Used for editorial context, inline images within text, and when the image needs the framing of surrounding whitespace.</p>
+          </div>
+          <div class="layout-pattern">
+            <div class="layout-pattern__preview">
+              <div class="lp-masonry">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <div class="layout-pattern__name">Asymmetric Grid</div>
+            <p class="layout-pattern__desc">Variable-size images in a masonry or asymmetric grid. One image larger than the others. Used for project overviews and selected work sections. Never uniform thumbnails.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         06 — IMAGE PRESENTATION
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">06 — Image Presentation</div>
+        <h2 class="section__heading">Framing the Work</h2>
+        <p class="section__desc">
+          Every decision about image presentation serves one goal: the photograph commands the viewer's full attention. The interface around it is invisible.
+        </p>
+
+        <div class="image-guidelines">
+          <div class="image-rule">
+            <div class="image-rule__preview"></div>
+            <div class="image-rule__content">
+              <div class="image-rule__name">Aspect Ratios</div>
+              <p class="image-rule__desc">Preserve the photographer's original aspect ratio whenever possible. Do not force-crop to fit a grid. If a uniform grid is required, use 3:2 for landscape and 2:3 for portrait — these match standard photographic paper sizes.</p>
+              <div class="image-rule__specs">
+                Hero: original aspect or 16:9 / 21:9<br>
+                Card: 3:2 (landscape) or 2:3 (portrait)<br>
+                Thumbnail: 1:1 (square crop, face-detect focal point)<br>
+                Open Graph: 1.91:1
+              </div>
+            </div>
+          </div>
+
+          <div class="image-rule">
+            <div class="image-rule__preview" style="position: relative;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: var(--space-3) var(--space-4); background: linear-gradient(transparent, rgba(10,10,9,0.7));">
+                <span style="font-family: var(--font-display); font-size: var(--text-sm); font-style: italic; color: #e8e5df;">Untitled #7, 2024</span>
+              </div>
+            </div>
+            <div class="image-rule__content">
+              <div class="image-rule__name">Captions</div>
+              <p class="image-rule__desc">Captions appear below the image in Crimson Pro italic, 14px, secondary color. For gallery/lightbox views, captions overlay the bottom edge with a subtle gradient scrim. Captions are never bold, never uppercase, never larger than 14px.</p>
+              <div class="image-rule__specs">
+                Font: Crimson Pro italic, 14px<br>
+                Color: --text-secondary<br>
+                Format: Title, Year / Medium / Dimensions / Edition
+              </div>
+            </div>
+          </div>
+
+          <div class="image-rule">
+            <div class="image-rule__preview" style="transition: filter var(--duration-normal) var(--ease-out); cursor: pointer;" onmouseenter="this.style.filter='brightness(0.82)'" onmouseleave="this.style.filter='brightness(1)'"></div>
+            <div class="image-rule__content">
+              <div class="image-rule__name">Hover Behavior</div>
+              <p class="image-rule__desc">Interactive images dim on hover — filter: brightness(0.82). This is the Magnum Photos convention. No scale, no shadow, no overlay text on hover for gallery images. The dimming signals interactivity while preserving the image's integrity.</p>
+              <div class="image-rule__specs">
+                Hover: filter: brightness(0.82)<br>
+                Duration: var(--duration-normal) / 280ms<br>
+                Easing: var(--ease-out)<br>
+                Never: scale, shadow, color overlay
+              </div>
+            </div>
+          </div>
+
+          <div class="image-rule">
+            <div class="image-rule__preview" style="background: var(--color-black); display: flex; align-items: center; justify-content: center;">
+              <div style="width: 70%; height: 80%; background: linear-gradient(160deg, #383530, #504c46, #242220);"></div>
+            </div>
+            <div class="image-rule__content">
+              <div class="image-rule__name">Lightbox</div>
+              <p class="image-rule__desc">Full-screen viewing uses a near-black background (#0a0a09). The image is centered with generous padding (minimum 48px from viewport edges). Navigation arrows are minimal — thin strokes, 50% opacity, visible on hover only. Close button top-right.</p>
+              <div class="image-rule__specs">
+                Background: var(--color-black)<br>
+                Image padding: 48px minimum<br>
+                Controls: 50% opacity, visible on hover<br>
+                Transition: fade 280ms var(--ease-out)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         07 — MOTION
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">07 — Motion</div>
+        <h2 class="section__heading">Restrained Movement</h2>
+        <p class="section__desc">
+          Photography is still. The interface respects that stillness. Motion exists only to confirm interaction, guide attention, or smooth transitions. It never decorates.
+        </p>
+
+        <div class="motion-principles">
+          <div class="motion-principle">
+            <div class="motion-principle__number">01</div>
+            <div>
+              <div class="motion-principle__name">No Parallax, No Scroll-Jacking</div>
+              <p class="motion-principle__desc">The viewer controls the pace. Scroll-triggered animations, parallax layers, and scroll-jacked sections break the monograph metaphor. The page scrolls naturally. Images are encountered, not performed.</p>
+            </div>
+          </div>
+          <div class="motion-principle">
+            <div class="motion-principle__number">02</div>
+            <div>
+              <div class="motion-principle__name">Hover: Brightness Only</div>
+              <p class="motion-principle__desc">Interactive images dim to brightness(0.82) on hover. Buttons shift color. Links shift color. No scale transforms on images. Scale(1.015) is acceptable on non-image interactive elements only. Duration: 150ms.</p>
+            </div>
+          </div>
+          <div class="motion-principle">
+            <div class="motion-principle__number">03</div>
+            <div>
+              <div class="motion-principle__name">Transitions: Fade, Never Slide</div>
+              <p class="motion-principle__desc">Page transitions use opacity fade at 280ms with var(--ease-out). No sliding, no morphing, no shared-element transitions. The cut between views should feel like turning a page in a monograph — direct, not cinematic.</p>
+            </div>
+          </div>
+          <div class="motion-principle">
+            <div class="motion-principle__number">04</div>
+            <div>
+              <div class="motion-principle__name">Stagger: 60ms for Grids</div>
+              <p class="motion-principle__desc">When a grid of images enters the viewport, stagger each item by 60ms. Use opacity only (0 to 1), no translateY. The grid builds left-to-right, top-to-bottom. Maximum 6 items staggered — the rest appear immediately.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         08 — COMPOSITION RULES
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">08 — Composition</div>
+        <h2 class="section__heading">Do and Do Not</h2>
+        <p class="section__desc">
+          These rules codify the system's visual logic. Each pair contrasts the Folio approach with common template or AI-generated patterns.
+        </p>
+
+        <div class="dodont-grid">
+          <!-- Pair 1: Heading weight -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <span class="preview-heading--light">The Quiet Hour</span>
+            </div>
+            <p class="dodont__desc">Use light or regular weight serif for display headings. Hierarchy through size and tracking, not boldness.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <span class="preview-heading--bold">The Quiet Hour</span>
+            </div>
+            <p class="dodont__desc">Use bold sans-serif headings. Weight 600-700 reads as template or AI-generated. It competes with the image.</p>
+          </div>
+
+          <!-- Pair 2: Labels -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <span class="preview-label--good">Silver Gelatin Print &middot; Edition of 15</span>
+            </div>
+            <p class="dodont__desc">Metadata in ALL-CAPS with wide tracking (0.1em). Small, muted, informational. The gallery convention.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <span class="preview-label--bad">Silver Gelatin Print - Edition of 15</span>
+            </div>
+            <p class="dodont__desc">Use sentence case at body weight for metadata. It blends into the surrounding text and loses its structural role.</p>
+          </div>
+
+          <!-- Pair 3: Containers -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div class="preview-card--sharp"></div>
+            </div>
+            <p class="dodont__desc">Sharp containers with 0px border-radius. The rectangle respects the frame of the photograph.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div class="preview-card--rounded"></div>
+            </div>
+            <p class="dodont__desc">Round containers with 12-16px radius. Rounded corners signal "friendly app" — not "gallery."</p>
+          </div>
+
+          <!-- Pair 4: Accent color -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div class="preview-accent--warm"></div>
+            </div>
+            <p class="dodont__desc">One warm accent (terracotta). Used sparingly for links, focus rings, and primary CTAs only.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div class="preview-accent--purple"></div>
+            </div>
+            <p class="dodont__desc">Purple, blue, or multi-color accent palettes. Purple is AI's current default. Multiple accents compete with photographs.</p>
+          </div>
+
+          <!-- Pair 5: Image presentation -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div class="preview-image--fullbleed"></div>
+            </div>
+            <p class="dodont__desc">Full-bleed or near-full-bleed images with generous surrounding whitespace. The image dominates.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div class="preview-image--small"></div>
+            </div>
+            <p class="dodont__desc">Small images with rounded corners in a uniform grid. The thumbnail grid is a stock photo search, not a portfolio.</p>
+          </div>
+
+          <!-- Pair 6: Alerts -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div class="preview-alert--good">
+                <span style="flex-shrink: 0;">&#10003;</span>
+                <span>Print reservation confirmed for Untitled #7.</span>
+              </div>
+            </div>
+            <p class="dodont__desc">Alerts with icon prefix, background tint, and uniform thin border on all sides.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div class="preview-alert--bad">
+                Print reservation confirmed for Untitled #7.
+              </div>
+            </div>
+            <p class="dodont__desc">Thick left-border callouts with rounded corners. The most recognizable AI-generated design pattern.</p>
+          </div>
+
+          <!-- Pair 7: Whitespace -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div class="preview-spacing--generous">
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+              </div>
+            </div>
+            <p class="dodont__desc">Generous vertical rhythm between sections (96-160px). The whitespace is the gallery wall.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div class="preview-spacing--tight">
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+                <div class="preview-block"></div>
+              </div>
+            </div>
+            <p class="dodont__desc">Tight section spacing (32-48px). Compressed layouts feel like feeds, not exhibitions.</p>
+          </div>
+
+          <!-- Pair 8: Motion -->
+          <div class="dodont dodont--do">
+            <div class="dodont__label">Do</div>
+            <div class="dodont__preview">
+              <div style="font-size: var(--text-sm); color: var(--text-secondary); text-align: center;">
+                <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-bottom: var(--space-2);">filter: brightness(0.82)</div>
+                Subtle dimming on hover
+              </div>
+            </div>
+            <p class="dodont__desc">Brightness dimming on image hover. 150-280ms, custom cubic-bezier. Felt but not performed.</p>
+          </div>
+          <div class="dodont dodont--dont">
+            <div class="dodont__label">Do Not</div>
+            <div class="dodont__preview">
+              <div style="font-size: var(--text-sm); color: var(--text-secondary); text-align: center;">
+                <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-tertiary); margin-bottom: var(--space-2);">transform: scale(1.05)</div>
+                Zoom, bounce, or color overlay
+              </div>
+            </div>
+            <p class="dodont__desc">Scale transforms on images, color overlays on hover, or parallax scrolling. These are template conventions, not gallery conventions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================
+         09 — ACCESSIBILITY
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section__label">09 — Accessibility</div>
+        <h2 class="section__heading">Inclusive by Default</h2>
+        <p class="section__desc">
+          Accessibility is structural, not cosmetic. Every contrast ratio, keyboard path, and screen reader annotation is documented and tested. Restraint in color makes accessibility easier — the near-achromatic palette reduces color-dependent information.
+        </p>
+
+        <!-- Contrast table -->
+        <table class="contrast-table">
+          <thead>
+            <tr>
+              <th>Pairing</th>
+              <th>Foreground</th>
+              <th>Background</th>
+              <th>Ratio</th>
+              <th>WCAG AA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Primary text on canvas</td>
+              <td>#141311</td>
+              <td>#f4f2ed</td>
+              <td>14.8:1</td>
+              <td><span class="contrast-pass">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Secondary text on canvas</td>
+              <td>#6b665e</td>
+              <td>#f4f2ed</td>
+              <td>5.2:1</td>
+              <td><span class="contrast-pass">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Tertiary text on canvas</td>
+              <td>#8a857b</td>
+              <td>#f4f2ed</td>
+              <td>3.5:1</td>
+              <td><span class="contrast-pass">Pass (large text)</span></td>
+            </tr>
+            <tr>
+              <td>Accent text on canvas</td>
+              <td>#845830</td>
+              <td>#f4f2ed</td>
+              <td>5.6:1</td>
+              <td><span class="contrast-pass">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Light text on dark (dark mode)</td>
+              <td>#e8e5df</td>
+              <td>#0a0a09</td>
+              <td>16.1:1</td>
+              <td><span class="contrast-pass">Pass</span></td>
+            </tr>
+            <tr>
+              <td>Secondary text on dark</td>
+              <td>#8a857b</td>
+              <td>#0a0a09</td>
+              <td>4.8:1</td>
+              <td><span class="contrast-pass">Pass</span></td>
+            </tr>
+            <tr>
+              <td>White text on accent</td>
+              <td>#ffffff</td>
+              <td>#a06e3c</td>
+              <td>3.8:1</td>
+              <td><span class="contrast-pass">Pass (large text)</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="a11y-rules">
+          <div class="a11y-rule">
+            <div class="a11y-rule__name">Focus Rings</div>
+            <p class="a11y-rule__desc">2px solid accent color with 2px offset. Focus rings appear on keyboard navigation (:focus-visible), not on mouse click. The ring uses var(--color-accent-500) on light backgrounds and var(--color-accent-300) on dark.</p>
+            <div class="a11y-rule__code">outline: 2px solid var(--color-accent-500);<br>outline-offset: 2px;</div>
+          </div>
+          <div class="a11y-rule">
+            <div class="a11y-rule__name">Gallery Keyboard Navigation</div>
+            <p class="a11y-rule__desc">Arrow keys advance through images in lightbox view. Escape closes the lightbox. Tab moves between controls (previous, next, close, caption). The lightbox traps focus — tab does not escape to the page behind.</p>
+            <div class="a11y-rule__code">role="dialog" aria-modal="true" aria-label="Image viewer"<br>Previous: aria-label="Previous image"<br>Next: aria-label="Next image"</div>
+          </div>
+          <div class="a11y-rule">
+            <div class="a11y-rule__name">Image Alt Text</div>
+            <p class="a11y-rule__desc">Describe composition and subject, not aesthetic judgment. "A woman standing at a rain-covered window, profile view, natural light" — not "Beautiful portrait photograph." Include the title and year if available: alt="Untitled #7, 2024. A woman standing at a rain-covered window."</p>
+          </div>
+          <div class="a11y-rule">
+            <div class="a11y-rule__name">Reduced Motion</div>
+            <p class="a11y-rule__desc">When prefers-reduced-motion is active: no stagger on grid reveals (all items appear simultaneously), no shimmer on skeletons (static gray), no hover brightness transition (immediate state change). Opacity fades are allowed at reduced duration (60ms).</p>
+            <div class="a11y-rule__code">@media (prefers-reduced-motion: reduce) {<br>&nbsp;&nbsp;*, *::before, *::after {<br>&nbsp;&nbsp;&nbsp;&nbsp;animation-duration: 0.01ms !important;<br>&nbsp;&nbsp;&nbsp;&nbsp;transition-duration: 0.01ms !important;<br>&nbsp;&nbsp;}<br>}</div>
+          </div>
+          <div class="a11y-rule">
+            <div class="a11y-rule__name">Color Independence</div>
+            <p class="a11y-rule__desc">No information is conveyed by color alone. Status badges include text labels. Error states include icon + text, not just a red border. Links within body text use underline-on-hover in addition to accent color. The near-achromatic palette makes this straightforward — the system relies on typography, spacing, and icons rather than color to create hierarchy.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       FOOTER
+       =================================================================== -->
+  <footer style="padding: var(--space-16) 0; border-top: 1px solid var(--border-default);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <div>
+          <span style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--weight-regular); letter-spacing: var(--tracking-snug); color: var(--text-primary);">Folio</span>
+          <span style="font-size: var(--text-sm); color: var(--text-tertiary); margin-left: var(--space-4);">Design System for Photography</span>
+        </div>
+        <span style="font-size: var(--text-xs); color: var(--text-tertiary); letter-spacing: var(--tracking-wider);">Where the image speaks first</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================
+       THEME TOGGLE
+       =================================================================== -->
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.querySelector('.theme-toggle').textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+      localStorage.setItem('folio-theme', next);
+    }
+
+    // Restore saved theme
+    const saved = localStorage.getItem('folio-theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+      document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.querySelector('.theme-toggle');
+        if (btn) btn.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode';
+      });
+    }
+  </script>
+
+</body>
+</html>

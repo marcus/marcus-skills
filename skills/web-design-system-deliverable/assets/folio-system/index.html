@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Folio Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <style>
+    /* =======================================================================
+       FOLIO DESIGN SYSTEM — Overview Page Styles
+       Where the image speaks first.
+       ======================================================================= */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      line-height: var(--leading-relaxed);
+      color: var(--text-primary);
+      background-color: var(--surface-primary);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  color var(--duration-slow) var(--ease-smooth);
+    }
+
+    /* =======================================================================
+       NAVIGATION
+       ======================================================================= */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-nav);
+      background-color: var(--surface-primary);
+      border-bottom: 1px solid var(--border-default);
+      backdrop-filter: blur(12px);
+      transition: background-color var(--duration-slow) var(--ease-smooth),
+                  border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .nav__inner {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__left {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-snug);
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .nav__link {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      color: var(--text-tertiary);
+      text-decoration: none;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .nav__link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav__link--active {
+      color: var(--text-primary);
+    }
+
+    .nav__right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .theme-toggle {
+      appearance: none;
+      border: 1px solid var(--border-default);
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-none);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-out);
+    }
+
+    .theme-toggle:hover {
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    /* =======================================================================
+       LAYOUT
+       ======================================================================= */
+
+    .container {
+      max-width: var(--max-width-wide);
+      margin: 0 auto;
+      padding-left: var(--space-6);
+      padding-right: var(--space-6);
+    }
+
+    .section {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border-default);
+    }
+
+    .section__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-8);
+    }
+
+    .section__heading {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .section__desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 600px;
+    }
+
+    /* =======================================================================
+       HERO — Asymmetric editorial layout
+       ======================================================================= */
+
+    .hero {
+      padding-top: var(--space-32);
+      padding-bottom: var(--space-24);
+    }
+
+    .hero__grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-16);
+      align-items: end;
+    }
+
+    .hero__left {
+      /* Title column */
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-light);
+      letter-spacing: -0.035em;
+      line-height: var(--leading-none);
+      color: var(--text-primary);
+    }
+
+    .hero__version {
+      display: inline-block;
+      margin-top: var(--space-4);
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .hero__right {
+      max-width: 560px;
+    }
+
+    .hero__tagline {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-light);
+      font-style: italic;
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+    }
+
+    .hero__body {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 480px;
+    }
+
+    /* =======================================================================
+       BRAND THESIS
+       ======================================================================= */
+
+    .thesis {
+      padding-top: var(--space-24);
+      padding-bottom: var(--space-24);
+      border-top: 1px solid var(--border-default);
+    }
+
+    .thesis__text {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      max-width: 720px;
+    }
+
+    .thesis__text span {
+      color: var(--text-secondary);
+    }
+
+    /* =======================================================================
+       DESIGN PRINCIPLES — Numbered inline sections
+       ======================================================================= */
+
+    .principles {
+      /* Typography does the work. No card wrappers. */
+    }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: var(--space-6);
+      padding: var(--space-10) 0;
+    }
+
+    .principle + .principle {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .principle__number {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      line-height: var(--leading-none);
+      color: var(--text-tertiary);
+      padding-top: var(--space-1);
+    }
+
+    .principle__content {
+      padding-top: 0;
+    }
+
+    .principle__name {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .principle__desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      max-width: 560px;
+    }
+
+    /* =======================================================================
+       COLOR PALETTE — Horizontal strip layout
+       ======================================================================= */
+
+    .color-group {
+      margin-bottom: var(--space-12);
+    }
+
+    .color-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .color-group__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .color-strip {
+      display: flex;
+      gap: 0;
+      border-radius: var(--radius-none);
+      overflow: hidden;
+      border: 1px solid var(--border-default);
+    }
+
+    .color-swatch {
+      flex: 1;
+      padding: var(--space-10) var(--space-3) var(--space-3);
+      min-width: 0;
+      position: relative;
+    }
+
+    .color-swatch__name {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      margin-bottom: var(--space-1);
+      opacity: 0.85;
+    }
+
+    .color-swatch__hex {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0;
+      opacity: 0.65;
+    }
+
+    .color-swatch__contrast {
+      font-family: var(--font-mono);
+      font-size: 0.625rem;
+      opacity: 0.55;
+      margin-top: var(--space-1);
+    }
+
+    /* Functional color strip */
+    .color-strip--functional {
+      display: flex;
+      gap: var(--space-4);
+      border: none;
+      border-radius: 0;
+    }
+
+    .color-strip--functional .color-swatch {
+      flex: none;
+      width: 120px;
+      border-radius: var(--radius-none);
+      border: 1px solid var(--border-default);
+    }
+
+    /* =======================================================================
+       TYPOGRAPHY SPECIMEN
+       ======================================================================= */
+
+    .type-specimen {
+      margin-bottom: var(--space-12);
+    }
+
+    .type-specimen:last-child {
+      margin-bottom: 0;
+    }
+
+    .type-specimen__label {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .type-sample {
+      margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+
+    .type-sample__text {
+      color: var(--text-primary);
+      min-width: 0;
+    }
+
+    .type-sample__meta {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      letter-spacing: 0;
+    }
+
+    /* Display — Crimson Pro */
+    .type-sample--display-5xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-5xl);
+      font-weight: var(--weight-light);
+      letter-spacing: -0.035em;
+      line-height: var(--leading-none);
+    }
+
+    .type-sample--display-4xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-light);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+    }
+
+    .type-sample--display-3xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-tight);
+      line-height: var(--leading-tight);
+    }
+
+    .type-sample--display-2xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+    }
+
+    .type-sample--display-xl .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+    }
+
+    .type-sample--display-italic .type-sample__text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-light);
+      font-style: italic;
+      letter-spacing: var(--tracking-snug);
+      line-height: var(--leading-snug);
+    }
+
+    /* Body — Instrument Sans */
+    .type-sample--body-lg .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-normal);
+      line-height: var(--leading-relaxed);
+    }
+
+    .type-sample--body-base .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-normal);
+      line-height: var(--leading-normal);
+    }
+
+    .type-sample--body-sm .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      letter-spacing: var(--tracking-wide);
+      line-height: var(--leading-normal);
+    }
+
+    .type-sample--label .type-sample__text {
+      font-family: var(--font-body);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      letter-spacing: var(--tracking-widest);
+      line-height: var(--leading-normal);
+      text-transform: uppercase;
+    }
+
+    /* =======================================================================
+       SPACING SCALE
+       ======================================================================= */
+
+    .spacing-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-bottom: var(--space-12);
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .spacing-item__label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      min-width: 100px;
+      letter-spacing: 0;
+    }
+
+    .spacing-item__bar {
+      height: 20px;
+      background-color: var(--color-accent-200);
+      border-radius: var(--radius-none);
+      transition: background-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    [data-theme="dark"] .spacing-item__bar {
+      background-color: var(--color-accent-800);
+    }
+
+    .spacing-item__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    /* =======================================================================
+       MOTION
+       ======================================================================= */
+
+    .motion-curves {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-12);
+    }
+
+    .motion-curve {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-none);
+      padding: var(--space-5);
+      transition: border-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .motion-curve__preview {
+      height: 80px;
+      position: relative;
+      margin-bottom: var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .motion-curve__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-accent-500);
+      position: absolute;
+      bottom: var(--space-3);
+      left: 0;
+    }
+
+    .motion-curve:hover .motion-curve__dot {
+      left: calc(100% - 10px);
+    }
+
+    .motion-curve:nth-child(1) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-out);
+    }
+
+    .motion-curve:nth-child(2) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-in-out);
+    }
+
+    .motion-curve:nth-child(3) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-spring);
+    }
+
+    .motion-curve:nth-child(4) .motion-curve__dot {
+      transition: left var(--duration-normal) var(--ease-smooth);
+    }
+
+    .motion-curve__name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-regular);
+      color: var(--text-primary);
+      margin-bottom: var(--space-1);
+    }
+
+    .motion-curve__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    .motion-durations {
+      margin-bottom: var(--space-12);
+    }
+
+    .duration-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-4);
+    }
+
+    .duration-item {
+      text-align: left;
+    }
+
+    .duration-item__bar-wrap {
+      height: 4px;
+      background: var(--surface-tertiary);
+      border-radius: 0;
+      margin-bottom: var(--space-3);
+      overflow: hidden;
+      transition: background-color var(--duration-slow) var(--ease-smooth);
+    }
+
+    .duration-item__bar {
+      height: 100%;
+      background: var(--color-accent-400);
+      border-radius: 0;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform var(--duration-slow) var(--ease-out);
+    }
+
+    .duration-item:hover .duration-item__bar {
+      transform: scaleX(1);
+    }
+
+    .duration-item__name {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-1);
+    }
+
+    .duration-item__value {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+
+    /* =======================================================================
+       FOOTER
+       ======================================================================= */
+
+    .footer {
+      padding: var(--space-12) 0;
+      border-top: 1px solid var(--border-default);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer__text {
+      font-size: var(--text-xs);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .footer__mark {
+      font-family: var(--font-display);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-light);
+      color: var(--text-tertiary);
+      letter-spacing: var(--tracking-snug);
+    }
+
+    /* =======================================================================
+       RESPONSIVE
+       ======================================================================= */
+
+    @media (max-width: 768px) {
+      .hero__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
+      }
+
+      .hero__title {
+        font-size: var(--text-4xl);
+      }
+
+      .principle {
+        grid-template-columns: 40px 1fr;
+      }
+
+      .motion-curves {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .duration-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .type-sample {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+
+      .type-sample__meta {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <div class="nav__left">
+        <a href="index.html" class="nav__logo">Folio</a>
+        <ul class="nav__links">
+          <li><a href="index.html" class="nav__link nav__link--active" aria-current="page">Overview</a></li>
+          <li><a href="components.html" class="nav__link">Components</a></li>
+          <li><a href="guidelines.html" class="nav__link">Guidelines</a></li>
+          <li><a href="application.html" class="nav__link">Application</a></li>
+        </ul>
+      </div>
+      <div class="nav__right">
+        <button class="theme-toggle" id="themeToggle">Dark mode</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__grid">
+        <div class="hero__left">
+          <h1 class="hero__title">Folio</h1>
+          <span class="hero__version">v1.0 Design System</span>
+        </div>
+        <div class="hero__right">
+          <p class="hero__tagline">Where the image speaks first.</p>
+          <p class="hero__body">Folio is the design language for high-end photography portfolios. It draws from the visual conventions of Gagosian, Magnum Photos, and Fotografiska &mdash; spaces where the photograph is always the protagonist, and the interface exists only to frame it. Every token, every ratio, every omission serves that hierarchy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Thesis -->
+  <section class="thesis">
+    <div class="container">
+      <span class="section__label">Thesis</span>
+      <p class="thesis__text">Photography portfolios fail when the design competes with the work. Folio inverts the typical relationship between interface and content. <span>The UI is the wall paint, the frame, the negative space between prints. It does not interpret. It does not editorialize. It recedes &mdash; and in receding, it elevates.</span></p>
+    </div>
+  </section>
+
+  <!-- Design Principles -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Principles</span>
+      <div class="principles">
+
+        <div class="principle">
+          <div class="principle__number">01</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Image First</h3>
+            <p class="principle__desc">Every design decision defers to the photograph. Typography, color, and UI exist to frame, not compete. If a visual element draws the eye before the image does, it has failed.</p>
+          </div>
+        </div>
+
+        <div class="principle">
+          <div class="principle__number">02</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Deliberate Silence</h3>
+            <p class="principle__desc">White space is not emptiness. It is the wall that gives the print room to breathe. Generous margins and vertical rhythm create the contemplative pace that serious photography demands.</p>
+          </div>
+        </div>
+
+        <div class="principle">
+          <div class="principle__number">03</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Sharp Precision</h3>
+            <p class="principle__desc">No rounded containers. The rectangle is the frame. Geometry signals intention. Every edge is deliberate, every alignment exact. The sharpness of the interface mirrors the sharpness of the print.</p>
+          </div>
+        </div>
+
+        <div class="principle">
+          <div class="principle__number">04</div>
+          <div class="principle__content">
+            <h3 class="principle__name">Quiet Authority</h3>
+            <p class="principle__desc">Light weights. Restrained color. Confidence expressed through what is withheld. A single terracotta accent against near-achromatic neutrals. The system never raises its voice.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Color</span>
+      <h2 class="section__heading">Color palette</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Near-achromatic with warm undertones. A single deep terracotta accent. Photography dominates; color stays subordinate. No cool grays &mdash; they compete with images.</p>
+
+      <!-- Neutral Scale -->
+      <div class="color-group">
+        <div class="color-group__label">Neutral Scale</div>
+        <div class="color-strip">
+          <div class="color-swatch" style="background-color: #f4f2ed; color: #141311;">
+            <div class="color-swatch__name">White</div>
+            <div class="color-swatch__hex">#f4f2ed</div>
+          </div>
+          <div class="color-swatch" style="background-color: #eae7e0; color: #141311;">
+            <div class="color-swatch__name">Gray 50</div>
+            <div class="color-swatch__hex">#eae7e0</div>
+          </div>
+          <div class="color-swatch" style="background-color: #dedad2; color: #141311;">
+            <div class="color-swatch__name">Gray 100</div>
+            <div class="color-swatch__hex">#dedad2</div>
+          </div>
+          <div class="color-swatch" style="background-color: #c8c3b9; color: #141311;">
+            <div class="color-swatch__name">Gray 200</div>
+            <div class="color-swatch__hex">#c8c3b9</div>
+          </div>
+          <div class="color-swatch" style="background-color: #a9a49a; color: #141311;">
+            <div class="color-swatch__name">Gray 300</div>
+            <div class="color-swatch__hex">#a9a49a</div>
+          </div>
+          <div class="color-swatch" style="background-color: #8a857b; color: #141311;">
+            <div class="color-swatch__name">Gray 400</div>
+            <div class="color-swatch__hex">#8a857b</div>
+          </div>
+          <div class="color-swatch" style="background-color: #6b665e; color: #f4f2ed;">
+            <div class="color-swatch__name">Gray 500</div>
+            <div class="color-swatch__hex">#6b665e</div>
+          </div>
+          <div class="color-swatch" style="background-color: #504c46; color: #f4f2ed;">
+            <div class="color-swatch__name">Gray 600</div>
+            <div class="color-swatch__hex">#504c46</div>
+          </div>
+          <div class="color-swatch" style="background-color: #383530; color: #f4f2ed;">
+            <div class="color-swatch__name">Gray 700</div>
+            <div class="color-swatch__hex">#383530</div>
+          </div>
+          <div class="color-swatch" style="background-color: #242220; color: #f4f2ed;">
+            <div class="color-swatch__name">Gray 800</div>
+            <div class="color-swatch__hex">#242220</div>
+          </div>
+          <div class="color-swatch" style="background-color: #141311; color: #f4f2ed;">
+            <div class="color-swatch__name">Gray 900</div>
+            <div class="color-swatch__hex">#141311</div>
+          </div>
+          <div class="color-swatch" style="background-color: #0a0a09; color: #f4f2ed;">
+            <div class="color-swatch__name">Black</div>
+            <div class="color-swatch__hex">#0a0a09</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accent Scale -->
+      <div class="color-group">
+        <div class="color-group__label">Accent Scale &mdash; Deep Terracotta</div>
+        <div class="color-strip">
+          <div class="color-swatch" style="background-color: #f8ede2; color: #141311;">
+            <div class="color-swatch__name">Accent 100</div>
+            <div class="color-swatch__hex">#f8ede2</div>
+          </div>
+          <div class="color-swatch" style="background-color: #ebd4be; color: #141311;">
+            <div class="color-swatch__name">Accent 200</div>
+            <div class="color-swatch__hex">#ebd4be</div>
+          </div>
+          <div class="color-swatch" style="background-color: #d4ad85; color: #141311;">
+            <div class="color-swatch__name">Accent 300</div>
+            <div class="color-swatch__hex">#d4ad85</div>
+          </div>
+          <div class="color-swatch" style="background-color: #bf8c5c; color: #141311;">
+            <div class="color-swatch__name">Accent 400</div>
+            <div class="color-swatch__hex">#bf8c5c</div>
+          </div>
+          <div class="color-swatch" style="background-color: #a06e3c; color: #ffffff;">
+            <div class="color-swatch__name">Accent 500</div>
+            <div class="color-swatch__hex">#a06e3c</div>
+          </div>
+          <div class="color-swatch" style="background-color: #845830; color: #ffffff;">
+            <div class="color-swatch__name">Accent 600</div>
+            <div class="color-swatch__hex">#845830</div>
+          </div>
+          <div class="color-swatch" style="background-color: #664425; color: #ffffff;">
+            <div class="color-swatch__name">Accent 700</div>
+            <div class="color-swatch__hex">#664425</div>
+          </div>
+          <div class="color-swatch" style="background-color: #4a311b; color: #ffffff;">
+            <div class="color-swatch__name">Accent 800</div>
+            <div class="color-swatch__hex">#4a311b</div>
+          </div>
+          <div class="color-swatch" style="background-color: #2e1f11; color: #ffffff;">
+            <div class="color-swatch__name">Accent 900</div>
+            <div class="color-swatch__hex">#2e1f11</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Functional Colors -->
+      <div class="color-group">
+        <div class="color-group__label">Functional</div>
+        <div class="color-strip color-strip--functional">
+          <div class="color-swatch" style="background-color: #4a8c6a; color: #ffffff;">
+            <div class="color-swatch__name">Success</div>
+            <div class="color-swatch__hex">#4a8c6a</div>
+          </div>
+          <div class="color-swatch" style="background-color: #b08a3e; color: #141311;">
+            <div class="color-swatch__name">Warning</div>
+            <div class="color-swatch__hex">#b08a3e</div>
+          </div>
+          <div class="color-swatch" style="background-color: #b04a40; color: #ffffff;">
+            <div class="color-swatch__name">Danger</div>
+            <div class="color-swatch__hex">#b04a40</div>
+          </div>
+          <div class="color-swatch" style="background-color: #5a7fa0; color: #ffffff;">
+            <div class="color-swatch__name">Info</div>
+            <div class="color-swatch__hex">#5a7fa0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Typography Specimen -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Typography</span>
+      <h2 class="section__heading">Type specimen</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Crimson Pro for display. Instrument Sans for body and UI. Light weights at large scale. ALL-CAPS labels with wide tracking for metadata, dates, and navigation. The serif carries gravitas; the sans does the work.</p>
+
+      <!-- Display — Crimson Pro -->
+      <div class="type-specimen">
+        <div class="type-specimen__label">Crimson Pro &mdash; Display</div>
+
+        <div class="type-sample type-sample--display-5xl">
+          <div class="type-sample__text">Sebastiao Salgado</div>
+          <div class="type-sample__meta">72px / 300 / -0.035em / 1.0</div>
+        </div>
+
+        <div class="type-sample type-sample--display-4xl">
+          <div class="type-sample__text">The decisive moment</div>
+          <div class="type-sample__meta">56px / 300 / -0.03em / 1.1</div>
+        </div>
+
+        <div class="type-sample type-sample--display-3xl">
+          <div class="type-sample__text">Light writes the photograph</div>
+          <div class="type-sample__meta">40px / 400 / -0.03em / 1.1</div>
+        </div>
+
+        <div class="type-sample type-sample--display-2xl">
+          <div class="type-sample__text">A portfolio is an argument made in sequence</div>
+          <div class="type-sample__meta">28px / 400 / -0.015em / 1.25</div>
+        </div>
+
+        <div class="type-sample type-sample--display-xl">
+          <div class="type-sample__text">The frame excludes more than it includes</div>
+          <div class="type-sample__meta">22px / 400 / -0.015em / 1.25</div>
+        </div>
+
+        <div class="type-sample type-sample--display-italic">
+          <div class="type-sample__text">Genesis, 2013 &mdash; Gelatin silver print, 50 x 60 cm</div>
+          <div class="type-sample__meta">28px / 300 italic / -0.015em / 1.25</div>
+        </div>
+      </div>
+
+      <!-- Body — Instrument Sans -->
+      <div class="type-specimen">
+        <div class="type-specimen__label">Instrument Sans &mdash; Body &amp; UI</div>
+
+        <div class="type-sample type-sample--body-lg">
+          <div class="type-sample__text">Each series is sequenced to build a visual argument. The grid respects the aspect ratio of the original print. Cropping is never applied automatically. The photographer's frame is the only frame that matters.</div>
+          <div class="type-sample__meta">19px / 400 / 0em / 1.6</div>
+        </div>
+
+        <div class="type-sample type-sample--body-base">
+          <div class="type-sample__text">Portfolios are structured as collections containing series. Each series holds between eight and forty images, presented in the artist's intended order. Navigation between images uses horizontal scroll or arrow keys.</div>
+          <div class="type-sample__meta">17px / 400 / 0em / 1.5</div>
+        </div>
+
+        <div class="type-sample type-sample--body-sm">
+          <div class="type-sample__text">Labels, navigation items, and secondary interface text use the 14px size with positive tracking. This compensates for reduced legibility at smaller sizes and gives UI elements a quiet, measured quality.</div>
+          <div class="type-sample__meta">14px / 400 / +0.01em / 1.5</div>
+        </div>
+
+        <div class="type-sample type-sample--label">
+          <div class="type-sample__text">Exhibition Dates &middot; Artist Name &middot; Gelatin Silver &middot; Edition 3 of 7</div>
+          <div class="type-sample__meta">12px / 500 / +0.1em / caps</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Spacing & Layout -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Spacing &amp; Layout</span>
+      <h2 class="section__heading">Spatial system</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Built on a 4px base grid. Photography sites use extreme vertical whitespace &mdash; section spacing starts at 96px and reaches 160px for hero-level breathing room. The scale is non-linear; jumps between larger values create the contemplative pace of a gallery wall.</p>
+
+      <!-- Spacing Scale -->
+      <div class="spacing-scale">
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-1</div>
+          <div class="spacing-item__bar" style="width: 4px;"></div>
+          <div class="spacing-item__value">4px / 0.25rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-2</div>
+          <div class="spacing-item__bar" style="width: 8px;"></div>
+          <div class="spacing-item__value">8px / 0.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-3</div>
+          <div class="spacing-item__bar" style="width: 12px;"></div>
+          <div class="spacing-item__value">12px / 0.75rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-4</div>
+          <div class="spacing-item__bar" style="width: 16px;"></div>
+          <div class="spacing-item__value">16px / 1rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-5</div>
+          <div class="spacing-item__bar" style="width: 20px;"></div>
+          <div class="spacing-item__value">20px / 1.25rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-6</div>
+          <div class="spacing-item__bar" style="width: 24px;"></div>
+          <div class="spacing-item__value">24px / 1.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-8</div>
+          <div class="spacing-item__bar" style="width: 32px;"></div>
+          <div class="spacing-item__value">32px / 2rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-10</div>
+          <div class="spacing-item__bar" style="width: 40px;"></div>
+          <div class="spacing-item__value">40px / 2.5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-12</div>
+          <div class="spacing-item__bar" style="width: 48px;"></div>
+          <div class="spacing-item__value">48px / 3rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-16</div>
+          <div class="spacing-item__bar" style="width: 64px;"></div>
+          <div class="spacing-item__value">64px / 4rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-20</div>
+          <div class="spacing-item__bar" style="width: 80px;"></div>
+          <div class="spacing-item__value">80px / 5rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-24</div>
+          <div class="spacing-item__bar" style="width: 96px;"></div>
+          <div class="spacing-item__value">96px / 6rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-32</div>
+          <div class="spacing-item__bar" style="width: 128px;"></div>
+          <div class="spacing-item__value">128px / 8rem</div>
+        </div>
+        <div class="spacing-item">
+          <div class="spacing-item__label">--space-40</div>
+          <div class="spacing-item__bar" style="width: 160px;"></div>
+          <div class="spacing-item__value">160px / 10rem</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Motion -->
+  <section class="section">
+    <div class="container">
+      <span class="section__label">Motion</span>
+      <h2 class="section__heading">Movement language</h2>
+      <p class="section__desc" style="margin-bottom: var(--space-12);">Restrained. No parallax, no scroll-jacking. Photography is static; the UI should be too. Custom easing curves only &mdash; never CSS presets. Motion should be felt, not watched.</p>
+
+      <!-- Easing Curves -->
+      <div class="color-group__label" style="margin-bottom: var(--space-4);">Easing Curves &mdash; Hover to Preview</div>
+      <div class="motion-curves">
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Ease Out</div>
+          <div class="motion-curve__value">cubic-bezier(0.22, 0.61, 0.36, 1)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Ease In-Out</div>
+          <div class="motion-curve__value">cubic-bezier(0.45, 0.05, 0.55, 0.95)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Spring</div>
+          <div class="motion-curve__value">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+        </div>
+
+        <div class="motion-curve">
+          <div class="motion-curve__preview">
+            <div class="motion-curve__dot"></div>
+          </div>
+          <div class="motion-curve__name">Dramatic</div>
+          <div class="motion-curve__value">cubic-bezier(0.59, 0.01, 0.28, 1)</div>
+        </div>
+
+      </div>
+
+      <!-- Duration Scale -->
+      <div class="motion-durations">
+        <div class="color-group__label" style="margin-bottom: var(--space-4);">Duration Scale &mdash; Hover to Animate</div>
+        <div class="duration-list">
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 60ms;"></div>
+            </div>
+            <div class="duration-item__name">Instant</div>
+            <div class="duration-item__value">60ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 150ms;"></div>
+            </div>
+            <div class="duration-item__name">Fast</div>
+            <div class="duration-item__value">150ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 280ms;"></div>
+            </div>
+            <div class="duration-item__name">Normal</div>
+            <div class="duration-item__value">280ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 450ms;"></div>
+            </div>
+            <div class="duration-item__name">Slow</div>
+            <div class="duration-item__value">450ms</div>
+          </div>
+          <div class="duration-item">
+            <div class="duration-item__bar-wrap">
+              <div class="duration-item__bar" style="transition-duration: 700ms;"></div>
+            </div>
+            <div class="duration-item__name">Slower</div>
+            <div class="duration-item__value">700ms</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <span class="footer__text">Folio Design System. Where the image speaks first.</span>
+        <span class="footer__mark">Folio</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Theme Toggle Script -->
+  <script>
+    (function() {
+      const toggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+
+      // Check for saved preference
+      const saved = localStorage.getItem('folio-theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+        toggle.textContent = saved === 'dark' ? 'Light mode' : 'Dark mode';
+      }
+
+      toggle.addEventListener('click', function() {
+        const current = html.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        toggle.textContent = next === 'dark' ? 'Light mode' : 'Dark mode';
+        localStorage.setItem('folio-theme', next);
+      });
+    })();
+  </script>
+
+</body>
+</html>
