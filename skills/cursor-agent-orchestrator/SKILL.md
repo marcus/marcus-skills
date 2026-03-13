@@ -139,8 +139,17 @@ cursor-agent agent \
     --workspace <path> \         # Working directory for the agent
     --force \                    # Skip confirmation prompts
     --approve-mcps \             # Auto-approve MCP servers
+    --mode <mode> \              # Optional: "plan" (read-only) or "ask" (Q&A)
     "<prompt>"                   # The prompt (as final positional arg)
 ```
+
+### Execution modes
+
+| Mode | Description | Use case |
+|------|-------------|----------|
+| (default) | Full agent with all tools including write/shell | Implementation, investigation |
+| `--mode plan` | Read-only, no file edits | Analysis, planning |
+| `--mode ask` | Q&A style, read-only | Classification, explanations |
 
 ### Model names
 
@@ -155,7 +164,11 @@ The cursor CLI uses its own short model names, **not** the full Anthropic/OpenAI
 | `sonnet-4.5` | Claude 4.5 Sonnet |
 | `sonnet-4.5-thinking` | Claude 4.5 Sonnet (Thinking) |
 | `gpt-5.2` | GPT-5.2 |
+| `gpt-5.2-high` | GPT-5.2 High |
+| `gpt-5.1-high` | GPT-5.1 High |
 | `gemini-3-pro` | Gemini 3 Pro |
+| `gemini-3-flash` | Gemini 3 Flash |
+| `grok` | Grok |
 
 Run `cursor-agent models` to see the full list of available models.
 
@@ -771,6 +784,85 @@ def main():
 - **Don't forget to release locks on failure** - Or items will be stuck until lock TTL expires
 - **Don't kill processes without trying terminate first** - Give them a chance to cleanup
 - **Don't mix sync and async database calls** - Use sync for simplicity or fully async
+
+---
+
+## Sub-agents and multi-agent orchestration
+
+### Sub-agents (Task tool) are NOT available in cursor-agent CLI
+
+As of February 2026, the `cursor-agent` CLI does **not** expose the `Task` tool for
+launching sub-agents. This is an IDE-only feature. The cursor-agent CLI has these
+tools: Shell, Glob, Grep, LS, Read, Delete, StrReplace, Write, EditNotebook,
+TodoWrite, SemanticSearch, WebFetch, ListMcpResources, FetchMcpResource, and
+any configured MCP tools.
+
+**Notably missing**: Task (sub-agents), SwitchMode, AskQuestion, ReadLints,
+WebSearch, and Figma tools.
+
+This was verified experimentally by spawning `cursor-agent agent --print
+--output-format stream-json --model opus-4.6` and asking the agent to list its
+available tools. The Task tool is not in the list, and the agent confirms it
+cannot launch sub-agents.
+
+### Multi-agent orchestration pattern
+
+Since cursor-agent can't launch sub-agents internally, orchestrate multiple
+cursor-agent processes at the **Python layer** instead. This is the recommended
+pattern for Johnny and similar tools:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Python Orchestrator (Johnny)                           │
+│                                                         │
+│  1. Fetch ticket data from JIRA                        │
+│  2. Spawn cursor-agent #1 (classifier) ──────────────┐ │
+│  3. Parse classification result                       │ │
+│  4. If APPROVE → spawn cursor-agent #2 (implementer) │ │
+│  5. Parse implementation result                       │ │
+│  6. Create merge request via GitLab API               │ │
+└─────────────────────────────────────────────────────────┘
+```
+
+Each cursor-agent invocation is a separate process with its own prompt, model,
+timeout, and workspace. The orchestrator coordinates the pipeline.
+
+### Classifier prompt pattern
+
+For ticket classification, use `--mode ask` or standard mode with a structured
+JSON prompt. The classifier should:
+
+1. Score the ticket on multiple criteria (0-10 scale)
+2. Apply auto-reject thresholds for critical criteria
+3. Compute a weighted average
+4. Return a structured JSON verdict
+
+Example invocation:
+
+```python
+cmd = [
+    'cursor-agent', 'agent',
+    '--print',
+    '--output-format', 'stream-json',
+    '--model', 'sonnet-4.5',  # Fast model for classification
+    '--workspace', workspace_path,
+    '--force',
+    '--approve-mcps',
+    classifier_prompt_with_ticket_data,
+]
+```
+
+The classifier prompt should instruct the model to follow the scoring criteria
+**exactly** and not add subjective overrides. Include the instruction:
+"Do NOT add additional rejection criteria beyond the formal scoring."
+
+### Model selection for multi-agent pipelines
+
+| Pipeline stage | Recommended model | Rationale |
+|---|---|---|
+| Classifier | `sonnet-4.5` | Fast, accurate for structured evaluation |
+| Implementer | `opus-4.6` or `sonnet-4.5` | Needs full code understanding |
+| Reviewer | `opus-4.6` | Most thorough for verification |
 
 ---
 
