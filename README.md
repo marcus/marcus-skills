@@ -23,6 +23,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | Skill                       | Description                                                  |
 | --------------------------- | ------------------------------------------------------------ |
 | agent-teams                 | Agent team coordination with roles, file ownership, and quality gates |
+| avalara-brand-design        | Authentic Avalara website design — Skylab, colors, typography, components |
 | browser-board-games         | Multiplayer browser board games with Colyseus, WebSocket networking, and 2D animation |
 | betamax-docs                | Reproducible TUI screenshots and GIF demos with Betamax       |
 | browser-proof               | Playwright screenshots of Perch UI for visual verification    |
