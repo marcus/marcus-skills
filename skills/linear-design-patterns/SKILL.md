@@ -45,6 +45,9 @@ Agents consistently fail at this design system in the same ways. If you catch yo
 ### Mistake #1: Containers within containers
 The most common failure. Agents instinctively wrap content in `.card > .card-body > .card-content` or `.panel > .panel-inner`. **Never do this.** The layout is a flat grid. Visual grouping comes from background colors, borders, and spacing — not from nesting.
 
+This applies equally to conversational surfaces. Chat turns, activity feeds, and timeline rows should usually be rendered as flush rows inside a pane, using row padding, alternating tints, and subtle dividers. Do not put each turn inside its own floating card inside the conversation panel.
+The same rule applies to toolbars and filter rails. Do not place a bordered filter bar inside a bordered header surface. The header is already the surface. Put the controls directly on it.
+
 **WRONG:**
 ```html
 <div class="stats-row">
@@ -64,6 +67,14 @@ The most common failure. Agents instinctively wrap content in `.card > .card-bod
     <span class="metric-label">Total Requests</span>
     <span class="metric-value">537,784</span>
   </div>
+</div>
+```
+
+**RIGHT for conversation rows:**
+```html
+<div class="conversation-pane">
+  <div class="message-row user">...</div>
+  <div class="message-row agent">...</div>
 </div>
 ```
 

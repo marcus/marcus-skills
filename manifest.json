@@ -95,6 +95,10 @@
     {
       "name": "architecture-review",
       "description": "Conduct architectural reviews for new or existing projects. Enterprise ARB governance + modern agentic patterns. Covers architecture decisions, ADRs, security, testing, observability, project scaffolding, and agent-native structure."
+    },
+    {
+      "name": "web-design-system-deliverable",
+      "description": "Create agency-grade web design systems from brand strategy through production handoff. Covers brand positioning, voice and tone, design tokens, typography, motion, visual assets, responsive strategy, component specs, accessibility, application proof pages, governance, and token integration."
     }
   ]
 }
