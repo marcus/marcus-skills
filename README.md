@@ -23,6 +23,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | Skill                       | Description                                                  |
 | --------------------------- | ------------------------------------------------------------ |
 | agent-teams                 | Agent team coordination with roles, file ownership, and quality gates |
+| browser-board-games         | Multiplayer browser board games with Colyseus, WebSocket networking, and 2D animation |
 | betamax-docs                | Reproducible TUI screenshots and GIF demos with Betamax       |
 | browser-proof               | Playwright screenshots of Perch UI for visual verification    |
 | bun-getting-started         | Bun 1.3 setup with HRM and Bun.SQL                           |
