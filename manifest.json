@@ -119,6 +119,10 @@
     {
       "name": "software-demo-video",
       "description": "Create premium software demo and product videos that convert. Covers thumbnail design, script frameworks, production techniques, narration, transitions, sound design, and distribution strategy for explainers, product tours, feature highlights, launch videos, and more."
+    },
+    {
+      "name": "remotion",
+      "description": "Build programmatic videos with Remotion 4. Covers compositions, components, audio sync, rendering, and deployment. Use when creating video content with React/TypeScript."
     }
   ]
 }
