@@ -101,7 +101,7 @@ my-course/
 
 ### Content Data Format
 
-Separate content from code. Content authors (or agents) edit JSON; the player renders it.
+Separate content from code. Content authors (or agents) edit JSON; the player renders it. See [references/content-schema.md](references/content-schema.md) for the formal JSON Schema definition, all block type specifications, and validation setup.
 
 ```json
 {
@@ -573,7 +573,7 @@ async function packageScorm(
 | **Self-hosted + LTI** | Maximum control, custom UX | LTI grades + xAPI detail |
 | **Standalone web app** | Public courses, marketing | xAPI to external LRS or none |
 
-See [references/scorm-packaging.md](references/scorm-packaging.md) for complete SCORM 1.2, 2004, xAPI, and cmi5 implementation details.
+See [references/scorm-packaging.md](references/scorm-packaging.md) for complete SCORM 1.2, 2004, xAPI, and cmi5 implementation details. See [references/scorm-troubleshooting.md](references/scorm-troubleshooting.md) for LMS quirks, debugging techniques, and a testing toolkit.
 
 ---
 
@@ -716,7 +716,7 @@ def generate_grounded_content(topic, source_docs):
     return content
 ```
 
-See [references/agent-workflows.md](references/agent-workflows.md) for complete pipeline implementation.
+See [references/agent-workflows.md](references/agent-workflows.md) for complete pipeline implementation. See [references/prompt-engineering.md](references/prompt-engineering.md) for copy-paste-ready system prompts, content generation templates, and few-shot examples for each agent role.
 
 ---
 
@@ -797,7 +797,7 @@ Learners lose up to 90% of content within a week without reinforcement. Combat t
 | **HeyGen** | AI avatar video presenters | — |
 | **Synthesia** | Enterprise AI avatar video | — |
 
-See [references/tool-recommendations.md](references/tool-recommendations.md) for detailed evaluation of each tool.
+See [references/tool-recommendations.md](references/tool-recommendations.md) for detailed evaluation of each tool. See [references/cost-and-analytics.md](references/cost-and-analytics.md) for API pricing estimates and learner analytics implementation.
 
 ---
 
@@ -817,19 +817,15 @@ Accessibility is a design principle, not a compliance checkbox.
 - **Focus management**: Visible focus indicators throughout; manage focus on dynamic content changes
 - **Multiple engagement pathways**: Watch, read, interact — never one-only
 
-### Testing Checklist
+### Testing
+
+See [references/accessibility-testing.md](references/accessibility-testing.md) for complete automated testing setup (axe-core + Vitest + Playwright + Lighthouse CI), courseware-specific ARIA patterns, manual testing protocols, and compliance documentation (VPAT/ACR).
 
 ```bash
-# Automated accessibility testing in CI
-npx axe-core --rules wcag2aa index.html
-
-# Manual checks
-# 1. Tab through entire course — can you complete it keyboard-only?
-# 2. Run with screen reader (VoiceOver on Mac, NVDA on Windows)
-# 3. Test with prefers-reduced-motion enabled
-# 4. Verify all images have meaningful alt text
-# 5. Check color contrast with browser DevTools
-# 6. Ensure all video has captions
+# Quick automated checks
+npm run test:a11y          # axe-core component tests
+npm run test:a11y:e2e      # Playwright full-page audits
+npx lighthouse --only-categories=accessibility http://localhost:5173
 ```
 
 ---
