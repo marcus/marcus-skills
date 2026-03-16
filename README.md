@@ -47,6 +47,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
 | td-review-session           | Review session orchestrator with parallel triage and auto-fix |
 | td-task-management          | AI agent task management across sessions                     |
+| technical-diagrams            | Generate and render C4, sequence, flowchart, architecture diagrams inline using Mermaid.js |
 | web-design-system-deliverable | Agency-grade web design systems from brand strategy to production handoff |
 
 ## Adding a New Skill

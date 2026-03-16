@@ -11,10 +11,33 @@ Capture screenshots of the running Perch app to verify UI changes. Uses Playwrig
 
 Write a `.mjs` script to `/tmp/`, run with `node`. Read screenshots with the Read tool (it renders images).
 
+### Playwright Module Resolution
+
+On this machine, `playwright` is installed globally, but `node /tmp/script.mjs` may not resolve `import { chromium } from 'playwright'`.
+
+Use one of these approaches:
+
+1. Import Playwright from its absolute global path:
+
+```js
+import { chromium } from '/Users/marcus/.local/share/mise/installs/node/22.22.0/lib/node_modules/playwright/index.mjs';
+```
+
+2. If that path changes, discover it first:
+
+```bash
+which playwright
+npm root -g
+```
+
+Then import from `<npm root -g>/playwright/index.mjs`.
+
+Prefer the absolute import path in proof scripts. It worked for live browser capture on 2026-03-15.
+
 ### Auth Pattern
 
 ```js
-import { chromium } from 'playwright';
+import { chromium } from '/Users/marcus/.local/share/mise/installs/node/22.22.0/lib/node_modules/playwright/index.mjs';
 import { readFileSync } from 'fs';
 
 const TOKEN = readFileSync('/Users/marcus/.config/perch/auth.token', 'utf8').trim();
@@ -96,7 +119,7 @@ To open a detail panel, click a board card or table row — the panel slides in 
 ## Example: Full Proof Script
 
 ```js
-import { chromium } from 'playwright';
+import { chromium } from '/Users/marcus/.local/share/mise/installs/node/22.22.0/lib/node_modules/playwright/index.mjs';
 import { readFileSync } from 'fs';
 
 const TOKEN = readFileSync('/Users/marcus/.config/perch/auth.token', 'utf8').trim();

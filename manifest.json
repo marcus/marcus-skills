@@ -103,6 +103,18 @@
     {
       "name": "browser-board-games",
       "description": "Architecture and implementation guide for browser-based multiplayer board games with real-time WebSocket networking, smooth 2D animations, lobby management, and Colyseus server. Use when building turn-based or real-time board/card/tabletop games for the browser."
+    },
+    {
+      "name": "multi-turn-runtime-adapters",
+      "description": "Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems with session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, and tool policy enforcement"
+    },
+    {
+      "name": "technical-diagrams",
+      "description": "Generate and render technical diagrams (C4, sequence, flowchart, architecture, ER, state, infrastructure) inline in web apps using Mermaid.js. Covers syntax for all diagram types, browser rendering, dark theme integration, LLM generation best practices, and accessibility."
+    },
+    {
+      "name": "perch-planner",
+      "description": "Use the Perch plan CLI to create, read, update, and manage architectural plans. Retrieve plans by name, build plan trees, run reviews, manage snapshots, tag with facets, attach inputs, and export as Markdown."
     }
   ]
 }
