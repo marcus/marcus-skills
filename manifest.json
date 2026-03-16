@@ -115,6 +115,10 @@
     {
       "name": "perch-planner",
       "description": "Use the Perch plan CLI to create, read, update, and manage architectural plans. Retrieve plans by name, build plan trees, run reviews, manage snapshots, tag with facets, attach inputs, and export as Markdown."
+    },
+    {
+      "name": "software-demo-video",
+      "description": "Create premium software demo and product videos that convert. Covers thumbnail design, script frameworks, production techniques, narration, transitions, sound design, and distribution strategy for explainers, product tours, feature highlights, launch videos, and more."
     }
   ]
 }
