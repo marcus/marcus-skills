@@ -345,6 +345,67 @@ Detailed analysis of 12+ companies in [references/company-examples.md](reference
 
 ---
 
+## Remotion Production
+
+For programmatic video production using Remotion (React-based video framework), see [references/remotion-production-pipeline.md](references/remotion-production-pipeline.md).
+
+### Key Patterns
+
+- **Per-section audio architecture**: Generate individual audio files per script section, each pinned to their exact composition frame. This eliminates cumulative drift from inter-section pauses in concatenated audio files.
+- **Sync pipeline**: `script.md -> narrate-sync.ts -> sync-manifest.json -> composition S constants -> audit-sync.ts -> render`. Fully automated from script changes through to timing.
+- **Section timing**: `ceil(narration_seconds * fps) + 15 frames padding`. Never guess. Always derive from measured audio.
+- **Audit tool**: Catches dead frames, narration overruns, and visual gaps before rendering. Run before every render.
+
+### Effective Components
+
+| Component | Purpose |
+|-----------|---------|
+| ZoomPan | Subtle Ken Burns on screenshots (scale 1.0 to 1.03, never more) |
+| FeatureCallout | Glassmorphism cards for feature highlights |
+| SplitReveal | Before/after comparisons with animated divider |
+| SceneTransition | Four types: morph, iris, slide-reveal, scale-fade |
+| TypingAnimation | Simulated user input (chat, code, terminal presets) |
+| DifferentiatorsStack | Numbered feature lists with spring animations |
+| BrowserFrame | macOS browser chrome wrapper with traffic light dots and URL bar |
+
+### Common Bugs
+
+- **Double zoom**: Do not use ZoomPan wrapper AND BrowserFrame `animated={true}` simultaneously
+- **CTA-outro overlap**: Crossfade should be max 30 frames
+- **TeaseCard brightness**: Keep at 0.7+, never add more than 0.5px blur to preview images
+- **Concatenated audio drift**: Never use `narration-full.mp3` as the composition audio source
+
+---
+
+## Agent Review Pipeline
+
+For structured quality review using independent reviewer agents, see [references/agent-review-pipeline.md](references/agent-review-pipeline.md).
+
+### Six Review Dimensions
+
+1. **Script Quality** -- hook, pacing, visual direction, CTA, tone
+2. **Visual Design** -- consistency, animation, hierarchy, transitions, component polish
+3. **Pacing & Timing** -- script-audio alignment, audio-visual sync, flow, silent beats
+4. **Technical Quality** -- code quality, reusability, architecture, pipeline, performance
+5. **Production Pipeline** -- documentation, automation, iteration workflow
+6. **Thumbnail** -- visual impact, readability, click-worthiness, professionalism
+
+### Iteration Loop
+
+```
+script review --> apply feedback --> generate narration --> update composition
+  --> audit sync --> render --> multi-dimensional review --> iterate until all >= 7
+```
+
+### Key Principles
+
+- **Self-assessment does not count.** Use independent reviewer agents -- the builder has context blindness.
+- **Score progression tracking.** Each review compares to previous version scores.
+- **Maximum two revision passes per dimension.** Diminishing returns. Ship when all dimensions score >= 7.
+- **Gemini for thumbnails.** Use the Gemini vision API for structured thumbnail scoring (readability, contrast, click-worthiness).
+
+---
+
 ## Anti-Patterns
 
 Avoid these common mistakes:
