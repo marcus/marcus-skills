@@ -123,6 +123,10 @@
     {
       "name": "remotion",
       "description": "Build programmatic videos with Remotion 4. Covers compositions, components, audio sync, rendering, and deployment. Use when creating video content with React/TypeScript."
+    },
+    {
+      "name": "interactive-courseware",
+      "description": "Create state-of-the-art interactive online courseware with AI agents. Covers course architecture, multimedia generation (narration, video, images, sound), interactive patterns (branching scenarios, simulations, gamification), SCORM/xAPI/cmi5 packaging for LMS delivery (WorkRamp, Docebo, Cornerstone), and collaborative agent-human workflows. Use when building courses, training content, e-learning modules, or educational experiences."
     }
   ]
 }
