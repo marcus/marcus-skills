@@ -57,17 +57,24 @@ export class Scorm12Adapter {
     return { location, data: decompressState(raw) };
   }
 
+  // IMPORTANT: In SCORM 1.2, lesson_status is a SINGLE field used for both
+  // completion and pass/fail. Call reportScore OR reportCompletion, not both.
+  // If both are needed, use reportScore with passed=true (which implies completion).
+  // Calling reportCompletion after reportScore will OVERWRITE pass/fail status.
+
   reportScore(score: number, max: number, passed: boolean): void {
     if (!this.api) return;
     this.api.LMSSetValue('cmi.core.score.raw', score.toString());
     this.api.LMSSetValue('cmi.core.score.max', max.toString());
     this.api.LMSSetValue('cmi.core.score.min', '0');
+    // 'passed' implies completion in SCORM 1.2
     this.api.LMSSetValue('cmi.core.lesson_status', passed ? 'passed' : 'failed');
     this.api.LMSCommit('');
   }
 
   reportCompletion(): void {
     if (!this.api) return;
+    // Only call this for non-scored courses. For scored courses, use reportScore instead.
     this.api.LMSSetValue('cmi.core.lesson_status', 'completed');
     this.api.LMSCommit('');
   }
@@ -100,18 +107,24 @@ export class Scorm12Adapter {
 }
 
 // SCORM 1.2 suspend_data is limited to 4,096 bytes
-// Use compression to fit more state data
+// IMPORTANT: Use LZString compression — base64 alone INCREASES size by ~33%
+// Install: npm install lz-string @types/lz-string
+import LZString from 'lz-string';
+
 function compressState(data: Record<string, unknown>): string {
   const json = JSON.stringify(data);
-  // Use LZString or similar for compression
-  // Ensure output is within 4096 bytes
-  return btoa(json); // Simple base64 for small courses
+  const compressed = LZString.compressToUTF16(json);
+  if (compressed.length > 4096) {
+    console.warn(`suspend_data exceeds 4096 chars (${compressed.length}). Consider reducing state.`);
+  }
+  return compressed;
 }
 
 function decompressState(raw: string): Record<string, unknown> {
   if (!raw) return {};
   try {
-    return JSON.parse(atob(raw));
+    const json = LZString.decompressFromUTF16(raw);
+    return json ? JSON.parse(json) : {};
   } catch {
     return {};
   }

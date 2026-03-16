@@ -115,8 +115,8 @@ Separate content from code. Content authors (or agents) edit JSON; the player re
     {
       "type": "narrative",
       "text": "It's 8:47 AM. You've just settled in with your coffee when an email arrives from your CEO...",
-      "narration": "audio/01-intro-narrative.mp3",
-      "background": "ambient-office"
+      "narration": { "src": "audio/01-intro-narrative.mp3", "alt": "Narrator describes the morning email scenario" },
+      "background_audio": "ambient-office"
     },
     {
       "type": "branch",

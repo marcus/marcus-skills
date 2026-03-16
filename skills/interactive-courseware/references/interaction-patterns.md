@@ -574,12 +574,17 @@ export function InteractiveVideo({ src, events }: InteractiveVideoProps) {
 
       {/* In-video quiz overlay */}
       {activeEvent?.type === 'quiz' && paused && (
-        <div className="video-quiz-overlay" role="dialog" aria-label="Knowledge check">
-          <p>{(activeEvent.data as any).question}</p>
-          {(activeEvent.data as any).options.map((opt: any, i: number) => (
-            <button key={i} onClick={resumeVideo}>{opt.text}</button>
-          ))}
-        </div>
+        <VideoQuizOverlay
+          question={(activeEvent.data as any).question}
+          options={(activeEvent.data as any).options}
+          onAnswer={(selectedIndex: number) => {
+            const opt = (activeEvent.data as any).options[selectedIndex];
+            // Track the answer, show feedback, then resume
+            onQuizAnswer?.(activeEvent, selectedIndex, opt.correct);
+            // Brief delay to show feedback before resuming
+            setTimeout(resumeVideo, 2000);
+          }}
+        />
       )}
 
       {/* Chapter markers */}

@@ -2,6 +2,8 @@
 
 Pricing data and analytics architecture for the interactive courseware pipeline.
 
+> **Pricing last verified: March 2026.** API pricing changes frequently. Verify current rates at each provider's pricing page before quoting to stakeholders. Cost estimates here are directional — actual costs depend on plan tier, volume, and negotiated enterprise rates.
+
 ---
 
 ## Part 1: Cost Analysis
