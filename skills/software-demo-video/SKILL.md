@@ -162,6 +162,28 @@ Use **second person ("you")** for narration -- it draws viewers in and makes the
 
 AI voice is 60-86% cheaper and instantly updatable. But: AI narration shows **70% lower retention** and **35% greater drop-off within 45 seconds**. Use human voice for high-stakes content. AI is acceptable for high-volume internal/tutorial content.
 
+### ElevenLabs with-Timestamps API
+
+Use the `/v1/text-to-speech/{voice_id}/with-timestamps` endpoint for word-level sync data. It returns identical audio plus character-level alignment, which you aggregate to word-level and sentence-level timing. This enables automated composition timing -- section durations are derived from measured audio, not guessed from word counts.
+
+### Per-Section Audio
+
+Always generate one audio file per script section rather than a single concatenated narration. Concatenated files insert variable inter-section pauses (2-4 seconds each) that accumulate into 20-35 seconds of drift over 10 sections. Per-section audio, each pinned to its composition frame, eliminates cumulative drift entirely. Keep a concatenated file for preview/listening only.
+
+### Voice Clones
+
+If a cloned voice is available (e.g., via ElevenLabs voice cloning), use it for authentic founder/developer narration at AI speed and cost. Clone quality is high enough for production use. The `--voice <voice_id>` flag in the narration script selects the clone.
+
+### Speed and Pacing Control
+
+ElevenLabs voice settings that affect pacing:
+- `stability: 0.5` -- natural variation without wandering
+- `similarity_boost: 0.75` -- voice consistency across sections
+- `style: 0.3` -- subtle expressiveness without over-acting
+- `use_speaker_boost: true` -- clarity enhancement
+
+For faster pacing, increase stability toward 0.7 and reduce style toward 0.1. For warmer, more conversational delivery, decrease stability toward 0.3 and increase style toward 0.5.
+
 ### Voice Casting
 
 | Brand Personality | Voice Style |
@@ -206,6 +228,22 @@ Full details in [references/production-techniques.md](references/production-tech
 **Beat-sync your cuts.** Major transitions on downbeats, minor transitions on off-beats. This creates the "Apple feel" -- every cut landing on a musical beat.
 
 Music platforms: **Epidemic Sound** ($10-20/mo, best for volume), **Artlist** ($10/mo, broad assets), **Musicbed** (premium, cinematic).
+
+### Narration Sync (Remotion Pipeline)
+
+For Remotion-based productions, use the automated sync pipeline:
+
+```
+script.md --> narrate-sync.ts --> sync-manifest.json --> composition S constants --> audit-sync.ts --> render
+```
+
+Key principles:
+- **Per-section audio**: One MP3 per script section, each pinned to its exact composition frame. Never use a single concatenated file as the composition audio source.
+- **Section timing formula**: `ceil(narration_seconds * fps) + 15 frames padding`. Always derive from measured audio, never from word count estimates.
+- **Sync manifest**: JSON file with word-level and sentence-level timing data (start/end in both seconds and frames). Generated automatically by the narrate-sync script.
+- **Audit before render**: Run audit-sync to detect dead frames, narration overruns, and visual gaps. Fix any issues before rendering.
+
+Full details in [references/remotion-production-pipeline.md](references/remotion-production-pipeline.md).
 
 ### Sound Effects
 
@@ -351,6 +389,7 @@ Avoid these common mistakes:
 - [ ] Layer UI sound effects
 - [ ] Color grade for consistency
 - [ ] Mix audio (VO loudest, music ducked, SFX subtle)
+- [ ] **Run audit-sync** to verify narration fits within section boundaries (no overruns, no dead frames)
 - [ ] Add end card with CTA
 - [ ] Export at correct resolution and aspect ratio
 
