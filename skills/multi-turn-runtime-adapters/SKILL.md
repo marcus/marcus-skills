@@ -1535,3 +1535,170 @@ CREATE TABLE session_events (
 -- Queries: always order by created_at, seq
 SELECT * FROM session_events WHERE session_id = ? ORDER BY created_at, seq
 ```
+
+---
+
+## Chronological chat rendering (block-based model)
+
+The accumulation pattern above uses flat fields (`content`, `toolEvents`) on each message. This works for basic chat, but breaks down when you need **chronological rendering** — showing text, tool calls, permissions, and errors in the exact order they occurred, interleaved within a single agent message.
+
+### ContentBlock discriminated union
+
+Replace flat fields with a `blocks[]` array as the source of truth on each message. Each block has a `kind` discriminator:
+
+```ts
+type ContentBlock =
+  | { kind: 'text'; text: string }
+  | { kind: 'tool'; toolUseId: string; tool: string; input?: any; output?: string; isError?: boolean; status: 'running' | 'done' }
+  | { kind: 'permission'; toolName: string; toolInput?: any; allowed?: boolean; resolved: boolean }
+  | { kind: 'proof'; src: string; alt?: string }
+  | { kind: 'error'; message: string };
+```
+
+Rendering iterates `blocks` in order — each block maps to a distinct visual element in the chat. Text blocks render as markdown, tool blocks render as collapsible tool calls, etc. This preserves chronological ordering naturally.
+
+### syncDerivedFields: backward-compatible migration
+
+When migrating from flat fields to blocks, keep the flat fields as **derived/computed** from `blocks[]` via a `syncDerivedFields()` helper. This lets existing consumers (markdown renderer, search, export) keep reading flat fields while new code iterates blocks.
+
+```ts
+function syncDerivedFields(msg: ChatMessage): void {
+  // Reconstruct flat content from text blocks
+  let content = '';
+  let hadNonText = false;
+  for (const b of msg.blocks) {
+    if (b.kind === 'text') {
+      if (hadNonText && content && !content.endsWith('\n')) content += '\n\n';
+      content += b.text;
+      hadNonText = false;
+    } else {
+      hadNonText = true;
+    }
+  }
+  msg.content = content;
+
+  // Reconstruct flat arrays from typed blocks
+  msg.toolEvents = msg.blocks.filter(b => b.kind === 'tool');
+  msg.permissionRequest = msg.blocks.find(b => b.kind === 'permission' && !b.resolved) ?? null;
+  msg.proof = msg.blocks.find(b => b.kind === 'proof') ?? null;
+  msg.error = msg.blocks.find(b => b.kind === 'error')?.message ?? null;
+}
+```
+
+Key detail: paragraph breaks (`\n\n`) are inserted between text blocks separated by non-text blocks. This replicates the `hadToolSinceLastDelta` behavior from the flat model.
+
+### getToolResultSummary: collapsed tool call display
+
+When tool calls are collapsed (default state), show a one-line summary instead of raw output. Patterns per tool type:
+
+```ts
+function getToolResultSummary(block: ToolBlock): string {
+  if (block.status !== 'done') return 'Running...';
+  if (!block.output) return 'Done';
+
+  const tool = block.tool;
+  const input = block.input;
+  const output = block.output;
+
+  // File operations: show the path
+  if (['Read', 'Write', 'Edit'].includes(tool) && input?.file_path) {
+    return input.file_path;
+  }
+  // Search tools: show match count
+  if (['Glob', 'Grep'].includes(tool)) {
+    const lines = output.trim().split('\n').filter(Boolean);
+    return `${lines.length} match${lines.length !== 1 ? 'es' : ''}`;
+  }
+  // Bash: extract task creation or show short output
+  if (tool === 'Bash') {
+    const tdMatch = output.match(/CREATED (td-[a-f0-9]+)/);
+    if (tdMatch) return `CREATED ${tdMatch[1]}`;
+  }
+  // Short output passthrough
+  if (output.length < 80 && !output.includes('\n')) return output.trim();
+  return 'Done';
+}
+```
+
+### expandedToolOutputs keying strategy
+
+When tracking which tool calls are expanded in the UI, key by block position rather than type-specific array position:
+
+```
+GOOD:  `${msgId}-block-${blockIndex}`     // position in blocks[]
+BAD:   `${msgId}-tool-${toolEventsIndex}`  // position in toolEvents[]
+```
+
+Block-index keys remain stable when non-tool blocks (text, permission, error) are added or removed around them. Type-specific-array keys shift when the array is recomputed.
+
+```ts
+// In the UI component
+let expandedToolOutputs: Record<string, boolean> = $state({});
+
+function toggleTool(msgId: string, blockIndex: number) {
+  const key = `${msgId}-block-${blockIndex}`;
+  expandedToolOutputs[key] = !expandedToolOutputs[key];
+}
+```
+
+### Handler deduplication: applyEventBlocksToMessage
+
+Both the live SSE path (`applySessionEvent`) and the history replay path (`rebuildChatFromEvents`) need to convert raw events into blocks. Extract a shared function:
+
+```ts
+function applyEventBlocksToMessage(msg: ChatMessage, event: SessionEvent): void {
+  const { type, data } = event;
+
+  switch (type) {
+    case 'delta': {
+      const lastBlock = msg.blocks[msg.blocks.length - 1];
+      if (lastBlock?.kind === 'text') {
+        lastBlock.text += data.text;
+      } else {
+        msg.blocks.push({ kind: 'text', text: data.text });
+      }
+      break;
+    }
+    case 'tool_start':
+      msg.blocks.push({
+        kind: 'tool', toolUseId: data.tool_use_id, tool: data.tool,
+        input: data.input, status: 'running',
+      });
+      break;
+    case 'tool_result': {
+      const toolBlock = msg.blocks.findLast(
+        b => b.kind === 'tool' && b.toolUseId === data.tool_use_id
+      );
+      if (toolBlock) {
+        toolBlock.output = data.output;
+        toolBlock.isError = data.is_error;
+        toolBlock.status = 'done';
+      }
+      break;
+    }
+    case 'permission_request':
+      msg.blocks.push({
+        kind: 'permission', toolName: data.tool_name,
+        toolInput: data.tool_input, resolved: false,
+      });
+      break;
+    // ... other event types
+  }
+
+  syncDerivedFields(msg);
+}
+```
+
+Both callers now delegate to this function, eliminating ~200 lines of duplicated logic. The only difference: `applySessionEvent` manages message creation/lookup, while `rebuildChatFromEvents` processes a batch of events sequentially.
+
+### Paragraph-break reconstruction in block model
+
+When `syncDerivedFields` joins text blocks into the flat `content` field, it must insert `\n\n` between text blocks that were separated by non-text blocks — but only if the accumulated content doesn't already end with `\n`:
+
+```ts
+if (hadNonText && content && !content.endsWith('\n')) {
+  content += '\n\n';
+}
+```
+
+This replicates the pre-refactor `hadToolSinceLastDelta` flag behavior. Without it, text before and after tool calls runs together as one paragraph in any consumer that reads the flat `content` field.
