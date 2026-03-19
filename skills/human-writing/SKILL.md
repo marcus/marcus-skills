@@ -137,3 +137,4 @@ Rewrite: "[improved version]"
 
 - [references/vocabulary.md](references/vocabulary.md) - Complete list of AI-associated words with alternatives
 - [references/ai-patterns.md](references/ai-patterns.md) - Detailed patterns for detection and avoidance
+- [references/marcus-voice.md](references/marcus-voice.md) - Marcus's specific writing voice profile. Read this when asked to write "in my voice" or "like I write." Derived from ~700K words of his actual writing.
