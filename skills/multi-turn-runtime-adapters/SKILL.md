@@ -84,8 +84,8 @@ All runtimes emit events through a common schema:
 | `session_ready` | Session created or resumed | `session_id`, `runtime`, `provider_session_id?`, `resumed?` |
 | `delta` | Streaming text chunk | `text` |
 | `thinking` | Reasoning/thinking text | `text`, `done?` |
-| `tool_start` | Tool invocation started | `tool_use_id`, `tool`, `input?`, `command?` |
-| `tool_result` | Tool invocation completed | `tool_use_id`, `output`, `is_error`, `exit_code?` |
+| `tool_start` | Tool invocation started | `tool_use_id`, `tool`, `input?`, `command?`, `file_path?`, `pattern?`, `search_path?`, `is_file_read?` |
+| `tool_result` | Tool invocation completed | `tool_use_id`, `output`, `is_error`, `exit_code?`, `file_path?`, `is_file_read?` |
 | `permission_request` | Agent needs permission | `tool_name`, `tool_input` |
 | `permission_resolved` | Permission granted/denied | `tool_name`, `allowed` |
 | `result` | Final agent response text | `text` |
@@ -281,11 +281,20 @@ function processMessage(session, msg) {
         } else if (block.type === 'thinking') {
           emit(session, 'thinking', { text: block.thinking || block.text });
         } else if (block.type === 'tool_use') {
-          emit(session, 'tool_start', {
+          // Extract structured fields from input for file-oriented tools
+          // so consumers can display file_path, pattern etc. without parsing input
+          const toolData = {
             tool_use_id: block.id,
             tool: block.name,
             input: block.input,
-          });
+          };
+          if (block.input && typeof block.input === 'object') {
+            if (block.input.file_path) toolData.file_path = block.input.file_path;
+            if (block.input.command) toolData.command = block.input.command;
+            if (block.input.pattern) toolData.pattern = block.input.pattern;
+            if (block.input.path) toolData.search_path = block.input.path;
+          }
+          emit(session, 'tool_start', toolData);
         }
       }
       break;
@@ -1001,8 +1010,8 @@ await client.destroy();
 | `item/reasoning/textDelta` | `thinking` | Streaming reasoning |
 | `item/reasoning/summaryTextDelta` | `thinking` | |
 | `item/completed` (reasoning) | `thinking` (done) | Final reasoning with `done: true` |
-| `item/started` (commandExecution) | `tool_start` | |
-| `item/completed` (commandExecution) | `tool_result` | |
+| `item/started` (commandExecution) | `tool_start` | Classify file-read commands (cat, grep, find, etc.) with semantic `tool` name and `file_path` |
+| `item/completed` (commandExecution) | `tool_result` | Same classification applied to result |
 | `item/completed` (functionCall) | `tool_start` | |
 | `item/completed` (functionCallOutput) | `tool_result` | |
 | `turn/completed` | `done` | `result` text is typically empty for Codex — text comes via deltas |
@@ -1019,6 +1028,95 @@ await client.destroy();
 | `{ type: 'item.completed', item.type: 'function_call' }` | `tool_start` |
 | `{ type: 'item.completed', item.type: 'function_call_output' }` | `tool_result` |
 | `{ type: 'turn.completed' }` | `done` |
+
+---
+
+## Tool event field extraction for file reads
+
+When building UIs that display agent tool calls, file-read operations (Read, Glob, Grep for Claude; cat, grep, find for Codex) need special treatment. Without extraction, they blend into generic tool calls and users can't tell what the agent is exploring.
+
+### Claude: extract structured fields from tool_use input
+
+The Claude SDK emits `tool_use` blocks with an `input` object. Extract key fields to the top level of the `tool_start` event so UI consumers can display them without parsing nested input:
+
+```js
+// In the tool_use handler:
+const toolData = { tool_use_id: block.id, tool: block.name, input: block.input };
+if (block.input && typeof block.input === 'object') {
+  if (block.input.file_path) toolData.file_path = block.input.file_path;  // Read
+  if (block.input.command) toolData.command = block.input.command;          // Bash
+  if (block.input.pattern) toolData.pattern = block.input.pattern;          // Glob/Grep
+  if (block.input.path) toolData.search_path = block.input.path;            // Glob/Grep dir
+}
+emit(session, 'tool_start', toolData);
+```
+
+### Codex: classify file-reading bash commands
+
+Codex only has `command_execution` items — file reads are indistinguishable from other bash commands. Add a classifier that detects file-read commands and emits semantic tool names:
+
+```js
+function classifyBashCommand(command) {
+  if (typeof command !== 'string') return { isFileRead: false };
+  const trimmed = command.trim();
+
+  // File readers: cat, head, tail, less, stat, file, wc
+  const fileReadMatch = trimmed.match(/^(cat|head|tail|less|stat|file|wc)\s+(?:-[^\s]+\s+)*(.+)$/);
+  if (fileReadMatch) return { isFileRead: true, tool: fileReadMatch[1], file_path: fileReadMatch[2].trim() };
+
+  // Search tools: grep, rg
+  if (/^(grep|rg)\s+/.test(trimmed)) return { isFileRead: true, tool: trimmed.startsWith('rg') ? 'rg' : 'grep', file_path: '' };
+
+  // Directory browsers: find, ls, tree
+  const browseMatch = trimmed.match(/^(find|ls|tree)(?:\s+(.*))?$/);
+  if (browseMatch) return { isFileRead: true, tool: browseMatch[1], file_path: (browseMatch[2] || '').trim() };
+
+  return { isFileRead: false };
+}
+
+// In the item/started handler:
+const classified = classifyBashCommand(params.item.command);
+emit(session, 'tool_start', {
+  tool_use_id: params.item.id,
+  tool: classified.isFileRead ? classified.tool : 'bash',  // semantic name
+  command: params.item.command,                              // full command preserved
+  file_path: classified.file_path || undefined,
+  is_file_read: classified.isFileRead || undefined,
+});
+```
+
+### Frontend: categorize and summarize file tools
+
+The UI needs to distinguish file-read tools from other tools for icons and summaries:
+
+```js
+const FILE_READ_COMMANDS = new Set(['cat', 'head', 'tail', 'less', 'find', 'ls', 'tree', 'stat', 'wc', 'rg']);
+
+function toolCategory(name) {
+  const lower = name.toLowerCase();
+  if (lower.includes('bash') || lower.includes('shell') || lower.includes('plan')) return 'terminal';
+  if (lower.includes('read') || lower.includes('file') || lower.includes('glob')
+    || lower.includes('grep') || FILE_READ_COMMANDS.has(lower)) return 'file';
+  if (lower.includes('code') || lower.includes('edit') || lower.includes('write')) return 'code';
+  return 'other';
+}
+```
+
+For collapsed tool call summaries, show the search pattern alongside counts:
+- **Glob**: `"3 files  **/*.ts"` (not just `"3 files matched"`)
+- **Grep**: `"12 matches  \"className\""` (not just `"12 matches"`)
+- **Read**: Show the file path
+- **In-progress**: Show the file path or pattern instead of generic `"Running..."`
+
+### Frontend: fallback extraction from nested input
+
+For backward compatibility with events persisted before the sidecar extracted fields, the frontend should fall back to extracting from the nested `input` object:
+
+```ts
+const inputObj = (data.input && typeof data.input === 'object') ? data.input : null;
+const filePath = data.file_path ?? inputObj?.file_path;
+const pattern = data.pattern ?? inputObj?.pattern;
+```
 
 ---
 
@@ -1604,10 +1702,22 @@ function getToolResultSummary(block: ToolBlock): string {
   if (['Read', 'Write', 'Edit'].includes(tool) && input?.file_path) {
     return input.file_path;
   }
-  // Search tools: show match count
-  if (['Glob', 'Grep'].includes(tool)) {
+  // Glob: show pattern alongside count
+  if (tool === 'Glob') {
     const lines = output.trim().split('\n').filter(Boolean);
-    return `${lines.length} match${lines.length !== 1 ? 'es' : ''}`;
+    const count = `${lines.length} file${lines.length !== 1 ? 's' : ''}`;
+    return input?.pattern ? `${count}  ${input.pattern}` : `${count} matched`;
+  }
+  // Grep: show pattern alongside count
+  if (tool === 'Grep') {
+    const lines = output.trim().split('\n').filter(Boolean);
+    const count = `${lines.length} match${lines.length !== 1 ? 'es' : ''}`;
+    return input?.pattern ? `${count}  "${input.pattern}"` : count;
+  }
+  // Codex file-read commands: show file path or short command
+  if (['cat', 'head', 'tail', 'less', 'find', 'ls', 'tree', 'stat', 'wc', 'rg'].includes(tool)) {
+    if (block.file_path) return block.file_path;
+    if (block.command && block.command.length < 80) return block.command;
   }
   // Bash: extract task creation or show short output
   if (tool === 'Bash') {
