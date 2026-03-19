@@ -82,6 +82,18 @@ Ending sections with a generic forward-looking statement.
 
 ## Language Patterns
 
+### Manufactured Straw Men
+Inventing a weak position nobody actually holds, then refuting it to make the real point seem stronger. The AI fabricates a foil to argue against.
+
+**Examples**:
+- "Coding isn't about typing speed anymore" (no one thought it was — used to hype agentic coding)
+- "This replaces your cobbled-together spaghetti code" (assumes the reader's current setup is bad, without evidence)
+- "It's not just a toy anymore" (implies people dismissed it as a toy, when they may not have)
+
+**Why it happens**: AI defaults to contrast-based rhetoric — it's easier to frame a point as "not the old way" than to argue the new way on its own merits.
+
+**Fix**: State what something *is*, not what it isn't. Make the positive case directly. If there's a real counterargument worth addressing, name it specifically and attribute it to actual people or positions.
+
 ### Negative Parallelism
 "Not X, but Y" or "Not just X, but also Y" constructions.
 
@@ -108,6 +120,35 @@ Using different words for the same thing to avoid repetition (often backfires).
 - "the company... the firm... the organization..."
 
 **Fix**: Repeat the same term. Readers prefer clarity over variety.
+
+### Signposting Preambles
+Announcing what you're about to say instead of saying it. Tells the reader to pay attention rather than earning attention through the content itself.
+
+**Examples**:
+- "Here's why this matters:"
+- "Let me explain why this is significant."
+- "Here's what you need to know:"
+- "What makes this interesting is..."
+- "The key takeaway here is..."
+- "There are three reasons this works:"
+
+**Why it happens**: AI treats writing like a presentation — it introduces every point with a slide title. Human writers just make the point.
+
+**Fix**: Delete the preamble and start with the substance. "Here's why this matters: the API cuts latency by 40%" becomes "The API cuts latency by 40%." The reader can tell it matters because you wrote about it.
+
+### False Candor Markers
+Phrases that simulate a confiding or personal tone without adding substance. They imply the default is dishonesty or distance.
+
+**Examples**:
+- "Honestly, I think..."
+- "To be frank..."
+- "If it were me, I'd..."
+- "What I would do is..."
+- "I'll be real with you..."
+
+**Why it happens**: AI uses these to manufacture intimacy — they make a generic opinion sound like personal advice from someone who's been in your shoes.
+
+**Fix**: State the opinion directly. "Honestly, I'd go with Postgres" becomes "Go with Postgres." The reader assumes you're being honest unless you give them reason not to.
 
 ### Hedging Clusters
 Multiple hedge words stacked together.
