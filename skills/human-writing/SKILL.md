@@ -5,68 +5,115 @@ description: Write naturally and avoid AI-detectable patterns. Use when (1) gene
 
 # Human Writing
 
-Write text that reads as authentically human by avoiding patterns commonly associated with AI-generated content.
+Write text that reads as authentically human -- not by sanitizing it into blandness, but by writing with voice, specificity, and personality. Avoiding AI tells is the floor; being engaging is the goal.
 
-## The Best Defense
+## Write With Voice First, Sanitize Second
 
-The most effective way to eliminate AI writing tics is a strong voice directive — a system prompt or persona that says "be direct, have opinions, don't perform helpfulness." This shifts the model's posture and most tics disappear on their own, the same way telling someone "be confident" eliminates a dozen nervous habits at once. The pattern lists below are the safety net: useful for review mode, for catching what slips through, and for teaching the specific tells. But if you can set the voice, start there.
+The biggest risk with this skill is overcorrection: stripping out every AI pattern and leaving behind something flat and lifeless. Safe writing that avoids all tells but says nothing interesting is worse than writing with a few AI-isms that actually engages the reader.
 
-Two principles that do the most work:
-1. **Don't be performative** — be genuinely helpful instead of signaling helpfulness. Straw men, preambles, and importance phrases are all performances.
-2. **Be confident** — state things directly unless there's a real reason to hedge. False candor ("honestly"), unnecessary qualifiers, and throat-clearing vanish when the default posture is confidence.
+The priority order:
+1. **Say something worth reading** -- have a point of view, include details only you'd know, make the reader think or feel something
+2. **Say it in your voice** -- not a committee voice, not a "professional" voice, your voice
+3. **Then clean up AI tells** -- the avoidance checklist is a final pass, not the writing strategy
+
+A piece that's engaging with one or two AI tells is better than a piece that's sterile with zero.
+
+### What "voice" means in practice
+
+Voice isn't about being quirky or casual. It's about having a recognizable perspective. Concrete things that create voice:
+
+- **Name things**: "Richard Hipp's benchmarks show 10-35x" beats "performance is excellent." Real names, real numbers, real products.
+- **Have opinions**: "WAL mode is fine for this -- you're not running 10,000 concurrent inserts" is a position. "SQLite handles writes adequately" is wallpaper.
+- **Show your reasoning**: "That makes sense -- there's no serialization, no network round trip" lets the reader follow your thinking. Bare claims ("it's fast") don't.
+- **Acknowledge tradeoffs honestly**: "There are limits. If your sync layer needs row-level conflict resolution, you'll build that yourself." This builds trust. Pure advocacy doesn't.
+- **Vary your energy**: Some paragraphs should crackle. Some should be matter-of-fact. A blog post that maintains one even tone throughout reads like it was generated.
+
+### Match voice to format
+
+Not every piece of writing wants the same amount of personality. Read the room:
+
+- **Blog posts, essays, opinion pieces**: Go heavy on voice. Have opinions, name names, show reasoning, vary energy. Flowing prose often works better than heading-per-point.
+- **Product emails, announcements, docs**: Clarity and scannability come first. Structure (bold headers, short sections, bullet points) is genuinely useful here -- don't strip it just because it "looks AI." Voice shows up in word choice and directness, not in forced casualness or anecdotes.
+- **Technical writing, READMEs**: Precision matters most. Voice is subtle -- it's in the examples you choose, the tradeoffs you mention, the gotchas you warn about.
+
+The skill's avoidance patterns (no inline-header lists, no bold formatting, minimal headings) are guidelines for prose, not rules for every format. A product announcement with clear `**What's new:**` sections is better than one that abandons structure to sound casual.
+
+### Don't fabricate to sound human
+
+When the skill says "name things" and "share practical knowledge," it means things you (or the persona you're writing as) actually know. Don't invent war stories, fake anecdotes, or made-up incidents to manufacture voice. A fabricated "we learned this the hard way when X crashed our staging server" is worse than no anecdote at all -- readers can smell fiction in technical writing. If you don't have a real story, use concrete technical details instead.
+
+### Two principles that do the most work
+
+1. **Don't be performative** -- be genuinely helpful instead of signaling helpfulness. Straw men, preambles, and importance phrases are all performances.
+2. **Be confident** -- state things directly unless there's a real reason to hedge. False candor ("honestly"), unnecessary qualifiers, and throat-clearing vanish when the default posture is confidence.
 
 ## Two Modes
 
-**Writing Mode**: Apply guidelines when generating new content.
+**Writing Mode**: Write with voice and personality first, then verify no AI tells slipped through.
 **Review Mode**: When asked to review text, identify AI patterns and suggest specific improvements.
 
-## Core Principles
+## Writing Mode
 
-1. **Be specific over generic** - Use concrete details, not vague abstractions
-2. **Vary sentence rhythm** - Mix short punchy sentences with longer ones naturally
-3. **Take a position** - Make claims, express views, avoid hedge-everything language
-4. **Use plain words** - Choose simple vocabulary over impressive-sounding alternatives
-5. **Break patterns** - Avoid formulaic structures and predictable three-item lists
+### Step 1: Write with substance and personality
 
-## Quick Reference: What to Avoid
+Before thinking about what to avoid, focus on what to include:
 
-### Vocabulary Red Flags
+- **Concrete details**: numbers, names, dates, measurements, code snippets, product names. "We measured P95 time-to-first-token at 87ms during our beta period" beats "response times are fast."
+- **Practical knowledge**: gotchas, tradeoffs, things the reader might not expect. "Token-level callbacks can fire thousands of times per response, so keep your handler lightweight" -- this is the stuff people actually want to read.
+- **Structure that serves the content**: don't default to a heading-per-point outline if flowing prose works better. A blog post with 6 `##` headings for 400 words feels like a PowerPoint deck, not writing.
+- **Varied energy**: mix informational paragraphs with opinionated ones. Throw in a one-sentence paragraph. Let some paragraphs be long and detailed. Rhythm matters.
+
+### Step 2: Review for AI tells
+
+After drafting, scan for the patterns below. But don't strip things that are working just because they appear on a list -- the goal is writing that sounds human and reads well, not writing that passes a filter.
+
+#### Vocabulary red flags
 
 Certain words appear disproportionately in AI text. See [references/vocabulary.md](references/vocabulary.md) for the complete list.
 
-**High-frequency tells**: delve, tapestry, vibrant, crucial, pivotal, enhance, foster, intricate, nuanced, multifaceted, comprehensive, underscore, landscape, realm, holistic
+**High-frequency tells** (find alternatives): delve, tapestry, vibrant, crucial, pivotal, enhance, foster, intricate, nuanced, multifaceted, comprehensive, underscore, landscape, realm, holistic
 
-**Hedge words (overused)**: arguably, various, specific, generally, relatively, ultimately, particularly
+**Hedge words** (reduce significantly): arguably, various, specific, generally, relatively, ultimately, particularly
 
-**Filler intensifiers**: truly, really, very, highly, deeply
+**Filler intensifiers** (delete): truly, really, very, highly, deeply
 
-### Structural Red Flags
+#### Structural red flags
 
 - **Rule of three**: Three parallel items in sequence ("X, Y, and Z" repeatedly)
 - **Negative parallelism**: "Not just X, but also Y"
 - **Mirror conclusions**: Restating the introduction in the conclusion
 - **Topic sentence + elaboration** formula in every paragraph
 - **"Challenges and future prospects"** closing pattern
-- **"Despite...faces challenges"** formula: Avoid starting conclusions with "Despite its [positive trait], [subject] faces challenges..."
-- **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale (e.g., "from small beginnings to global impact" when no timeline or progression exists)
-- **Manufactured straw men**: Inventing a weak position nobody holds, then refuting it to make the real point seem stronger (e.g., "Coding isn't about typing speed anymore" — nobody thought it was; or "This replaces your cobbled-together spaghetti code" — characterizing a situation that doesn't exist)
-- **Synonym repetition**: Using different words for the same concept repeatedly (e.g., constraints, limitations, challenges all meaning the same thing)
+- **"Despite...faces challenges"** formula
+- **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale
+- **Manufactured straw men**: Inventing a weak position nobody holds, then refuting it
+- **Synonym repetition**: Using different words for the same concept repeatedly
 
-### Formatting Red Flags
+#### Formatting red flags
 
-- Excessive em dashes (—) for parenthetical asides
-- Every heading in Title Case
+- Excessive em dashes (--) for parenthetical asides
+- Every heading in Title Case when sentence case fits better
 - Overuse of boldface for emphasis
-- Lists with inline headers and colons
-- Curly/smart quotes when straight quotes expected
+- Lists with **inline headers** and colons (the pattern you're reading right now -- use sparingly)
+- Too many `##` headings for short pieces. If the piece is under 500 words, consider whether headings help or just break up the flow.
 
-### Tone & Behavioral Red Flags
+#### Tone red flags
 
-- **Importance-signaling phrases**: Avoid "it's important to note," "it's crucial to remember," "worth noting," "it's critical to consider." Show importance through specificity instead.
-- **Hedging preambles**: Don't acknowledge that a subject is "unimportant" then immediately claim its importance. Commit to the claim or don't make it.
-- **Signposting preambles**: Avoid announcing what you're about to say — just say it. Phrases like "Here's why this matters," "Let me explain why," "Here's what you need to know," "What makes this interesting is" are throat-clearing. Cut them and start with the actual point.
-- **False candor markers**: Phrases like "honestly," "to be frank," "if it were me," "what I would do is" simulate a confiding tone without adding substance. They imply the rest of the time you're not being honest. Just state the opinion directly.
-- **Paragraph structure monotony**: Avoid topic-sentence-plus-elaboration formula in every paragraph. Vary structure—start with evidence, question, or narrative instead.
+- **Importance-signaling phrases**: "it's important to note," "it's crucial to remember," "worth noting." Show importance through specificity instead.
+- **Signposting preambles**: "Here's why this matters," "Let me explain why." Also watch for softer signposts like "X is where things get interesting/practical" -- these announce a transition instead of just making it. Just say the thing.
+- **False candor markers**: "honestly," "to be frank," "if it were me." Just state the opinion.
+- **Paragraph structure monotony**: Not every paragraph should start with a topic sentence. Start with evidence, a question, a detail, or a narrative beat.
+
+### Step 3: Quick checklist (final pass, not primary strategy)
+
+- [ ] The piece has a point of view, not just information
+- [ ] At least two concrete details (names, numbers, specifics)
+- [ ] Sentence lengths vary noticeably
+- [ ] No high-frequency AI vocabulary
+- [ ] No importance-signaling or signposting phrases
+- [ ] Paragraphs use varied structures
+- [ ] The conclusion adds something the introduction didn't say
+- [ ] The piece would still be interesting if another human wrote it
 
 ## Review Mode Instructions
 
@@ -85,25 +132,6 @@ Found: "[quoted text]"
 Issue: [brief explanation]
 Rewrite: "[improved version]"
 ```
-
-## Writing Mode Checklist
-
-Before finalizing any generated text:
-
-- [ ] No words from the high-frequency vocabulary list
-- [ ] Varied sentence lengths (not all medium-length)
-- [ ] No more than one three-item list per section
-- [ ] Specific examples instead of abstract claims
-- [ ] At least one short, punchy sentence per paragraph
-- [ ] No formulaic opening or closing phrases
-- [ ] No "it's important/crucial to note" phrases—let specificity speak for itself
-- [ ] No signposting preambles ("Here's why this matters," "Let me explain")
-- [ ] No false candor markers ("honestly," "if it were me")
-- [ ] Paragraphs don't all follow topic-sentence + elaboration pattern
-- [ ] No "Despite X, Y faces challenges" formulas in conclusions
-- [ ] No false ranges ("from X to Y") where no meaningful scale exists
-- [ ] No manufactured straw men (inventing weak positions to refute)
-- [ ] No synonym repetition for same concept (use the actual term consistently)
 
 ## References
 
