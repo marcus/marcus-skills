@@ -106,7 +106,7 @@
     },
     {
       "name": "multi-turn-runtime-adapters",
-      "description": "Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems with session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, and tool policy enforcement"
+      "description": "Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems with session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, tool policy enforcement, and rich component rendering (agent→UI generative components, UI→agent bidirectional state, component registries, surface targets)"
     },
     {
       "name": "technical-diagrams",
@@ -127,6 +127,10 @@
     {
       "name": "interactive-courseware",
       "description": "Create state-of-the-art interactive online courseware with AI agents. Covers course architecture, multimedia generation (narration, video, images, sound), interactive patterns (branching scenarios, simulations, gamification), SCORM/xAPI/cmi5 packaging for LMS delivery (WorkRamp, Docebo, Cornerstone), and collaborative agent-human workflows. Use when building courses, training content, e-learning modules, or educational experiences."
+    },
+    {
+      "name": "td-ralph-loop",
+      "description": "Set up and run autonomous overnight coding loops that process td epic tasks one at a time. Includes loop runner, live tail monitor, prompt template, and operational learnings from 60+ iterations."
     }
   ]
 }

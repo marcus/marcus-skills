@@ -1,6 +1,6 @@
 ---
 name: multi-turn-runtime-adapters
-description: Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems. Covers session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, and tool policy enforcement. Use when building orchestrators, chat UIs, or sidecar processes that need persistent multi-turn agent sessions.
+description: Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems. Covers session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, tool policy enforcement, and rich component rendering (agent→UI generative components, UI→agent bidirectional state, component registries, surface targets). Use when building orchestrators, chat UIs, or sidecar processes that need persistent multi-turn agent sessions with rich interactive interfaces.
 metadata:
   author: marcus-vorwaller
   version: "1.0"
@@ -24,12 +24,15 @@ Use this skill when the user asks for:
 - Session resume, fork, or archive functionality
 - JSON-RPC 2.0 client implementation over stdio
 - Tool policy enforcement for sandboxed agent sessions
+- Rich component rendering in agent chat (generative UI)
+- Bidirectional agent↔UI state synchronization
+- Component registry patterns for mapping tool calls to UI
+- Rendering agent-driven components outside the chat bubble (sidebars, panels, canvases)
 
 Do **not** use this skill for:
 
 - One-shot agent invocations (just use `query()` or `codex exec` directly)
 - Building the agent runtimes themselves
-- Frontend/UI implementation (this covers the backend adapter layer)
 
 ---
 
@@ -414,7 +417,7 @@ async function* userMessages() {
     type: 'user',
     session_id: 'session-123',
     message: { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
-    parent_tool_use_id: null,
+    parent_tool_use_id: null,  // Non-null when message is from a sub-agent — see "Sub-agent event normalization"
   };
   // Yield more messages as user sends them...
 }
@@ -1005,10 +1008,12 @@ await client.destroy();
 | Codex notification | Normalized event | Notes |
 |--------------------|------------------|-------|
 | `thread/started` | `session_ready` | |
+| `turn/started` | `thinking` (empty, done: false) | Emit immediately so UI shows activity before first item arrives |
 | `item/agentMessage/delta` | `delta` | Streaming text chunks |
 | `item/completed` (agentMessage) | **SKIP** | Text already delivered via streaming deltas — emitting here causes duplicates |
-| `item/reasoning/textDelta` | `thinking` | Streaming reasoning |
-| `item/reasoning/summaryTextDelta` | `thinking` | |
+| `item/started` (reasoning) | `thinking` (empty, done: false) | Signal that reasoning has begun, before streaming deltas |
+| `item/reasoning/textDelta` | `thinking` | Streaming reasoning. **IMPORTANT**: method is `item/reasoning/textDelta` not `reasoning/textDelta` — see common issues |
+| `item/reasoning/summaryTextDelta` | `thinking` | Same prefix caveat — `item/reasoning/summaryTextDelta` |
 | `item/completed` (reasoning) | `thinking` (done) | Final reasoning with `done: true` |
 | `item/started` (commandExecution) | `tool_start` | Classify file-read commands (cat, grep, find, etc.) with semantic `tool` name and `file_path` |
 | `item/completed` (commandExecution) | `tool_result` | Same classification applied to result |
@@ -1028,6 +1033,146 @@ await client.destroy();
 | `{ type: 'item.completed', item.type: 'function_call' }` | `tool_start` |
 | `{ type: 'item.completed', item.type: 'function_call_output' }` | `tool_result` |
 | `{ type: 'turn.completed' }` | `done` |
+
+---
+
+## Sub-agent event normalization
+
+When the agent spawns sub-agents (via the `Task` tool in Claude or thread delegation in Codex), their events arrive interleaved with the parent's. The key insight: **don't create separate event types** — add an optional `subagent_id` field to all existing event types and let the UI group by it.
+
+### Claude SDK sub-agent detection
+
+The SDK supports sub-agents natively through the `Task` built-in tool. Every message carries `parent_tool_use_id`:
+
+- `null` → message belongs to the parent/orchestrator context
+- A string → message is from a sub-agent spawned by the `tool_use` with that ID
+
+```js
+function processClaudeMessage(session, msg) {
+  const subagentId = msg.parent_tool_use_id || null;
+
+  // Helper that attaches subagent_id to every emitted event
+  function emitWithContext(eventType, data) {
+    if (subagentId) data.subagent_id = subagentId;
+    emit(session, eventType, data);
+  }
+
+  // Detect Task tool calls — these are sub-agent spawn points
+  if (msg.type === 'assistant') {
+    for (const block of msg.message?.content ?? []) {
+      if (block.type === 'tool_use' && block.name === 'Task') {
+        emitWithContext(EventTypes.TOOL_START, {
+          tool: 'Task',
+          subagent_spawn: true,
+          subagent_name: block.input?.agent || block.input?.description || 'sub-agent',
+        });
+      }
+    }
+  }
+
+  // All other events use emitWithContext instead of emit
+  // so subagent_id is propagated automatically
+}
+```
+
+For sub-agents to work, `Task` must be in `allowedTools`:
+
+```js
+if (session.mode === 'implementation') {
+  queryOptions.allowedTools = [
+    'Read', 'Write', 'Edit', 'Bash', 'Glob', 'Grep',
+    'Task',  // Required for sub-agent spawning
+    'WebSearch', 'WebFetch',
+  ];
+  queryOptions.maxTurns = 100;  // Implementation needs more turns
+}
+```
+
+Agent definitions are auto-discovered from `.claude/agents/*.md` in the working directory — they are NOT passed as SDK options.
+
+### Codex app-server sub-agent detection
+
+Codex manages sub-agents as child threads. Track the mapping on the session:
+
+```js
+// On the session object
+session.subagentThreads = new Map();  // threadId → { subagentId, name }
+
+function handleNotification(session, method, params) {
+  // Detect child thread creation
+  if (method === 'thread/started' && params.parent_thread_id === session.threadId) {
+    session.subagentThreads.set(params.thread_id, {
+      subagentId: params.agent_id || params.thread_id,
+      name: params.agent_name || 'sub-agent',
+    });
+  }
+
+  // Resolve subagent_id for any notification
+  const subagentId = resolveSubagentId(session, params);
+
+  function emitWithContext(eventType, data) {
+    if (subagentId) data.subagent_id = subagentId;
+    emit(session, eventType, data);
+  }
+
+  // ... rest of notification handling uses emitWithContext
+}
+
+function resolveSubagentId(session, params) {
+  const threadId = params.thread_id || params.threadId;
+  if (threadId && session.subagentThreads.has(threadId)) {
+    return session.subagentThreads.get(threadId).subagentId;
+  }
+  if (params.agent_id && params.agent_id !== session.threadId) {
+    return params.agent_id;
+  }
+  return null;
+}
+```
+
+For implementation mode, configure thread limits:
+
+```js
+// In thread/start params for implementation mode
+{
+  agents: {
+    max_threads: 4,  // Concurrent sub-agent cap
+    max_depth: 1,    // Direct children only — prevent runaway nesting
+  }
+}
+```
+
+### UI: SubAgentBlock pattern
+
+Extend the `ContentBlock` discriminated union with a `subagent` kind:
+
+```ts
+interface SubAgentState {
+  id: string;             // The subagent_id
+  name: string;           // Agent name/description
+  status: 'running' | 'completed' | 'failed';
+  toolCalls: number;
+  fileChanges: number;
+  blocks: ContentBlock[];  // Nested blocks — same type, recursive
+  startedAt: string;
+  completedAt?: string;
+}
+
+type ContentBlock =
+  | { kind: 'text'; text: string }
+  | { kind: 'tool'; tool: ToolEvent }
+  | { kind: 'subagent'; subagent: SubAgentState }  // New
+  // ... other kinds
+```
+
+Event routing in `applyEventBlocksToMessage()`:
+
+1. When `tool_start` has `subagent_spawn: true` → create a `subagent` ContentBlock with a new SubAgentState
+2. When subsequent events carry `subagent_id` → route to the matching SubAgentState's `blocks` array (reuse the same `applyEventBlocksToMessage` function recursively)
+3. When `tool_result` matches the sub-agent's spawn tool_use_id → mark SubAgentState as completed
+4. Events without `subagent_id` → apply to main message as before (no regression)
+
+The SubAgentBlock component renders collapsed by default (name + summary stats) and expands to show the full nested block stream — same rendering logic as the parent chat, just indented with a left border accent.
 
 ---
 
@@ -1224,6 +1369,151 @@ canUseTool: async (toolName, input) => {
 // then rely on developerInstructions to constrain behavior
 // OR implement approval callbacks via server requests
 ```
+
+### Mode-aware tool policy
+
+Real systems need multiple session modes with different capabilities. Add a `mode` parameter to the policy function:
+
+```js
+function isAllowed(toolName, command, mode) {
+  if (mode === 'implementation') return isAllowedImplementation(toolName, command);
+  return isAllowedPlanner(toolName, command);  // Default: read-only
+}
+```
+
+Implementation mode unlocks coding tools while keeping safety rails:
+
+```js
+// Implementation mode: allows
+const IMPL_ALLOWED_TOOLS = [
+  'Read', 'Glob', 'Grep', 'Bash',
+  'Write', 'Edit',     // File mutations — the big unlock
+  'Task',              // Sub-agent spawning
+  'WebSearch', 'WebFetch',
+];
+
+// Implementation mode: expanded shell allowlist
+const IMPL_ALLOWED_SHELL = [
+  // All read-only (same as planner) plus:
+  /^git\s+(add|commit|push|pull|fetch|show|diff|log|status|stash|merge|rebase|checkout|branch|remote|rev-parse|tag|cherry-pick)\b/,
+  /^(npm|npx|node|go|make|cargo|python3|pip3)\b/,  // Build/test tools
+  /^(mkdir|cp|mv|rm)\s/,  // File operations (rm -rf / caught by deny)
+];
+```
+
+**Security lesson — use word boundaries in deny patterns:**
+
+When `permissionMode: 'bypassPermissions'` is set (as it should be for implementation mode — you don't want the agent stuck waiting for interactive approval), there is no interactive safety net. Start-of-string anchors (`^`) create a bypass via command chaining:
+
+```js
+// BAD: ^rm bypasses via "echo foo; rm -rf /"
+const DENY_BAD  = [/^rm\s+-rf?\s+\//];
+
+// GOOD: \b catches dangerous commands anywhere in the string
+const DENY_GOOD = [/\brm\s+-rf?\s+\//];
+```
+
+This applies to all deny patterns — `sudo`, `shutdown`, `kill`, `git push --force`, etc. Always use `\b` word boundaries when the agent has `bypassPermissions`.
+
+```js
+const IMPL_DENIED = [
+  /\brm\s+-rf?\s+\//,          // rm -rf /
+  /\bsudo\s/,
+  /\bgit\s+push\s+.*--force/,  // deny force push
+  /\bgit\s+push\s+-f\b/,       // deny -f shorthand
+  /\bgit\s+reset\s+--hard/,
+  /\bshutdown\b/, /\breboot\b/,
+  /\bkill\s/, /\bpkill\s/,
+  /\bchmod\s/, /\bchown\s/,
+  /\bdd\b.*\bof=/,
+];
+```
+
+Wire it into Claude's `query()` call:
+
+```js
+const queryOptions = {
+  canUseTool: async (toolName, input) => {
+    const command = toolName === 'Bash' ? (input?.command ?? '') : undefined;
+    const result = isAllowed(toolName, command, session.mode);
+    if (result.allowed) return { behavior: 'allow', updatedInput: input ?? {} };
+    return { behavior: 'deny', message: result.reason };
+  },
+};
+
+if (session.mode === 'implementation') {
+  queryOptions.permissionMode = 'bypassPermissions';
+}
+```
+
+### Agent definition file management
+
+Sub-agents require role definitions in the workspace. Claude and Codex use different formats:
+
+| Runtime | Format | Location | Discovery |
+|---------|--------|----------|-----------|
+| Claude Agent SDK | Markdown (`.md`) | `{cwd}/.claude/agents/` | Auto-discovered by SDK |
+| Codex app-server | TOML (`.toml`) | `{cwd}/.codex/agents/` | Loaded on startup |
+
+**Claude agent definition** (`.claude/agents/implementer.md`):
+```markdown
+---
+name: implementer
+description: Implementation-focused agent for writing production code.
+---
+
+Write clean, tested code for the assigned task.
+Follow project conventions. Commit with task ID reference.
+Run existing tests to verify changes don't break anything.
+```
+
+**Codex agent definition** (`.codex/agents/implementer.toml`):
+```toml
+name = "implementer"
+description = "Implementation-focused agent for writing production code."
+model_reasoning_effort = "high"
+developer_instructions = """
+Write clean, tested code for the assigned task.
+Follow project conventions. Commit with task ID reference.
+Run existing tests to verify changes don't break anything.
+"""
+```
+
+Codex required fields: `name`, `description`, `developer_instructions`. Optional: `model`, `model_reasoning_effort`, `sandbox_mode`, `mcp_servers`, `nickname_candidates`.
+
+Codex built-in agents (`default`, `worker`, `explorer`) are always available even without custom files.
+
+**Workspace preparation pattern**: Before launching an implementation session, copy default agent templates to the workspace if they don't exist. Never overwrite — respect project customizations:
+
+```js
+import { cp, access, mkdir } from 'node:fs/promises';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const TEMPLATES_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'templates', 'agents');
+
+export async function prepareWorkspace(workingDir, runtime) {
+  const subdir = runtime === 'codex' ? '.codex' : '.claude';
+  const targetDir = join(workingDir, subdir, 'agents');
+  const sourceDir = join(TEMPLATES_DIR, runtime === 'codex' ? 'codex' : 'claude');
+
+  try { await access(sourceDir); } catch { return; }  // No templates
+
+  await mkdir(targetDir, { recursive: true });
+
+  const { readdir } = await import('node:fs/promises');
+  for (const file of await readdir(sourceDir)) {
+    const target = join(targetDir, file);
+    try {
+      await access(target);  // Already exists — skip
+    } catch {
+      await cp(join(sourceDir, file), target);
+    }
+  }
+}
+```
+
+Call this from `createSession()` when mode is `'implementation'`, before spawning the agent process.
 
 ---
 
@@ -1484,6 +1774,75 @@ child.on('close', (code) => {
   }
 });
 ```
+
+### Issue: Codex reasoning/thinking events silently dropped
+
+**Symptom**: The UI never shows "Thinking" during Codex sessions. The agent appears idle for long periods then suddenly a block of text appears. Claude sessions show thinking correctly.
+
+**Cause**: The Codex app-server notification methods for reasoning events are prefixed with `item/` — the full method names are `item/reasoning/textDelta` and `item/reasoning/summaryTextDelta`. If your adapter's switch/case listens for `reasoning/textDelta` (without the `item/` prefix), the events silently fall through to the default case and are never processed.
+
+This is easy to miss because:
+1. The server notification table in the Codex docs lists these under "Item-level notifications" but doesn't always emphasize the `item/` prefix
+2. Other item-level methods (`item/agentMessage/delta`, `item/started`, `item/completed`) are obviously prefixed because their names start differently
+3. `reasoning/textDelta` looks like a plausible method name, and there's no runtime error — JSON-RPC notifications with unrecognized methods are silently ignored
+
+**Solution**: Use the full `item/`-prefixed method names. For safety, handle both variants:
+```js
+case 'item/reasoning/textDelta':
+case 'item/reasoning/summaryTextDelta':
+case 'reasoning/textDelta':        // fallback for protocol variations
+case 'reasoning/summaryTextDelta':  // fallback for protocol variations
+  if (params.delta) {
+    emitWithContext(EventTypes.THINKING, { text: params.delta });
+  }
+  break;
+```
+
+### Issue: No activity indication between turn/start and first item event
+
+**Symptom**: After the user sends a message, the UI shows a generic "Working" status (or nothing) for several seconds before the first streaming event arrives. Particularly noticeable with Codex where the model may reason internally before emitting any items.
+
+**Cause**: The `turn/started` notification (emitted when the agent begins processing) and `item/started` with type `reasoning` (emitted when a reasoning item starts) are typically handled as no-ops. The UI only transitions to "Thinking" or "Running tool" when `delta`, `thinking`, or `tool_start` events arrive — but there's a gap between the turn starting and the first such event.
+
+**Solution**: Emit an empty `thinking` event on both `turn/started` and `item/started` (reasoning) to give immediate UI feedback:
+```js
+case 'turn/started':
+  // Immediate activity signal before any items arrive
+  emitWithContext(EventTypes.THINKING, { text: '', done: false });
+  break;
+
+case 'item/started':
+  if (params.item?.type === 'command_execution') {
+    // ... existing tool_start handling ...
+  } else if (params.item?.type === 'reasoning') {
+    // Signal thinking before streaming reasoning deltas arrive
+    emitWithContext(EventTypes.THINKING, { text: '', done: false });
+  }
+  break;
+```
+
+The empty `text: ''` is fine — the UI's thinking state is triggered by the event type, not the content. The `done: false` keeps the thinking indicator active until reasoning completes or another event supersedes it.
+
+### Issue: UI status indicator shows generic "Responding" instead of granular activity
+
+**Symptom**: The chat header shows "Responding" for all agent activity (thinking, tool execution, text generation). Users can't tell whether the agent is reasoning, running a command, or writing a reply.
+
+**Cause**: The UI reads the coarse `sessionStatus` ('idle' | 'responding' | 'error' | 'initializing') for its status display, ignoring the granular `activeAgentActivity` computed property that already tracks the specific activity kind (thinking, tool, responding, permission) with a human-readable label and appropriate icon.
+
+**Solution**: Wire the granular activity status into the UI. The store already computes detailed activity via priority-based checks (pending permissions → running tools → streaming text → thinking → fallback). The UI just needs to read it:
+```js
+// Instead of:
+let status = $derived(store.sessionStatus);
+let statusLabel = status === 'responding' ? 'Responding' : 'Ready';
+
+// Use:
+let activity = $derived(store.activeAgentActivity);
+let statusLabel = activity.busy ? activity.label : 'Ready';
+// activity.label is "Thinking", "Running Bash", "Writing reply",
+// "Waiting for approval", "Working", etc.
+```
+
+This requires no new UI components — just replace the data source for the existing indicator text.
 
 ---
 
@@ -1812,3 +2171,1041 @@ if (hadNonText && content && !content.endsWith('\n')) {
 ```
 
 This replicates the pre-refactor `hadToolSinceLastDelta` flag behavior. Without it, text before and after tool calls runs together as one paragraph in any consumer that reads the flat `content` field.
+
+---
+
+## Rich component rendering
+
+Agent chat doesn't have to be text bubbles. The agent can render interactive components in the chat stream (generative UI), and the UI can render agent-driven components anywhere in the application — sidebars, panels, canvases. This section covers the patterns for both directions.
+
+The core idea: **tool calls and agent state changes are component selection events**. When the agent calls `get_weather`, the UI doesn't show JSON — it shows a `<WeatherCard>`. When the agent enters a "planning" node, a sidebar panel shows the live plan. The chat becomes a timeline of interactive widgets, not just text.
+
+### The three patterns
+
+| Pattern | Direction | Trigger | Example |
+|---------|-----------|---------|---------|
+| **Tool-mapped components** | Agent → chat | Tool call lifecycle | `get_weather` → `<WeatherCard>` in message stream |
+| **State-projected components** | Agent → anywhere | Agent state change | Planning node active → sidebar shows `<PlanEditor>` |
+| **Frontend tools** | UI → agent | User interaction | User clicks "Approve" → agent receives approval and continues |
+
+All three compose together. A single agent turn might render a chart in the chat, update a sidebar panel, and pause for user approval — all driven by the same event stream from the normalized event model above.
+
+---
+
+## The component registry
+
+A component registry maps abstract names to concrete UI components. This is the single most important pattern for rich agent chat — it decouples the agent's tool/state vocabulary from the rendering implementation.
+
+### Registry structure
+
+```ts
+// component-registry.ts
+import type { ComponentType } from 'svelte';  // or React, etc.
+
+type ComponentEntry = {
+  component: ComponentType;
+  /** Where this component can render */
+  surfaces: ('chat' | 'sidebar' | 'panel' | 'overlay' | 'canvas')[];
+  /** Show loading skeleton while tool is running? */
+  hasLoadingState: boolean;
+};
+
+const registry: Record<string, ComponentEntry> = {};
+
+export function registerComponent(name: string, entry: ComponentEntry) {
+  registry[name] = entry;
+}
+
+export function getComponent(name: string): ComponentEntry | undefined {
+  return registry[name];
+}
+
+export function listComponents(surface?: string): string[] {
+  if (!surface) return Object.keys(registry);
+  return Object.entries(registry)
+    .filter(([_, e]) => e.surfaces.includes(surface as any))
+    .map(([name]) => name);
+}
+```
+
+### Registration
+
+Register components at app startup. Each component declares which surfaces it supports:
+
+```ts
+// Register at app init
+import WeatherCard from './components/WeatherCard.svelte';
+import PlanEditor from './components/PlanEditor.svelte';
+import CodeDiff from './components/CodeDiff.svelte';
+import ApprovalDialog from './components/ApprovalDialog.svelte';
+
+registerComponent('weather', {
+  component: WeatherCard,
+  surfaces: ['chat', 'panel'],
+  hasLoadingState: true,
+});
+registerComponent('plan_editor', {
+  component: PlanEditor,
+  surfaces: ['sidebar', 'panel'],
+  hasLoadingState: false,
+});
+registerComponent('code_diff', {
+  component: CodeDiff,
+  surfaces: ['chat', 'panel', 'overlay'],
+  hasLoadingState: true,
+});
+registerComponent('approval', {
+  component: ApprovalDialog,
+  surfaces: ['chat'],
+  hasLoadingState: false,
+});
+```
+
+### Why a registry instead of inline switch/case
+
+Switch/case on tool names is the simplest approach and works for small apps:
+
+```ts
+// Simple but doesn't scale
+switch (toolName) {
+  case 'get_weather': return <WeatherCard data={toolResult} />;
+  case 'search': return <SearchResults data={toolResult} />;
+  default: return <JsonViewer data={toolResult} />;
+}
+```
+
+The registry is better when:
+- Components render in **multiple surfaces** (chat AND sidebar)
+- You need **loading states** during tool execution (not just after)
+- Components are **added dynamically** (plugins, user customization)
+- The agent emits **component events** that don't map 1:1 to tool names
+
+Use switch/case for ≤5 tool-mapped components. Use a registry beyond that.
+
+---
+
+## Agent → chat: tool-mapped components
+
+The most common pattern. When the agent calls a tool, the UI renders a component instead of (or alongside) raw tool output.
+
+### Extending the ContentBlock model
+
+Add a `component` kind to the existing block-based message model:
+
+```ts
+type ContentBlock =
+  | { kind: 'text'; text: string }
+  | { kind: 'tool'; toolUseId: string; tool: string; input?: any; output?: string; isError?: boolean; status: 'running' | 'done' }
+  | { kind: 'permission'; toolName: string; toolInput?: any; allowed?: boolean; resolved: boolean }
+  | { kind: 'proof'; src: string; alt?: string }
+  | { kind: 'error'; message: string }
+  // NEW: rich component blocks
+  | { kind: 'component'; name: string; props: Record<string, any>; surface: string; status: 'loading' | 'ready' | 'error'; toolUseId?: string };
+```
+
+Component blocks can be **standalone** (emitted directly by the agent via custom events) or **tool-linked** (associated with a tool call via `toolUseId`). Tool-linked components replace the default collapsed tool output display.
+
+### Event flow: tool call → component rendering
+
+```
+Agent calls get_weather(city: "NYC")
+  ↓
+tool_start event: { tool: "get_weather", tool_use_id: "tu_123", input: { city: "NYC" } }
+  ↓
+Registry lookup: getComponent("get_weather") → WeatherCard
+  ↓
+Push component block: { kind: 'component', name: 'weather', props: { city: "NYC" }, status: 'loading', toolUseId: "tu_123" }
+  ↓
+tool_result event: { tool_use_id: "tu_123", output: '{"temp": 72, ...}' }
+  ↓
+Update component block: status → 'ready', merge parsed output into props
+```
+
+### Handler integration
+
+Extend `applyEventBlocksToMessage` to create component blocks when a tool has a registered component:
+
+```ts
+case 'tool_start': {
+  const entry = getComponent(data.tool);
+  if (entry && entry.surfaces.includes('chat')) {
+    // Render as rich component
+    msg.blocks.push({
+      kind: 'component',
+      name: data.tool,
+      props: data.input ?? {},
+      surface: 'chat',
+      status: entry.hasLoadingState ? 'loading' : 'ready',
+      toolUseId: data.tool_use_id,
+    });
+  }
+  // Always push the tool block too (for debugging, expand/collapse)
+  msg.blocks.push({
+    kind: 'tool', toolUseId: data.tool_use_id, tool: data.tool,
+    input: data.input, status: 'running',
+  });
+  break;
+}
+
+case 'tool_result': {
+  // Update tool block
+  const toolBlock = msg.blocks.findLast(
+    b => b.kind === 'tool' && b.toolUseId === data.tool_use_id
+  );
+  if (toolBlock) {
+    toolBlock.output = data.output;
+    toolBlock.isError = data.is_error;
+    toolBlock.status = 'done';
+  }
+  // Update component block with result data
+  const compBlock = msg.blocks.findLast(
+    b => b.kind === 'component' && b.toolUseId === data.tool_use_id
+  );
+  if (compBlock) {
+    try {
+      const parsed = JSON.parse(data.output);
+      compBlock.props = { ...compBlock.props, ...parsed };
+      compBlock.status = data.is_error ? 'error' : 'ready';
+    } catch {
+      compBlock.status = data.is_error ? 'error' : 'ready';
+    }
+  }
+  break;
+}
+```
+
+### Rendering in Svelte 5
+
+```svelte
+<!-- ChatMessage.svelte -->
+<script lang="ts">
+  import { getComponent } from './component-registry';
+
+  let { message } = $props();
+</script>
+
+{#each message.blocks as block, i}
+  {#if block.kind === 'text'}
+    <MarkdownRenderer content={block.text} />
+
+  {:else if block.kind === 'component'}
+    {@const entry = getComponent(block.name)}
+    {#if entry}
+      {#if block.status === 'loading' && entry.hasLoadingState}
+        <div class="animate-pulse rounded-lg bg-muted h-24 w-full" />
+      {:else}
+        <entry.component {...block.props} status={block.status} />
+      {/if}
+    {:else}
+      <!-- Fallback: render as collapsed tool output -->
+      <ToolCallCollapsed block={block} />
+    {/if}
+
+  {:else if block.kind === 'tool'}
+    <!-- Only show tool block if no component block covers this toolUseId -->
+    {#if !message.blocks.some(b => b.kind === 'component' && b.toolUseId === block.toolUseId)}
+      <ToolCallBlock {block} {i} msgId={message.id} />
+    {/if}
+
+  {:else if block.kind === 'permission'}
+    <PermissionRequest {block} />
+
+  {:else if block.kind === 'error'}
+    <ErrorBlock message={block.message} />
+  {/if}
+{/each}
+```
+
+### Component contract
+
+Every component in the registry receives these standard props:
+
+```ts
+type ComponentProps = {
+  /** Tool input and/or parsed tool output, merged */
+  [key: string]: any;
+  /** 'loading' while tool is running, 'ready' when result arrives, 'error' on failure */
+  status: 'loading' | 'ready' | 'error';
+};
+```
+
+Components should handle all three states. A weather card might show a skeleton on `loading`, data on `ready`, and an error message on `error`.
+
+---
+
+## Agent → anywhere: state-projected components
+
+Tool-mapped components render in the chat timeline. State-projected components render **anywhere in the application** — they react to agent state changes regardless of which message triggered them.
+
+### The component event
+
+Extend the normalized event model with a new event type for component rendering outside the chat:
+
+```ts
+// Add to EventTypes
+COMPONENT_UPDATE: 'component_update',
+COMPONENT_REMOVE: 'component_remove',
+```
+
+```ts
+// component_update event
+{
+  type: 'component_update',
+  data: {
+    component_id: string,    // Stable ID for this component instance
+    name: string,            // Registry name (e.g., 'plan_editor')
+    surface: string,         // Target: 'sidebar' | 'panel' | 'overlay' | 'canvas'
+    props: Record<string, any>,
+    merge: boolean,          // true = merge props into existing, false = replace
+  },
+  ts: string,
+}
+
+// component_remove event
+{
+  type: 'component_remove',
+  data: {
+    component_id: string,
+  },
+  ts: string,
+}
+```
+
+### Emitting component events from the backend
+
+The backend adapter emits these events when the agent's state warrants a UI update. This can happen:
+
+1. **From tool results** — after a tool completes, the adapter checks if the tool has a surface component and emits a `component_update`
+2. **From agent state** — the adapter watches the agent's state (e.g., LangGraph node transitions) and emits updates when relevant state changes
+3. **Explicitly** — the agent's tools can emit component events directly via a `render_component` helper
+
+```python
+# Python backend: emit component events
+
+def emit_component(session, component_id: str, name: str, surface: str, props: dict, merge: bool = False):
+    """Emit a component_update event to the frontend."""
+    session.emit({
+        "type": "component_update",
+        "data": {
+            "component_id": component_id,
+            "name": name,
+            "surface": surface,
+            "props": props,
+            "merge": merge,
+        },
+        "ts": datetime.utcnow().isoformat() + "Z",
+    })
+
+# Usage in a LangGraph node:
+async def planning_node(state: AgentState, config: dict):
+    plan = await generate_plan(state)
+    session = config["session"]
+
+    # Push plan editor to sidebar
+    emit_component(session, "plan-editor", "plan_editor", "sidebar", {
+        "steps": plan.steps,
+        "current_step": 0,
+        "editable": True,
+    })
+
+    return {"plan": plan}
+```
+
+### Surface manager (frontend)
+
+The surface manager tracks active components across all surfaces and routes updates:
+
+```ts
+// surface-manager.ts
+import { getComponent } from './component-registry';
+
+type ActiveComponent = {
+  id: string;
+  name: string;
+  surface: string;
+  props: Record<string, any>;
+};
+
+// Svelte 5: reactive state
+let activeComponents: ActiveComponent[] = $state([]);
+
+export function handleComponentEvent(event: SessionEvent) {
+  if (event.type === 'component_update') {
+    const { component_id, name, surface, props, merge } = event.data;
+    const entry = getComponent(name);
+    if (!entry || !entry.surfaces.includes(surface)) return;
+
+    const existing = activeComponents.find(c => c.id === component_id);
+    if (existing) {
+      existing.props = merge ? { ...existing.props, ...props } : props;
+      existing.surface = surface;
+    } else {
+      activeComponents.push({ id: component_id, name, surface, props });
+    }
+  }
+
+  if (event.type === 'component_remove') {
+    activeComponents = activeComponents.filter(c => c.id !== event.data.component_id);
+  }
+}
+
+export function getComponentsForSurface(surface: string): ActiveComponent[] {
+  return activeComponents.filter(c => c.surface === surface);
+}
+
+export function clearAllComponents() {
+  activeComponents = [];
+}
+```
+
+### Rendering surface slots in the layout
+
+Place surface slots in your SvelteKit layout. Each slot renders whatever components the agent has pushed to that surface:
+
+```svelte
+<!-- +layout.svelte -->
+<script lang="ts">
+  import { getComponentsForSurface } from './surface-manager';
+  import { getComponent } from './component-registry';
+  import SurfaceSlot from './SurfaceSlot.svelte';
+</script>
+
+<div class="app-layout">
+  <aside class="sidebar">
+    <SurfaceSlot surface="sidebar" />
+  </aside>
+
+  <main>
+    <slot />  <!-- Chat lives here -->
+  </main>
+
+  <aside class="panel">
+    <SurfaceSlot surface="panel" />
+  </aside>
+</div>
+
+{#if getComponentsForSurface('overlay').length > 0}
+  <div class="overlay-container">
+    <SurfaceSlot surface="overlay" />
+  </div>
+{/if}
+```
+
+```svelte
+<!-- SurfaceSlot.svelte -->
+<script lang="ts">
+  import { getComponentsForSurface } from './surface-manager';
+  import { getComponent } from './component-registry';
+
+  let { surface } = $props();
+  let components = $derived(getComponentsForSurface(surface));
+</script>
+
+{#each components as active (active.id)}
+  {@const entry = getComponent(active.name)}
+  {#if entry}
+    <entry.component {...active.props} componentId={active.id} />
+  {/if}
+{/each}
+```
+
+### Wiring into the event stream
+
+Add `component_update` and `component_remove` handling to the existing SSE event processor:
+
+```ts
+// In your SSE event handler (alongside applySessionEvent)
+function handleSessionEvent(event: SessionEvent) {
+  if (event.type === 'component_update' || event.type === 'component_remove') {
+    handleComponentEvent(event);
+    return; // These don't accumulate into chat messages
+  }
+  // ... existing event handling (delta, tool_start, etc.)
+  applySessionEvent(event);
+}
+```
+
+---
+
+## UI → agent: frontend tools and bidirectional state
+
+The patterns above are agent-to-UI (the agent pushes components). The reverse direction — UI-to-agent — enables truly interactive experiences where user actions in rendered components feed back into the agent's reasoning.
+
+### Pattern 1: Frontend tools (agent calls the UI)
+
+The agent defines a tool that executes on the frontend, not the backend. The agent calls the tool, the frontend renders UI for the user to interact with, and the user's response becomes the tool result.
+
+```ts
+// Frontend tool registration
+type FrontendTool = {
+  name: string;
+  description: string;
+  parameters: Record<string, any>;  // JSON Schema
+  /** Render UI and return the result when the user completes interaction */
+  execute: (params: any) => Promise<any>;
+};
+
+const frontendTools: Map<string, FrontendTool> = new Map();
+
+export function registerFrontendTool(tool: FrontendTool) {
+  frontendTools.set(tool.name, tool);
+}
+
+// Example: approval tool
+registerFrontendTool({
+  name: 'request_approval',
+  description: 'Request user approval for a proposed action',
+  parameters: {
+    type: 'object',
+    properties: {
+      action: { type: 'string' },
+      details: { type: 'string' },
+      options: { type: 'array', items: { type: 'string' } },
+    },
+  },
+  execute: async (params) => {
+    // Returns a promise that resolves when the user clicks a button
+    return new Promise((resolve) => {
+      showApprovalDialog({
+        ...params,
+        onChoice: (choice: string) => resolve({ approved: choice === 'approve', choice }),
+      });
+    });
+  },
+});
+```
+
+### Intercepting tool calls for frontend execution
+
+When the agent calls a tool that's registered as a frontend tool, intercept it before sending to the backend:
+
+```ts
+// In the tool permission/execution layer
+async function handleToolCall(toolName: string, toolInput: any, toolUseId: string): Promise<string> {
+  const frontendTool = frontendTools.get(toolName);
+  if (frontendTool) {
+    // Execute on the frontend — this renders UI and waits for user interaction
+    const result = await frontendTool.execute(toolInput);
+    // Send the result back to the agent as a tool_result
+    await session.sendToolResult(toolUseId, JSON.stringify(result));
+    return JSON.stringify(result);
+  }
+  // Not a frontend tool — let the backend handle it
+  return null;
+}
+```
+
+### Pattern 2: Component callbacks (UI pushes state to agent)
+
+Components rendered by the agent can send state back via a callback channel. This is simpler than frontend tools — no tool call/result lifecycle, just a message from the UI to the agent.
+
+```ts
+// Callback channel
+type ComponentCallback = {
+  componentId: string;
+  action: string;
+  payload: Record<string, any>;
+};
+
+export async function sendComponentCallback(callback: ComponentCallback) {
+  // Send as the next user message with metadata
+  await session.sendMessage(JSON.stringify({
+    type: 'component_callback',
+    ...callback,
+  }));
+}
+```
+
+```svelte
+<!-- PlanEditor.svelte — rendered in sidebar by the agent -->
+<script lang="ts">
+  import { sendComponentCallback } from './surface-manager';
+
+  let { steps, current_step, editable, componentId } = $props();
+
+  function reorderStep(from: number, to: number) {
+    // Optimistic UI update
+    const reordered = [...steps];
+    const [moved] = reordered.splice(from, 1);
+    reordered.splice(to, 0, moved);
+    steps = reordered;
+
+    // Notify agent
+    sendComponentCallback({
+      componentId,
+      action: 'reorder_steps',
+      payload: { steps: reordered },
+    });
+  }
+
+  function approveStep(index: number) {
+    sendComponentCallback({
+      componentId,
+      action: 'approve_step',
+      payload: { step_index: index },
+    });
+  }
+</script>
+
+<div class="plan-editor">
+  {#each steps as step, i}
+    <div class="plan-step" class:active={i === current_step}>
+      <span>{step.description}</span>
+      {#if editable}
+        <button onclick={() => approveStep(i)}>Approve</button>
+      {/if}
+    </div>
+  {/each}
+</div>
+```
+
+### Pattern 3: Shared reactive state (bidirectional sync)
+
+For deep integration, maintain a shared state object that both the agent and UI can read and write. State changes in either direction propagate via events.
+
+```ts
+// shared-state.ts
+type SharedState = Record<string, any>;
+
+let sharedState: SharedState = $state({});
+
+/** Agent updated state (via SSE event) */
+export function applyStateSnapshot(state: SharedState) {
+  sharedState = state;
+}
+
+/** Agent sent a partial update (via SSE event) */
+export function applyStateDelta(patches: JsonPatch[]) {
+  // Apply RFC 6902 JSON Patch operations
+  for (const patch of patches) {
+    switch (patch.op) {
+      case 'add':
+      case 'replace':
+        setNestedValue(sharedState, patch.path, patch.value);
+        break;
+      case 'remove':
+        deleteNestedValue(sharedState, patch.path);
+        break;
+    }
+  }
+}
+
+/** UI changed state (sends to agent via POST) */
+export async function updateSharedState(path: string, value: any) {
+  setNestedValue(sharedState, path, value);  // Optimistic
+  await fetch(`/api/sessions/${sessionId}/state`, {
+    method: 'PATCH',
+    body: JSON.stringify([{ op: 'replace', path, value }]),
+  });
+}
+
+export function getSharedState(): SharedState {
+  return sharedState;
+}
+```
+
+This is the pattern used by CopilotKit's `useCoAgent` (shared state between frontend and LangGraph agent) and AG-UI's state synchronization protocol. Use it when the agent and UI are co-editing the same data structure (e.g., a document, a plan, a configuration).
+
+---
+
+## Python backend: emitting rich UI events
+
+The frontend patterns above consume events. Here's how to emit them from Python backends.
+
+### Pydantic models for component events
+
+```python
+from pydantic import BaseModel
+from datetime import datetime, timezone
+from typing import Any, Literal
+import json
+
+class ComponentUpdate(BaseModel):
+    type: Literal["component_update"] = "component_update"
+    data: "ComponentUpdateData"
+    ts: str
+
+    @classmethod
+    def create(cls, component_id: str, name: str, surface: str, props: dict, merge: bool = False):
+        return cls(
+            data=ComponentUpdateData(
+                component_id=component_id,
+                name=name,
+                surface=surface,
+                props=props,
+                merge=merge,
+            ),
+            ts=datetime.now(timezone.utc).isoformat(),
+        )
+
+class ComponentUpdateData(BaseModel):
+    component_id: str
+    name: str
+    surface: str
+    props: dict[str, Any]
+    merge: bool = False
+
+class ComponentRemove(BaseModel):
+    type: Literal["component_remove"] = "component_remove"
+    data: "ComponentRemoveData"
+    ts: str
+
+    @classmethod
+    def create(cls, component_id: str):
+        return cls(
+            data=ComponentRemoveData(component_id=component_id),
+            ts=datetime.now(timezone.utc).isoformat(),
+        )
+
+class ComponentRemoveData(BaseModel):
+    component_id: str
+```
+
+### SSE emission from FastAPI / Starlette
+
+```python
+from starlette.responses import StreamingResponse
+import asyncio
+
+class SessionEventEmitter:
+    """Manages an SSE stream for a session, including component events."""
+
+    def __init__(self):
+        self._queue: asyncio.Queue = asyncio.Queue()
+
+    async def emit(self, event: dict):
+        await self._queue.put(event)
+
+    async def emit_component(self, component_id: str, name: str, surface: str, props: dict, merge: bool = False):
+        await self.emit(
+            ComponentUpdate.create(component_id, name, surface, props, merge).model_dump()
+        )
+
+    async def remove_component(self, component_id: str):
+        await self.emit(
+            ComponentRemove.create(component_id).model_dump()
+        )
+
+    async def stream(self):
+        while True:
+            event = await self._queue.get()
+            yield f"data: {json.dumps(event)}\n\n"
+```
+
+### Integration with LangGraph
+
+In a LangGraph agent, emit component events from node functions:
+
+```python
+from langgraph.graph import StateGraph
+
+async def research_node(state: dict, config: dict):
+    emitter: SessionEventEmitter = config["configurable"]["emitter"]
+
+    # Push a progress component to the sidebar
+    await emitter.emit_component(
+        component_id="research-progress",
+        name="research_progress",
+        surface="sidebar",
+        props={"queries": [], "results_count": 0, "status": "starting"},
+    )
+
+    for i, query in enumerate(state["queries"]):
+        results = await search(query)
+        state["results"].extend(results)
+
+        # Update progress (merge mode — only send changed props)
+        await emitter.emit_component(
+            component_id="research-progress",
+            name="research_progress",
+            surface="sidebar",
+            props={
+                "queries": state["queries"][:i+1],
+                "results_count": len(state["results"]),
+                "status": "searching",
+            },
+            merge=True,
+        )
+
+    # Final update
+    await emitter.emit_component(
+        component_id="research-progress",
+        name="research_progress",
+        surface="sidebar",
+        props={"status": "complete"},
+        merge=True,
+    )
+
+    return state
+```
+
+### Integration with plain Claude SDK / tool wrappers
+
+For simpler setups without LangGraph, emit component events from tool result handlers:
+
+```python
+# In the adapter layer that wraps Claude SDK
+async def on_tool_result(session, tool_name: str, tool_use_id: str, result: str):
+    """Called after a tool completes. Emits component events if the tool has a UI mapping."""
+
+    TOOL_COMPONENT_MAP = {
+        "get_weather": ("weather", "chat"),
+        "generate_chart": ("chart", "chat"),
+        "update_plan": ("plan_editor", "sidebar"),
+        "search_docs": ("search_results", "panel"),
+    }
+
+    if tool_name in TOOL_COMPONENT_MAP:
+        name, surface = TOOL_COMPONENT_MAP[tool_name]
+        try:
+            props = json.loads(result)
+        except json.JSONDecodeError:
+            props = {"raw": result}
+
+        await session.emitter.emit_component(
+            component_id=f"{tool_name}-{tool_use_id}",
+            name=name,
+            surface=surface,
+            props=props,
+        )
+```
+
+---
+
+## Human-in-the-loop: renderAndWait
+
+A common pattern where the agent pauses, the UI renders an interactive component, and the agent resumes when the user completes an action. This combines frontend tools with component rendering.
+
+### The interrupt event
+
+```ts
+// Add to EventTypes
+INTERRUPT: 'interrupt',
+INTERRUPT_RESOLVED: 'interrupt_resolved',
+```
+
+```ts
+// interrupt event
+{
+  type: 'interrupt',
+  data: {
+    interrupt_id: string,
+    component_name: string,     // Registry name for the interrupt UI
+    props: Record<string, any>, // Data to display
+    surface: string,            // Where to render ('chat' | 'overlay')
+  },
+  ts: string,
+}
+```
+
+### Frontend handling
+
+```ts
+let pendingInterrupt: { id: string; resolve: (value: any) => void } | null = null;
+
+function handleInterruptEvent(event: SessionEvent) {
+  if (event.type !== 'interrupt') return;
+  const { interrupt_id, component_name, props, surface } = event.data;
+
+  // Push to appropriate surface with a resolve callback
+  const entry = getComponent(component_name);
+  if (!entry) return;
+
+  if (surface === 'chat') {
+    // Add as a component block in the current message
+    currentMessage.blocks.push({
+      kind: 'component',
+      name: component_name,
+      props: {
+        ...props,
+        onResolve: async (value: any) => {
+          await resolveInterrupt(interrupt_id, value);
+        },
+      },
+      surface: 'chat',
+      status: 'ready',
+    });
+  } else {
+    // Push to surface manager with resolve callback
+    handleComponentEvent({
+      type: 'component_update',
+      data: {
+        component_id: `interrupt-${interrupt_id}`,
+        name: component_name,
+        surface,
+        props: {
+          ...props,
+          onResolve: async (value: any) => {
+            await resolveInterrupt(interrupt_id, value);
+            handleComponentEvent({
+              type: 'component_remove',
+              data: { component_id: `interrupt-${interrupt_id}` },
+              ts: new Date().toISOString(),
+            });
+          },
+        },
+        merge: false,
+      },
+      ts: event.ts,
+    });
+  }
+}
+
+async function resolveInterrupt(interruptId: string, value: any) {
+  await fetch(`/api/sessions/${sessionId}/interrupt/${interruptId}`, {
+    method: 'POST',
+    body: JSON.stringify({ value }),
+  });
+}
+```
+
+### Python backend: pausing for interrupt
+
+```python
+async def approval_node(state: dict, config: dict):
+    emitter: SessionEventEmitter = config["configurable"]["emitter"]
+    interrupt_id = str(uuid4())
+
+    # Emit interrupt — agent pauses here
+    await emitter.emit({
+        "type": "interrupt",
+        "data": {
+            "interrupt_id": interrupt_id,
+            "component_name": "approval",
+            "props": {
+                "action": state["proposed_action"],
+                "details": state["action_details"],
+                "options": ["approve", "reject", "modify"],
+            },
+            "surface": "chat",
+        },
+        "ts": datetime.now(timezone.utc).isoformat(),
+    })
+
+    # Wait for resolution
+    resolution = await wait_for_interrupt_resolution(interrupt_id)
+    state["approval"] = resolution
+    return state
+```
+
+---
+
+## Streaming component updates (progressive rendering)
+
+Some components need to update progressively as data streams in — a chart that builds bar by bar, a document that types out, a map that adds pins. Use merge-mode component updates for this.
+
+### Pattern: streaming props via merge
+
+```python
+# Backend: stream chart data points
+async def generate_chart_node(state: dict, config: dict):
+    emitter = config["configurable"]["emitter"]
+    component_id = "live-chart"
+
+    # Initial empty chart
+    await emitter.emit_component(component_id, "chart", "chat", {
+        "type": "bar",
+        "data": [],
+        "title": "Sales by Region",
+    })
+
+    for region in state["regions"]:
+        sales = await fetch_sales(region)
+
+        # Merge new data point
+        await emitter.emit_component(component_id, "chart", "chat", {
+            "data": [...existing_data, {"region": region, "sales": sales}],
+        }, merge=True)
+
+    await emitter.emit_component(component_id, "chart", "chat", {
+        "status": "complete",
+    }, merge=True)
+```
+
+### Frontend: handling merge updates
+
+The surface manager's `handleComponentEvent` already handles merge. For chat-inline components, the same merge logic applies to the component block's props:
+
+```ts
+case 'component_update': {
+  const { component_id, props, merge } = event.data;
+
+  // Find existing component block in messages
+  for (const msg of messages) {
+    const block = msg.blocks.find(
+      b => b.kind === 'component' && b.componentId === component_id
+    );
+    if (block) {
+      block.props = merge ? { ...block.props, ...props } : props;
+      break;
+    }
+  }
+  break;
+}
+```
+
+For deep merges (nested objects, array appends), use a proper deep merge or JSON Patch instead of shallow spread. Shallow merge is fine for most cases — use deep merge only when components have nested state.
+
+---
+
+## Reference: existing libraries
+
+When building rich agent chat, consider these libraries before building from scratch. Each excels at a different point in the design space.
+
+### When to use Vercel AI SDK
+
+Best for: **Next.js apps** with tool-calling agents where you want typed tool-to-component mapping.
+
+- `useChat` with typed message `parts` gives you `tool-{name}` discriminated unions
+- Tool part states (`input-streaming` → `input-available` → `output-available`) drive loading/ready/error rendering
+- `ToolLoopAgent` (SDK v6) handles multi-step agent loops automatically
+- Works well when the chat is the primary UI and components are inline
+
+Limitation: React + Next.js only for the RSC path. The `useChat` approach is more portable.
+
+### When to use CopilotKit
+
+Best for: **Deep agent-UI integration** where the agent and UI share state bidirectionally.
+
+- `useCoAgent` provides shared reactive state between frontend and LangGraph agent
+- `useCoAgentStateRender` renders agent state as components in chat, keyed by LangGraph node name
+- `useFrontendTool` / `renderAndWait` handles human-in-the-loop with component rendering
+- AG-UI protocol provides a standard event layer (state snapshots, deltas, tool lifecycles)
+
+Limitation: React-only. Tightly coupled to LangGraph on the backend.
+
+### When to use LangGraph agent-chat-ui
+
+Best for: **LangGraph-native apps** that need server-defined components with shadow DOM isolation.
+
+- Server registers UI components in `langgraph.json` → bundled and served to the client
+- `LoadExternalComponent` renders in shadow DOM for style isolation
+- `UIMessage` custom events with merge support for progressive rendering
+- Artifact system (portal-based side panel) for rendering outside the chat
+
+Limitation: React + Next.js. Requires LangSmith for component bundling in production.
+
+### When to build custom (this skill's patterns)
+
+Build custom when:
+
+- You're using **SvelteKit or another non-React framework**
+- Your backend is **Python without LangGraph** (plain Claude SDK, custom agents)
+- You need **multiple surface targets** (sidebar + panel + overlay) driven by the same agent
+- You want **framework-agnostic patterns** that aren't locked to a specific agent runtime
+- You're already using the adapter layer from this skill and want to extend it
+
+The patterns in this section are designed to compose with the event normalization and chat rendering patterns above. They work with any backend that can emit SSE events.
+
+---
+
+## Checklist: adding rich components to an existing chat
+
+1. **Define the component** — Svelte component that accepts props + `status`
+2. **Register it** — add to component registry with surface list
+3. **Map the trigger** — tool name in `TOOL_COMPONENT_MAP` (backend) or registry lookup on `tool_start` (frontend)
+4. **Emit events** — `component_update` from backend for surface-targeted components
+5. **Handle in event stream** — extend `handleSessionEvent` to route component events
+6. **Render** — component blocks in chat, `SurfaceSlot` for other surfaces
+7. **Wire callbacks** — `sendComponentCallback` or frontend tools for UI→agent communication
+8. **Test replay** — component blocks must reconstruct correctly from persisted events
