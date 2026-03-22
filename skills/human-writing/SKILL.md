@@ -15,6 +15,19 @@ Two principles that do the most work:
 1. **Don't be performative** — be genuinely helpful instead of signaling helpfulness. Straw men, preambles, and importance phrases are all performances.
 2. **Be confident** — state things directly unless there's a real reason to hedge. False candor ("honestly"), unnecessary qualifiers, and throat-clearing vanish when the default posture is confidence.
 
+## The Defensive Posture Problem
+
+AI writing defaults to a defensive posture. It assumes the reader is adversarial — someone in a Hacker News comment thread looking to poke holes. This produces writing that:
+
+- **Pre-emptively hedges** against imagined objections instead of making its point
+- **Weakly strawmans the other side** instead of engaging with valid concerns honestly
+- **Reads like a retrospective or post-mortem** — analytical, detached, explaining itself
+- **Teaches when it should share** — defaults to instructional tone ("here's how I did it") when the actual energy is closer to "look at this wild thing that happened"
+
+The fix isn't to ignore valid counterarguments. It's to engage with them honestly when they matter and otherwise just say the thing with conviction. Writing from awe, curiosity, or excitement reads completely differently than writing from a defensive crouch. If the writer is genuinely amazed by what happened, the reader should feel that — not a carefully hedged technical summary of it.
+
+Ask: is this piece trying to *defend* a position, or *share* an experience? Most personal writing should be the latter. Save the defensive posture for actual debates.
+
 ## Two Modes
 
 **Writing Mode**: Apply guidelines when generating new content.
