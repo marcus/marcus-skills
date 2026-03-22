@@ -60,6 +60,12 @@ Certain words appear disproportionately in AI text. See [references/vocabulary.m
 - **"One rule:" / "One word:" intros**: Starting a sentence with a dramatic colon-reveal. "One rule: don't touch it." This is presentation cadence, not writing cadence.
 - **"actually works" / "actually good"**: Using "actually" to express surprise at quality. Implies low expectations and reads as defensive. Just describe what it does.
 - **Clickbait subtitle formulas**: "Here's the System That Made It Work" / "Here's What I Learned" / "And Why It Matters." These are YouTube thumbnail cadences. State the topic directly.
+- **Unintroduced fragment lists**: Jumping from a sentence directly into a list of sentence fragments without a lead-in. "I broke it into 90 tasks. Layer panel. Image support. Auto-layout." Introduce the list naturally: "Things like layer panel navigation, image support, and the auto-layout engine."
+- **"Fresh eyes every time" / "Different eyes every time"**: AI loves this phrase to describe independent review. It's a cliché that signals generated text. Describe what the review catches instead.
+- **"Not X but Y" straw man pairs in technical writing**: "Not 'did the tests pass' but an actual code review." This manufactures a false binary. Just describe what the review does.
+- **Generic section headers**: "What this means," "By the numbers," "What went wrong," "What exists" — these are fill-in-the-blank headers that could go on any post. Use headers that tell the reader something specific to this piece.
+- **"It's not X. But it's not Y either"**: The hedged double-negative sandwich. "It's not Figma. But this isn't a toy either." Pick a lane and describe what it actually is instead of triangulating between two things it isn't.
+- **Inaccurate uniqueness claims**: Claiming a benefit is unique to your approach when it's common to the whole category. Check whether what you're describing is actually different before positioning it as a differentiator.
 
 ### Formatting Red Flags
 
