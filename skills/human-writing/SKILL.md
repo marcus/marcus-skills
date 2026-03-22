@@ -28,6 +28,8 @@ The fix isn't to ignore valid counterarguments. It's to engage with them honestl
 
 Ask: is this piece trying to *defend* a position, or *share* an experience? Most personal writing should be the latter. Save the defensive posture for actual debates.
 
+The tone to aim for isn't hype or superlatives. It's the energy of sharing something with people you like. "I did this thing, and if I can do it anyone can, and isn't it wild that this is where we are right now?" It's generous, not defensive. It invites people in instead of pre-empting their criticism. The underlying message is "things are changing fast and it's exciting" — not "here is my airtight case for why my approach is valid."
+
 ## Two Modes
 
 **Writing Mode**: Apply guidelines when generating new content.
