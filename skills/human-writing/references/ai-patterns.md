@@ -112,6 +112,51 @@ Exactly three items in parallel, often with escalating intensity.
 
 **Fix**: Use two items, or four+. Or just pick the most accurate single word.
 
+### False Agency
+Giving inanimate things human verbs. AI does this to avoid naming the actual actor — it sounds authoritative while being vague about who did what.
+
+**Examples**:
+- "the decision emerges" → Someone decides
+- "the data tells us" → Someone reads the data and draws a conclusion
+- "the market rewards" → Buyers pay for things
+- "the culture shifts" → People change behavior
+- "the complaint becomes a fix" → Someone fixed it
+- "the conversation moves toward" → Someone steers
+
+**Fix**: Name the human. "The team fixed it" beats "the complaint becomes a fix." If no specific person fits, use "you" to put the reader in the seat.
+
+### Dramatic Fragmentation
+Sentence fragments stacked for manufactured profundity. Reads as breathless or TED-talk-ish.
+
+**Examples**:
+- "Speed. That's it. That's the tradeoff."
+- "This unlocks something. Trust."
+- "X. And Y. And Z."
+
+**Fix**: Complete sentences. The content should carry the weight, not the punctuation.
+
+### Vague Declaratives
+Sentences that announce importance or depth without naming the specific thing. They feel substantive but say nothing.
+
+**Examples**:
+- "The reasons are structural"
+- "The implications are significant"
+- "The stakes are high"
+- "The consequences are real"
+- "This is the deepest problem"
+
+**Fix**: Name the specific reason, implication, or stake. If you can't, the sentence has no content — cut it.
+
+### Pull-Quote Voice
+Writing that sounds like it's auditioning for a blog sidebar or motivational poster. If you can imagine it in a different font on a colored background, rewrite it.
+
+**Examples**:
+- "The best teams don't optimize for speed. They optimize for learning."
+- "Move fast, but move with intention."
+- "The future belongs to those who ship."
+
+**Fix**: Demote the sentence from proclamation to observation. Or just cut it — the surrounding content usually makes the point already.
+
 ### Elegant Variation
 Using different words for the same thing to avoid repetition (often backfires).
 

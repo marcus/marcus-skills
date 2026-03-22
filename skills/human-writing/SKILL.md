@@ -50,7 +50,16 @@ Certain words appear disproportionately in AI text. See [references/vocabulary.m
 - **"Despite...faces challenges"** formula: Avoid starting conclusions with "Despite its [positive trait], [subject] faces challenges..."
 - **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale (e.g., "from small beginnings to global impact" when no timeline or progression exists)
 - **Manufactured straw men**: Inventing a weak position nobody holds, then refuting it to make the real point seem stronger (e.g., "Coding isn't about typing speed anymore" — nobody thought it was; or "This replaces your cobbled-together spaghetti code" — characterizing a situation that doesn't exist)
+- **False agency**: Giving inanimate things human verbs — "the decision emerges," "the data tells us," "the market rewards." AI does this to avoid naming who actually did something. Name the person.
+- **Dramatic fragmentation**: Sentence fragments stacked for manufactured profundity — "Speed. That's it. That's the tradeoff." or "This unlocks something. Trust." Trust your content over your presentation.
+- **Vague declaratives**: Sentences that announce importance without naming the specific thing — "The reasons are structural," "The implications are significant," "The stakes are high." If you can't name the specific implication, cut the sentence.
+- **Pull-quote test**: If a sentence sounds like it belongs on a motivational poster or blog pull-quote, rewrite it. Manufactured profundity is a tell.
 - **Synonym repetition**: Using different words for the same concept repeatedly (e.g., constraints, limitations, challenges all meaning the same thing)
+- **Staccato stat dumps**: Listing numbers as sentence fragments for dramatic effect — "93 files. 51,000 lines. 244 commits." This is a distinctly AI cadence. Weave numbers into complete sentences instead.
+- **Verb-dropped fragments as emphasis**: "Each one small enough for a single session." Dropping the verb ("was") to sound punchy. AI does this constantly. Write complete sentences.
+- **"One rule:" / "One word:" intros**: Starting a sentence with a dramatic colon-reveal. "One rule: don't touch it." This is presentation cadence, not writing cadence.
+- **"actually works" / "actually good"**: Using "actually" to express surprise at quality. Implies low expectations and reads as defensive. Just describe what it does.
+- **Clickbait subtitle formulas**: "Here's the System That Made It Work" / "Here's What I Learned" / "And Why It Matters." These are YouTube thumbnail cadences. State the topic directly.
 
 ### Formatting Red Flags
 
@@ -103,7 +112,15 @@ Before finalizing any generated text:
 - [ ] No "Despite X, Y faces challenges" formulas in conclusions
 - [ ] No false ranges ("from X to Y") where no meaningful scale exists
 - [ ] No manufactured straw men (inventing weak positions to refute)
+- [ ] No false agency (inanimate things doing human actions)
+- [ ] No vague declaratives ("The implications are significant" — name the thing)
+- [ ] Passes the pull-quote test (nothing sounds like a motivational poster)
 - [ ] No synonym repetition for same concept (use the actual term consistently)
+- [ ] No staccato stat dumps (weave numbers into sentences, don't list as fragments)
+- [ ] No verb-dropped fragments used for emphasis (write complete sentences)
+- [ ] No "One rule:" / "One word:" dramatic colon-reveals
+- [ ] No "actually works" / "actually good" (implies surprise at quality)
+- [ ] No clickbait subtitle formulas ("Here's What I Learned," "And Why It Matters")
 
 ## References
 

@@ -86,8 +86,20 @@ When the lead senses context pressure (many exchanges, approaching limits), writ
 5. Reference pointers to relevant docs
 6. Next actions
 
+## Agentic Coding Runtimes
+
+For programmatic agent dispatch with full coding capability and streaming output, see:
+
+**`references/agentic-coding-patterns.md`** — Detailed reference covering:
+- **Codex App-Server Protocol** (OpenAI) — JSON-RPC over stdio, thread/turn lifecycle, streaming events, multi-turn continuation. Best for Go integration.
+- **Claude Agent SDK** (Anthropic) — `query()` async generator, subagent orchestration with explicit role definitions, session persistence/resumption. TypeScript + Python.
+- Comparison table, Go integration patterns, and when to use each.
+
+Both support full agentic coding with subagent spawning. The integration shape from Go is identical: launch subprocess, read structured events from stdout.
+
 ## Key References
 
+- `references/agentic-coding-patterns.md` — Codex app-server + Claude Agent SDK patterns
 - `docs/agent-teams.md` — full team workflow documentation
 - `docs/sync-admin-web-spec.md` — system spec, API contracts
 - `docs/design-system.md` — design tokens, component specs

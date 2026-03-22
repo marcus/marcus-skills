@@ -130,7 +130,7 @@
     },
     {
       "name": "td-ralph-loop",
-      "description": "Set up and run autonomous overnight coding loops that process td epic tasks one at a time. Includes loop runner, live tail monitor, prompt template, and operational learnings from 60+ iterations."
+      "description": "Set up and run autonomous overnight coding loops that process td epic tasks one at a time. Includes loop runner, Rich TUI cockpit dashboard with heartbeat/velocity/scrollable logs, prompt template, and operational learnings from 60+ iterations."
     }
   ]
 }
