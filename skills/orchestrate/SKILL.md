@@ -68,6 +68,40 @@ Recommended pattern:
 - Important: if more than one task is needed to complete the work, create an epic in td and link sub-tasks to the epic.
 - Important: if proof is requested, completion is not done until the proof task exists in td with the `proof` label and the proof artifact recorded in its description.
 
+## Learnings from Multi-Task Epics
+
+These patterns were validated across a 12-task epic (backend, frontend, CLI, tests) executed in dependency order.
+
+### td approve/reject ownership limitation
+
+The orchestrator gets flagged as "involved with implementation" even though it only spawned the implementing sub-agent. This means `td approve` / `td complete` cannot be used by the orchestrator after it spawned the implementer. **Workaround**: use `td log <id> "Review: PASS — <summary>"` for review verdicts instead of `td approve`.
+
+### Reviewer agents should be minimal
+
+Reviewer agents only need to: read the git diff, run quality gates (tests, type-check), and report pass/fail. Keep their prompts short — they finish fast compared to implementers and don't need deep context about the codebase.
+
+### Sub-agent prompt checklist
+
+Every implementer prompt should include:
+- The td task ID (`td-XXXXXX`)
+- Specific file paths from the task description
+- Explicit numbered steps (not vague goals)
+- Commit message format: `feat|fix|chore: <summary> (td-XXXXXX)` with `Co-Authored-By`
+- For frontend work: instruction to run `svelte-check` (or equivalent lint/type-check) before committing
+- The compaction recovery instruction (already in this skill)
+
+### Dependency ordering prevents conflicts
+
+Processing tasks in strict dependency order — starting each only after its blocker completes — avoids merge conflicts and build breakage. Do not parallelize tasks that touch overlapping files, even if they seem independent.
+
+### Absorb mid-flight additions
+
+The user may add tasks while execution is in progress. After completing the current task, re-read the epic (`td show <epic-id>`) to pick up new sub-tasks. Slot them into the dependency graph rather than appending to the end.
+
+### Proof tasks need specific artifacts
+
+A proof task description must name the exact artifact to produce — not "capture proof" but "screenshot of ActivityPanel showing 3 block types at `/tmp/rich-blocks-proof.png`" or "paste output of `go test ./internal/modules/planner/...` showing all tests pass". Generic proof tasks get skipped or produce useless output.
+
 ## On Compaction / Handoff
 
 Before context runs out or if pausing:

@@ -72,8 +72,22 @@ Nodes are addressed by **slash-separated slugs**:
 Slugs are auto-generated from node content: lowercase, alphanumeric + dashes, max 80 chars. Collisions among siblings get `-1`, `-2`, etc. appended automatically.
 
 ```bash
-plan resolve auth/session-strategy   # Print the node's UUID
+plan resolve auth/session-strategy   # Print the node's short ID (e.g., pn-a1b2c3d4)
 ```
+
+## Short IDs
+
+All entities use human-friendly short IDs with typed prefixes:
+
+| Entity | Prefix | Example |
+|--------|--------|---------|
+| Node | `pn-` | `pn-a1b2c3d4` |
+| Project | `pr-` | `pr-f0e1` |
+| Review | `rv-` | `rv-abc123` |
+| Input | `in-` | `in-d4e5` |
+| Canvas | `cv-` | `cv-b2c3` |
+
+All commands accept both short IDs and full UUIDs. Output always shows short IDs when available.
 
 ## Commands Reference
 
@@ -98,9 +112,9 @@ plan resolve auth/session-strategy   # Print the node's UUID
 | `plan show <path>` | Show node details and children |
 | `plan show <path> --facet security` | Show filtered by facet |
 | `plan show <path> --open` | Show only open questions |
-| `plan resolve <path>` | Print node UUID |
+| `plan resolve <path>` | Print node ID |
 | `plan edit <path> "new content"` | Update node content |
-| `plan edit --id <uuid> "new content"` | Update by ID |
+| `plan edit --id <id> "new content"` | Update by ID (short ID or UUID) |
 | `plan move <path> <new-parent-path>` | Move node to new parent |
 | `plan status <path> <status>` | Set node status |
 | `plan rm <path>` | Delete node (must have no children) |

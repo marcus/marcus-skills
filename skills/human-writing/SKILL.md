@@ -47,6 +47,21 @@ When the skill says "name things" and "share practical knowledge," it means thin
 1. **Don't be performative** -- be genuinely helpful instead of signaling helpfulness. Straw men, preambles, and importance phrases are all performances.
 2. **Be confident** -- state things directly unless there's a real reason to hedge. False candor ("honestly"), unnecessary qualifiers, and throat-clearing vanish when the default posture is confidence.
 
+## The Defensive Posture Problem
+
+AI writing defaults to a defensive posture. It assumes the reader is adversarial — someone in a Hacker News comment thread looking to poke holes. This produces writing that:
+
+- **Pre-emptively hedges** against imagined objections instead of making its point
+- **Weakly strawmans the other side** instead of engaging with valid concerns honestly
+- **Reads like a retrospective or post-mortem** — analytical, detached, explaining itself
+- **Teaches when it should share** — defaults to instructional tone ("here's how I did it") when the actual energy is closer to "look at this wild thing that happened"
+
+The fix isn't to ignore valid counterarguments. It's to engage with them honestly when they matter and otherwise just say the thing with conviction. Writing from awe, curiosity, or excitement reads completely differently than writing from a defensive crouch. If the writer is genuinely amazed by what happened, the reader should feel that — not a carefully hedged technical summary of it.
+
+Ask: is this piece trying to *defend* a position, or *share* an experience? Most personal writing should be the latter. Save the defensive posture for actual debates.
+
+The tone to aim for isn't hype or superlatives. It's the energy of sharing something with people you like. "I did this thing, and if I can do it anyone can, and isn't it wild that this is where we are right now?" It's generous, not defensive. It invites people in instead of pre-empting their criticism. The underlying message is "things are changing fast and it's exciting" — not "here is my airtight case for why my approach is valid."
+
 ## Two Modes
 
 **Writing Mode**: Write with voice and personality first, then verify no AI tells slipped through.
@@ -84,10 +99,25 @@ Certain words appear disproportionately in AI text. See [references/vocabulary.m
 - **Mirror conclusions**: Restating the introduction in the conclusion
 - **Topic sentence + elaboration** formula in every paragraph
 - **"Challenges and future prospects"** closing pattern
-- **"Despite...faces challenges"** formula
-- **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale
-- **Manufactured straw men**: Inventing a weak position nobody holds, then refuting it
-- **Synonym repetition**: Using different words for the same concept repeatedly
+- **"Despite...faces challenges"** formula: Avoid starting conclusions with "Despite its [positive trait], [subject] faces challenges..."
+- **False ranges**: Meaningless "from X to Y" constructions that don't denote actual scale (e.g., "from small beginnings to global impact" when no timeline or progression exists)
+- **Manufactured straw men**: Inventing a weak position nobody holds, then refuting it to make the real point seem stronger (e.g., "Coding isn't about typing speed anymore" — nobody thought it was)
+- **False agency**: Giving inanimate things human verbs — "the decision emerges," "the data tells us," "the market rewards." AI does this to avoid naming who actually did something. Name the person.
+- **Dramatic fragmentation**: Sentence fragments stacked for manufactured profundity — "Speed. That's it. That's the tradeoff." Trust your content over your presentation.
+- **Vague declaratives**: Sentences that announce importance without naming the specific thing — "The reasons are structural," "The implications are significant." If you can't name the specific implication, cut the sentence.
+- **Pull-quote test**: If a sentence sounds like it belongs on a motivational poster or blog pull-quote, rewrite it. Manufactured profundity is a tell.
+- **Synonym repetition**: Using different words for the same concept repeatedly (e.g., constraints, limitations, challenges all meaning the same thing)
+- **Staccato stat dumps**: Listing numbers as sentence fragments for dramatic effect — "93 files. 51,000 lines. 244 commits." Weave numbers into complete sentences instead.
+- **Verb-dropped fragments as emphasis**: "Each one small enough for a single session." Dropping the verb to sound punchy. Write complete sentences.
+- **"One rule:" / "One word:" intros**: Dramatic colon-reveals. "One rule: don't touch it." Presentation cadence, not writing cadence.
+- **"actually works" / "actually good"**: Using "actually" to express surprise at quality. Implies low expectations and reads as defensive.
+- **Clickbait subtitle formulas**: "Here's the System That Made It Work" / "Here's What I Learned" / "And Why It Matters." State the topic directly.
+- **Unintroduced fragment lists**: Jumping from a sentence directly into a list of sentence fragments without a lead-in. Introduce the list naturally instead.
+- **"Fresh eyes every time" / "Different eyes every time"**: AI cliché for describing independent review. Describe what the review catches instead.
+- **"Not X but Y" straw man pairs**: "Not 'did the tests pass' but an actual code review." Manufactures a false binary. Describe what it actually does.
+- **Generic section headers**: "What this means," "By the numbers," "What went wrong" — fill-in-the-blank headers that could go on any post. Use headers specific to this piece.
+- **"It's not X. But it's not Y either"**: Hedged double-negative sandwich. Pick a lane and describe what it actually is.
+- **Inaccurate uniqueness claims**: Claiming a benefit is unique when it's common to the whole category. Check whether it's actually different before positioning it as a differentiator.
 
 #### Formatting red flags
 

@@ -34,6 +34,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
 | lightroom-catalog           | Index and search Lightroom CC catalogs with SQLite+FTS5      |
 | linear-design-patterns      | Linear-inspired design patterns for keyboard-first apps      |
+| multi-turn-runtime-adapters | Multi-turn agent sessions, event normalization, rich component rendering, bidirectional agent↔UI state |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
 | orchestrate                 | Sub-agent orchestration using td for plan-implement-review   |
@@ -46,6 +47,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | stereo-design-system        | Skeuomorphic hi-fi receiver design system — brushed brass, warm amber |
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
 | td-review-session           | Review session orchestrator with parallel triage and auto-fix |
+| td-ralph-loop               | Autonomous coding loops with Rich TUI cockpit dashboard       |
 | td-task-management          | AI agent task management across sessions                     |
 | technical-diagrams            | Generate and render C4, sequence, flowchart, architecture diagrams inline using Mermaid.js |
 | interactive-courseware           | AI-driven interactive courseware — SCORM/xAPI packaging, multimedia, branching scenarios, LMS delivery |
