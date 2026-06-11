@@ -114,4 +114,4 @@ td reject td-a1b2 --reason "Missing error handling for expired tokens"
 4. **Use work sessions for related issues** - Groups handoffs and makes tracking easier
 5. **Track files with `td link`** - Helps future sessions know what changed
 6. **Check blockers vs openwork** - If blocked, don't waste tokens retrying - work on something else
-7. **Never approve your own work** - Session isolation prevents this automatically
+7. **Prefer independent review** - Have a different session approve your work with `td approve <id> --reason "..."`. When delegation is impractical (e.g., single-agent loop), use `td approve <id> --self-review --reason "..."` to acknowledge the self-review. The `--self-review` flag is required when approving your own implementation in trusted mode and stamps the audit row.

@@ -72,9 +72,11 @@ Recommended pattern:
 
 These patterns were validated across a 12-task epic (backend, frontend, CLI, tests) executed in dependency order.
 
-### td approve/reject ownership limitation
+### td approve ownership
 
-The orchestrator gets flagged as "involved with implementation" even though it only spawned the implementing sub-agent. This means `td approve` / `td complete` cannot be used by the orchestrator after it spawned the implementer. **Workaround**: use `td log <id> "Review: PASS — <summary>"` for review verdicts instead of `td approve`.
+The orchestrator can use `td approve <id> --reason "..."` to close work a sub-agent implemented. Because sub-agents run in their own sessions, the orchestrator is not the implementer-of-record — no flag is required. The old workaround of using `td log "Review: PASS"` instead of `td approve` is no longer needed.
+
+If the orchestrator itself implemented something (e.g., a quick nit-fix mid-loop) and must approve its own work, acknowledge it explicitly: `td approve <id> --self-review --reason "..."`. The `--self-review` flag requires `--reason` and stamps the review row for audit. Prefer delegating review to an independent sub-agent when quality matters; use `--self-review` only when delegation is impractical.
 
 ### Reviewer agents should be minimal
 
