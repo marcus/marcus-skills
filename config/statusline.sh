@@ -15,8 +15,8 @@ repo=$(basename "$cwd")
 # Git branch (with * if dirty)
 branch=$(git -c core.useBuiltinFSMonitor=false -c core.fsmonitor=false branch --show-current 2>/dev/null)
 if [ -n "$branch" ]; then
-  dirty=$(git -c core.useBuiltinFSMonitor=false -c core.fsmonitor=false status --porcelain 2>/dev/null)
-  [ -n "$dirty" ] && branch="${branch}*"
+    dirty=$(git -c core.useBuiltinFSMonitor=false -c core.fsmonitor=false status --porcelain 2>/dev/null)
+    [ -n "$dirty" ] && branch="${branch}*"
 fi
 
 # Model name
@@ -27,9 +27,9 @@ cost=$(echo "$input" | jq -r '.cost // {}')
 dur_ms=$(echo "$cost" | jq -r '.total_duration_ms // 0')
 dur_s=$((dur_ms / 1000))
 if [ $dur_s -ge 60 ]; then
-  dur="$((dur_s / 60))m$((dur_s % 60))s"
+    dur="$((dur_s / 60))m$((dur_s % 60))s"
 else
-  dur="${dur_s}s"
+    dur="${dur_s}s"
 fi
 
 # Lines changed
@@ -40,38 +40,54 @@ lines="+${added}-${removed}"
 # Context window usage
 usage=$(echo "$input" | jq '.context_window.current_usage')
 if [ "$usage" != "null" ]; then
-  current=$(echo "$usage" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens')
-  size=$(echo "$input" | jq '.context_window.context_window_size')
-  used_pct=$((current * 100 / size))
-  remaining=$((100 - used_pct))
+    current=$(echo "$usage" | jq '.input_tokens + .cache_creation_input_tokens + .cache_read_input_tokens')
+    size=$(echo "$input" | jq '.context_window.context_window_size')
+    used_pct=$((current * 100 / size))
+    remaining=$((100 - used_pct))
 else
-  used_pct=0
-  remaining=100
+    used_pct=0
+    remaining=100
 fi
 
 # Usage bar (10 segments)
 bar_filled=$((used_pct / 10))
 bar_empty=$((10 - bar_filled))
 bar=''
-i=0; while [ $i -lt $bar_filled ]; do bar="${bar}█"; i=$((i + 1)); done
-i=0; while [ $i -lt $bar_empty ]; do bar="${bar}░"; i=$((i + 1)); done
+for ((i=0; i<bar_filled; i++)); do bar="${bar}█"; done
+for ((i=0; i<bar_empty; i++)); do bar="${bar}░"; done
 
-# Spotify (macOS only) - comment out if not needed
-spot=$(osascript -e 'try' -e 'tell application "System Events" to if exists process "Spotify" then tell application "Spotify" to if player state is playing then "♫ " & name of current track & " - " & artist of current track' -e 'end try' 2>/dev/null)
+# Spotify/music info (OS-dependent)
+spot=""
+case "$(uname -s)" in
+    Darwin)
+        # macOS: use osascript
+        spot=$(osascript -e 'try' -e 'tell application "System Events" to if exists process "Spotify" then tell application "Spotify" to if player state is playing then "♫ " & name of current track & " - " & artist of current track' -e 'end try' 2>/dev/null)
+        ;;
+    Linux)
+        # Linux: use playerctl (works with Spotify and other MPRIS players)
+        if command -v playerctl &>/dev/null; then
+            status=$(playerctl -p spotify status 2>/dev/null)
+            if [ "$status" = "Playing" ]; then
+                spot=$(playerctl -p spotify metadata --format '♫ {{ title }} - {{ artist }}' 2>/dev/null)
+            fi
+        fi
+        ;;
+esac
 
-# Build output with colors
+# Build output with ANSI colors
 left="\033[38;2;180;170;255m${repo}\033[0m"
 if [ -n "$branch" ]; then
-  left="${left} | \033[35m${branch}\033[0m"
+    left="${left} | \033[35m${branch}\033[0m"
 fi
 left="${left} | \033[38;2;100;210;210m${model}\033[0m"
 left="${left} | \033[32m${dur}\033[0m"
 left="${left} | \033[36m${lines}\033[0m"
 left="${left} | \033[33m●\033[0m ${bar} ${remaining}%"
 
+# Add Spotify if playing
 if [ -n "$spot" ]; then
-  spot=$(echo "$spot" | cut -c1-50)
-  left="${left}  \033[38;2;80;180;80m${spot}\033[0m"
+    spot=$(echo "$spot" | cut -c1-50)
+    left="${left}  \033[38;2;80;180;80m${spot}\033[0m"
 fi
 
 printf '%b' "$left"
