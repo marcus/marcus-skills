@@ -22,19 +22,24 @@ When spawning each agent via Task tool, prefix its prompt with the role and incl
 
 - **Planner**: Explores code, creates/refines td tasks with scope and dependencies. Does not write code. Uses `td create`, `td log --decision`.
 - **Implementer**: Makes code changes for one td task. Commits as `feat|fix|chore: <summary> (td-XXXXXX)`. One task, one commit.
-- **Reviewer**: Reviews implementation. Runs `td approve <id>` or `td reject <id> --reason '...'`. Cannot approve own implementation.
+- **Reviewer**: Reviews one major-feature batch containing one or more implemented stories. Reviews every commit in the batch, runs the batch quality gates, and records a pass/fail verdict in `td`. Cannot review their own implementation.
 - **Tester**: Writes/runs tests when needed. Reports results via `td log`.
 
 ## Core Loop
 
 1. **Plan** (if input is not already a scoped td task): Spawn planner to create td tasks from input.
-2. **For each task** (dependency order, one at a time):
+2. **Define review batches**: Group related stories into major-feature checkpoints. A batch should have one coherent user or subsystem outcome, normally 2-5 stories. Keep security-sensitive changes, destructive migrations, and production deployment in dedicated batches.
+3. **For each story in a batch** (dependency order, one at a time):
    a. `td start <id>`
    b. Spawn implementer
-   c. Spawn reviewer — if rejected, re-spawn implementer (max 3 iterations)
-   d. Spawn tester if tests are needed
-   e. Verify commit exists with td ID in message
-3. After all tasks: summarize completed work.
+   c. Run focused tests or spawn a tester when needed
+   d. Verify the story has one incremental commit with its td ID in the message
+   e. Log the implementation result in `td`; defer independent review until the batch boundary
+4. **At each batch boundary**:
+   a. Spawn one reviewer with the story IDs, commit range, shared acceptance criteria, and batch quality gates
+   b. Have the reviewer inspect every commit and the integrated feature, then log one pass/fail verdict on the epic or review checkpoint with all included story IDs; separate per-story review verdicts are not required
+   c. If the batch fails, spawn targeted implementer fixes and re-review the batch (max 3 iterations)
+5. After all batches: run a final integration/release review and summarize completed work.
 
 Between steps, read td state (`td show <id>`) — do not carry state in memory.
 
@@ -60,12 +65,14 @@ Recommended pattern:
 
 ## Rules
 
-- One task at a time. Finish plan->implement->review before the next.
+- Implement one story at a time, but review related stories together at explicit major-feature boundaries.
+- Keep batches small enough that a reviewer can understand every included commit and trace failures back to one story.
+- Scale ceremony to the project: personal and LAN-only projects may use broader feature batches; public, multi-user, security-sensitive, migration, and production work require narrower batches and stronger gates.
 - All feedback via `td log`, `td approve`, `td reject` — externalize state.
 - If blocked, skip to next unblocked task and `td log --blocker` on the blocked one.
 - If a sub-agent's context compacts, re-spawn it with the td task ID and these orchestration instructions.
 - All commits should reference a td task id
-- Important: if more than one task is needed to complete the work, create an epic in td and link sub-tasks to the epic.
+- Important: if more than one task is needed to complete the work, create an epic in td, link sub-tasks to the epic, and record the review-batch boundaries on the epic.
 - Important: if proof is requested, completion is not done until the proof task exists in td with the `proof` label and the proof artifact recorded in its description.
 
 ## Learnings from Multi-Task Epics
@@ -92,7 +99,7 @@ Every implementer prompt should include:
 
 ### Dependency ordering prevents conflicts
 
-Processing tasks in strict dependency order — starting each only after its blocker completes — avoids merge conflicts and build breakage. Do not parallelize tasks that touch overlapping files, even if they seem independent.
+Process stories in strict dependency order and commit each before starting the next. Multiple completed stories may accumulate for a shared major-feature review. Do not parallelize stories that touch overlapping files, even if they seem independent.
 
 ### Absorb mid-flight additions
 
@@ -116,4 +123,4 @@ td handoff <current-task-id> \
 
 Tell the user: "Resume with `/orchestrate td-<id>`."
 
-CRITICAL: When spawning any sub-agent, include this instruction: "If your context is compacted, read td state with `td context <id>` and continue from where the previous context left off. The orchestration process is: plan -> implement -> review -> test -> commit, one task at a time."
+CRITICAL: When spawning any sub-agent, include this instruction: "If your context is compacted, read td state with `td context <id>` and continue from where the previous context left off. The orchestration process is: plan review batches -> implement and verify stories one at a time -> review each completed major-feature batch -> targeted fixes -> final integration review."
