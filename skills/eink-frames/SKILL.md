@@ -31,11 +31,23 @@ These commands do not change the display:
 "$SLINKY_REPO/bin/slinky" status
 "$SLINKY_REPO/bin/slinky" -d office history -n 10
 "$SLINKY_REPO/bin/slinky" -d living logs -n 50
-"$SLINKY_REPO/bin/slinky" -d living presence
 ```
 
 Start with `status` before any requested mutation. The CLI connects over SSH;
 do not copy, print, or modify remote `.env` files.
+
+## Presence Detection
+
+`presence` changes scheduler state when it detects the configured phone: it
+writes `presence_last_seen`, which feeds the auto-pause decision and can delay
+future display scheduling. Do not use it as a read-only health check.
+
+Run it only when the user explicitly asks to check or refresh presence state on
+the resolved frame:
+
+```bash
+"$SLINKY_REPO/bin/slinky" -d living presence
+```
 
 ## Images
 
@@ -72,6 +84,7 @@ for that effect:
 `show` accepts content types including `quote`, `local_image`, `ai_image`,
 `headline`, `holiday`, `history`, `weather`, `poetry`, and `artwork`.
 
-Uploading, advancing, showing content, pausing, resuming, deploying, or changing
-the artwork collection are external mutations. Resolve the exact device first
-and report what changed. Do not deploy Slinky as part of ordinary frame control.
+Checking presence, uploading, advancing, showing content, pausing, resuming,
+deploying, or changing the artwork collection are external mutations. Resolve
+the exact device first and report what changed. Do not deploy Slinky as part of
+ordinary frame control.
