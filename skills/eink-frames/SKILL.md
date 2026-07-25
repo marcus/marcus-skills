@@ -39,8 +39,9 @@ do not copy, print, or modify remote `.env` files.
 ## Presence Detection
 
 `presence` changes scheduler state when it detects the configured phone: it
-writes `presence_last_seen`, which feeds the auto-pause decision and can delay
-future display scheduling. Do not use it as a read-only health check.
+writes `presence_last_seen`, which feeds the auto-pause decision, can delay
+future auto-pause, and keeps scheduling active. Do not use it as a read-only
+health check.
 
 Run it only when the user explicitly asks to check or refresh presence state on
 the resolved frame:
