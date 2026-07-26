@@ -14,7 +14,8 @@
 - `td log --blocker "stuck on X"` - Log a blocker
 - `td handoff <id> --done "..." --remaining "..."` - Capture state before context ends
 - `td review <id>` - Submit for review
-- `td approve <id>` - Approve (different session only)
+- `td approve <id> --reason "..."` - Approve (independent session preferred)
+- `td approve <id> --self-review --reason "..."` - Approve own work (trusted mode; audited)
 - `td reject <id> --reason "..."` - Reject back to author
 
 ### Multi-Issue Workflow
@@ -56,7 +57,7 @@ open → in_progress → in_review → closed
 
 ## Key Concepts
 
-**Sessions** - Every terminal/context gets an auto ID. Session that starts work ≠ session that reviews.
+**Sessions** - Every terminal/context gets an auto ID. Independent review is preferred (different session approves). In trusted mode (the default), the implementer may self-approve with `--self-review --reason "..."` when delegation is impractical.
 
 **Work Sessions (ws)** - Optional container for grouping related issues. Useful for agents handling multiple issues.
 

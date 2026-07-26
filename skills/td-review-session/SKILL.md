@@ -40,13 +40,15 @@ Run `td show <id>` and `td context <id>` for each reviewable item. Classify each
    - **Obvious fixes**: Create a bug task (`td create "Fix: <description>" --type bug --priority P1`), implement the fix, commit, then `td approve <original-id>`
    - **Missing tests**: Create a task (`td create "Add tests for <area>" --type task --priority P2`) with a detailed description of what needs testing and why
    - **Bigger issues**: Create a task (`td create "<title>" --type bug --priority <P1|P2>`) with a detailed description including: what's wrong, where it is, suggested fix approach, and any context from the review
-   - **Clean**: `td approve <id>`
+   - **Clean**: `td approve <id> --reason "Reviewed diff, tests pass"`
    - **Unclear**: Ask the user, then act on their answer
 4. **Close related tasks**: After fixing bugs related to reviewed items, check for any in-progress tasks that are now resolved. Close them:
    ```bash
    td list --status in_progress
    # For each task that is resolved by the fixes:
-   td approve <id>
+   td approve <id> --reason "Resolved by <fix summary>"
+   # If you also implemented the fix yourself, acknowledge it:
+   td approve <id> --self-review --reason "Implemented fix and reviewed diff"
    ```
 5. **Summary**: Report what was reviewed, approved, fixed, and what new tasks were created.
 

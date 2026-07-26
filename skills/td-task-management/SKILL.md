@@ -96,12 +96,14 @@ td show <id>
 td context <id>
 
 # 3. Approve or reject
-td approve <id>
-# Or:
+td approve <id> --reason "Reviewed diff, looks good"
+# If you implemented it yourself (trusted mode):
+td approve <id> --self-review --reason "Reviewed own diff, tests pass"
+# Or reject:
 td reject <id> --reason "Missing error handling"
 ```
 
-**Important:** You cannot approve work you implemented. Session isolation enforces this.
+**Note (trusted mode):** The default `review_policy_mode` is `trusted`. Independent review is preferred — a session that did not implement the issue approves it with `td approve <id> --reason "..."`. When you are the implementer and delegation is not practical, acknowledge the self-review: `td approve <id> --self-review --reason "..."`. The `--self-review` flag is required when approving your own implementation and stamps the audit row accordingly.
 
 ### Workflow 4: Handling Blockers
 
@@ -142,7 +144,8 @@ td context td-a1b2  # Refresh context when blocker resolves
 ### Reviews
 - `td review <id>` - Submit for review
 - `td reviewable` - Issues you can review
-- `td approve <id>` - Approve (different session only)
+- `td approve <id> --reason "..."` - Approve (independent session preferred)
+- `td approve <id> --self-review --reason "..."` - Approve own work (trusted mode; audited)
 - `td reject <id> --reason "..."` - Reject
 
 ### Creating/Managing Issues
@@ -188,7 +191,7 @@ open → in_progress → in_review → closed
 
 ## Key Principles
 
-**Session Isolation:** Every terminal/context gets a unique session ID. The session that implements code cannot approve it. Different session must review. This forces actual handoffs and prevents "works on my context" bugs.
+**Session Isolation:** Every terminal/context gets a unique session ID. In the default `trusted` mode, a session that implemented an issue should have an independent session review it — but when delegation is impractical, the implementer may self-approve with `td approve <id> --self-review --reason "..."`. The `--self-review` flag is audited and stamps `self_review=true` on the review row. Independent review is still the norm; `--self-review` is the escape hatch, not the default path.
 
 **Structured Handoffs:** Don't just say "here's what I did"—structure it with done/remaining/decisions/uncertain so next agent has clear context.
 

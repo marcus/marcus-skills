@@ -57,9 +57,11 @@ td approve <id> --reason "..."                    # independent reviewer
 td approve <id> --self-review --reason "..."      # you reviewed it yourself; stamped self_review for audit
 ```
 
-The orchestrator gets flagged as implementation-involved once it spawns an implementer, so plain `td approve` will refuse. If a sub-agent reviewer actually reviewed the work, that review is real and independent — record it and close with `--self-review --reason "reviewed by <agent/batch>: <summary>"`. The flag is an audit stamp, not a confession.
+Sub-agents run in their own sessions, so the orchestrator is not the implementer-of-record for work it delegated — plain `td approve <id> --reason "..."` works, no flag needed. (The old workaround of logging `"Review: PASS"` instead of approving is obsolete.)
 
-What's not okay: spinning up a throwaway session to make a review *look* independent, or self-reviewing work nobody read. If a project pins `review_policy_mode=delegated|strict`, the escape hatch is gone by design — use `td log` verdicts and let another session close.
+Use `--self-review` when you're closing something you actually implemented yourself — a nit-fix mid-loop, say. It requires `--reason` and stamps the review row for audit. It's a disclosure, not a confession; the point is that the record matches reality.
+
+What's not okay: spinning up a throwaway session to make a review *look* independent, or approving work nobody read. If a project pins `review_policy_mode=delegated|strict`, self-review is blocked by design — record the verdict with `td log` and let another session close.
 
 ## Proof
 

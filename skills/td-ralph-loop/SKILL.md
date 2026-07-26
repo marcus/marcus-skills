@@ -1031,10 +1031,10 @@ to new work. For each task:
 1. Read the task description and session log: `td show <id>`
 2. Check the git diff for the implementation
 3. Verify the code follows project conventions and quality standards
-4. **If good:** `td close <id>` to unblock dependent tasks
+4. **If good:** `td approve <id> --self-review --reason "Reviewed diff, tests pass"` to close and unblock dependent tasks
 5. **If issues:**
-   - Small fixes: fix them yourself, commit, then `td close <id>`
-   - Large issues: create a new task in the epic, then `td close <id>`
+   - Small fixes: fix them yourself, commit, then `td approve <id> --self-review --reason "Fixed <nit>, reviewed diff"`
+   - Large issues: create a new task in the epic, then `td approve <id> --self-review --reason "Approved with follow-up task <new-id>"`
 6. Log your review: `td log <id> "Reviewed: <summary>"`
 
 **Review at most 3 tasks per iteration.**
@@ -1113,7 +1113,7 @@ After completing ONE task, exit cleanly. The loop will call you again.
 - **Tasks must be completable in one iteration.** If a task takes more than 60 minutes, it's too big. Break it down.
 - **Dependencies prevent wasted work.** Wire dependencies between tasks so the loop doesn't try to build a UI for an API that doesn't exist yet.
 - **P0 for blocking bugs, P1 for core features, P2 for everything else.** The loop picks by priority, so urgent fixes get done first.
-- **Agents use `td review` not `td close`.** This is fine — but if nothing reviews them, dependent tasks stay blocked forever. Step 0 (review before new work) fixes this by having each iteration review up to 3 pending tasks.
+- **Agents use `td review` not `td approve`.** This is fine — but if nothing reviews them, dependent tasks stay blocked forever. Step 0 (review before new work) fixes this by having each iteration review up to 3 pending tasks using `td approve <id> --self-review --reason "..."`. In a single-agent loop the same agent implements and reviews, so `--self-review` is the correct acknowledgment — it stamps `self_review=true` on the audit row rather than fabricating a reviewer session.
 
 ### Prompt Design
 
@@ -1168,6 +1168,32 @@ Keep a `scripts/RALPH-STATUS.md` alongside the scripts as a handoff document for
 - How to resume if the loop stops
 
 This file is the fastest way to get context when picking up after a break or compaction.
+
+## Test Squad — Agentic QA Tasks for the Loop
+
+Test Squad tasks are exploratory QA tasks you add to a loop epic. Instead of writing code, the agent validates a specific feature from three perspectives:
+
+1. **Software Tester** — write/improve automated tests, build sustainable test infrastructure
+2. **QA Tester** — use the feature as a human would, take screenshots, document UX friction
+3. **Agent Experience (AX) Tester** — note what's hard for agents, recommend tooling improvements
+
+**Prompt template:** `~/.openclaw/workspace/tools/test-squad/PROMPT.md`
+**Full docs:** `~/.openclaw/workspace/tools/test-squad/README.md`
+
+### Quick Usage
+
+1. Read the prompt template from `tools/test-squad/PROMPT.md`
+2. Customize the **Feature Assignment** section for the specific feature to test
+3. Add as a td task with `--label test-squad` in the loop's epic
+
+Reports go to `~/.openclaw/workspace/test-reports/<project>/YYYY-MM-DD/<feature>/` (NOT committed to git). Screenshots MUST be embedded inline in REPORT.md with `![](screenshots/...)`.
+
+Key rules:
+- Agents **can write code** (tests, fixes, infrastructure) and commit it
+- Agents **can fix bugs** they find within scope
+- Agents create td tasks only for bugs too big for their context
+- Recommendations go in a `## Suggested Tasks` section — human triages, not auto-created
+- **Sustainability over heroics** — the tests left behind matter more than the report
 
 ## Setup from Scratch
 
