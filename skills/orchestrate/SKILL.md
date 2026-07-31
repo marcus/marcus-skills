@@ -5,11 +5,13 @@ description: Orchestrate development work through sub-agents using td for state.
 
 # Orchestrate
 
-Guidance for running multi-step development work through sub-agents, with `td` as the durable state store. Use your judgment — this describes a default shape, not a protocol to follow literally.
+Run multi-step development work through sub-agents, with `td` as the durable state store.
 
-The one thing worth holding onto: **work gets independently reviewed before it closes.** Most of the rest is negotiable.
+This is guidance, not a protocol. You know your tools and the shape of the work in front of you better than this file does. Optimize for efficiency and correctness — not for looking like you followed steps.
 
-## Classify Input
+**The one rule that isn't negotiable: every story gets reviewed by something other than what wrote it, before it closes.** Everything on the rest of this page is a default you should feel free to beat.
+
+## Classify input
 
 | Input | Detect | Bootstrap |
 |-------|--------|-----------|
@@ -18,35 +20,39 @@ The one thing worth holding onto: **work gets independently reviewed before it c
 | Text idea | No td ID, plain text | Create td task(s), then implement |
 | Markdown plan | Structured markdown with steps | Convert to td tasks, then implement |
 
-If more than one task is needed, create an epic and link the sub-tasks to it.
+If the work needs more than one task, create an epic and link the sub-tasks to it.
 
 ## Your role
 
-Mostly you delegate: spawn sub-agents via the Task tool, keep state in td, and stay out of the weeds so your context lasts. But you don't have to be a pure router.
+You hold the plan, keep state in td, and spend your context on coordination rather than on code.
 
-- **Planning**: if you already explored the code and know what needs to happen, write the plan and the td tasks yourself. Spawning a planner to rediscover what you already know wastes a context window. Delegate planning when the area is unfamiliar or large.
-- **Code**: prefer delegating implementation — it protects your context and creates the separation that makes review meaningful. Small mechanical edits (a typo, a version bump, a one-line fix you already diagnosed) are fine to do directly; just don't then be the only reviewer of them.
-- **Review**: don't review work you implemented. That's the line worth keeping.
+- **Planning**: do it yourself when you already have the context. Spawning a planner to rediscover what you just read burns a whole window for nothing. Delegate planning when the area is large or unfamiliar.
+- **Implementation**: delegate by default. It protects your context and it's what makes the review independent. Small mechanical edits you've already diagnosed are fine to do directly.
+- **Review**: delegate, always. Never review code you wrote.
 
-## Sub-agent roles
+## Batching is your call
 
-Prefix each agent's prompt with its role and include the td task ID, repo path, and an instruction to `td log` progress.
+How you slice work across agents is the main lever you have on both speed and quality. Use it. Nobody is counting agents.
 
-- **Implementer**: makes changes for one or more td tasks. Commits as `feat|fix|chore: <summary> (td-XXXXXX)`.
-- **Reviewer**: reads the diff, runs quality gates, records a verdict. Keep reviewer prompts short — they don't need deep codebase context.
-- **Planner**: explores and creates/refines td tasks. Use when you lack the context yourself.
-- **Tester**: writes or runs tests when that's a meaningful chunk of work on its own.
+**Implementation.** Group stories that touch the same files, share a design decision, or are small enough that a separate agent costs more than it saves. Split what's genuinely independent so it can run concurrently. The one hard constraint: don't run parallel agents over overlapping files — serialize them, or give each its own worktree.
 
-## Core loop
+**Review.** Batch these the same way. One reviewer over a coherent feature usually finds more than several reviewers over the same work in fragments, because it sees the integrated result and can spot the seams. Narrow the batch when a missed finding is expensive: security-sensitive changes, destructive migrations, production deploys, anything public-facing.
 
-1. **Plan** — get to scoped td tasks, however that's cheapest.
-2. **Implement** — dependency order. Usually one story per agent, but batch stories into one agent when they're tightly coupled, touch the same files, or are small enough that splitting them costs more than it buys. Don't parallelize agents over overlapping files.
-3. **Review** — at meaningful boundaries. A batch review over several related stories is often better than per-story review: the reviewer sees the integrated result instead of fragments. Group by coherent user-facing or subsystem outcome. Keep security-sensitive changes, destructive migrations, and production deploys in their own review.
-4. **Fix and re-review** — targeted fixes, then re-review the batch. One review plus one rejection cycle is usually enough; escalate further only for genuine P0 findings and file the rest as follow-up tasks.
-5. **Close** — see below.
-6. **Wrap up** — integration check if the work spans batches, then summarize.
+A batch review still has to actually cover every story in it. Name the stories and the diff range in the reviewer's prompt so "reviewed" means someone read that story's changes, not that it rode along inside a batch.
 
-Re-read td state between steps rather than carrying it in memory. If the user adds tasks mid-flight, re-read the epic and slot them into the dependency graph.
+**Rejections.** Fix and re-review, but converge. One review plus a fix cycle usually gets there; past that, land the P0 findings and file the rest as follow-up tasks rather than looping.
+
+## Working the tools well
+
+- Spawn independent agents in one message so they run concurrently instead of in sequence.
+- Reuse an agent that already has the context for its own follow-up fixes rather than spawning a fresh one that has to re-derive everything.
+- Size prompts to the job. Implementers need real context; reviewers mostly need the diff, the acceptance criteria, and the quality gates. Short reviewer prompts are cheaper and no worse.
+- Prefix each sub-agent prompt with its role, the td task IDs, the repo path, and an instruction to `td log` progress. Roles are labels, not a fixed roster — implementer, reviewer, planner, tester, whatever the work actually needs.
+- Include the project's lint and type-check commands in implementer prompts (e.g. `svelte-check` for Svelte frontends).
+- Re-read td state between steps instead of carrying it in your head. If the user adds tasks mid-flight, re-read the epic and slot them into the dependency graph.
+- Every commit references a td task id: `feat|fix|chore: <summary> (td-XXXXXX)`.
+- If blocked, `td log --blocker` and move to the next unblocked task.
+- Feedback and verdicts go through `td log` / `td approve` / `td reject`, so state survives compaction.
 
 ## Closing tasks
 
@@ -57,9 +63,9 @@ td approve <id> --reason "..."                    # independent reviewer
 td approve <id> --self-review --reason "..."      # you reviewed it yourself; stamped self_review for audit
 ```
 
-Sub-agents run in their own sessions, so the orchestrator is not the implementer-of-record for work it delegated — plain `td approve <id> --reason "..."` works, no flag needed. (The old workaround of logging `"Review: PASS"` instead of approving is obsolete.)
+Sub-agents run in their own sessions, so the orchestrator is not the implementer-of-record for work it delegated — plain `td approve <id> --reason "..."` works, no flag needed.
 
-Use `--self-review` when you're closing something you actually implemented yourself — a nit-fix mid-loop, say. It requires `--reason` and stamps the review row for audit. It's a disclosure, not a confession; the point is that the record matches reality.
+Use `--self-review` when you're closing something you implemented yourself, like a nit-fix mid-loop. It requires `--reason` and stamps the review row for audit. It's a disclosure, not a confession; the point is that the record matches reality.
 
 What's not okay: spinning up a throwaway session to make a review *look* independent, or approving work nobody read. If a project pins `review_policy_mode=delegated|strict`, self-review is blocked by design — record the verdict with `td log` and let another session close.
 
@@ -70,22 +76,13 @@ Capture proof by default — it's what makes "done" checkable later. Decide per 
 - **Worth it**: UI changes (screenshot), anything where the test suite doesn't demonstrate the actual user-visible outcome, infra/deploy work, bug fixes where the repro matters.
 - **Skip it**: well-tested code with no UI surface and no behavior a test doesn't already assert. Passing tests recorded in the td log are the proof. Say so rather than manufacturing a ceremonial proof task.
 
-When you do capture it:
+When you do capture it, put it in td rather than only in chat: update the implementation task or epic with the result, and create a `Proof: <thing proved>` child task with the `proof` label. Name the exact artifact up front — not "capture proof" but "screenshot of ActivityPanel showing 3 block types at `/tmp/rich-blocks-proof.png`" or "output of `go test ./internal/modules/planner/...`". Vague proof tasks get skipped or produce useless output.
 
-1. Update the implementation task / epic / phase with the result.
-2. Create `Proof: <thing proved>` as a child task with the `proof` label.
-3. Put the artifact — or a direct path to it — in the description. Name the exact artifact up front: not "capture proof" but "screenshot of ActivityPanel showing 3 block types at `/tmp/rich-blocks-proof.png`" or "output of `go test ./internal/modules/planner/...`". Vague proof tasks get skipped or produce useless output.
-4. Do it before final handoff, so proof lives in td rather than only in chat.
+If the user explicitly asks to prove or verify work, proof is part of completion, not an optional follow-up.
 
-If the user explicitly asks to prove or verify work, treat proof as part of completion, not an optional follow-up.
+## Scaling
 
-## Practical notes
-
-- Scale ceremony to the project. Personal and LAN-only work can use broad batches and light gates; public, multi-user, security-sensitive, or production work deserves narrower batches and stronger ones.
-- Every commit references a td task id.
-- Include lint/type-check in implementer prompts where the project has one (e.g. `svelte-check` for Svelte frontends).
-- If blocked, `td log --blocker` and move to the next unblocked task.
-- Feedback and verdicts go through `td log` / `td approve` / `td reject` — externalize state so it survives compaction.
+Match the gates to the stakes. Personal and LAN-only work can run broad batches and light gates. Public, multi-user, security-sensitive, or production work deserves narrower batches and stronger ones. Don't spend a security-grade process on a personal script, and don't ship a payments change on a personal-script process.
 
 ## On compaction / handoff
 
@@ -101,4 +98,4 @@ td handoff <current-task-id> \
 
 Then tell the user: "Resume with `/orchestrate td-<id>`."
 
-Include this in every sub-agent prompt: "If your context is compacted, read td state with `td context <id>` and continue from there. The process is: plan → implement in dependency order → independent review at batch boundaries → targeted fixes → close."
+Include this in every sub-agent prompt: "If your context is compacted, read td state with `td context <id>` and continue from there."

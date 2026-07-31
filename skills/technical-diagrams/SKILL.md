@@ -1,13 +1,13 @@
 ---
 name: technical-diagrams
-description: Generate and render technical diagrams (C4, sequence, flowchart, architecture, ER, state, infrastructure) inline in web apps using Mermaid.js. Covers syntax for all diagram types, browser rendering, dark theme integration, LLM generation best practices, and accessibility.
-version: 1.0.0
-tags: [diagrams, mermaid, c4, architecture, sequence, flowchart, svg, visualization]
+description: Generate and render technical diagrams (C4, sequence, flowchart, architecture, ER, state, infrastructure) using Mermaid.js for inline web rendering or D2 for static PNG/SVG export with hand-drawn sketch style. Covers syntax for all diagram types, browser rendering, dark theme integration, LLM generation best practices, and accessibility.
+version: 1.1.0
+tags: [diagrams, mermaid, d2, c4, architecture, sequence, flowchart, svg, png, visualization, sketch]
 ---
 
-# Technical Diagrams — Inline Rendering for Web Apps
+# Technical Diagrams — Inline Rendering & Static Export
 
-Generate beautiful technical diagrams from text using Mermaid.js. This skill covers diagram type selection, syntax reference, browser rendering, dark theme integration, and LLM generation best practices.
+Generate beautiful technical diagrams from text using Mermaid.js (inline web rendering) or D2 (static PNG/SVG export with hand-drawn sketch style). This skill covers diagram type selection, syntax reference, browser rendering, dark theme integration, D2 sketch-style export, and LLM generation best practices.
 
 ## Why Mermaid.js
 
@@ -23,10 +23,15 @@ Mermaid is the right choice for AI-generated inline diagrams because:
 Alternatives and when to consider them:
 | Tool | Use when | Limitation |
 |------|----------|------------|
+| **D2** | Static PNG/SVG export, hand-drawn sketch style, presentation diagrams | CLI tool, no browser rendering |
 | **Graphviz (Viz.js WASM)** | DOT language graphs, dependency trees | ~2MB WASM, static SVG only |
 | **ELK.js + Svelte Flow** | Interactive, draggable architecture diagrams | Layout-only, needs custom renderer |
 | **Kroki** | Need PlantUML/D2/Structurizr server-side | Requires Docker infrastructure |
 | **PlantUML** | Enterprise sequence diagrams with deep UML | Java server, no client-side |
+
+**When to use Mermaid vs D2:**
+- **Mermaid** — best for inline rendering in web apps, markdown docs, GitHub READMEs. Runs client-side in the browser.
+- **D2** — best for static PNG/SVG export, presentations, and stakeholder-facing diagrams. The `--sketch` hand-drawn mode produces polished whiteboard-style diagrams that look great in slide decks. D2 uses Source Sans Pro (sans-serif) by default, supports per-node styling, and has cleaner layout for complex flows with feedback loops.
 
 ## Choosing the Right Diagram Type
 
@@ -763,6 +768,100 @@ C4Context
 - Ensure sufficient contrast (Mermaid dark theme generally passes WCAG AA)
 - Respect `prefers-reduced-motion` by disabling Mermaid animations
 
+## D2 — Static Export with Hand-Drawn Sketch Style
+
+D2 is a CLI diagramming tool that excels at producing polished static diagrams for presentations, docs, and stakeholder reviews. Its `--sketch` flag renders diagrams with a hand-drawn whiteboard aesthetic.
+
+### Installation
+
+```bash
+brew install d2
+```
+
+### CLI Usage
+
+```bash
+d2 --sketch --theme 0 --pad 60 --scale 2 diagram.d2 diagram.png
+```
+
+Key flags:
+- `--sketch` / `-s` — hand-drawn style (the main reason to reach for d2)
+- `--theme 0` — Neutral Default (light bg). Use `d2 themes` to list all options.
+- `--scale 2` — 2x resolution for crisp PNGs
+- `--pad 60` — padding around the diagram in pixels
+- Output format is inferred from extension: `.png`, `.svg`, `.pdf`, `.pptx`
+
+### Syntax Quick Reference
+
+```d2
+direction: down
+
+input: User clicks a button {
+  shape: oval
+  style.fill: "#fff4eb"
+  style.stroke: "#fc6600"
+  style.font-color: "#1a1a1a"
+}
+
+process: Process the request {
+  shape: rectangle
+  style.fill: "#e8f4fa"
+  style.stroke: "#059bd2"
+  style.font-color: "#1a1a1a"
+}
+
+decision: Check result {
+  shape: diamond
+  style.fill: "#025979"
+  style.stroke: "#025979"
+  style.font-color: "#ffffff"
+}
+
+group: Grouped Items {
+  style.fill: "#f5f5f5"
+  style.stroke: "#e5e7eb"
+
+  itemA: Item A
+  itemB: Item B
+}
+
+input -> process
+process -> decision
+decision -> group.itemA: yes
+decision -> group.itemB: no
+
+# Dashed edges for feedback loops
+group.itemA -> process: retry {style.stroke-dash: 3}
+```
+
+Node shapes: `rectangle` (default), `oval`, `diamond`, `hexagon`, `circle`, `cylinder`, `queue`, `package`, `cloud`, `page`, `class`, `sql_table`
+
+### Style Properties
+
+Per-node and per-edge styling via `style.*`:
+- `style.fill` — background color
+- `style.stroke` — border color
+- `style.font-color` — text color
+- `style.stroke-dash` — dashed lines (value = dash length)
+- `style.stroke-width` — border thickness
+- `style.opacity` — 0.0 to 1.0
+- `style.bold` / `style.italic` — text formatting
+- `style.border-radius` — rounded corners (px)
+
+### Themes
+
+Light themes: Neutral Default (0), Neutral Grey (1), Cool Classics (4), Orange Creamsicle (101), Origami (302)
+Dark themes: Dark Mauve (200), Dark Flagship Terrastruct (201)
+
+### Tips for LLM Generation
+
+1. **Avoid reserved words as node IDs** — d2 has no reserved-word conflicts like Mermaid's `click` issue, but keep IDs simple alphanumeric or use quotes.
+2. **Use `\n` for line breaks** in labels: `label: Line one\nLine two`
+3. **Containers are implicit** — any node with children `{ }` becomes a container, no special keyword needed.
+4. **Direction** — set globally with `direction: down` (or `right`, `left`, `up`). Cannot be set per-subgraph.
+5. **Edge labels** — append after colon: `a -> b: label text`
+6. **Multiple edges** — each `->` creates a separate edge; d2 handles parallel edges cleanly.
+
 ## Advanced: Graphviz WASM Fallback
 
 For DOT-language graphs or when you need Graphviz's layout algorithms:
@@ -806,6 +905,10 @@ Pair with `@xyflow/svelte` for the rendering layer. ELK handles layout (~180KB),
 | Agent generates diagram in a plan/doc | Mermaid, render client-side |
 | User views system architecture overview | C4Context/C4Container in Mermaid |
 | Show API request flow | Mermaid sequenceDiagram |
+| Static PNG/SVG for slides or docs | D2 with `--sketch` |
+| Hand-drawn whiteboard-style diagram | D2 with `--sketch` |
+| Exec-friendly simplified workflow | D2 with `--sketch` (clean, minimal) |
+| Branded diagram with custom colors | D2 (per-node `style.*`) or Mermaid (`themeVariables`) |
 | Interactive, editable diagram | ELK.js + Svelte Flow |
 | Need PlantUML/D2/Structurizr rendering | Kroki server (Docker) |
 | Dependency graph from code analysis | Graphviz WASM (@viz-js/viz) |

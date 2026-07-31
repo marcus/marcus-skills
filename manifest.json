@@ -135,6 +135,10 @@
     {
       "name": "td-ralph-loop",
       "description": "Set up and run autonomous overnight coding loops that process td epic tasks one at a time. Includes loop runner, Rich TUI cockpit dashboard with heartbeat/velocity/scrollable logs, prompt template, and operational learnings from 60+ iterations."
+    },
+    {
+      "name": "ai-image-generation",
+      "description": "Generate images via OpenAI (gpt-image-1 / gpt-image-1.5) or Google Gemini (Imagen 4) APIs. Covers prompt engineering for diagrams and illustrations, API parameters, batch generation from JSON manifests, format conversion, and cost estimates. Use when generating images, creating illustrations, building image pipelines, or integrating image generation APIs."
     }
   ]
 }
