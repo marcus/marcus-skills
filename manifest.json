@@ -45,10 +45,6 @@
       "description": "Design professional dashboards for software project metrics and status"
     },
     {
-      "name": "td-task-management",
-      "description": "Task management for AI agents across context windows with structured handoffs"
-    },
-    {
       "name": "site-design-director",
       "description": "Design websites/landing pages/SaaS UIs/portfolios with strategic direction AND production code—avoiding generic AI design"
     },
@@ -66,11 +62,7 @@
     },
     {
       "name": "orchestrate",
-      "description": "Orchestrate development work through sub-agents using td for state and plan-implement-review loops"
-    },
-    {
-      "name": "td-review-session",
-      "description": "Start a td review session to triage pending reviews—fix obvious bugs, create tasks for bigger issues, ensure test coverage, and use parallel subagents"
+      "description": "Orchestrate development work through sub-agents using td for state, plan-implement-review loops, and pending-review triage"
     },
     {
       "name": "linear-design-patterns",

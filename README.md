@@ -38,7 +38,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | multi-turn-runtime-adapters | Multi-turn agent sessions, event normalization, rich component rendering, bidirectional agent↔UI state |
 | ollama-python-streaming     | Ollama + LiteLLM streaming in Python                         |
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
-| orchestrate                 | Sub-agent orchestration using td for plan-implement-review   |
+| orchestrate                 | Sub-agent orchestration using td: plan-implement-review, review triage |
 | professional-readme         | Developer-focused README.md creation                         |
 | project-metrics-dashboard   | Professional metrics dashboard design                        |
 | rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
@@ -47,9 +47,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
 | stereo-design-system        | Skeuomorphic hi-fi receiver design system — brushed brass, warm amber |
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
-| td-review-session           | Review session orchestrator with parallel triage and auto-fix |
 | td-ralph-loop               | Autonomous coding loops with Rich TUI cockpit dashboard       |
-| td-task-management          | AI agent task management across sessions                     |
 | technical-diagrams            | Generate and render C4, sequence, flowchart, architecture diagrams inline using Mermaid.js |
 | interactive-courseware           | AI-driven interactive courseware — SCORM/xAPI packaging, multimedia, branching scenarios, LMS delivery |
 | software-demo-video           | Premium software demo videos — scripts, production, thumbnails, distribution |

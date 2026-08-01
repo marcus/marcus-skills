@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Orchestrate development work through sub-agents using td for state. Use when given a td task ID, text idea, markdown plan, or td epic to execute through plan-implement-review loops.
+description: Orchestrate development work through sub-agents using td for state. Use when given a td task ID, text idea, markdown plan, or td epic to execute through plan-implement-review loops, or when asked to triage the pending review queue.
 ---
 
 # Orchestrate
@@ -19,8 +19,9 @@ This is guidance, not a protocol. You know your tools and the shape of the work 
 | td epic / multiple IDs | Multiple td IDs or user says "epic" | `td show` each, plan execution order |
 | Text idea | No td ID, plain text | Create td task(s), then implement |
 | Markdown plan | Structured markdown with steps | Convert to td tasks, then implement |
+| "review what's pending" | No target; user wants the queue triaged | `td reviewable`, then run the review loop below |
 
-If the work needs more than one task, create an epic and link the sub-tasks to it.
+If the work needs more than one task, create an epic and link the sub-tasks to it. `td next` and `td critical-path` are the fastest way to pick an order when the dependency graph isn't obvious.
 
 ## Your role
 
@@ -42,6 +43,28 @@ A batch review still has to actually cover every story in it. Name the stories a
 
 **Rejections.** Fix and re-review, but converge. One review plus a fix cycle usually gets there; past that, land the P0 findings and file the rest as follow-up tasks rather than looping.
 
+## Reviewing
+
+Whether you are reviewing this loop's own output or triaging a queue someone else filled (`td reviewable`), the shape is the same: gather, review in parallel, act sequentially.
+
+Give a reviewer the **contract**, not just the diff — the acceptance criteria, the plan or design doc the work was built against, and the quality gates. A reviewer with only the diff can tell you the code is coherent; one with the contract can tell you it is *wrong*. Ask it to falsify, not to admire.
+
+Reviewers report a verdict, and you act on it:
+
+| Verdict | What you do |
+|---------|-------------|
+| **Clean** | Approve (see Closing tasks) |
+| **Obvious fix** | Fix it now — file the bug task first so it's tracked, fix, re-review |
+| **Needs tests** | File a task naming exactly what needs testing and why |
+| **Bigger issue** | File a task: what's wrong, where, suggested approach, context from the review |
+| **Unclear** | Ask the user. Don't approve or reject code nobody understands |
+
+Every task you file has to survive a cold pickup — enough context that an agent with none of this conversation can act on it. Vague tasks get skipped or produce useless output.
+
+Parallelize independent reviews; serialize the acting, so two fixes don't collide in the same file. Once the fixes land, scan for in-progress tasks they resolved and close them rather than leaving them stale.
+
+A reviewer sub-agent prompt wants: task ids and repo path, the diff range, the contract, the gates to run, and an instruction to report a verdict per the table above with a concrete reproduction for each finding. A finding without a reproduction is not a finding.
+
 ## Working the tools well
 
 - Spawn independent agents in one message so they run concurrently instead of in sequence.
@@ -53,6 +76,8 @@ A batch review still has to actually cover every story in it. Name the stories a
 - Every commit references a td task id: `feat|fix|chore: <summary> (td-XXXXXX)`.
 - If blocked, `td log --blocker` and move to the next unblocked task.
 - Feedback and verdicts go through `td log` / `td approve` / `td reject`, so state survives compaction.
+
+The td CLI is self-documenting — `td usage`, `td <command> --help`. Look there rather than guessing at flags.
 
 ## Closing tasks
 
@@ -99,6 +124,8 @@ Match the gates to the stakes. Personal and LAN-only work can run broad batches 
 
 ## On compaction / handoff
 
+td is the memory, so write to it before you need it: `td log` progress and `td log --decision` the reasoning as you go. A decision recorded after compaction is a decision reconstructed.
+
 Before context runs out or if pausing:
 
 ```bash
@@ -108,6 +135,8 @@ td handoff <current-task-id> \
   --decision "key decisions made" \
   --uncertain "open questions"
 ```
+
+Be honest in `--done`; "mostly working" is not done, and the next session pays for the difference. For work spanning several tasks, `td ws start "<name>"` / `td ws tag <ids>` / `td ws handoff` captures the whole set at once.
 
 Then tell the user: "Resume with `/orchestrate td-<id>`."
 
