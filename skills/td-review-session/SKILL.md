@@ -70,7 +70,7 @@ When spawning review subagents via Task tool, include this in every prompt:
 > 5. If bigger-issue: detailed description of the problem, location, and suggested approach
 > 6. If unclear: what question to ask the user
 >
-> Use `td log` to record your findings. Do NOT approve or reject — the orchestrator handles that.
+> Use `td log` to record your findings. If you were given your own `TD_CONTEXT_ID`, record your verdict yourself — `td approve <id> --record-only --reason "..."` (or `--decision changes_requested`) — because a review recorded by the session that performed it is verified rather than asserted. Otherwise leave approval to the orchestrator, which will attribute it with `--reviewed-by`.
 
 ## Rules
 

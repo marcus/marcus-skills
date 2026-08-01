@@ -47,7 +47,7 @@ A batch review still has to actually cover every story in it. Name the stories a
 - Spawn independent agents in one message so they run concurrently instead of in sequence.
 - Reuse an agent that already has the context for its own follow-up fixes rather than spawning a fresh one that has to re-derive everything.
 - Size prompts to the job. Implementers need real context; reviewers mostly need the diff, the acceptance criteria, and the quality gates. Short reviewer prompts are cheaper and no worse.
-- Prefix each sub-agent prompt with its role, the td task IDs, the repo path, and an instruction to `td log` progress. Roles are labels, not a fixed roster — implementer, reviewer, planner, tester, whatever the work actually needs.
+- Prefix each sub-agent prompt with its role, the td task IDs, the repo path, a distinct `TD_CONTEXT_ID` to export, and an instruction to `td log` progress. Roles are labels, not a fixed roster — implementer, reviewer, planner, tester, whatever the work actually needs. The context id is what lets a reviewer close its own verdict (see Closing tasks).
 - Include the project's lint and type-check commands in implementer prompts (e.g. `svelte-check` for Svelte frontends).
 - Re-read td state between steps instead of carrying it in your head. If the user adds tasks mid-flight, re-read the epic and slot them into the dependency graph.
 - Every commit references a td task id: `feat|fix|chore: <summary> (td-XXXXXX)`.
@@ -56,18 +56,31 @@ A batch review still has to actually cover every story in it. Name the stories a
 
 ## Closing tasks
 
-td's default trusted mode wants an independent review, and gives you an audited escape hatch when that isn't practical:
+td's default trusted mode wants an independent review, and its flags exist so the recorded history matches what actually happened. Pick by who did what — not by which flag gets past the check:
 
 ```bash
-td approve <id> --reason "..."                    # independent reviewer
-td approve <id> --self-review --reason "..."      # you reviewed it yourself; stamped self_review for audit
+# The reviewing sub-agent has its own session (TD_CONTEXT_ID): let IT close.
+td approve <id> --reason "..."                     # run BY the reviewer
+
+# You delegated the implementation and reviewed it yourself.
+td approve <id> --reason "..."                     # you are not the implementer-of-record
+
+# You implemented it and a sub-agent reviewed it.   ← the common orchestrator case
+td approve <id> --reviewed-by "reviewer sub-agent"  # no --reason needed; the name IS the substance
+
+# You implemented it and nobody else looked.
+td approve <id> --self-review --reason "..."       # stamped self_review for audit
 ```
 
-Sub-agents run in their own sessions, so the orchestrator is not the implementer-of-record for work it delegated — plain `td approve <id> --reason "..."` works, no flag needed.
+**Give each sub-agent its own `TD_CONTEXT_ID`** (`reviewer-<taskid>`, `impl-<taskid>`) before it runs any `td` command, and let the reviewer close its own findings or record them with `td approve --record-only --reason "..."`. That makes the independence *mechanically verified* instead of asserted, and it costs one environment variable. Prefer it.
 
-Use `--self-review` when you're closing something you implemented yourself, like a nit-fix mid-loop. It requires `--reason` and stamps the review row for audit. It's a disclosure, not a confession; the point is that the record matches reality.
+**`--reviewed-by` is the fallback when that isn't available** — a sub-agent sharing your session still did the review, and naming it is more honest than claiming a self-review you did not perform. Identify the reviewer however is useful and true: `"code-reviewer sub-agent"`, `"sub-agent 2 (adversarial review)"`, or just `"sub-agent"`. td does not verify the name; it is an attestation.
 
-What's not okay: spinning up a throwaway session to make a review *look* independent, or approving work nobody read. If a project pins `review_policy_mode=delegated|strict`, self-review is blocked by design — record the verdict with `td log` and let another session close.
+If you find yourself blocked at `td approve` because you are the implementer-of-record, that is the signal to pick one of the two honest paths — not to leave the story sitting in `in_review`. A story that is implemented, reviewed, and green should not need the user to close it by hand.
+
+What's not okay: naming a reviewer that did not review (worse than an honest `--self-review`, because it reads as independent in the audit trail), spinning up a throwaway session to make a review *look* independent, or approving work nobody read. If a project pins `review_policy_mode=delegated|strict`, self-review is blocked by design — record the verdict with `td log` and let another session close.
+
+See `td approve --help` and `docs/multi-agent-sessions.md` in the td repo for the full mode table.
 
 ## Proof
 
