@@ -1,0 +1,7 @@
+interface:
+  display_name: "Pragmatic Engineering"
+  short_description: "Build useful software without speculative complexity"
+  default_prompt: "Use $pragmatic-engineering to plan and build this from the user journey outward."
+
+policy:
+  allow_implicit_invocation: true

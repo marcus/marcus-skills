@@ -40,6 +40,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | openrouter-python-streaming | OpenRouter + LiteLLM streaming in Python                     |
 | orchestrate                 | Sub-agent orchestration using td: plan-implement-review, review triage |
 | professional-readme         | Developer-focused README.md creation                         |
+| pragmatic-engineering       | User-first software delivery without speculative complexity  |
 | project-metrics-dashboard   | Professional metrics dashboard design                        |
 | rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
 | roc-icons                   | Roc icon library (@marcus/roc) for React, Svelte, and sprites |

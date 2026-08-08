@@ -41,6 +41,10 @@
       "description": "Create concise, developer-focused README.md files for software projects"
     },
     {
+      "name": "pragmatic-engineering",
+      "description": "Plan, build, refactor, and review software from the user journey outward, using steel threads for new capabilities and tracing existing journeys for other work"
+    },
+    {
       "name": "project-metrics-dashboard",
       "description": "Design professional dashboards for software project metrics and status"
     },
