@@ -1,0 +1,7 @@
+interface:
+  display_name: "Write Plans"
+  short_description: "Write concise current-state implementation plans"
+  default_prompt: "Use $write-plans to create or update a durable implementation plan."
+
+policy:
+  allow_implicit_invocation: true

@@ -54,6 +54,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | interactive-courseware           | AI-driven interactive courseware — SCORM/xAPI packaging, multimedia, branching scenarios, LMS delivery |
 | software-demo-video           | Premium software demo videos — scripts, production, thumbnails, distribution |
 | web-design-system-deliverable | Agency-grade web design systems from brand strategy to production handoff |
+| write-plans                  | Write concise, durable, current-state plans                 |
 
 ## Adding a New Skill
 

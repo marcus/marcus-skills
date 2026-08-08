@@ -139,6 +139,10 @@
     {
       "name": "ai-image-generation",
       "description": "Generate images via OpenAI (gpt-image-1 / gpt-image-1.5) or Google Gemini (Imagen 4) APIs. Covers prompt engineering for diagrams and illustrations, API parameters, batch generation from JSON manifests, format conversion, and cost estimates. Use when generating images, creating illustrations, building image pipelines, or integrating image generation APIs."
+    },
+    {
+      "name": "write-plans",
+      "description": "Write and update concise, durable, current-state project, implementation, migration, and architecture plans"
     }
   ]
 }
