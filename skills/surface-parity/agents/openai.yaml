@@ -1,0 +1,7 @@
+interface:
+  display_name: "Surface Parity"
+  short_description: "Keep UI, CLI, API, and MCP behavior aligned"
+  default_prompt: "Use $surface-parity to design this capability across the product surfaces that should own it."
+
+policy:
+  allow_implicit_invocation: true

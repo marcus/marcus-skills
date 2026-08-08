@@ -47,6 +47,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | site-design-director        | Website/UI design direction + production code                |
 | sqlite-single-writer        | SQLite single-writer queue pattern for multi-process apps    |
 | stereo-design-system        | Skeuomorphic hi-fi receiver design system — brushed brass, warm amber |
+| surface-parity              | Keep owned capabilities aligned across UI, CLI, API, and MCP |
 | sveltekit-latest            | Quick-reference for SvelteKit + Svelte 5 (Feb 2026)          |
 | td-ralph-loop               | Autonomous coding loops with Rich TUI cockpit dashboard       |
 | technical-diagrams            | Generate and render C4, sequence, flowchart, architecture diagrams inline using Mermaid.js |
