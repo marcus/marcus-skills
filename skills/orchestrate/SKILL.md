@@ -43,6 +43,29 @@ A batch review still has to actually cover every story in it. Name the stories a
 
 **Rejections.** Fix and re-review, but converge. One review plus a fix cycle usually gets there; past that, land the P0 findings and file the rest as follow-up tasks rather than looping.
 
+## Verification without repetition
+
+Treat verification as evidence about a specific candidate, not as a ritual at every agent boundary.
+
+**Verify at the narrowest useful scope while work is moving; run broad gates once on the integrated candidate.**
+
+- Implementers run focused tests for the behavior they changed. They run formatting or linting only when their edits may require it.
+- Parallel work streams do not each run the repository-wide suite. After their changes are integrated, one owner runs the broad local gates once.
+- Reviewers may rely on recorded green results. They inspect the diff and run additional tests only to investigate a risk, reproduce a finding, or cover behavior the existing evidence does not establish.
+- The orchestrator does not automatically rerun a command merely because control returned from a sub-agent.
+- Before final user handoff, the required full suite, lint/format gates, and CI must be green for the final integrated candidate.
+
+Verification remains valid until something relevant changes. Rerun a gate when:
+
+- code covered by that gate changed after it ran;
+- dependencies, generated files, build configuration, or relevant environment changed;
+- integration introduced interactions the focused tests did not cover;
+- the previous run was incomplete, failed, or cannot be tied to the current candidate.
+
+Do not invalidate proof merely because another agent starts, finishes, reviews, or hands work back.
+
+Record reusable evidence in the task or handoff: the exact command, result, and commit or tree state it covered. A receiving agent should read that evidence before deciding what still needs to run.
+
 ## Reviewing
 
 Whether you are reviewing this loop's own output or triaging a queue someone else filled (`td reviewable`), the shape is the same: gather, review in parallel, act sequentially.
@@ -63,7 +86,7 @@ Every task you file has to survive a cold pickup — enough context that an agen
 
 Parallelize independent reviews; serialize the acting, so two fixes don't collide in the same file. Once the fixes land, scan for in-progress tasks they resolved and close them rather than leaving them stale.
 
-A reviewer sub-agent prompt wants: task ids and repo path, the diff range, the contract, the gates to run, and an instruction to report a verdict per the table above with a concrete reproduction for each finding. A finding without a reproduction is not a finding.
+A reviewer sub-agent prompt wants: task ids and repo path, the diff range, the contract, existing verification evidence, any gates the reviewer specifically owns, and an instruction to report a verdict per the table above with a concrete reproduction for each finding. Reviewers should not rerun the full suite by default; ask them to add targeted verification when the evidence leaves a concrete risk uncovered. A finding without a reproduction is not a finding.
 
 ## Working the tools well
 
@@ -71,7 +94,7 @@ A reviewer sub-agent prompt wants: task ids and repo path, the diff range, the c
 - Reuse an agent that already has the context for its own follow-up fixes rather than spawning a fresh one that has to re-derive everything.
 - Size prompts to the job. Implementers need real context; reviewers mostly need the diff, the acceptance criteria, and the quality gates. Short reviewer prompts are cheaper and no worse.
 - Prefix each sub-agent prompt with its role, the td task IDs, the repo path, a distinct `TD_CONTEXT_ID` to export, and an instruction to `td log` progress. Roles are labels, not a fixed roster — implementer, reviewer, planner, tester, whatever the work actually needs. The context id is what lets a reviewer close its own verdict (see Closing tasks).
-- Include the project's lint and type-check commands in implementer prompts (e.g. `svelte-check` for Svelte frontends).
+- Tell implementers which focused gates they own and which broad gates the integration owner will run. Supplying a command is not an instruction to run it redundantly; name when it should run.
 - Re-read td state between steps instead of carrying it in your head. If the user adds tasks mid-flight, re-read the epic and slot them into the dependency graph.
 - Every commit references a td task id: `feat|fix|chore: <summary> (td-XXXXXX)`.
 - If blocked, `td log --blocker` and move to the next unblocked task.
