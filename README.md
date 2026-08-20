@@ -31,6 +31,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | claude-code-metadata        | Everything you need to know about how Claude stores metadata |
 | cursor-agent-orchestrator   | Parallel cursor-agent process orchestration                  |
 | dev-docs                    | Developer documentation for open source projects             |
+| google-style                | Technical chat responses, decisions, and code formatting using Google Developer Style Guide |
 | human-writing               | Natural writing guidelines and AI pattern detection          |
 | imessage-extraction         | Extract and query iMessage conversations from macOS chat.db  |
 | lightroom-catalog           | Index and search Lightroom CC catalogs with SQLite+FTS5      |

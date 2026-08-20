@@ -143,6 +143,10 @@
     {
       "name": "write-plans",
       "description": "Write and update concise, durable, current-state project, implementation, migration, and architecture plans"
+    },
+    {
+      "name": "google-style",
+      "description": "Present technical information, decisions, tradeoffs, and code in chat using Google Developer Documentation Style Guide standards"
     }
   ]
 }
