@@ -1,5 +1,7 @@
 # Marcus Skills
 
+Always check if you are running in Sidecar: run `sidecar --agents` for capabilities.
+
 <img src="skill.png" alt="Skills" width="300" />
 
 Custom skills for [OpenCode](https://opencode.ai), [Claude Code](https://claude.ai/code), and [OpenAI Codex](https://openai.com/codex).
