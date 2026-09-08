@@ -44,6 +44,7 @@ Creates symlinks in `~/.opencode/skill/`, `~/.claude/skills/`, and `~/.codex/ski
 | orchestrate                 | Sub-agent orchestration using td: plan-implement-review, review triage |
 | professional-readme         | Developer-focused README.md creation                         |
 | pragmatic-engineering       | User-first software delivery without speculative complexity  |
+| project-standards           | House standards for every managed project: git, languages, stacks, td, docs, Sidecar, plans |
 | project-metrics-dashboard   | Professional metrics dashboard design                        |
 | rich-link-previews          | Open Graph + Twitter Card metadata for link previews         |
 | roc-icons                   | Roc icon library (@marcus/roc) for React, Svelte, and sprites |

@@ -50,7 +50,7 @@
     },
     {
       "name": "site-design-director",
-      "description": "Design websites/landing pages/SaaS UIs/portfolios with strategic direction AND production code—avoiding generic AI design"
+      "description": "Design websites/landing pages/SaaS UIs/portfolios with strategic direction AND production code\u2014avoiding generic AI design"
     },
     {
       "name": "sqlite-single-writer",
@@ -62,7 +62,7 @@
     },
     {
       "name": "dev-docs",
-      "description": "Create exceptional developer documentation for open source projects—README files, API docs, getting-started guides, and tutorials"
+      "description": "Create exceptional developer documentation for open source projects\u2014README files, API docs, getting-started guides, and tutorials"
     },
     {
       "name": "orchestrate",
@@ -82,7 +82,7 @@
     },
     {
       "name": "roc-icons",
-      "description": "Use Roc icon library (@marcus/roc) in projects—React, Svelte, and HTML sprite usage across 4 styles with 416 icons"
+      "description": "Use Roc icon library (@marcus/roc) in projects\u2014React, Svelte, and HTML sprite usage across 4 styles with 416 icons"
     },
     {
       "name": "stereo-design-system",
@@ -98,7 +98,7 @@
     },
     {
       "name": "avalara-brand-design",
-      "description": "Design and build websites that look authentically Avalara — matching brand identity, Skylab design system, color palette (orange/blue), typography, layout patterns, and component conventions"
+      "description": "Design and build websites that look authentically Avalara \u2014 matching brand identity, Skylab design system, color palette (orange/blue), typography, layout patterns, and component conventions"
     },
     {
       "name": "web-design-system-deliverable",
@@ -110,7 +110,7 @@
     },
     {
       "name": "multi-turn-runtime-adapters",
-      "description": "Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems with session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, tool policy enforcement, and rich component rendering (agent→UI generative components, UI→agent bidirectional state, component registries, surface targets)"
+      "description": "Adapt AI agent runtimes (Claude Code SDK, Codex CLI app-server) into multi-turn conversational systems with session lifecycle, resume/fork, event normalization, JSON-RPC 2.0 over stdio, tool policy enforcement, and rich component rendering (agent\u2192UI generative components, UI\u2192agent bidirectional state, component registries, surface targets)"
     },
     {
       "name": "technical-diagrams",
@@ -147,6 +147,10 @@
     {
       "name": "google-style",
       "description": "Present technical information, decisions, tradeoffs, and code in chat using Google Developer Documentation Style Guide standards"
+    },
+    {
+      "name": "project-standards",
+      "description": "House standards for every project Marcus manages: git/GitHub defaults, language order and stacks, td and docs layout, Sidecar and comms awareness, living plans, adapter seams, UI/icon libraries, and decision communication. Load at the start of any work in a managed repo."
     }
   ]
 }
