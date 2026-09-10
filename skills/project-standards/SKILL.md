@@ -73,6 +73,16 @@ Default to the Clara / td shape: `docs/` with types such as `plans/` and `guides
 
 Plans are living documents (`write-plans`): move them through those folders as work progresses, keep them updated in brief informal strokes, record handoffs in both `td` and the plan, and allow a short changelog at the bottom. Don't litter the body with "decided / changed / updated" archaeology.
 
+## Architecture diagrams
+
+Keep project-owned Fractal models in `docs/diagrams/fractal/` (`model.c4` and `fractal.json`).
+When architecture, boundaries, major flows, or planned capabilities change, update the affected
+model and scenes alongside the code. Preserve stable IDs and distinguish current behavior from
+proposals. Use the [Fractal usage skill](~/code/fractal/skills/fractal/SKILL.md) to author, validate,
+export, register the project in the local catalog, and open its diagram for Marcus. Keep the model
+in the project repository and use Fractal's existing tools; model maintenance should not require
+changes to Fractal core.
+
 ## Runtime environment
 
 - **Sidecar.** Always check whether you are inside Sidecar: `sidecar agents` lists what you can do. If yes, use its agent commands to open files, message agents, create worktrees, and present what you're working on (`sidecar open`, `sidecar layout`, `sidecar create worktree`). Never auto-answer another agent's approvals.
@@ -91,6 +101,7 @@ The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; t
 | `sidecar` | Agent cockpit: shells, worktrees, panes, agent messaging. `sidecar agents` for the surface. |
 | `comms` | Async agent-to-agent messaging across harnesses. |
 | `recall` | Retrieval across the corpus, project docs, tasks, td, and the catalog when you don't know which source holds the answer. Keywords, not sentences. |
+| `fractal` | Repository-owned architecture models, interactive presentation and SVG/PNG exports. Skill: `~/code/fractal/skills/fractal/SKILL.md`. |
 | `ongoing` | The project catalog: what is managed, its stacks, intent, and attention. `ongoing show <project>`, `ongoing stacks --outdated`. |
 | `mise` | The single surface for language runtimes and CLI tools. Wrong binary or version? Start here. |
 | `gh` | GitHub. Create repos private by default. |
