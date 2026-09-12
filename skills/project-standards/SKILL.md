@@ -38,15 +38,24 @@ Use these by name; they carry the detail this file only points at.
 
 ## Language preferences
 
-| Order | Language | When |
+This table is generated from the Ongoing catalog — `ongoing tech list --kind language`. Edit the
+catalog (`ongoing tech set python --ring cool`), then regenerate; don't edit the rows by hand. The
+ring says how much a language is the current default: **hot** is the default choice for new work,
+**warm** is fine to keep using, **cool** needs a reason and expects to migrate off, **out** means
+don't start new work on it.
+
+<!-- ongoing:languages:start -->
+| Language | Ring | When |
 |---|---|---|
-| 1 | **Go** | New projects by default |
-| 2 | **JavaScript / TypeScript** | When the problem wants a web or UI stack (often) |
-| 3 | **Ruby** | Quicker projects, or systems primarily for Marcus |
-| 4 | **Bash** | Where a shell solution is enough; actively preferred there |
-| 5 | **Rust** | When performance is essential |
-| 6 | **Python** | Allowed, not preferred |
-| — | Anything else | Discuss first |
+| **Go** | hot | New projects by default; td, tasks, sidecar, comms and recall are the reference shape. |
+| **JavaScript / TypeScript** | hot | When the problem wants a web or UI stack, which is often. |
+| **Bash** | warm | Where a shell solution is enough; actively preferred there. |
+| **Ruby** | warm | Quicker projects, or systems primarily for Marcus. |
+| **Rust** | warm | When performance is essential. |
+| **Python** | cool | Allowed, not preferred. |
+<!-- ongoing:languages:end -->
+
+Anything else: discuss first.
 
 ### Go stack
 
@@ -92,21 +101,23 @@ changes to Fractal core.
 
 ## Tool surface
 
-The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; this is the slice every managed project should know about.
+The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; this is the slice every managed project should know about. Generated from the Ongoing catalog — every technology that carries a tool surface (`ongoing tech export`). Edit it with `ongoing tech set <tool> --tool-surface "..."` and regenerate.
 
+<!-- ongoing:tools:start -->
 | Tool | Use it for |
 |---|---|
-| `td` | Engineering issues, resolved per git repo. Always. |
-| `tasks` | Marcus's personal GTD. Something you noticed rather than were asked for goes in as `tasks propose "text" --note "why"`, never `capture`. |
-| `sidecar` | Agent cockpit: shells, worktrees, panes, agent messaging. `sidecar agents` for the surface. |
 | `comms` | Async agent-to-agent messaging across harnesses. |
-| `recall` | Retrieval across the corpus, project docs, tasks, td, and the catalog when you don't know which source holds the answer. Keywords, not sentences. |
 | `fractal` | Repository-owned architecture models, interactive presentation and SVG/PNG exports. Skill: `~/code/fractal/skills/fractal/SKILL.md`. |
-| `ongoing` | The project catalog: what is managed, its stacks, intent, and attention. `ongoing show <project>`, `ongoing stacks --outdated`. |
-| `mise` | The single surface for language runtimes and CLI tools. Wrong binary or version? Start here. |
 | `gh` | GitHub. Create repos private by default. |
+| `mise` | The single surface for language runtimes and CLI tools. Wrong binary or version? Start here. |
 | `naturally` | Run prose that anyone other than Marcus will read through it. |
+| `ongoing` | The project catalog: what is managed, its stacks, intent, and attention. `ongoing show <project>`, `ongoing stacks --outdated`. |
+| `recall` | Retrieval across the corpus, project docs, tasks, td, and the catalog when you don’t know which source holds the answer. Keywords, not sentences. |
 | `roc` | Icon library at `~/code/roc`. Add, publish, and improve icons freely (`roc-icons`). |
+| `sidecar` | Agent cockpit: shells, worktrees, panes, agent messaging. `sidecar agents` for the surface. |
+| `tasks` | Marcus’s personal GTD. Something you noticed rather than were asked for goes in as `tasks propose "text" --note "why"`, never `capture`. |
+| `td` | Engineering issues, resolved per git repo. Always. |
+<!-- ongoing:tools:end -->
 
 ## UI components and icons
 
