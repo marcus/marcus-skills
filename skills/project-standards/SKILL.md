@@ -22,19 +22,9 @@ These are the house rules for every project Marcus manages. They bind regardless
 - **Modular from day one.** Even small projects. Assume growth; don't wait for pain to introduce structure.
 - **Agents are first-class users.** Every owned capability has a non-interactive CLI or API path with structured output. UI is a projection of that, never a privileged path. See the `surface-parity` skill.
 
-## Sibling skills
+## How much of this is prescription
 
-Use these by name; they carry the detail this file only points at.
-
-| Intent | Skill |
-|---|---|
-| Building, refactoring, reviewing | `pragmatic-engineering` |
-| Plans as living documents | `write-plans` |
-| Sub-agent orchestration via td | `orchestrate` |
-| TUI screens, before inventing in-app UI | `tui-design` |
-| Owned capabilities across UI, CLI, API, MCP | `surface-parity` |
-| Icons | `roc-icons` |
-| SvelteKit + Svelte 5 reference | `sveltekit-latest` |
+These rules set direction and leave the craft to you. Agents plan, orchestrate, review and write framework code well without a playbook, so nothing here prescribes how to do those things. Reach for current official documentation when a detail matters. The one companion skill is `surface-parity`, for keeping owned capabilities aligned across UI, CLI, API and MCP.
 
 ## Language preferences
 
@@ -68,9 +58,9 @@ Match `tasks`, `td`, `sidecar`, `recall`, `comms`. Canonical reference is **`~/c
 
 ### JavaScript / TypeScript stack
 
-- **SvelteKit + TypeScript.**
+- **The latest stable SvelteKit and Svelte, with TypeScript.**
 - **SQLite** by default; **Postgres** when there's a real reason. Say what the reason was.
-- UI: the **Linear design system** for now (`linear-design-patterns`); expect a house style later.
+- UI: **Apple's glass aesthetic**, as close to a modern Mac app as the web allows. `~/code/clara-ui/DESIGN.md` is the reference, with `~/code/studio/DESIGN.md` as a second example.
 
 ### Storage progression
 
@@ -80,7 +70,7 @@ JSONL → SQLite → Postgres. Start at the simplest store that works; move up o
 
 Default to the Clara / td shape: `docs/` with types such as `plans/` and `guides/`, and under those `active/`, `implemented/`, `deprecated/`.
 
-Plans are living documents (`write-plans`): move them through those folders as work progresses, keep them updated in brief informal strokes, record handoffs in both `td` and the plan, and allow a short changelog at the bottom. Don't litter the body with "decided / changed / updated" archaeology.
+Plans are living documents: move them through those folders as work progresses, keep them updated in brief informal strokes, record handoffs in both `td` and the plan, and allow a short changelog at the bottom. Don't litter the body with "decided / changed / updated" archaeology.
 
 ## Architecture diagrams
 
@@ -122,6 +112,17 @@ The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; t
 ## UI components and icons
 
 Build crisp, reusable components. Prefer project-maintained component libraries, not one-off HTML or TUI controls and not random internet component packs. Icons come from `roc`.
+
+## Web apps on phones and when shared
+
+Anything with a web front end (apps, games, tools, published pages) should feel native on a phone and look good when its link is shared.
+
+- **Full height, no letterboxing.** Fill the whole screen where the content allows: `viewport-fit=cover`, full-height layouts (`100dvh` or fixed `inset: 0`), and safe-area insets for padding rather than dead bands top and bottom.
+- **No selection by default.** Turn off text selection and the long-press callout on app chrome (`user-select: none`, `-webkit-touch-callout: none`, no tap highlight). Keep it where text is the point: documents, messages, code, anything someone would copy.
+- **No accidental zoom in apps and games.** `touch-action: manipulation` on the page, `maximum-scale=1, user-scalable=no` in the viewport, and cancel Safari's `gesturestart`/`gesturechange` (it ignores `user-scalable`). Form fields at 16px or larger so focusing one doesn't zoom. Documents are different: images, diagrams and reading pages must stay zoomable.
+- **Don't open the keyboard on arrival.** No autofocus on load on touch devices, so nobody lands on a screen half covered by the keyboard. Focus a field when the person taps it.
+- **App icon and favicons from Studio.** Generate the icon with `studio image` (GPT Image, 1:1, full-bleed, opaque, no text), choose one that reads at 16px, and ship favicon `.ico`/32/16, a 180px `apple-touch-icon`, 192/512 icons and a `manifest.json` (served as JSON) with `apple-mobile-web-app-*` tags, so adding it to the home screen looks good.
+- **Rich link previews.** Open Graph and Twitter tags with absolute URLs: title, one-line description, and a 1200×630 `og:image` (real screenshot plus the title works well), so the link unfurls nicely in Messages, Slack and social apps. Check the published page's tags and image respond before calling it done.
 
 ## External-facing prose
 
