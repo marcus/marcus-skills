@@ -109,6 +109,8 @@ The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; t
 | `td` | Engineering issues, resolved per git repo. Always. |
 <!-- ongoing:tools:end -->
 
+A common CLI that clara-ui agents on other machines (eagle, marcusbook) should reach needs one line in `~/code/clara-home/config/agent-tools.json`; clara-ui forwards it to aerie from the next session. See `~/code/clara-ui/docs/machines.md`.
+
 ## UI components and icons
 
 Build crisp, reusable components. Prefer project-maintained component libraries, not one-off HTML or TUI controls and not random internet component packs. Icons come from `roc`.
