@@ -43,7 +43,7 @@ don't start new work on it.
 | **Bash** | warm | Where a shell solution is enough; actively preferred there. |
 | **Python** | warm | The default for ML and model work; acceptable elsewhere when its ecosystem is the best fit. |
 | **Rust** | warm | When performance is essential. |
-| **Ruby** | out | Nothing new starts in Ruby; existing Ruby projects such as clara carry on in it. |
+| **Ruby** | cool | Nothing new starts in Ruby; existing Ruby projects such as clara carry on in it. |
 <!-- ongoing:languages:end -->
 
 Anything else: discuss first.
@@ -90,13 +90,6 @@ The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; t
 | `sidecar` | Agent cockpit: shells, worktrees, panes, agent messaging. `sidecar agents` for the surface. |
 | `tasks` | Marcus’s personal GTD. Something you noticed rather than were asked for goes in as `tasks propose "text" --note "why"`, never `capture`. |
 | `td` | Engineering issues, resolved per git repo. Always. |
-| `conversations` | Local agent session history index: search past coding conversations and decisions. |
-| `dex` | Local contacts CRM: people records, search and relationship notes. |
-| `gog` | Google CLI for personal Gmail, Calendar, Drive, Contacts, Tasks, Sheets, Docs, Slides, Forms, Meet, Keep, Photos and other Google services. |
-| `imsg` | Read and send iMessage/SMS through the macOS Messages database/app. |
-| `lightroom-index` | Photo catalog index search by subject keywords, rating, year, camera and lens. |
-| `screencapture` | macOS built-in screen capture: save an image of a display, window or selected region. |
-| `spotify-player` | Spotify music search, playback, device connection, playlists, likes and lyrics. |
 <!-- ongoing:tools:end -->
 
 A common CLI that clara-ui agents on other machines (eagle, marcusbook) should reach needs one line in `~/code/clara-home/config/agent-tools.json`; clara-ui forwards it to aerie from the next session. See `~/code/clara-ui/docs/machines.md`.
