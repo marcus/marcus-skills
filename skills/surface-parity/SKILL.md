@@ -11,7 +11,7 @@ Use this skill alongside `pragmatic-engineering`. Surface parity does not justif
 
 ## Begin With Capabilities and Journeys
 
-Model the behavior before mapping it to interfaces.
+Model the behavior before mapping it to interfaces. Assume whatever a person does through a UI today, an agent will do through a CLI or API tomorrow, and design so that transition needs no rewrite.
 
 1. Identify the capability the product owns.
 2. Identify who needs it: an end user, an agent, another program, or some combination.
@@ -38,11 +38,13 @@ Treat these as common roles, not a mandatory checklist:
 
 Do not add an API or MCP server solely to complete the table. Do not omit a non-interactive path for an owned capability merely because the UI shipped first.
 
+In Marcus's projects the CLI is the agent's primary surface: complete, scriptable, non-interactive, with JSON or JSONL output alongside human-readable output. Human surfaces are a TUI for developer tools (`td`, `tasks`, `sidecar`) and a genuinely excellent graphical UI for everything else (`td-watch`, `ongoing`, `snapshot`). Reference shapes: `td` is CLI + TUI + API with `td-watch` as its UI; `tasks` is CLI + TUI + API; `braid` is CLI + MCP + UI.
+
 ### Apply the ownership test
 
-If uninstalling the product would remove the capability, the product owes agents a deterministic way to invoke it. If the product only presents a capability owned by an underlying tool, parity may add ceremony rather than access.
+The test is ownership, not surface count. If uninstalling the product would remove the capability, the product owes agents a deterministic way to invoke it. If the product only presents a capability owned by an underlying tool, parity may add ceremony rather than access.
 
-A task manager owns task validation and mutation, so its UI actions need an agent path. A file browser does not need to wrap `mv` merely because its UI can move a file. If a presentation layer develops rules of its own, keep those rules state-free or behind a reusable boundary so a headless caller can adopt them later.
+A task manager owns task validation and mutation, so its UI actions need an agent path. A file browser does not need to wrap `mv` merely because its UI can move a file: when a capability belongs to something underneath and the product only makes it pleasant for a human, a human-only surface is the correct design, and adding a CLI would be ceremony, not parity. `td`, `tasks` and `braid` own their data and owe parity; `sidecar` is the standing presentation-layer example, since it browses files, drives git and watches agent sessions but owns none of that. If a presentation layer develops rules of its own, keep those rules state-free or behind a reusable boundary so a headless caller can adopt them later.
 
 ## Define Semantic Parity
 
@@ -94,7 +96,7 @@ Thin adapters may own:
 - status or exit-code mapping;
 - surface-specific confirmation and discoverability.
 
-Thin adapters must not own domain validation, mutation ordering, permissions policy, or a private representation of product state.
+Thin adapters must not own domain validation, mutation ordering, permissions policy, or a private representation of product state. UIs get replaced; the core shouldn't notice.
 
 ## Prepare for an API Without Building One
 
@@ -128,7 +130,7 @@ For each feature:
 2. Decide which existing surfaces should expose it and document any exception.
 3. Implement the behavior once at the application boundary.
 4. Map the outcome into each selected adapter.
-5. Update discoverability: UI affordances, `--help`, structured CLI schema, API contract, or MCP tool description as applicable.
+5. Update discoverability: UI affordances, `--help`, structured CLI schema, a written spec or skill, API contract, or MCP tool description as applicable.
 6. Prove the real journey on each selected surface.
 7. Add focused parity coverage at the shared boundary and adapter edges.
 

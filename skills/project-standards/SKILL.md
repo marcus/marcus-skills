@@ -1,27 +1,26 @@
 ---
 name: project-standards
-description: The standards every agent follows when working in one of Marcus's projects — git and GitHub defaults, language order and stacks, td and docs layout, Sidecar and comms awareness, living plans, adapter seams, UI and icon libraries, and how to communicate decisions. Load at the start of any work in a managed repo, before planning or writing code, and whenever choosing a language, stack, layout, or workflow for a new project.
+description: The standards every agent follows when working in one of Marcus's projects — git and GitHub defaults, language rings and stacks, storage and adapter seams, td and docs layout, Sidecar and comms awareness, living plans, UI and icon libraries, web apps on phones, and how to communicate decisions. Load at the start of any work in a managed repo, before planning or writing code, and whenever choosing a language, stack, layout, or workflow for a new project.
 ---
 
 # Project Standards
 
-These are the house rules for every project Marcus manages. They bind regardless of harness or model. When a project's own AGENTS.md or CLAUDE.md is more specific, follow it; when it is silent, follow this.
+These are the house rules for every project Marcus manages. They bind regardless of harness or model. When a project's own AGENTS.md or CLAUDE.md is more specific, follow it; when it is silent, follow this. They are defaults, not laws, but deviating from one is a decision worth stating out loud.
 
 ## Always
 
-- **Harness- and model-agnostic.** Nothing assumes Claude Code, Codex, Gemini, or one model vendor. Building for one harness is a decision to raise first.
+- **Harness- and model-agnostic.** Nothing assumes Claude Code, Codex, Gemini, Grok, Cursor, or one model vendor; Clara is the seam that keeps them swappable. Building for one harness is a decision to raise first.
 - **Local-first, inspectable.** Prefer tools and layouts reachable from the machine without a proprietary control plane. Prefer text formats (JSONL, markdown) an agent can read, diff, and repair.
 - **Commit as you go.** Don't leave large uncommitted piles.
 - **Push freely.** Private repos: push to GitHub as normal backup while working. Public repos: also fine unless told not to.
 - **Private by default.** New work gets a git repo and a **private** GitHub repo, without being asked, unless told to go public.
 - **Land the branch.** Merge feature-branch work back to `main` unless asked to leave it. Worktrees for parallel work; `main` directly is fine early on or for small changes.
 - **Track work in `td`.** In every repo. `td usage --new-session -q` to orient, `td start`, `td log`, `td handoff`, `td review`, then approve with a stated reviewer. A fresh sub-agent that the implementer spawns, in its own td session, counts as independent. After approval, carry the work through to merge and install unless the repo's AGENTS.md says otherwise.
-- **Swift layout on aerie.** Proofs go in `/Volumes/Swift/proofs/<project>/<YYYY-MM-DD>-<slug>/`, scratch in `/Volumes/Swift/scratch/<project>/`, and worktrees in `/Volumes/Swift/worktrees/<repo>-<slug>`, removed after merge. Never create new top-level folders; see `/Volumes/Swift/README.md`.
 - **Finish in line.** Closing a ticket by spawning "should-do" follow-ups is an anti-pattern. Obvious next work that belongs with the change gets done now. Follow-up td items are only for non-obvious, optional, or genuinely deferred work that would be fine if it never happened.
 - **Clean as you go.** Every agent owns hygiene. Noisy logs, flaky tests (even pre-existing), awkward build steps, worktree friction, failing linters, oversized files: surface it **and fix it**, not only file a note.
-- **Adapters at seams that churn.** AI providers, agent harnesses, databases, transport, renderers. One interface, one boring default implementation, so a swap is "write a new adapter", never "refactor the app". Reference: `~/code/backstage` (Ruby).
+- **Adapters at seams that churn.** Model providers, agent harnesses, storage, transport, renderers, notifiers, schedulers. One interface, one boring default implementation, so a swap is "write a new adapter", never "refactor the app". Reference: `~/code/backstage` (Ruby).
 - **Modular from day one.** Even small projects. Assume growth; don't wait for pain to introduce structure.
-- **Agents are first-class users.** Every owned capability has a non-interactive CLI or API path with structured output. UI is a projection of that, never a privileged path. See the `surface-parity` skill.
+- **Agents are first-class users.** Every owned capability has a non-interactive CLI or API path with structured output. UI is a projection of that, never a privileged path. Ask "how does an agent invoke this?" before "where does this button go?" See the `surface-parity` skill.
 
 ## How much of this is prescription
 
@@ -30,7 +29,8 @@ These rules set direction and leave the craft to you. Agents plan, orchestrate, 
 ## Language preferences
 
 This table is generated from the Ongoing catalog — `ongoing tech list --kind language`. Edit the
-catalog (`ongoing tech set python --ring cool`), then regenerate; don't edit the rows by hand. The
+catalog (`ongoing tech set <slug> --ring <ring> --note "<when>"`), then regenerate with
+`bun run ~/code/ongoing/scripts/render-project-standards.ts`; don't edit the rows by hand. The
 ring says how much a language is the current default: **hot** is the default choice for new work,
 **warm** is fine to keep using, **cool** needs a reason and expects to migrate off, **out** means
 don't start new work on it.
@@ -41,47 +41,29 @@ don't start new work on it.
 | **Go** | hot | New projects by default; td, tasks, sidecar, comms and recall are the reference shape. |
 | **JavaScript / TypeScript** | hot | When the problem wants a web or UI stack, which is often. |
 | **Bash** | warm | Where a shell solution is enough; actively preferred there. |
-| **Ruby** | warm | Quicker projects, or systems primarily for Marcus. |
+| **Python** | warm | The default for ML and model work; acceptable elsewhere when its ecosystem is the best fit. |
 | **Rust** | warm | When performance is essential. |
-| **Python** | cool | Allowed, not preferred. |
+| **Ruby** | out | Nothing new starts in Ruby; existing Ruby projects such as clara carry on in it. |
 <!-- ongoing:languages:end -->
 
 Anything else: discuss first.
 
-### Go stack
-
-Match `tasks`, `td`, `sidecar`, `recall`, `comms`. Canonical reference is **`~/code/sidecar`**; `~/code/comms` is the leanest current copy of the same shape.
-
-- `Makefile` with `build`, `install`, `install-local` (or equivalent) so the **local branch or worktree installs in one command**. Sidecar adds `install-worktree` and `use-homebrew` to switch between a dev build and the tap.
-- **goreleaser v2** with a **Homebrew tap** target; `make release`, `release-dry-run`, `release-tap`.
-- GitHub Actions: a CI workflow (`go-ci.yml` or `ci.yml`) plus `release.yml` triggered on `v*` tags, which verifies the tag against live `main` before publishing. Keep Actions aligned with how the repo actually releases.
-- `go-version-file: go.mod` everywhere; toolchain via `mise`.
-
-### JavaScript / TypeScript stack
-
-- **The latest stable SvelteKit and Svelte, with TypeScript.**
-- **SQLite** by default; **Postgres** when there's a real reason. Say what the reason was.
-- UI: **Apple's glass aesthetic**, as close to a modern Mac app as the web allows. `~/code/clara-ui/DESIGN.md` is the reference, with `~/code/studio/DESIGN.md` as a second example.
-
 ### Storage progression
 
-JSONL → SQLite → Postgres. Start at the simplest store that works; move up on concrete pain (concurrent writers, query complexity, volume, multi-host), and say what the pain was. All persistence behind one narrow store interface, no store-specific features in business logic.
+JSONL → SQLite → Postgres. Start at the simplest store that works; move up on concrete pain (concurrent writers, query complexity, volume, multi-host), and say what the pain was. All persistence behind one narrow store interface, no store-specific features in business logic. Details: `references/storage.md`.
+
+## References
+
+- `references/stacks.md`: a Go or JS/TS project's build, install, release, CI, database or UI look.
+- `references/storage.md`: designing or changing persistence.
+- `references/web-apps-on-phones.md`: anything with a web front end, especially iOS home-screen apps, icons and link previews.
+- `references/architecture-diagrams.md`: the repo has `docs/diagrams/fractal/`, or architecture, boundaries, major flows or planned capabilities change.
 
 ## Docs layout
 
 Default to the Clara / td shape: `docs/` with types such as `plans/` and `guides/`, and under those `active/`, `implemented/`, `deprecated/`.
 
 Plans are living documents: move them through those folders as work progresses, keep them updated in brief informal strokes, record handoffs in both `td` and the plan, and allow a short changelog at the bottom. Don't litter the body with "decided / changed / updated" archaeology.
-
-## Architecture diagrams
-
-Keep project-owned Fractal models in `docs/diagrams/fractal/` (`model.c4` and `fractal.json`).
-When architecture, boundaries, major flows, or planned capabilities change, update the affected
-model and scenes alongside the code. Preserve stable IDs and distinguish current behavior from
-proposals. Use the [Fractal usage skill](~/code/fractal/skills/fractal/SKILL.md) to author, validate,
-export, register the project in the local catalog, and open its diagram for Marcus. Keep the model
-in the project repository and use Fractal's existing tools; model maintenance should not require
-changes to Fractal core.
 
 ## Runtime environment
 
@@ -108,6 +90,13 @@ The cross-project toolbox. Home-only tools live in Clara's `profile/TOOLS.md`; t
 | `sidecar` | Agent cockpit: shells, worktrees, panes, agent messaging. `sidecar agents` for the surface. |
 | `tasks` | Marcus’s personal GTD. Something you noticed rather than were asked for goes in as `tasks propose "text" --note "why"`, never `capture`. |
 | `td` | Engineering issues, resolved per git repo. Always. |
+| `conversations` | Local agent session history index: search past coding conversations and decisions. |
+| `dex` | Local contacts CRM: people records, search and relationship notes. |
+| `gog` | Google CLI for personal Gmail, Calendar, Drive, Contacts, Tasks, Sheets, Docs, Slides, Forms, Meet, Keep, Photos and other Google services. |
+| `imsg` | Read and send iMessage/SMS through the macOS Messages database/app. |
+| `lightroom-index` | Photo catalog index search by subject keywords, rating, year, camera and lens. |
+| `screencapture` | macOS built-in screen capture: save an image of a display, window or selected region. |
+| `spotify-player` | Spotify music search, playback, device connection, playlists, likes and lyrics. |
 <!-- ongoing:tools:end -->
 
 A common CLI that clara-ui agents on other machines (eagle, marcusbook) should reach needs one line in `~/code/clara-home/config/agent-tools.json`; clara-ui forwards it to aerie from the next session. See `~/code/clara-ui/docs/machines.md`.
@@ -115,21 +104,6 @@ A common CLI that clara-ui agents on other machines (eagle, marcusbook) should r
 ## UI components and icons
 
 Build crisp, reusable components. Prefer project-maintained component libraries, not one-off HTML or TUI controls and not random internet component packs. Icons come from `roc`.
-
-## Web apps on phones and when shared
-
-Anything with a web front end (apps, games, tools, published pages) should feel native on a phone and look good when its link is shared.
-
-- **Full height, no letterboxing.** Fill the whole screen where the content allows: `viewport-fit=cover`, full-height layouts (`100dvh` or fixed `inset: 0`), and safe-area insets for padding rather than dead bands top and bottom.
-- **Home-screen apps on iOS reach the bottom from the top.** With `viewport-fit=cover` and a `black-translucent` status bar, iOS can leave the layout viewport about a status bar short of the screen, so `bottom: 0`, `100%`, `100dvh` and fixed `inset: 0` all stop short and leave a band; scripts may not see the shortfall (WebKit bug 237961), so measuring it doesn't work. Mark the root (`data-standalone`, from `navigator.standalone` or `display-mode: standalone`) in a head script before first paint, and there size from `100lvh` hung from the top: in a whole-screen app, `html, body { height: 100lvh }` with the body as containing block for the fixed layers (`transform: translateZ(0)`). Never pin `body` with `position: fixed`. References: Studio `ui/src/lib/viewport.ts` and `DESIGN.md`; vehicle-arena `canvas/live.html`.
-- **Clear the status-bar blur.** In a home-screen app iOS blurs a band under the status bar that runs past the safe area (to about 80pt on a 59pt inset). Start top overlays below it there, about 1.45 times `env(safe-area-inset-top)`; landscape's inset is 0, so it stays put.
-- **Version script imports on hosts without cache rules.** If the host sends modules without `cache-control` (labs.opentangle.com does), iOS keeps old ones and pairs them with a new page after a publish. Stamp relative imports with a content hash at build time, and only real file names: bundles hold strings like `'./rapier_wasm3d_bg.js'` that are lookup keys, not imports.
-- **Check on the phone, from the home screen.** WebKit emulation can't reproduce home-screen viewport behaviour; a fix passing there proves nothing. After a change, delete and re-add the home-screen icon (force-quitting keeps old state) and look.
-- **No selection by default.** Turn off text selection and the long-press callout on app chrome (`user-select: none`, `-webkit-touch-callout: none`, no tap highlight). Keep it where text is the point: documents, messages, code, anything someone would copy.
-- **No accidental zoom in apps and games.** `touch-action: manipulation` on the page, `maximum-scale=1, user-scalable=no` in the viewport, and cancel Safari's `gesturestart`/`gesturechange` (it ignores `user-scalable`). Form fields at 16px or larger so focusing one doesn't zoom. Documents are different: images, diagrams and reading pages must stay zoomable.
-- **Don't open the keyboard on arrival.** No autofocus on load on touch devices, so nobody lands on a screen half covered by the keyboard. Focus a field when the person taps it.
-- **App icon and favicons from Studio.** Generate the icon with `studio image` (GPT Image, 1:1, full-bleed, opaque, no text), choose one that reads at 16px, and ship favicon `.ico`/32/16, a 180px `apple-touch-icon`, 192/512 icons and a `manifest.json` (served as JSON) with `apple-mobile-web-app-*` tags, so adding it to the home screen looks good.
-- **Rich link previews.** Open Graph and Twitter tags with absolute URLs: title, one-line description, and a 1200×630 `og:image` (real screenshot plus the title works well), so the link unfurls nicely in Messages, Slack and social apps. Check the published page's tags and image respond before calling it done.
 
 ## External-facing prose
 
