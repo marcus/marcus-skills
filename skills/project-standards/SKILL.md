@@ -12,6 +12,7 @@ These are the house rules for every project Marcus manages. They bind regardless
 - **Harness- and model-agnostic.** Nothing assumes Claude Code, Codex, Gemini, Grok, Cursor, or one model vendor; Clara is the seam that keeps them swappable. Building for one harness is a decision to raise first.
 - **Local-first, inspectable.** Prefer tools and layouts reachable from the machine without a proprietary control plane. Prefer text formats (JSONL, markdown) an agent can read, diff, and repair.
 - **Commit as you go.** Don't leave large uncommitted piles.
+- **Adopt forgotten work.** Before working around a dirty checkout, check ownership through file recency, td handoffs, live sessions and comms. Verify sensible abandoned changes and commit them separately with attribution; incomplete work may be committed honestly with a td issue for the gap. Leave clearly active work or changes deliberately left by Marcus alone. Do not delete, reset or stash forgotten work; ask about changes that are clearly broken or unwanted.
 - **Push freely.** Private repos: push to GitHub as normal backup while working. Public repos: also fine unless told not to.
 - **Private by default.** New work gets a git repo and a **private** GitHub repo, without being asked, unless told to go public.
 - **Land the branch.** Merge feature-branch work back to `main` unless asked to leave it. Worktrees for parallel work; `main` directly is fine early on or for small changes.
